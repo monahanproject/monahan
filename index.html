@@ -1,0 +1,80 @@
+<!-- https://miro.com/app/board/o9J_lZ2ecUg=/ -->
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="styles.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet" />
+  <title>Monahan</title>
+
+  <meta name="author" content="Marie Claire LeBlanc Flanagan" />
+  <meta name="description" content="A sound walk for curious ears" />
+
+  <meta property="og:title" content="Monahan" />
+  <meta property="og:description" content="Wander and listen" />
+  <meta property="og:image" content="images/mon1.png" />
+  <meta property="og:url" content="https://monahanwalks.ca/index.html" />
+  <meta property="og:type" content="game" />
+
+  <meta name="twitter:title" content="Monahan" />
+  <meta name="twitter:description" content="Wander and listen" />
+  <meta name="twitter:image" content="https://monahanwalks.ca/images/mon1.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script>
+    window.addEventListener("load", (event) => {
+      document.body.classList.remove("preload");
+    });
+  </script>
+</head>
+
+<body class="preload">
+  <header>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+    </label>
+    <div id="nameAndLogo">
+      <a href="index.html"><img src="images/icons/frog.png" alt="describe" class="frog-logo" /></a>
+      <a href="index.html">
+        <p id="siteName">Monahan</p>
+      </a>
+    </div>
+    <nav>
+      <ul>
+        <!-- <li><a href="#">Home</a></li> -->
+        <li><a href="about.html" id="aboutNav">About</a></li>
+        <li><a href="accessiblity.html" id="accessiblityNav">Accessibility</a></li>
+      </ul>
+    </nav>
+    <button type="button" class="btn" id="langToggle">FR</button>
+  </header>
+
+  <main class="container">
+    <div class="row">
+      <img id="landingImg" src="images/mon1.png" alt="describe it here" class="imageSide" />
+      <div class="textSide">
+        <h1 id="homeH1">A sound walk for curious ears</h1>
+        <p id="homeTxt">
+          Join us for a custom audio walk with the sounds of the Monahan
+          wetlands
+        </p>
+        <a href="monahan.html" id="beginBtn" class="btn">Begin</a>
+      </div>
+    </div>
+
+
+  </main>
+
+  <!-- <audio id="player1" controls preload>
+    <source id='audioSource' src='' type="audio/mpeg">
+  </audio> -->
+
+  <script src="play.js"></script>
+  <script src="translate.js"></script>
+
+</body>
+
+</html>
