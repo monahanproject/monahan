@@ -264,14 +264,15 @@ btn .btn {
 
 #play {
   font-size: 1.11rem;
+  background-color: var(--lightGrey);
   text-decoration: none;
   text-transform: uppercase;
   margin: 1rem;
   padding: 0.6em 4em;
   border-width: 0px;
 }
-
 .btn:hover,
+#play:hover,
 .btn:focus,
 btn:focus,
 #beginBtn:hover,
@@ -400,7 +401,7 @@ form {
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  background-color: var(--lightGrey);
+  /* background-color: var(--lightGrey); */
   padding: 1em;
 }
 
@@ -614,7 +615,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color:lightGrey;
+  /* background-color:lightGrey; */
   width: 80vw;
   height: 50vh;
   align-items: center;
@@ -962,7 +963,7 @@ nav a {
 
 footer {
   padding: 1em 0;
-  background-color: var(--lightGrey);
+  /* background-color: var(--lightGrey); */
   text-align: center;
   display: inline-block;
   width: 100vw;
@@ -980,4 +981,51 @@ footer {
 }
 
 @media screen and (min-width: 900px) {
+}
+
+#debug{
+  /* display: flex; */
+  font-size: 2rem;
+  /* flex-direction: column; */
+  /* justify-content: flex-start; */
+  /* align-items: flex-start; */
+  position: absolute;
+  /* background-color: red; */
+  /* width: 30vw; */
+  /* height: 200px; */
+  top: 10rem;
+  /* left: 0; */
+  padding-left: 10px;
+  overflow: scroll;
+
+}
+
+#debug p {
+  font-size: 1rem;
+  text-align: left;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.debugTit{
+  color:rgb(90, 42, 114)
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+
+.debugHead {
+  color: rgb(77, 0, 201); 
+  font-weight: bold;
+}
+
+#shuffle {
+  display: flex;
+  flex-direction: column;
+}
+
+#creditsStack{
+  margin-right: 5rem;
+  width: 22vw;
+  white-space: normal;
+  word-wrap: break-word;
 }
