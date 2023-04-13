@@ -1119,6 +1119,19 @@ window.addEventListener("load", (event) => {
   const PREFETCH_BUFFER_SECONDS = 8;
 
   // shuffle an array https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+  // function shuffleElementsInAnArray(a) {
+  //   for (let i = a.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     [a[i], a[j]] = [a[j], a[i]];
+  //   }
+  //   return a;
+  // }
+
+//  shuffle algo
+//  shuffle algo
+//  shuffle algo  
+function shuffleTracklist(tracklist) {
+  // Shuffle the tracklist randomly
   function shuffleElementsInAnArray(a) {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -1126,8 +1139,68 @@ window.addEventListener("load", (event) => {
     }
     return a;
   }
+  tracklist = shuffleElementsInAnArray(tracklist);
+  
+  // Filter objects with "long" tag and add them to the end of the list
+  const longObjects = tracklist.filter(obj => obj.tags.includes("long"));
+  const otherObjects = tracklist.filter(obj => !obj.tags.includes("long"));
+  tracklist = [...otherObjects, ...longObjects];
+  
+  // Find an object with "beginning" tag and move it to the first or second place
+  const beginningObjectIndex = tracklist.findIndex(obj => obj.tags.includes("beginning"));
+  if (beginningObjectIndex >= 2) {
+    const beginningObject = tracklist.splice(beginningObjectIndex, 1)[0];
+    tracklist.splice(Math.floor(Math.random() * 2), 0, beginningObject);
+  }
+  
+  // Find an object with "end" tag and move it to 6 deep items in the list
+  const endObjectIndex = tracklist.findIndex(obj => obj.tags.includes("end"));
+  if (endObjectIndex >= 0 && endObjectIndex < tracklist.length - 6) {
+    const endObject = tracklist.splice(endObjectIndex, 1)[0];
+    tracklist.splice(endObjectIndex + 6, 0, endObject);
+  }
+  
+  // Check and adjust for "Louella" and "heavy" tags
+  for (let i = 0; i < tracklist.length - 1; i++) {
+    const currentObject = tracklist[i];
+    const nextObject = tracklist[i+1];
+    
+    if (currentObject.tags.includes("Louella") && nextObject.tags.includes("Louella")) {
+      // Find an object without "Louella" tag and swap it with the next object
+      const targetIndex = tracklist.findIndex((obj, index) => !obj.tags.includes("Louella") && index > i);
+      if (targetIndex >= 0) {
+        [tracklist[i+1], tracklist[targetIndex]] = [tracklist[targetIndex], tracklist[i+1]];
+      }
+    }
+    
+    if (currentObject.tags.includes("heavy") && nextObject.tags.includes("laughing")) {
+      // Find an object without "laughing" tag and swap it with the next object
+      const targetIndex = tracklist.findIndex((obj, index) => !obj.tags.includes("laughing") && index > i);
+      if (targetIndex >= 0) {
+        [tracklist[i+1], tracklist[targetIndex]] = [tracklist[targetIndex], tracklist[i+1]];
+      }
+    }
+  }
+  
+  return tracklist;
+}
 
-  // function to fetch and cache audio
+  // Add more forbidden tag combinations as needed
+  // Add more forbidden tag combinations as needed
+  // Add more forbidden tag combinations as needed
+const forbiddenTagCombinations = [
+  { firstTag: "drone", secondTag: "drone" },
+  { firstTag: "interviews", secondTag: "interviews" },
+  { firstTag: "shorts", secondTag: "shorts" },
+  { firstTag: "music", secondTag: "music" },
+  { firstTag: "longmusic", secondTag: "longmusic" },
+  // Add more forbidden tag combinations as needed
+];
+
+
+  // fetch and cache audio
+  // fetch and cache audio
+  // fetch and cache audio
   function fetchAndCacheAudio(audioFileUrl, cache) {
     // Check first if audio is in the cache.
     return cache.match(audioFileUrl).then((cacheResponse) => {
@@ -1144,14 +1217,7 @@ window.addEventListener("load", (event) => {
     });
   }
 
-  const forbiddenTagCombinations = [
-    // { firstTag: "drone", secondTag: "drone" },
-    // { firstTag: "interviews", secondTag: "interviews" },
-    // { firstTag: "shorts", secondTag: "shorts" },
-    // { firstTag: "music", secondTag: "music" },
-    { firstTag: "longmusic", secondTag: "shorts, music, longmusic, drone" },
-    // Add more forbidden tag combinations as needed
-  ];
+  
 
   // Set up event listener for when the outro audio ends
   // outroAudio1.addEventListener("ended", () => {
@@ -1392,7 +1458,8 @@ window.addEventListener("load", (event) => {
     const shuffledSongs = [...SONGS];
 
     // next we shuffle it
-    shuffleElementsInAnArray(shuffledSongs);
+    // shuffleElementsInAnArray(shuffledSongs);
+    shuffleTracklist(shuffledSongs);
 
     // next we add the intro to the beginning
     const shuffledSongsWithOpen = [...introTracks, ...shuffledSongs];
