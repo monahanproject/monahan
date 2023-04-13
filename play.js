@@ -142,39 +142,48 @@ window.addEventListener("load", (event) => {
     return audio;
   }
 
+  // const addAudio = song =>{
+  //   song.urlAudio = createAudioElement(song.url);
+  //   song.creditAudio = createAudioElement(cong.credit);
+  //   return song;
+  // }
+
+  const addAudioFromUrl = (song) => {
+    song.audio = createAudioElement(song.url);
+    return song;
+  };
+
+  const addAudioFromCredit = (song) => {
+    // if (!song.credit) {
+    //   console.log("song has no credit", song);
+    // }
+    song.audio = createAudioElement(song.url);
+    return song;
+  };
+
   const introTracks = [
     {
       // url: "./sounds/00_INTRO/INTRO2.mp3",
       name: "intro",
       url: "./sounds/CREDITS/fakeIntro.mp3",
-      duration: 05,
+      duration: 5,
       tags: ["intro"],
-      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+      credit: "",
     },
-  ].map((song) => {
-    song.audio = createAudioElement(song.url);
-    return song;
-  });
+  ].map(addAudioFromUrl);
 
-  let creditsArray = [
-    {
-      name: "credittt",
-      url: "./sounds/XX_OUTRO/OUTRO2PT1SOLO.mp3",
-      duration: 3,
-      tags: ["credits"],
-      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
-    },
-    {
-      name: "credittt",
-      url: "./sounds/XX_OUTRO/OUTRO2PT1SOLO.mp3",
-      duration: 3,
-      tags: ["credits"],
-      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
-    },
-  ].map((song) => {
-    song.audio = createAudioElement(song.credit);
-    return song;
-  });
+    let creditsArray = [];
+
+
+  // let creditsArray = [
+  //   {
+  //     name: "hardcoded cred",
+  //     url: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+  //     duration: 3,
+  //     tags: ["credits"],
+  //     credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+  //   },
+  // ].map(addAudioFromCredit);
 
   const outroAudioSounds = [
     {
@@ -184,10 +193,7 @@ window.addEventListener("load", (event) => {
       tags: ["outro"],
       credit: "",
     },
-  ].map((song) => {
-    song.audio = createAudioElement(song.url);
-    return song;
-  });
+  ].map(addAudioFromUrl);
 
   const finalOutroAudioSounds = [
     {
@@ -197,33 +203,9 @@ window.addEventListener("load", (event) => {
       tags: ["outro"],
       credit: "",
     },
-  ].map((song) => {
-    song.audio = createAudioElement(song.url);
-    return song;
-  });
+  ].map(addAudioFromUrl);
 
   const SONGS = [
-    // {
-    //   name: "P_NAMITHA_06",
-    //   url: "./sounds/POETRY/P_NAMITHA_06.mp3",
-    //   duration: 11,
-    //   tags: ["poetry"],
-    //   credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
-    // },
-    // {
-    //   name: "S_DEMI_16",
-    //   url: "./sounds/SHORTS/S_DEMI_16.mp3",
-    //   duration: 22,
-    //   tags: ["shorts"],
-    //   credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
-    // },
-    // {
-    //   name: "P_NAMITHA_06",
-    //   url: "./sounds/POETRY/P_NAMITHA_06.mp3",
-    //   duration: 11,
-    //   tags: ["poetry"],
-    //   credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
-    // },
     {
       name: "M_TURKWAZ_02",
       url: "./sounds/MUSIC/M_TURKWAZ_02.mp3",
@@ -243,7 +225,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_TURKWAZ_01.mp3",
       duration: 384,
       tags: [
-        "Long, Beginning, Middle, End, Verbal, Moderate, Sound, Home, Ancestors"],
+        "Long, Beginning, Middle, End, Verbal, Moderate, Sound, Home, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
     },
     {
@@ -265,7 +248,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_08.mp3",
       duration: 75,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -280,7 +264,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_B_03.mp3",
       duration: 113,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -288,7 +273,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_Z_02.mp3",
       duration: 158,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -296,7 +282,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_B_02.mp3",
       duration: 148,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -304,7 +291,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_Z_01.mp3",
       duration: 77,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -312,7 +300,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_B_01.mp3",
       duration: 162,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -320,7 +309,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_S_02.mp3",
       duration: 63,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -328,7 +318,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_13.mp3",
       duration: 102,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -336,7 +327,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_06.mp3",
       duration: 111,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -344,7 +336,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_CHARLOTTE_16.mp3",
       duration: 68,
       tags: [
-        "Medium, End, Middle, Verbal, Moderate, Wellness, Home, Nature, Wetland, Unselfing"],
+        "Medium, End, Middle, Verbal, Moderate, Wellness, Home, Nature, Wetland, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -352,7 +345,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_CHARLOTTE_14.mp3",
       duration: 76,
       tags: [
-        "Medium, Middle, End, Verbal, Moderate, Wellness, Nature, Wetland"],
+        "Medium, Middle, End, Verbal, Moderate, Wellness, Nature, Wetland",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -360,7 +354,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_11.mp3",
       duration: 87,
       tags: [
-        "Medium, Middle, Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Medium, Middle, Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -368,7 +363,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_05.mp3",
       duration: 34,
       tags: [
-        "Short, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Short, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -390,7 +386,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_CHARLOTTE_11.mp3",
       duration: 94,
       tags: [
-        "Short, Middle, End, Verbal, Moderate, Sound, Home, Listening, Wetland"],
+        "Short, Middle, End, Verbal, Moderate, Sound, Home, Listening, Wetland",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -398,7 +395,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_C_06.mp3",
       duration: 79,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -406,7 +404,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_CHARLOTTE_10.mp3",
       duration: 130,
       tags: [
-        "Medium, Middle, End, Verbal, Moderate, Home, Wellness, Nature, Wetland"],
+        "Medium, Middle, End, Verbal, Moderate, Home, Wellness, Nature, Wetland",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -421,7 +420,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_02.mp3",
       duration: 45,
       tags: [
-        "Short, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Short, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -429,7 +429,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_DEMI_03.mp3",
       duration: 42,
       tags: [
-        "Short, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors"],
+        "Short, Middle, Non-Verbal, Moderate, Sound, Home, Vibration, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -444,7 +445,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/MUSIC/M_KIKO_C_05.mp3",
       duration: 61,
       tags: [
-        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening"],
+        "Medium, Middle, Non-Verbal, Moderate, Sound, Wellness, Vibration, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -473,7 +475,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_02.mp3",
       duration: 268,
       tags: [
-        "Long, Middle, Verbal, Heavy, Nature, Wellness, Home, Ancestors, Unselfing"],
+        "Long, Middle, Verbal, Heavy, Nature, Wellness, Home, Ancestors, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -481,7 +484,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_16.mp3",
       duration: 27,
       tags: [
-        "Short, Beg, Middle, End, Verbal, Moderate, Wellness, Nature, Trees"],
+        "Short, Beg, Middle, End, Verbal, Moderate, Wellness, Nature, Trees",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -489,7 +493,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_17.mp3",
       duration: 62,
       tags: [
-        "Medium, Beg, Mid, End, Verbal, Light, Moderate, Nature, Home, Sound, Trees, Ancestors"],
+        "Medium, Beg, Mid, End, Verbal, Light, Moderate, Nature, Home, Sound, Trees, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -497,7 +502,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_03.mp3",
       duration: 41,
       tags: [
-        "Short, Beginning, Middle, End, Verbal , Moderate, Wellness, Sound, Home, Ancestors"],
+        "Short, Beginning, Middle, End, Verbal , Moderate, Wellness, Sound, Home, Ancestors",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -505,7 +511,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_07.mp3",
       duration: 36,
       tags: [
-        "Short, Middle, Verbal, Heavy, Nature, Home, Wellness, Sound, Unselfing, Ancestors, Listening"],
+        "Short, Middle, Verbal, Heavy, Nature, Home, Wellness, Sound, Unselfing, Ancestors, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -513,7 +520,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_13.mp3",
       duration: 73,
       tags: [
-        "Medium, Middle, Verbal, Moderate, Nature, Wellness, Trees, Unselfing"],
+        "Medium, Middle, Verbal, Moderate, Nature, Wellness, Trees, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -528,7 +536,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_06.mp3",
       duration: 45,
       tags: [
-        "Short, Beg, End, Verbal, Heavy, Sound, Home, Wellness, Ancestors, Vibration"],
+        "Short, Beg, End, Verbal, Heavy, Sound, Home, Wellness, Ancestors, Vibration",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -543,7 +552,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_04.mp3",
       duration: 53,
       tags: [
-        "Short, Middle, Verbal , Heavy, Wellness, Home, Nature, Sound, Ancestors, Trees, Unselfing, Listening"],
+        "Short, Middle, Verbal , Heavy, Wellness, Home, Nature, Sound, Ancestors, Trees, Unselfing, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -558,7 +568,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/POETRY/P_ALBERT_11.mp3",
       duration: 89,
       tags: [
-        "Medium, Middle, End, Verbal, Moderate, Home, Sound, Wellness, Ancestors, Listening"],
+        "Medium, Middle, End, Verbal, Moderate, Home, Sound, Wellness, Ancestors, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
     {
@@ -650,7 +661,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_17.mp3",
       duration: 64,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -658,7 +670,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_03.mp3",
       duration: 71,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -694,7 +707,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_02.mp3",
       duration: 84,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -702,7 +716,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_16.mp3",
       duration: 32,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -710,7 +725,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_14.mp3",
       duration: 73,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -739,7 +755,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_15.mp3",
       duration: 35,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -747,7 +764,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_01.mp3",
       duration: 96,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -755,7 +773,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_05.mp3",
       duration: 66,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -763,7 +782,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_11.mp3",
       duration: 41,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -771,7 +791,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_10.mp3",
       duration: 65,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -779,7 +800,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_04.mp3",
       duration: 60,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -787,7 +809,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_12.mp3",
       duration: 31,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -795,7 +818,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_06.mp3",
       duration: 88,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -803,7 +827,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_07.mp3",
       duration: 92,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -811,7 +836,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_13.mp3",
       duration: 56,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -826,7 +852,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_CHARLOTTE_01.mp3",
       duration: 74,
       tags: [
-        "Medium, End, Verbal, Moderate, Nature, Wellness, Sound, Wetlands, Listening"],
+        "Medium, End, Verbal, Moderate, Nature, Wellness, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -855,7 +882,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_09.mp3",
       duration: 46,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -898,7 +926,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_08.mp3",
       duration: 57,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -906,7 +935,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/SHORTS/S_BIRDS_18.mp3",
       duration: 63,
       tags: [
-        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening"],
+        "Short, Middle, Non-Human, Light, Nature, Sound, Wetlands, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -942,7 +972,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_JAYNE_02.mp3",
       duration: 79,
       tags: [
-        "Interview, Medium, Middle, Verbal, Light, Nature, Informative, Unselfing"],
+        "Interview, Medium, Middle, Verbal, Light, Nature, Informative, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -950,7 +981,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_JAYNE_03.mp3",
       duration: 149,
       tags: [
-        "Interview, Medium, Middle, Verbal, Light, Nature, Sound, Informative, Vibration, Unselfing"],
+        "Interview, Medium, Middle, Verbal, Light, Nature, Sound, Informative, Vibration, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -958,7 +990,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_JAYNE_01.mp3",
       duration: 226,
       tags: [
-        "Interview, Long, Middle, Verbal, Light, Nature, Sound, Informative, Vibration"],
+        "Interview, Long, Middle, Verbal, Light, Nature, Sound, Informative, Vibration",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
     {
@@ -966,7 +999,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_LOUELLA_02.mp3",
       duration: 140,
       tags: [
-        "Interview, Medium, Middle, Verbal, Moderate, Nature, Home, Wellness , Unselfing, Ancestors, Wetland"],
+        "Interview, Medium, Middle, Verbal, Moderate, Nature, Home, Wellness , Unselfing, Ancestors, Wetland",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/LOUELLA.mp3",
     },
     {
@@ -981,7 +1015,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_LOUELLA_03.mp3",
       duration: 198,
       tags: [
-        "Interview, Long, Middle, Verbal, Moderate, Wellness, Nature, Informative, Trees, Listening"],
+        "Interview, Long, Middle, Verbal, Moderate, Wellness, Nature, Informative, Trees, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/LOUELLA.mp3",
     },
     {
@@ -989,7 +1024,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_LOUELLA_01.mp3",
       duration: 237,
       tags: [
-        "Interview, Long, Middle, Verbal, Moderate, Sound, Wellness, Informative, Nature, Trees"],
+        "Interview, Long, Middle, Verbal, Moderate, Sound, Wellness, Informative, Nature, Trees",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/LOUELLA.mp3",
     },
     {
@@ -997,7 +1033,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_KIKO_02.mp3",
       duration: 247,
       tags: [
-        "Interview, Long, End, Verbal, Heavy, Sound, Wellness, Listening, Vibration, Unselfing"],
+        "Interview, Long, End, Verbal, Heavy, Sound, Wellness, Listening, Vibration, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -1005,7 +1042,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_KIKO_03.mp3",
       duration: 174,
       tags: [
-        "Interview, Long, Middle, Verbal, Moderate, Sound, Wellness, Listening, Vibration, Unselfing"],
+        "Interview, Long, Middle, Verbal, Moderate, Sound, Wellness, Listening, Vibration, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -1013,7 +1051,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_KIKO_01.mp3",
       duration: 233,
       tags: [
-        "Interview, Long, Middle, Verbal, Moderate, Sound, Wellness, Listening, Vibration, Unselfing"],
+        "Interview, Long, Middle, Verbal, Moderate, Sound, Wellness, Listening, Vibration, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
     },
     {
@@ -1028,7 +1067,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_JESSE_01.mp3",
       duration: 229,
       tags: [
-        "Interview, Long, End, Middle, Verbal, Heavy, Sound, Nature, Wellness, Informative, Wetlands, Listening, Unselfing"],
+        "Interview, Long, End, Middle, Verbal, Heavy, Sound, Nature, Wellness, Informative, Wetlands, Listening, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/JESSE.mp3",
     },
     {
@@ -1036,7 +1076,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_ELLEN_03.mp3",
       duration: 244,
       tags: [
-        "Interview, Long, Middle, Verbal, Moderate, Home, Sound, Informative, Unselfing"],
+        "Interview, Long, Middle, Verbal, Moderate, Home, Sound, Informative, Unselfing",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
     },
     {
@@ -1044,7 +1085,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_SAM_01.mp3",
       duration: 137,
       tags: [
-        "Interview, Medium, Middle, Verbal, Light, Nature, Informative, Wetlands"],
+        "Interview, Medium, Middle, Verbal, Light, Nature, Informative, Wetlands",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/SAM.mp3",
     },
     {
@@ -1052,7 +1094,8 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_ELLEN_04.mp3",
       duration: 154,
       tags: [
-        "Interview, Medium, Beginning, Middle, End, Verbal, Light, Sound, Nature, Listening"],
+        "Interview, Medium, Beginning, Middle, End, Verbal, Light, Sound, Nature, Listening",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
     },
     {
@@ -1060,27 +1103,17 @@ window.addEventListener("load", (event) => {
       url: "./sounds/INTERVIEWS/I_ELLEN_05.mp3",
       duration: 151,
       tags: [
-        "Interview, Medium, Beginning, Middle, Verbal, Light, Sound, Wellness, Vibration"],
+        "Interview, Medium, Beginning, Middle, Verbal, Light, Sound, Wellness, Vibration",
+      ],
       credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
     },
-    // {
-    //     name: "I_ELLEN_01",
-    //     tags: ["Interview, Medium, Beginning, Middle, Verbal, Light, Sound, Wellness, Informative, Vibration, Listening, Unselfing"
-    // },
-    // {
-    //     name: "I_ELLEN_02",
-    //     tags: ["Interview, Medium, Middle, Verbal, Moderate, Sound, Listening, Unselfing"
-    // }
-  ].map((song) => {
-    song.audio = createAudioElement(song.url);
-    return song;
-  });
+  ].map(addAudioFromUrl);
 
   // amount of time selected for the walk in seconds
-  let total_duration = parseInt(
-    document.getElementById("total-duration").value
-  );
-  // var total_duration = 600;
+  // let total_duration = parseInt(
+  //   document.getElementById("total-duration").value
+  // );
+  var total_duration = 1080;
 
   // how many seconds before a song is completed that we should pre-fetch the next song
   const PREFETCH_BUFFER_SECONDS = 8;
@@ -1126,14 +1159,8 @@ window.addEventListener("load", (event) => {
   let LastSeenTags = []; // store the tags of the last track, so we can make rules
   // const currentTrackUrlElement = document.getElementById("currTrack");
 
-  // This is a recursive function. It processes
-  // each audio file at a time and then queues up
+  // This recursive function processes each audio file at a time and then queues up
   // work for the next audio file to be processed.
-  // For example: it plays the current audio. And then
-  // the function adds an event listener for when the
-  // current audio song ends. When this song ends,
-  // this function is called on the next audio (the
-  // recursion).
 
   function playAndQueue(songs, index, currentRuntime, cache) {
     // if we're out of tracks or out of time, stop everything (should fade out eventually)
@@ -1142,79 +1169,36 @@ window.addEventListener("load", (event) => {
     }
 
     // If we are near the end of the playlist, play the final three tracks.
-    if (total_duration - currentRuntime < 136) {
-      console.log("near the end");
+    // 
+    if (total_duration - currentRuntime <= 90) {
+      // console.log("near the end");
       function skipToEndOfThePlaylistFunction(songs, currentIndex, newIndex) {
-        // console.log(songs, currentIndex, index);
         if (!hasSkippedToEnd) {
           console.log("Skipping for the first time!");
           const numElementsToEnd = songs.length - currentIndex - 1;
           index = index + numElementsToEnd;
           let newIndex = index;
 
-          // const creditAudioSounds = creditsArray.map((song) => {
-          //   const creditSong = {
-          //     name: song.name,
-          //     url: "",
-          //     duration: "",
-          //     tags: [],
-          //     credit: song.credit,
-          //     audio: createAudioElement(song.creditAudio),
-          //   };
-          //   return creditSong;
-          // });
-
-          // console.log(creditsArray);
-
-          // const creditAudioSounds = creditsArray.map((song) => {
-          //   const creditSong = {
-          //     name: song.name,
-          //     url: song.credit.url,
-          //     duration: "0.5",
-          //     tags: [song.credit], // use song.credit object instead of song.credit.url
-          //     credit: song.credit, // use song.credit object instead of song.credit.url
-          //     audio: createAudioElement(song.credit.url),
-          //   };
-          //   return creditSong;
-          // });
-
-          // const creditAudioSounds = creditsArray.map((song) => {
-          //   console.log(song.credit.url); // add this line
-
-          //   const creditSong = {
-          //     name: song.name,
-          //     url: song.credit.url,
-          //     duration: "0.5",
-          //     tags: [song.credit],
-          //     credit: song.credit.url,
-          //     audio: createAudioElement(song.credit.url),
-          //   };
-          //   return creditSong;
-          // });
-
-          // console.log(creditsArray);
-
           songs.push(...outroAudioSounds);
-          songs.push(...creditsArray);
+          // songs.push(...creditsArray);
+
+          creditsArray.forEach((credit) => songs.push(credit));
+          
+          // console.log("after adding creditsArray", songs.length);
+          // console.log(songs);
+
+          // songs.push(...creditsArray);
           songs.push(...finalOutroAudioSounds);
           hasSkippedToEnd = true;
-          // console.log(songs);
-          // playAndQueue(songs, index + 1, currentRuntime, cache);
         } else {
           // console.log("Action already performed, skipping...");
-          // playAndQueue(songs, index + 1, currentRuntime, cache);
-          // return;
         }
       }
       skipToEndOfThePlaylistFunction(songs, index);
     }
 
-    // console.log(songs);
-
-    // console.log(index);
     // get the song object
     const song = songs[index];
-    // console.log(song);
 
     if (song) {
       const currTagsHTMLElement = document.getElementById("currTags");
@@ -1225,11 +1209,6 @@ window.addEventListener("load", (event) => {
         document.getElementById("creditsStack");
       const currIndexNokHTMLElement = document.getElementById("indexNo");
       const currTotalIndexHTMLElement = document.getElementById("totalIndex");
-      // if (currDurr) {
-      //   currDurr.textContent = ` ${formattedDuration}`;
-      // } else {
-      //   log("no durr");
-      // }
 
       const currTags = song.tags;
       const currUrl = song.url;
@@ -1237,6 +1216,15 @@ window.addEventListener("load", (event) => {
       const currName = song.name;
       const currCredit = song.credit;
       const currIndex = index;
+
+      // don't play long tracks
+      console.log(currDurr);
+      if (currDurr > 70) {
+        console.log("forbidden!");
+        playAndQueue(songs, index + 1, currentRuntime, cache);
+        return;
+      }
+
 
       if (currTags && currTags != "") {
         currTagsHTMLElement.textContent = " " + currTags;
@@ -1290,25 +1278,35 @@ window.addEventListener("load", (event) => {
       }
 
       if (currCredit && currCredit !== "") {
-        // push the whole song object
-        creditsArray.push(song);
+        console.log(song);
 
+        // creditsArray.push(song);
+
+        const createCreditObj = function(song) {
+          const creditObj = {
+            name: song.name,
+            url: song.credit, //flip on purpose
+            duration: song.duration,
+            tags: song.tags,
+            credit: song.url,
+          };
+          return creditObj;
+        };
+        
+        const creditObj = createCreditObj(song);
+        creditsArray.push(addAudioFromCredit(creditObj));
         console.log(creditsArray);
+        console.log(songs);
 
-        // console.log(`song ${song} before pushing`)
-        // console.log(`creditsArray ${creditsArray} before pushing`)
-
+        creditsArray.forEach((credit) => {
+        // console.log(`credits ${JSON.stringify(credit)}`);
+        });
         // extract credits from the array of objects and join them with newlines
         const mycredits = creditsArray.map((song) => song.credit);
         const creditsText = mycredits
           .map((credit) => credit.substring(credit.lastIndexOf("/") + 1))
-          .join("\n");
-        currCreditStackHTMLElement.textContent = creditsText;
-
-        // console.log(creditsArray);
-
-        // console.log(`song ${song} after pushing`)
-        // console.log(`creditsArray ${creditsArray} before pushing`)
+          .join("\n" +"\n" +"\n" );
+        // currCreditStackHTMLElement.textContent = creditsText;
       } else {
         console.log("no credit");
       }
@@ -1328,21 +1326,11 @@ window.addEventListener("load", (event) => {
     const track = audioContext.createMediaElementSource(audio);
     track.connect(gainNode);
 
-    // Store the credits for the current song
-    // const credit = song.credits;
-
-    // when the song has ended, queue up
-    // the next one
+    // when the song has ended, queue up the next one
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
-      // console.log(index);
-
       playAndQueue(songs, index + 1, currentRuntime + duration, cache);
     });
-
-    // all duration code can be hardcoded in.
-    // the logic of grabbing the duration, names, tags, can all be grouped into a function
-    // the last tracks can be concatonated on one a time?
 
     // When metadata has been loaded, we know the
     // audio duration. With the audio duration, we
@@ -1362,13 +1350,6 @@ window.addEventListener("load", (event) => {
       const formattedSec =
         remainingSec < 10 ? `0${remainingSec}` : remainingSec;
       const formattedDuration = `${formattedMin}:${formattedSec}`;
-
-      // const currDurr = document.getElementById("currDurr");
-      // if (currDurr) {
-      //   currDurr.textContent = ` ${formattedDuration}`;
-      // } else {
-      //   log("no durr");
-      // }
 
       if (currentRuntime + duration > total_duration) {
         const remainingMs = (total_duration - currentRuntime) * 1000;
@@ -1393,12 +1374,8 @@ window.addEventListener("load", (event) => {
     audio.play();
   }
 
-  // const nextUpp = document.getElementById("nextUp");
-  // nextUpp.textContent = " " + nextAudio.url;
-
   const button = document.getElementById("play");
 
-  // largely following this article:
   // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API
   button.addEventListener("click", (event) => {
     displayLoadingGif();
@@ -1411,9 +1388,7 @@ window.addEventListener("load", (event) => {
       gainNode.connect(audioContext.destination);
     }
 
-    // shuffle the songs around so
-    // they play in a random order
-    // first we copy the array
+    // shuffle the songs around so they play in a random order - first we copy the array
     const shuffledSongs = [...SONGS];
 
     // next we shuffle it
@@ -1430,8 +1405,7 @@ window.addEventListener("load", (event) => {
 
     for (let i = 0; i < shuffledSongsWithOpen.length; i++) {
       const itemElement = document.createElement("div");
-      itemElement.textContent =
-        shuffledSongsWithOpen[i].name;
+      itemElement.textContent = shuffledSongsWithOpen[i].name;
       currTrackNameElement.appendChild(itemElement);
     }
 
