@@ -11,6 +11,9 @@ window.addEventListener("load", (event) => {
   let muteState = "unmute";
   let hasSkippedToEnd = false;
 
+  const MAXDURATION = 1080;
+
+
   function startplayer() {
     player = document.getElementById("music_player");
     player.controls = false;
@@ -163,9 +166,9 @@ window.addEventListener("load", (event) => {
 
   const introTracks = [
     {
-      // url: "./sounds/00_INTRO/INTRO2.mp3",
+      // url: "./sounds/00_INTRO/INTRO1V2.mp3",
       name: "intro",
-      url: "./sounds/00_INTRO/INTRO2.mp3",
+      url: "./sounds/00_INTRO/INTRO1V2.mp3",
       duration: 5,
       tags: ["intro"],
       credit: "",
@@ -1913,7 +1916,7 @@ window.addEventListener("load", (event) => {
   // let total_duration = parseInt(
   //   document.getElementById("total-duration").value
   // );
-  var total_duration = 1080;
+  var total_duration = MAXDURATION;
 
   // how many seconds before a song is completed that we should pre-fetch the next song
   const PREFETCH_BUFFER_SECONDS = 8;
@@ -1936,9 +1939,9 @@ window.addEventListener("load", (event) => {
     if (beginningObject) {
       tracklist.splice(tracklist.indexOf(beginningObject), 1);
       tracklist.unshift(beginningObject);
-      // console.log(
-      //   `Moved "${beginningObject.name}" object to the beginning of the tracklist`
-      // );
+      console.log(
+        `Moved "${beginningObject.name}" object to the beginning of the tracklist`
+      );
     }
 
     // If there is an object with the tag "Long", move all the other objects with the tag "Long" to the end of the list
@@ -1974,44 +1977,59 @@ window.addEventListener("load", (event) => {
       }
     }
 
-    // Get the duration of each object and add them together until they add up to 950 seconds
-    let durationSum = 0;
-    let objectsToRemove = [];
-    for (let i = 0; i < tracklist.length; i++) {
-      const object = tracklist[i];
-      if (object.duration && typeof object.duration === "number") {
-        durationSum += object.duration;
-        if (durationSum >= 950) {
-          break;
-        }
-      } else {
-        objectsToRemove.push(object);
-      }
-    }
+  
+   let durationSum = 0;
+let objectsToRemove = [];
+let indexToRemove = -1;
+let endObject = null;
+console.log(`tracklist length: ${tracklist.length}`);
 
-    // Ensure that the object with the "End" tag is at the end of the tracklist
-    let endObject = tracklist.find((obj) => obj.tags.includes("End"));
-    if (endObject) {
-      tracklist.splice(tracklist.indexOf(endObject), 1);
-      tracklist.push(endObject);
-    }
+// Store the end object separately, if present
+for (let i = 0; i < tracklist.length; i++) {
+  const object = tracklist[i];
+  if (object.tags.includes("End") && !object.tags.includes("Start")) {
+    endObject = object;
+    durationSum += endObject.duration; // add duration of end object
+    break;
+  }
+}
 
-    // Remove all objects after the ones that add up to 950 seconds
-    if (objectsToRemove.length > 0) {
-      console.log(
-        `Removing ${objectsToRemove.length} objects from the tracklist`
-      );
-      objectsToRemove.forEach((obj) => {
-        const index = tracklist.indexOf(obj);
-        tracklist.splice(index, 1);
-      });
+for (let i = 0; i < tracklist.length; i++) {
+  const object = tracklist[i];
+  if (object.duration && typeof object.duration === "number") {
+    durationSum += object.duration;
+    console.log(`${object.name} durationSum: ${durationSum}`);
+    if (durationSum >= 1000 && indexToRemove === -1) {
+      indexToRemove = i + 1;
     }
+  } else {
+    objectsToRemove.push(object);
+  }
+}
 
-    // Log the final tracklist
-    console.log(`Final tracklist:`);
-    tracklist.forEach((obj) => {
-      // console.log(`${obj.name} (${obj.duration} seconds)`);
-    });
+console.log(`Total duration sum before deleting elements: ${durationSum}`);
+
+// Subtract duration of end object from maximum duration limit
+const myMaxDuration = MAXDURATION - endObject.duration;
+
+if (durationSum > myMaxDuration && indexToRemove !== -1) {
+  const removed = tracklist.splice(indexToRemove);
+  objectsToRemove.push(...removed);
+  console.log(`Removed ${removed.length} objects from the tracklist`);
+  durationSum -= removed.reduce((acc, obj) => acc + obj.duration, 0);
+}
+
+if (endObject !== null && !objectsToRemove.includes(endObject)) {
+  tracklist.push(endObject);
+  console.log(`Added end object to the end of the tracklist`);
+}
+
+console.log(`Total duration sum after deleting elements: ${durationSum}`);
+
+tracklist.forEach((obj) => {
+  // console.log(`${obj.name} (${obj.duration} seconds)`);
+});
+
 
     return tracklist;
   }

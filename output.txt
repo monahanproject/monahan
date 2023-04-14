@@ -1,0 +1,903 @@
+const SONGS = [
+    {
+      name: "M_TURKWAZ_02",
+      url: "./sounds/MUSIC/M_TURKWAZ_02.mp3",
+      duration: 395,
+      tags: ["Long"," Middle"," Verbal"," Moderate"," Sound"," Home"," Nature"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_TURKWAZ_03",
+      url: "./sounds/MUSIC/M_TURKWAZ_03.mp3",
+      duration: 319,
+      tags: ["Long"," Middle"," Verbal"," Heavy"," Nature"," Home"," Wellness"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_TURKWAZ_01",
+      url: "./sounds/MUSIC/M_TURKWAZ_01.mp3",
+      duration: 384,
+      tags: [
+        "Long"," Beginning"," Middle"," End"," Verbal"," Moderate"," Sound"," Home"," Ancestors",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_TURKWAZ_04",
+      url: "./sounds/MUSIC/M_TURKWAZ_04.mp3",
+      duration: 111,
+      tags: ["Medium"," Middle"," Verbal"," Light"," Sound"," Nature"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_TURKWAZ_10",
+      url: "./sounds/MUSIC/M_TURKWAZ_10.mp3",
+      duration: 160,
+      tags: ["Medium"," Middle"," Verbal"," Moderate"," Sound"," Home"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_DEMI_08",
+      url: "./sounds/MUSIC/M_DEMI_08.mp3",
+      duration: 75,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_TURKWAZ_05",
+      url: "./sounds/MUSIC/M_TURKWAZ_05.mp3",
+      duration: 247,
+      tags: ["Long"," Middle"," Verbal"," Light"," Sound"," Nature"," Home"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_KIKO_B_03",
+      url: "./sounds/MUSIC/M_KIKO_B_03.mp3",
+      duration: 113,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_KIKO_Z_02",
+      url: "./sounds/MUSIC/M_KIKO_Z_02.mp3",
+      duration: 158,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_KIKO_B_02",
+      url: "./sounds/MUSIC/M_KIKO_B_02.mp3",
+      duration: 148,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_KIKO_Z_01",
+      url: "./sounds/MUSIC/M_KIKO_Z_01.mp3",
+      duration: 77,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_KIKO_B_01",
+      url: "./sounds/MUSIC/M_KIKO_B_01.mp3",
+      duration: 162,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_KIKO_S_02",
+      url: "./sounds/MUSIC/M_KIKO_S_02.mp3",
+      duration: 63,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_DEMI_13",
+      url: "./sounds/MUSIC/M_DEMI_13.mp3",
+      duration: 102,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_DEMI_06",
+      url: "./sounds/MUSIC/M_DEMI_06.mp3",
+      duration: 111,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_CHARLOTTE_16",
+      url: "./sounds/MUSIC/M_CHARLOTTE_16.mp3",
+      duration: 68,
+      tags: [
+        "Medium"," End"," Middle"," Verbal"," Moderate"," Wellness"," Home"," Nature"," Wetland"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_CHARLOTTE_14",
+      url: "./sounds/MUSIC/M_CHARLOTTE_14.mp3",
+      duration: 76,
+      tags: [
+        "Medium"," Middle"," End"," Verbal"," Moderate"," Wellness"," Nature"," Wetland",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_DEMI_11",
+      url: "./sounds/MUSIC/M_DEMI_11.mp3",
+      duration: 87,
+      tags: [
+        "Medium"," Middle"," Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_DEMI_05",
+      url: "./sounds/MUSIC/M_DEMI_05.mp3",
+      duration: 34,
+      tags: [
+        "Short"," Middle"," Non-Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_TURKWAZ_09",
+      url: "./sounds/MUSIC/M_TURKWAZ_09.mp3",
+      duration: 241,
+      tags: ["Long"," Middle"," Verbal"," Light"," Sound"," Home"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
+    },
+    {
+      name: "M_CHARLOTTE_15",
+      url: "./sounds/MUSIC/M_CHARLOTTE_15.mp3",
+      duration: 60,
+      tags: ["Short"," End"," Verbal"," Moderate"," Home"," Nature"," Wetland"],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_CHARLOTTE_11",
+      url: "./sounds/MUSIC/M_CHARLOTTE_11.mp3",
+      duration: 94,
+      tags: [
+        "Short"," Middle"," End"," Verbal"," Moderate"," Sound"," Home"," Listening"," Wetland",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_KIKO_C_06",
+      url: "./sounds/MUSIC/M_KIKO_C_06.mp3",
+      duration: 79,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "M_CHARLOTTE_10",
+      url: "./sounds/MUSIC/M_CHARLOTTE_10.mp3",
+      duration: 130,
+      tags: [
+        "Medium"," Middle"," End"," Verbal"," Moderate"," Home"," Wellness"," Nature"," Wetland",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_CHARLOTTE_12",
+      url: "./sounds/MUSIC/M_CHARLOTTE_12.mp3",
+      duration: 141,
+      tags: ["Medium"," Middle"," End"," Verbal"," Moderate"," Home"," Ancestors"," Wetland"],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_DEMI_02",
+      url: "./sounds/MUSIC/M_DEMI_02.mp3",
+      duration: 45,
+      tags: [
+        "Short"," Middle"," Non-Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_DEMI_03",
+      url: "./sounds/MUSIC/M_DEMI_03.mp3",
+      duration: 42,
+      tags: [
+        "Short"," Middle"," Non-Verbal"," Moderate"," Sound"," Home"," Vibration"," Ancestors",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "M_CHARLOTTE_13",
+      url: "./sounds/MUSIC/M_CHARLOTTE_13.mp3",
+      duration: 146,
+      tags: ["Medium"," Middle"," End"," Verbal"," Moderate"," Wellness"," Wetland"],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "M_KIKO_C_05",
+      url: "./sounds/MUSIC/M_KIKO_C_05.mp3",
+      duration: 61,
+      tags: [
+        "Medium"," Middle"," Non-Verbal"," Moderate"," Sound"," Wellness"," Vibration"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "P_ALBERT_15",
+      url: "./sounds/POETRY/P_ALBERT_15.mp3",
+      duration: 110,
+      tags: ["Medium"," Middle"," Verbal"," Light"," Moderate"," Nature"," Trees"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_01",
+      url: "./sounds/POETRY/P_ALBERT_01.mp3",
+      duration: 57,
+      tags: ["Short"," Middle"," Verbal"," Heavy"," Nature"," Home"," Trees"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_14",
+      url: "./sounds/POETRY/P_ALBERT_14.mp3",
+      duration: 127,
+      tags: ["Medium"," Middle"," Verbal"," Heavy"," Nature"," Home"," Trees"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_02",
+      url: "./sounds/POETRY/P_ALBERT_02.mp3",
+      duration: 268,
+      tags: [
+        "Long"," Middle"," Verbal"," Heavy"," Nature"," Wellness"," Home"," Ancestors"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_16",
+      url: "./sounds/POETRY/P_ALBERT_16.mp3",
+      duration: 27,
+      tags: [
+        "Short"," Beg"," Middle"," End"," Verbal"," Moderate"," Wellness"," Nature"," Trees",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_17",
+      url: "./sounds/POETRY/P_ALBERT_17.mp3",
+      duration: 62,
+      tags: [
+        "Medium"," Beg"," Mid"," End"," Verbal"," Light"," Moderate"," Nature"," Home"," Sound"," Trees"," Ancestors",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_03",
+      url: "./sounds/POETRY/P_ALBERT_03.mp3",
+      duration: 41,
+      tags: [
+        "Short"," Beginning"," Middle"," End"," Verbal "," Moderate"," Wellness"," Sound"," Home"," Ancestors",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_07",
+      url: "./sounds/POETRY/P_ALBERT_07.mp3",
+      duration: 36,
+      tags: [
+        "Short"," Middle"," Verbal"," Heavy"," Nature"," Home"," Wellness"," Sound"," Unselfing"," Ancestors"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_13",
+      url: "./sounds/POETRY/P_ALBERT_13.mp3",
+      duration: 73,
+      tags: [
+        "Medium"," Middle"," Verbal"," Moderate"," Nature"," Wellness"," Trees"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_12",
+      url: "./sounds/POETRY/P_ALBERT_12.mp3",
+      duration: 48,
+      tags: ["Short"," Beg"," Middle"," Verbal"," Moderate"," Home"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_06",
+      url: "./sounds/POETRY/P_ALBERT_06.mp3",
+      duration: 45,
+      tags: [
+        "Short"," Beg"," End"," Verbal"," Heavy"," Sound"," Home"," Wellness"," Ancestors"," Vibration",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_10",
+      url: "./sounds/POETRY/P_ALBERT_10.mp3",
+      duration: 23,
+      tags: ["Short"," Middle"," Verbal"," Heavy"," Home"," Sound"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_04",
+      url: "./sounds/POETRY/P_ALBERT_04.mp3",
+      duration: 53,
+      tags: [
+        "Short"," Middle"," Verbal "," Heavy"," Wellness"," Home"," Nature"," Sound"," Ancestors"," Trees"," Unselfing"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_05",
+      url: "./sounds/POETRY/P_ALBERT_05.mp3",
+      duration: 38,
+      tags: ["Short"," Middle"," Verbal "," Heavy"," Nature"," Home"," Trees"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_11",
+      url: "./sounds/POETRY/P_ALBERT_11.mp3",
+      duration: 89,
+      tags: [
+        "Medium"," Middle"," End"," Verbal"," Moderate"," Home"," Sound"," Wellness"," Ancestors"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_ALBERT_08",
+      url: "./sounds/POETRY/P_ALBERT_08.mp3",
+      duration: 49,
+      tags: ["Short"," Middle"," Verbal"," Moderate"," Nature"," Wellness"," Trees"],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_NAMITHA_03",
+      url: "./sounds/POETRY/P_NAMITHA_03.mp3",
+      duration: 30,
+      tags: ["Short"," Middle"," Verbal"," Heavy"," Nature"," Wellness"," "],
+      credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
+    },
+    {
+      name: "P_NAMITHA_02",
+      url: "./sounds/POETRY/P_NAMITHA_02.mp3",
+      duration: 55,
+      tags: ["Short"," Middle"," Verbal"," Moderate"," Nature"," Home"," Sound"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
+    },
+    {
+      name: "P_ALBERT_09",
+      url: "./sounds/POETRY/P_ALBERT_09.mp3",
+      duration: 36,
+      tags: ["Short"," Middle"," End"," Verbal"," Heavy"," Nature"," Wellness"," "],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "P_NAMITHA_01",
+      url: "./sounds/POETRY/P_NAMITHA_01.mp3",
+      duration: 47,
+      tags: ["Short"," Middle"," Verbal"," Light"," Moderate"," Nature"," "],
+      credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
+    },
+    {
+      name: "P_NAMITHA_05",
+      url: "./sounds/POETRY/P_NAMITHA_05.mp3",
+      duration: 29,
+      tags: ["Short"," Beg"," Middle"," Verbal"," Heavy"," Home"," Nature"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
+    },
+    {
+      name: "P_NAMITHA_04",
+      url: "./sounds/POETRY/P_NAMITHA_04.mp3",
+      duration: 26,
+      tags: ["Short"," Middle"," Verbal"," Heavy"," Nature"," Trees"," Home"," Ancestors"],
+      credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
+    },
+    {
+      name: "P_NAMITHA_06",
+      url: "./sounds/POETRY/P_NAMITHA_06.mp3",
+      duration: 11,
+      tags: ["Short"," Middle"," Verbal"," Moderate"," Nature"," Wellness"," Sound"," "],
+      credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
+    },
+    {
+      name: "P_ALBERT_18",
+      url: "./sounds/POETRY/P_ALBERT_18.mp3",
+      duration: 64,
+      tags: ["Medium"," Middle"," End"," Verbal"," Moderate"," Nature"," Wellness"," Home"," "],
+      credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
+    },
+    {
+      name: "S_KIKO_S_04",
+      url: "./sounds/SHORTS/S_KIKO_S_04.mp3",
+      duration: 36,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "S_KIKO_S_03",
+      url: "./sounds/SHORTS/S_KIKO_S_03.mp3",
+      duration: 36,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "S_KIKO_S_02",
+      url: "./sounds/SHORTS/S_KIKO_S_02.mp3",
+      duration: 28,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "S_BIRDS_17",
+      url: "./sounds/SHORTS/S_BIRDS_17.mp3",
+      duration: 64,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_03",
+      url: "./sounds/SHORTS/S_BIRDS_03.mp3",
+      duration: 71,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_DEMI_16",
+      url: "./sounds/SHORTS/S_DEMI_16.mp3",
+      duration: 22,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_KIKO_C_01",
+      url: "./sounds/SHORTS/S_KIKO_C_01.mp3",
+      duration: 54,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "S_DEMI_17",
+      url: "./sounds/SHORTS/S_DEMI_17.mp3",
+      duration: 11,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_CHARLOTTE_09",
+      url: "./sounds/SHORTS/S_CHARLOTTE_09.mp3",
+      duration: 22,
+      tags: ["Short"," Middle"," Verbal"," Light"," Nature"," Wetlands"],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "S_BIRDS_02",
+      url: "./sounds/SHORTS/S_BIRDS_02.mp3",
+      duration: 84,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_16",
+      url: "./sounds/SHORTS/S_BIRDS_16.mp3",
+      duration: 32,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_14",
+      url: "./sounds/SHORTS/S_BIRDS_14.mp3",
+      duration: 73,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_DEMI_15",
+      url: "./sounds/SHORTS/S_DEMI_15.mp3",
+      duration: 10,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_KIKO_C_02",
+      url: "./sounds/SHORTS/S_KIKO_C_02.mp3",
+      duration: 37,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "S_DEMI_14",
+      url: "./sounds/SHORTS/S_DEMI_14.mp3",
+      duration: 14,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_15",
+      url: "./sounds/SHORTS/S_BIRDS_15.mp3",
+      duration: 35,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_01",
+      url: "./sounds/SHORTS/S_BIRDS_01.mp3",
+      duration: 96,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_05",
+      url: "./sounds/SHORTS/S_BIRDS_05.mp3",
+      duration: 66,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_11",
+      url: "./sounds/SHORTS/S_BIRDS_11.mp3",
+      duration: 41,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_10",
+      url: "./sounds/SHORTS/S_BIRDS_10.mp3",
+      duration: 65,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_04",
+      url: "./sounds/SHORTS/S_BIRDS_04.mp3",
+      duration: 60,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_12",
+      url: "./sounds/SHORTS/S_BIRDS_12.mp3",
+      duration: 31,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_06",
+      url: "./sounds/SHORTS/S_BIRDS_06.mp3",
+      duration: 88,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_07",
+      url: "./sounds/SHORTS/S_BIRDS_07.mp3",
+      duration: 92,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_13",
+      url: "./sounds/SHORTS/S_BIRDS_13.mp3",
+      duration: 56,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_DEMI_23",
+      url: "./sounds/SHORTS/S_DEMI_23.mp3",
+      duration: 21,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_CHARLOTTE_01",
+      url: "./sounds/SHORTS/S_CHARLOTTE_01.mp3",
+      duration: 74,
+      tags: [
+        "Medium"," End"," Verbal"," Moderate"," Nature"," Wellness"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "S_KIKO_C_09",
+      url: "./sounds/SHORTS/S_KIKO_C_09.mp3",
+      duration: 41,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "S_DEMI_22",
+      url: "./sounds/SHORTS/S_DEMI_22.mp3",
+      duration: 22,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_LAUGHING_01",
+      url: "./sounds/SHORTS/S_LAUGHING_01.mp3",
+      duration: 15,
+      tags: ["Short"," Middle"," Non-Verbal"," Light"," Sound"," Wellness"," "],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_09",
+      url: "./sounds/SHORTS/S_BIRDS_09.mp3",
+      duration: 46,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_DEMI_20",
+      url: "./sounds/SHORTS/S_DEMI_20.mp3",
+      duration: 22,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_CHARLOTTE_02",
+      url: "./sounds/SHORTS/S_CHARLOTTE_02.mp3",
+      duration: 25,
+      tags: ["Short"," Beginning"," Middle"," Verbal"," Light"," Nature"," Wetlands"],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "S_CHARLOTTE_03",
+      url: "./sounds/SHORTS/S_CHARLOTTE_03.mp3",
+      duration: 31,
+      tags: ["Short"," Middle"," Verbal"," Light"," Nature"," Wetlands"],
+      credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
+    },
+    {
+      name: "S_DEMI_21",
+      url: "./sounds/SHORTS/S_DEMI_21.mp3",
+      duration: 10,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_LAUGHING_02",
+      url: "./sounds/SHORTS/S_LAUGHING_02.mp3",
+      duration: 28,
+      tags: ["Short"," Middle"," Non-Verbal"," Light"," Sound"," Wellness"," "],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_08",
+      url: "./sounds/SHORTS/S_BIRDS_08.mp3",
+      duration: 57,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_BIRDS_18",
+      url: "./sounds/SHORTS/S_BIRDS_18.mp3",
+      duration: 63,
+      tags: [
+        "Short"," Middle"," Non-Human"," Light"," Nature"," Sound"," Wetlands"," Listening",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "S_CHARLOTTE_07",
+      url: "./sounds/SHORTS/S_CHARLOTTE_07.mp3",
+      duration: 41,
+      tags: ["Short"," Middle"," Verbal"," Light"," Nature"," Wetlands"],
+      credit: ",",
+    },
+    {
+      name: "S_DEMI_19",
+      url: "./sounds/SHORTS/S_DEMI_19.mp3",
+      duration: 15,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_DEMI_18",
+      url: "./sounds/SHORTS/S_DEMI_18.mp3",
+      duration: 21,
+      tags: ["Short"," Middle"," End"," Music"," Light"," Sound"," Home"," Ancestors"],
+      credit: ",",
+    },
+    {
+      name: "S_KIKO_B_04",
+      url: "./sounds/SHORTS/S_KIKO_B_04.mp3",
+      duration: 21,
+      tags: ["Short"," Middle"," Music"," Moderate"," Sound"," Wellness"," Vibration"],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "I_JAYNE_02",
+      url: "./sounds/INTERVIEWS/I_JAYNE_02.mp3",
+      duration: 79,
+      tags: [
+        "Interview"," Medium"," Middle"," Verbal"," Light"," Nature"," Informative"," Unselfing",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "I_JAYNE_03",
+      url: "./sounds/INTERVIEWS/I_JAYNE_03.mp3",
+      duration: 149,
+      tags: [
+        "Interview"," Medium"," Middle"," Verbal"," Light"," Nature"," Sound"," Informative"," Vibration"," Unselfing",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "I_JAYNE_01",
+      url: "./sounds/INTERVIEWS/I_JAYNE_01.mp3",
+      duration: 226,
+      tags: [
+        "Interview"," Long"," Middle"," Verbal"," Light"," Nature"," Sound"," Informative"," Vibration",""
+      ],
+      credit: ",",
+    },
+    {
+      name: "I_LOUELLA_02",
+      url: "./sounds/INTERVIEWS/I_LOUELLA_02.mp3",
+      duration: 140,
+      tags: [
+        "Interview"," Medium"," Middle"," Verbal"," Moderate"," Nature"," Home"," Wellness "," Unselfing"," Ancestors"," Wetland",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/LOUELLA.mp3",
+    },
+    {
+      name: "I_ELLEN_02_TempMusic",
+      url: "./sounds/INTERVIEWS/I_ELLEN_02_TempMusic.mp3",
+      duration: 133,
+      tags: ["interviews"],
+      credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
+    },
+    {
+      name: "I_LOUELLA_03",
+      url: "./sounds/INTERVIEWS/I_LOUELLA_03.mp3",
+      duration: 198,
+      tags: [
+        "Interview"," Long"," Middle"," Verbal"," Moderate"," Wellness"," Nature"," Informative"," Trees"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/LOUELLA.mp3",
+    },
+    {
+      name: "I_LOUELLA_01",
+      url: "./sounds/INTERVIEWS/I_LOUELLA_01.mp3",
+      duration: 237,
+      tags: [
+        "Interview"," Long"," Middle"," Verbal"," Moderate"," Sound"," Wellness"," Informative"," Nature"," Trees",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/LOUELLA.mp3",
+    },
+    {
+      name: "I_KIKO_02",
+      url: "./sounds/INTERVIEWS/I_KIKO_02.mp3",
+      duration: 247,
+      tags: [
+        "Interview"," Long"," End"," Verbal"," Heavy"," Sound"," Wellness"," Listening"," Vibration"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "I_KIKO_03",
+      url: "./sounds/INTERVIEWS/I_KIKO_03.mp3",
+      duration: 174,
+      tags: [
+        "Interview"," Long"," Middle"," Verbal"," Moderate"," Sound"," Wellness"," Listening"," Vibration"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "I_KIKO_01",
+      url: "./sounds/INTERVIEWS/I_KIKO_01.mp3",
+      duration: 233,
+      tags: [
+        "Interview"," Long"," Middle"," Verbal"," Moderate"," Sound"," Wellness"," Listening"," Vibration"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/KIKO.mp3",
+    },
+    {
+      name: "I_ELLEN_01_TempMusic",
+      url: "./sounds/INTERVIEWS/I_ELLEN_01_TempMusic.mp3",
+      duration: 172,
+      tags: ["interviews"],
+      credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
+    },
+    {
+      name: "I_JESSE_01",
+      url: "./sounds/INTERVIEWS/I_JESSE_01.mp3",
+      duration: 229,
+      tags: [
+        "Interview"," Long"," End"," Middle"," Verbal"," Heavy"," Sound"," Nature"," Wellness"," Informative"," Wetlands"," Listening"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/JESSE.mp3",
+    },
+    {
+      name: "I_ELLEN_03",
+      url: "./sounds/INTERVIEWS/I_ELLEN_03.mp3",
+      duration: 244,
+      tags: [
+        "Interview"," Long"," Middle"," Verbal"," Moderate"," Home"," Sound"," Informative"," Unselfing",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
+    },
+    {
+      name: "I_SAM_01",
+      url: "./sounds/INTERVIEWS/I_SAM_01.mp3",
+      duration: 137,
+      tags: [
+        "Interview"," Medium"," Middle"," Verbal"," Light"," Nature"," Informative"," Wetlands",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/SAM.mp3",
+    },
+    {
+      name: "I_ELLEN_04",
+      url: "./sounds/INTERVIEWS/I_ELLEN_04.mp3",
+      duration: 154,
+      tags: [
+        "Interview"," Medium"," Beginning"," Middle"," End"," Verbal"," Light"," Sound"," Nature"," Listening",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
+    },
+    {
+      name: "I_ELLEN_05",
+      url: "./sounds/INTERVIEWS/I_ELLEN_05.mp3",
+      duration: 151,
+      tags: [
+        "Interview"," Medium"," Beginning"," Middle"," Verbal"," Light"," Sound"," Wellness"," Vibration",""
+      ],
+      credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
+    },
+  ].map(addAudioFromUrl);
