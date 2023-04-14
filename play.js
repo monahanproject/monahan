@@ -13,7 +13,6 @@ window.addEventListener("load", (event) => {
 
   const MAXDURATION = 1080;
 
-
   function startplayer() {
     player = document.getElementById("music_player");
     player.controls = false;
@@ -169,7 +168,7 @@ window.addEventListener("load", (event) => {
       // url: "./sounds/00_INTRO/INTRO1V2.mp3",
       name: "intro",
       url: "./sounds/00_INTRO/INTRO1V2.mp3",
-      duration: 5,
+      duration: 113,
       tags: ["intro"],
       credit: "",
     },
@@ -1977,59 +1976,100 @@ window.addEventListener("load", (event) => {
       }
     }
 
-  
-   let durationSum = 0;
-let objectsToRemove = [];
-let indexToRemove = -1;
-let endObject = null;
-console.log(`tracklist length: ${tracklist.length}`);
+    let durationSum = 0;
+    let objectsToRemove = [];
+    let indexToRemove = -1;
+    let endObject = null;
+    console.log(`tracklist length: ${tracklist.length}`);
 
-// Store the end object separately, if present
-for (let i = 0; i < tracklist.length; i++) {
-  const object = tracklist[i];
-  if (object.tags.includes("End") && !object.tags.includes("Start")) {
-    endObject = object;
-    durationSum += endObject.duration; // add duration of end object
-    break;
-  }
-}
-
-for (let i = 0; i < tracklist.length; i++) {
-  const object = tracklist[i];
-  if (object.duration && typeof object.duration === "number") {
-    durationSum += object.duration;
-    console.log(`${object.name} durationSum: ${durationSum}`);
-    if (durationSum >= 1000 && indexToRemove === -1) {
-      indexToRemove = i + 1;
+    // Store the end object separately, if present
+    for (let i = 0; i < tracklist.length; i++) {
+      const object = tracklist[i];
+      if (object.tags.includes("End") && !object.tags.includes("Start")) {
+        endObject = object;
+        durationSum += endObject.duration; // add duration of end object
+        break;
+      } else {
+        console.log(
+          `Warning: Found multiple "End" objects in tracklist. Using first one and ignoring the rest.`
+        );
+      }
     }
-  } else {
-    objectsToRemove.push(object);
-  }
-}
 
-console.log(`Total duration sum before deleting elements: ${durationSum}`);
+    for (let i = 0; i < tracklist.length; i++) {
+      const object = tracklist[i];
+      if (object.duration && typeof object.duration === "number") {
+        durationSum += object.duration;
+        console.log(`${object.name} durationSum: ${durationSum}`);
+        if (durationSum >= 1000 && indexToRemove === -1) {
+          indexToRemove = i + 1;
+        }
+      } else {
+        objectsToRemove.push(object);
+      }
+    }
 
-// Subtract duration of end object from maximum duration limit
-const myMaxDuration = MAXDURATION - endObject.duration;
+    console.log(`Total duration sum before deleting elements: ${durationSum}`);
 
-if (durationSum > myMaxDuration && indexToRemove !== -1) {
-  const removed = tracklist.splice(indexToRemove);
-  objectsToRemove.push(...removed);
-  console.log(`Removed ${removed.length} objects from the tracklist`);
-  durationSum -= removed.reduce((acc, obj) => acc + obj.duration, 0);
-}
+    // Subtract duration of end object from maximum duration limit
+    let maxDurationMinusEndTrack = MAXDURATION - endObject.duration;
+    console.log("maxDurationMinusEndTrack:", maxDurationMinusEndTrack);
 
-if (endObject !== null && !objectsToRemove.includes(endObject)) {
-  tracklist.push(endObject);
-  console.log(`Added end object to the end of the tracklist`);
-}
+    // get the length of the introtrack
+    let lauraIntroTrack = introTracks.find((obj) => obj.tags.includes("intro"));
+    console.log("lauraIntroTrack:", lauraIntroTrack);
+    console.log("lauraIntroTrack:", lauraIntroTrack.duration);
 
-console.log(`Total duration sum after deleting elements: ${durationSum}`);
+    // append the intro track to the beginning of the array
+    if (lauraIntroTrack) {
+      tracklist.splice(tracklist.indexOf(lauraIntroTrack), 1);
+      tracklist.unshift(lauraIntroTrack);
+      console.log(
+        `Moved "${lauraIntroTrack.name}" object to the beginning of the tracklist`
+      );
+    }
 
-tracklist.forEach((obj) => {
-  // console.log(`${obj.name} (${obj.duration} seconds)`);
-});
+    // console.log("laura dur " + lauraIntroTrack.duration)
 
+    // Subtract duration of intro object from maximum duration limit
+    let maxDurationMinusEndAndOpenTrack =
+      maxDurationMinusEndTrack - lauraIntroTrack.duration;
+    console.log(maxDurationMinusEndAndOpenTrack);
+    console.log(
+      "maxDurationMinusEndAndOpenTrack:",
+      maxDurationMinusEndAndOpenTrack
+    );
+
+    // console.log("lauraIntroTrack:", lauraIntroTrack.duration);
+
+    if (durationSum > maxDurationMinusEndAndOpenTrack && indexToRemove !== -1) {
+      const removed = tracklist.splice(indexToRemove);
+      objectsToRemove.push(...removed);
+      // console.log(`Removed ${removed.length} objects from the tracklist`);
+      durationSum -= removed.reduce((acc, obj) => acc + obj.duration, 0);
+    }
+
+    if (endObject !== null && !objectsToRemove.includes(endObject)) {
+      tracklist.push(endObject);
+      // console.log("endobj duration " + endObject.duration);
+      // console.log(`Added end object to the end of the tracklist`);
+    }
+
+    console.log(`Total duration sum after deleting elements: ${durationSum}`);
+
+    if (endObject === null) {
+      console.log("Error: No end object found in tracklist.");
+      return;
+    }
+
+    if (lauraIntroTrack === undefined) {
+      console.log("Error: No intro track found in tracklist.");
+      return;
+    }
+
+    tracklist.forEach((obj) => {
+      // console.log(`${obj.name} (${obj.duration} seconds)`);
+    });
 
     return tracklist;
   }
@@ -2083,7 +2123,7 @@ tracklist.forEach((obj) => {
 
   function playAndQueue(songs, index, currentRuntime, cache) {
     // if we're out of tracks or out of time, stop everything (should fade out eventually)
-    if (index == songs.length || total_duration - currentRuntime < 0) {
+    if (index == songs.length || total_duration - currentRuntime < -100) {
       return;
     }
 
@@ -2314,7 +2354,8 @@ tracklist.forEach((obj) => {
     const shuffledSongs = shuffleTracklist(allSongs);
 
     // next we add the intro to the beginning
-    const shuffledSongsWithOpen = [...introTracks, ...shuffledSongs];
+    // const shuffledSongsWithOpen = [...introTracks, ...shuffledSongs];
+    const shuffledSongsWithOpen = [...shuffledSongs];
 
     // now we will print all the shuffled songs for the debug
     const currTrackNameElement = document.getElementById("fullList");
