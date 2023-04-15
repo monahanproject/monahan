@@ -211,6 +211,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_02",
       url: "./sounds/MUSIC/M_TURKWAZ_02.mp3",
       duration: 395,
+      medium: "typeMusic",
       tags: [
         "Long",
         "Middle",
@@ -227,6 +228,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_03",
       url: "./sounds/MUSIC/M_TURKWAZ_03.mp3",
       duration: 319,
+      medium: "typeMusic",
       tags: [
         "Long",
         "Middle",
@@ -243,6 +245,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_01",
       url: "./sounds/MUSIC/M_TURKWAZ_01.mp3",
       duration: 384,
+      medium: "typeMusic",
       tags: [
         "Long",
         "Beginning",
@@ -260,6 +263,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_04",
       url: "./sounds/MUSIC/M_TURKWAZ_04.mp3",
       duration: 111,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -275,6 +279,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_10",
       url: "./sounds/MUSIC/M_TURKWAZ_10.mp3",
       duration: 160,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -290,6 +295,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_08",
       url: "./sounds/MUSIC/M_DEMI_08.mp3",
       duration: 75,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -306,6 +312,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_05",
       url: "./sounds/MUSIC/M_TURKWAZ_05.mp3",
       duration: 247,
+      medium: "typeMusic",
       tags: [
         "Long",
         "Middle",
@@ -322,6 +329,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_B_03",
       url: "./sounds/MUSIC/M_KIKO_B_03.mp3",
       duration: 113,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -338,6 +346,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_Z_02",
       url: "./sounds/MUSIC/M_KIKO_Z_02.mp3",
       duration: 158,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -354,6 +363,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_B_02",
       url: "./sounds/MUSIC/M_KIKO_B_02.mp3",
       duration: 148,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -370,6 +380,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_Z_01",
       url: "./sounds/MUSIC/M_KIKO_Z_01.mp3",
       duration: 77,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -386,6 +397,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_B_01",
       url: "./sounds/MUSIC/M_KIKO_B_01.mp3",
       duration: 162,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -402,6 +414,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_S_02",
       url: "./sounds/MUSIC/M_KIKO_S_02.mp3",
       duration: 63,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -418,6 +431,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_13",
       url: "./sounds/MUSIC/M_DEMI_13.mp3",
       duration: 102,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -434,6 +448,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_06",
       url: "./sounds/MUSIC/M_DEMI_06.mp3",
       duration: 111,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -450,6 +465,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_16",
       url: "./sounds/MUSIC/M_CHARLOTTE_16.mp3",
       duration: 68,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "End",
@@ -468,6 +484,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_14",
       url: "./sounds/MUSIC/M_CHARLOTTE_14.mp3",
       duration: 76,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -484,6 +501,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_11",
       url: "./sounds/MUSIC/M_DEMI_11.mp3",
       duration: 87,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -500,6 +518,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_05",
       url: "./sounds/MUSIC/M_DEMI_05.mp3",
       duration: 34,
+      medium: "typeMusic",
       tags: [
         "Short",
         "Middle",
@@ -516,6 +535,7 @@ window.addEventListener("load", (event) => {
       name: "M_TURKWAZ_09",
       url: "./sounds/MUSIC/M_TURKWAZ_09.mp3",
       duration: 241,
+      medium: "typeMusic",
       tags: ["Long", "Middle", "Verbal", "Light", "Sound", "Home", "Ancestors"],
       credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
     },
@@ -523,6 +543,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_15",
       url: "./sounds/MUSIC/M_CHARLOTTE_15.mp3",
       duration: 60,
+      medium: "typeMusic",
       tags: ["Short", "End", "Verbal", "Moderate", "Home", "Nature", "Wetland"],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
@@ -530,6 +551,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_11",
       url: "./sounds/MUSIC/M_CHARLOTTE_11.mp3",
       duration: 94,
+      medium: "typeMusic",
       tags: [
         "Short",
         "Middle",
@@ -547,6 +569,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_C_06",
       url: "./sounds/MUSIC/M_KIKO_C_06.mp3",
       duration: 79,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -563,6 +586,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_10",
       url: "./sounds/MUSIC/M_CHARLOTTE_10.mp3",
       duration: 130,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -580,6 +604,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_12",
       url: "./sounds/MUSIC/M_CHARLOTTE_12.mp3",
       duration: 141,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -596,6 +621,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_02",
       url: "./sounds/MUSIC/M_DEMI_02.mp3",
       duration: 45,
+      medium: "typeMusic",
       tags: [
         "Short",
         "Middle",
@@ -612,6 +638,7 @@ window.addEventListener("load", (event) => {
       name: "M_DEMI_03",
       url: "./sounds/MUSIC/M_DEMI_03.mp3",
       duration: 42,
+      medium: "typeMusic",
       tags: [
         "Short",
         "Middle",
@@ -628,6 +655,7 @@ window.addEventListener("load", (event) => {
       name: "M_CHARLOTTE_13",
       url: "./sounds/MUSIC/M_CHARLOTTE_13.mp3",
       duration: 146,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -643,6 +671,7 @@ window.addEventListener("load", (event) => {
       name: "M_KIKO_C_05",
       url: "./sounds/MUSIC/M_KIKO_C_05.mp3",
       duration: 61,
+      medium: "typeMusic",
       tags: [
         "Medium",
         "Middle",
@@ -659,6 +688,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_15",
       url: "./sounds/POETRY/P_ALBERT_15.mp3",
       duration: 110,
+      medium: "typePoem",
       tags: [
         "Medium",
         "Middle",
@@ -674,6 +704,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_01",
       url: "./sounds/POETRY/P_ALBERT_01.mp3",
       duration: 57,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -690,6 +721,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_14",
       url: "./sounds/POETRY/P_ALBERT_14.mp3",
       duration: 127,
+      medium: "typePoem",
       tags: [
         "Medium",
         "Middle",
@@ -706,6 +738,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_02",
       url: "./sounds/POETRY/P_ALBERT_02.mp3",
       duration: 268,
+      medium: "typePoem",
       tags: [
         "Long",
         "Middle",
@@ -723,6 +756,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_16",
       url: "./sounds/POETRY/P_ALBERT_16.mp3",
       duration: 27,
+      medium: "typePoem",
       tags: [
         "Short",
         "Beginning",
@@ -740,6 +774,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_17",
       url: "./sounds/POETRY/P_ALBERT_17.mp3",
       duration: 62,
+      medium: "typePoem",
       tags: [
         "Medium",
         "Beg",
@@ -760,6 +795,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_03",
       url: "./sounds/POETRY/P_ALBERT_03.mp3",
       duration: 41,
+      medium: "typePoem",
       tags: [
         "Short",
         "Beginning",
@@ -778,6 +814,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_07",
       url: "./sounds/POETRY/P_ALBERT_07.mp3",
       duration: 36,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -797,6 +834,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_13",
       url: "./sounds/POETRY/P_ALBERT_13.mp3",
       duration: 73,
+      medium: "typePoem",
       tags: [
         "Medium",
         "Middle",
@@ -813,6 +851,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_12",
       url: "./sounds/POETRY/P_ALBERT_12.mp3",
       duration: 48,
+      medium: "typePoem",
       tags: [
         "Short",
         "Beg",
@@ -828,6 +867,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_06",
       url: "./sounds/POETRY/P_ALBERT_06.mp3",
       duration: 45,
+      medium: "typePoem",
       tags: [
         "Short",
         "Beg",
@@ -846,6 +886,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_10",
       url: "./sounds/POETRY/P_ALBERT_10.mp3",
       duration: 23,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -861,6 +902,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_04",
       url: "./sounds/POETRY/P_ALBERT_04.mp3",
       duration: 53,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -881,6 +923,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_05",
       url: "./sounds/POETRY/P_ALBERT_05.mp3",
       duration: 38,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -897,6 +940,8 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_11",
       url: "./sounds/POETRY/P_ALBERT_11.mp3",
       duration: 89,
+      medium: "",
+      medium: "typePoem",
       tags: [
         "Medium",
         "Middle",
@@ -915,6 +960,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_08",
       url: "./sounds/POETRY/P_ALBERT_08.mp3",
       duration: 49,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -930,6 +976,7 @@ window.addEventListener("load", (event) => {
       name: "P_NAMITHA_03",
       url: "./sounds/POETRY/P_NAMITHA_03.mp3",
       duration: 30,
+      medium: "typePoem",
       tags: ["Short", "Middle", "Verbal", "Heavy", "Nature", "Wellness", ""],
       credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
     },
@@ -937,6 +984,7 @@ window.addEventListener("load", (event) => {
       name: "P_NAMITHA_02",
       url: "./sounds/POETRY/P_NAMITHA_02.mp3",
       duration: 55,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -953,6 +1001,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_09",
       url: "./sounds/POETRY/P_ALBERT_09.mp3",
       duration: 36,
+      medium: "typePoem",
       tags: ["Short", "Middle", "End", "Verbal", "Heavy", "Nature", "Wellness"],
       credit: "./sounds/XX_OUTRO/NAMES/ALBERT.mp3",
     },
@@ -960,6 +1009,7 @@ window.addEventListener("load", (event) => {
       name: "P_NAMITHA_01",
       url: "./sounds/POETRY/P_NAMITHA_01.mp3",
       duration: 47,
+      medium: "typePoem",
       tags: ["Short", "Middle", "Verbal", "Light", "Moderate", "Nature", ""],
       credit: "./sounds/XX_OUTRO/NAMES/NAMITHA.mp3",
     },
@@ -967,6 +1017,7 @@ window.addEventListener("load", (event) => {
       name: "P_NAMITHA_05",
       url: "./sounds/POETRY/P_NAMITHA_05.mp3",
       duration: 29,
+      medium: "typePoem",
       tags: [
         "Short",
         "Beg",
@@ -983,6 +1034,7 @@ window.addEventListener("load", (event) => {
       name: "P_NAMITHA_04",
       url: "./sounds/POETRY/P_NAMITHA_04.mp3",
       duration: 26,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -999,6 +1051,7 @@ window.addEventListener("load", (event) => {
       name: "P_NAMITHA_06",
       url: "./sounds/POETRY/P_NAMITHA_06.mp3",
       duration: 11,
+      medium: "typePoem",
       tags: [
         "Short",
         "Middle",
@@ -1014,6 +1067,7 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_18",
       url: "./sounds/POETRY/P_ALBERT_18.mp3",
       duration: 64,
+      medium: "typePoem",
       tags: [
         "Medium",
         "Middle",
@@ -1030,6 +1084,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_S_04",
       url: "./sounds/SHORTS/S_KIKO_S_04.mp3",
       duration: 36,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1045,6 +1100,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_S_03",
       url: "./sounds/SHORTS/S_KIKO_S_03.mp3",
       duration: 36,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1060,6 +1116,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_S_02",
       url: "./sounds/SHORTS/S_KIKO_S_02.mp3",
       duration: 28,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1075,6 +1132,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_17",
       url: "./sounds/SHORTS/S_BIRDS_17.mp3",
       duration: 64,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1091,6 +1149,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_03",
       url: "./sounds/SHORTS/S_BIRDS_03.mp3",
       duration: 71,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1107,6 +1166,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_16",
       url: "./sounds/SHORTS/S_DEMI_16.mp3",
       duration: 22,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1123,6 +1183,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_C_01",
       url: "./sounds/SHORTS/S_KIKO_C_01.mp3",
       duration: 54,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1138,6 +1199,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_17",
       url: "./sounds/SHORTS/S_DEMI_17.mp3",
       duration: 11,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1154,13 +1216,14 @@ window.addEventListener("load", (event) => {
     //   name: "S_CHARLOTTE_09",
     //   url: "./sounds/SHORTS/S_CHARLOTTE_09.mp3",
     //   duration: 22,
-    //   tags: ["Short", "Middle", "Verbal", "Light", "Nature", "Wetlands"],
+    //   medium: "typeShort", tags: ["Short", "Middle", "Verbal", "Light", "Nature", "Wetlands"],
     //   credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     // },
     {
       name: "S_BIRDS_02",
       url: "./sounds/SHORTS/S_BIRDS_02.mp3",
       duration: 84,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1177,6 +1240,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_16",
       url: "./sounds/SHORTS/S_BIRDS_16.mp3",
       duration: 32,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1193,6 +1257,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_14",
       url: "./sounds/SHORTS/S_BIRDS_14.mp3",
       duration: 73,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1209,6 +1274,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_15",
       url: "./sounds/SHORTS/S_DEMI_15.mp3",
       duration: 10,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1225,6 +1291,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_C_02",
       url: "./sounds/SHORTS/S_KIKO_C_02.mp3",
       duration: 37,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1240,6 +1307,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_14",
       url: "./sounds/SHORTS/S_DEMI_14.mp3",
       duration: 14,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1256,6 +1324,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_15",
       url: "./sounds/SHORTS/S_BIRDS_15.mp3",
       duration: 35,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1272,6 +1341,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_01",
       url: "./sounds/SHORTS/S_BIRDS_01.mp3",
       duration: 96,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1288,6 +1358,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_05",
       url: "./sounds/SHORTS/S_BIRDS_05.mp3",
       duration: 66,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1304,6 +1375,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_11",
       url: "./sounds/SHORTS/S_BIRDS_11.mp3",
       duration: 41,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1320,6 +1392,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_10",
       url: "./sounds/SHORTS/S_BIRDS_10.mp3",
       duration: 65,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1336,6 +1409,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_04",
       url: "./sounds/SHORTS/S_BIRDS_04.mp3",
       duration: 60,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1352,6 +1426,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_12",
       url: "./sounds/SHORTS/S_BIRDS_12.mp3",
       duration: 31,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1368,6 +1443,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_06",
       url: "./sounds/SHORTS/S_BIRDS_06.mp3",
       duration: 88,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1384,6 +1460,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_07",
       url: "./sounds/SHORTS/S_BIRDS_07.mp3",
       duration: 92,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1400,6 +1477,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_13",
       url: "./sounds/SHORTS/S_BIRDS_13.mp3",
       duration: 56,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1416,6 +1494,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_23",
       url: "./sounds/SHORTS/S_DEMI_23.mp3",
       duration: 21,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1432,6 +1511,7 @@ window.addEventListener("load", (event) => {
       name: "S_CHARLOTTE_01",
       url: "./sounds/SHORTS/S_CHARLOTTE_01.mp3",
       duration: 74,
+      medium: "typeShort",
       tags: [
         "Medium",
         "End",
@@ -1449,6 +1529,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_C_09",
       url: "./sounds/SHORTS/S_KIKO_C_09.mp3",
       duration: 41,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1464,6 +1545,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_22",
       url: "./sounds/SHORTS/S_DEMI_22.mp3",
       duration: 22,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1480,6 +1562,7 @@ window.addEventListener("load", (event) => {
       name: "S_LAUGHING_01",
       url: "./sounds/SHORTS/S_LAUGHING_01.mp3",
       duration: 15,
+      medium: "typeShort",
       tags: ["Short", "Middle", "Non-Verbal", "Light", "Sound", "Wellness", ""],
       credit: "",
     },
@@ -1487,6 +1570,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_09",
       url: "./sounds/SHORTS/S_BIRDS_09.mp3",
       duration: 46,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1503,6 +1587,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_20",
       url: "./sounds/SHORTS/S_DEMI_20.mp3",
       duration: 22,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1519,6 +1604,7 @@ window.addEventListener("load", (event) => {
       name: "S_CHARLOTTE_02",
       url: "./sounds/SHORTS/S_CHARLOTTE_02.mp3",
       duration: 25,
+      medium: "typeShort",
       tags: [
         "Short",
         "Beginning",
@@ -1534,6 +1620,7 @@ window.addEventListener("load", (event) => {
       name: "S_CHARLOTTE_03",
       url: "./sounds/SHORTS/S_CHARLOTTE_03.mp3",
       duration: 31,
+      medium: "typeShort",
       tags: ["Short", "Middle", "Verbal", "Light", "Nature", "Wetlands"],
       credit: "./sounds/XX_OUTRO/NAMES/CHARLOTTE.mp3",
     },
@@ -1541,6 +1628,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_21",
       url: "./sounds/SHORTS/S_DEMI_21.mp3",
       duration: 10,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1557,6 +1645,7 @@ window.addEventListener("load", (event) => {
       name: "S_LAUGHING_02",
       url: "./sounds/SHORTS/S_LAUGHING_02.mp3",
       duration: 28,
+      medium: "typeShort",
       tags: ["Short", "Middle", "Non-Verbal", "Light", "Sound", "Wellness", ""],
       credit: "",
     },
@@ -1564,6 +1653,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_08",
       url: "./sounds/SHORTS/S_BIRDS_08.mp3",
       duration: 57,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1580,6 +1670,7 @@ window.addEventListener("load", (event) => {
       name: "S_BIRDS_18",
       url: "./sounds/SHORTS/S_BIRDS_18.mp3",
       duration: 63,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1596,6 +1687,7 @@ window.addEventListener("load", (event) => {
       name: "S_CHARLOTTE_07",
       url: "./sounds/SHORTS/S_CHARLOTTE_07.mp3",
       duration: 41,
+      medium: "typeShort",
       tags: ["Short", "Middle", "Verbal", "Light", "Nature", "Wetlands"],
       credit: "",
     },
@@ -1603,6 +1695,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_19",
       url: "./sounds/SHORTS/S_DEMI_19.mp3",
       duration: 15,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1619,6 +1712,7 @@ window.addEventListener("load", (event) => {
       name: "S_DEMI_18",
       url: "./sounds/SHORTS/S_DEMI_18.mp3",
       duration: 21,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1635,6 +1729,7 @@ window.addEventListener("load", (event) => {
       name: "S_KIKO_B_04",
       url: "./sounds/SHORTS/S_KIKO_B_04.mp3",
       duration: 21,
+      medium: "typeShort",
       tags: [
         "Short",
         "Middle",
@@ -1650,6 +1745,7 @@ window.addEventListener("load", (event) => {
       name: "I_JAYNE_02",
       url: "./sounds/INTERVIEWS/I_JAYNE_02.mp3",
       duration: 79,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Medium",
@@ -1666,6 +1762,7 @@ window.addEventListener("load", (event) => {
       name: "I_JAYNE_03",
       url: "./sounds/INTERVIEWS/I_JAYNE_03.mp3",
       duration: 149,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Medium",
@@ -1684,6 +1781,7 @@ window.addEventListener("load", (event) => {
       name: "I_JAYNE_01",
       url: "./sounds/INTERVIEWS/I_JAYNE_01.mp3",
       duration: 226,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1701,6 +1799,7 @@ window.addEventListener("load", (event) => {
       name: "I_LOUELLA_02",
       url: "./sounds/INTERVIEWS/I_LOUELLA_02.mp3",
       duration: 140,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Medium",
@@ -1720,6 +1819,7 @@ window.addEventListener("load", (event) => {
       name: "I_ELLEN_02_TempMusic",
       url: "./sounds/INTERVIEWS/I_ELLEN_02_TempMusic.mp3",
       duration: 133,
+      medium: "typeInterview",
       tags: ["interviews"],
       credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
     },
@@ -1727,6 +1827,7 @@ window.addEventListener("load", (event) => {
       name: "I_LOUELLA_03",
       url: "./sounds/INTERVIEWS/I_LOUELLA_03.mp3",
       duration: 198,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1745,6 +1846,7 @@ window.addEventListener("load", (event) => {
       name: "I_LOUELLA_01",
       url: "./sounds/INTERVIEWS/I_LOUELLA_01.mp3",
       duration: 237,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1763,6 +1865,7 @@ window.addEventListener("load", (event) => {
       name: "I_KIKO_02",
       url: "./sounds/INTERVIEWS/I_KIKO_02.mp3",
       duration: 247,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1781,6 +1884,7 @@ window.addEventListener("load", (event) => {
       name: "I_KIKO_03",
       url: "./sounds/INTERVIEWS/I_KIKO_03.mp3",
       duration: 174,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1799,6 +1903,7 @@ window.addEventListener("load", (event) => {
       name: "I_KIKO_01",
       url: "./sounds/INTERVIEWS/I_KIKO_01.mp3",
       duration: 233,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1817,6 +1922,7 @@ window.addEventListener("load", (event) => {
       name: "I_ELLEN_01_TempMusic",
       url: "./sounds/INTERVIEWS/I_ELLEN_01_TempMusic.mp3",
       duration: 172,
+      medium: "typeInterview",
       tags: ["interviews"],
       credit: "./sounds/XX_OUTRO/NAMES/ELLEN.mp3",
     },
@@ -1824,6 +1930,7 @@ window.addEventListener("load", (event) => {
       name: "I_JESSE_01",
       url: "./sounds/INTERVIEWS/I_JESSE_01.mp3",
       duration: 229,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1845,6 +1952,7 @@ window.addEventListener("load", (event) => {
       name: "I_ELLEN_03",
       url: "./sounds/INTERVIEWS/I_ELLEN_03.mp3",
       duration: 244,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Long",
@@ -1862,6 +1970,7 @@ window.addEventListener("load", (event) => {
       name: "I_SAM_01",
       url: "./sounds/INTERVIEWS/I_SAM_01.mp3",
       duration: 137,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Medium",
@@ -1878,6 +1987,7 @@ window.addEventListener("load", (event) => {
       name: "I_ELLEN_04",
       url: "./sounds/INTERVIEWS/I_ELLEN_04.mp3",
       duration: 154,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Medium",
@@ -1896,6 +2006,7 @@ window.addEventListener("load", (event) => {
       name: "I_ELLEN_05",
       url: "./sounds/INTERVIEWS/I_ELLEN_05.mp3",
       duration: 151,
+      medium: "typeInterview",
       tags: [
         "Interview",
         "Medium",
@@ -1976,6 +2087,51 @@ window.addEventListener("load", (event) => {
       }
     }
 
+    // start the newrules logic
+   
+    function sortObjects(objects) {
+      // Sort objects by medium
+      objects.sort(function(a, b) {
+        if (a.medium === b.medium) {
+          return 0;
+        }
+        if ((a.medium === "typePoem" || a.medium === "typeInterview") && (b.medium === "typeShort" || b.medium === "typeMusic")) {
+          return 1;
+        }
+        if ((a.medium === "typeShort" || a.medium === "typeMusic") && (b.medium === "typePoem" || b.medium === "typeInterview")) {
+          return -1;
+        }
+        return 0;
+      });
+    
+      // Ensure no two consecutive items have the same medium value
+      for (let i = 1; i < objects.length; i++) {
+        if (objects[i].medium === objects[i-1].medium) {
+          let j = i;
+          while (j < objects.length && objects[j].medium === objects[i].medium) {
+            j++;
+          }
+          let subarray = objects.slice(i-1, j);
+          subarray.sort(function(a, b) {
+            if (a.tags.length !== b.tags.length) {
+              return a.tags.length - b.tags.length;
+            }
+            return a.tags.join("").localeCompare(b.tags.join(""));
+          });
+          for (let k = i-1; k < j; k++) {
+            objects[k] = subarray[k-i+1];
+          }
+          i = j - 1;
+        }
+      }
+    
+      return objects;
+    }
+        
+        
+
+    // end the newrules logic
+
     let durationSum = 0;
     let objectsToRemove = [];
     let indexToRemove = -1;
@@ -2000,7 +2156,7 @@ window.addEventListener("load", (event) => {
       const object = tracklist[i];
       if (object.duration && typeof object.duration === "number") {
         durationSum += object.duration;
-        console.log(`${object.name} durationSum: ${durationSum}`);
+        // console.log(`${object.name} durationSum: ${durationSum}`);
         if (durationSum >= 1000 && indexToRemove === -1) {
           indexToRemove = i + 1;
         }
@@ -2367,7 +2523,9 @@ window.addEventListener("load", (event) => {
       const itemElement = document.createElement("div");
       itemElement.textContent =
         shuffledSongsWithOpen[i].name +
-        " (" +
+        " [" +
+        shuffledSongsWithOpen[i].medium +
+        "] (" +
         shuffledSongsWithOpen[i].tags.join(", ") +
         ")";
       currTrackNameElement.appendChild(itemElement);
