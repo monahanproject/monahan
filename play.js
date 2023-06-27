@@ -1,17 +1,22 @@
+/*
+Make a playlist generator
+
+It needs to follow a number of rules about which tracks are first and last and which kinds of tracks follow other kinds of tracks.
+
+*/
+
 window.addEventListener("load", (event) => {
   var myLang = localStorage["lang"] || "defaultValue";
   var player;
   var audioContext = null;
-  var gainNode = null;
-  var previousVolume = "100";
+  var volumeNode = null;
+  // var previousVolume = "100";
   var timerInterval;
   var timerDuration;
-
-  let playState = "play";
-  let muteState = "unmute";
+  let playerPlayState = "play";
+  // let muteState = "unmute";
   let hasSkippedToEnd = false;
-
-  const MAXDURATION = 1080;
+  const MAXPLAYLISTDURATION = 1080;
 
   function startplayer() {
     player = document.getElementById("music_player");
@@ -19,7 +24,7 @@ window.addEventListener("load", (event) => {
   }
 
   function change_vol(event) {
-    gainNode.gain.value = parseFloat(event.target.value);
+    volumeNode.gain.value = parseFloat(event.target.value);
   }
 
   // https://css-tricks.com/lets-create-a-custom-audio-player/
@@ -54,17 +59,17 @@ window.addEventListener("load", (event) => {
     audioPlayerContainer.append(playIconContainer);
 
     playIconContainer.addEventListener("click", () => {
-      if (playState === "play") {
+      if (playerPlayState === "play") {
         // playIconContainer.innerHTML = "play";
         playIconContainer.classList.remove("paused");
-        playState = "pause";
+        playerPlayState = "pause";
         audioContext.suspend();
         clearInterval(timerInterval);
       } else {
         player.currentTime = 0;
         // playIconContainer.innerHTML = "pause";
         playIconContainer.classList.add("paused");
-        playState = "play";
+        playerPlayState = "play";
         audioContext.resume();
         timerInterval = createTimerLoop(timerDuration);
       }
@@ -78,7 +83,7 @@ window.addEventListener("load", (event) => {
     volumeSlider.value = "100";
     audioPlayerContainer.append(volumeSlider);
     volumeSlider.addEventListener("change", (event) => {
-      gainNode.gain.value = getCurrentSliderVolume();
+      volumeNode.gain.value = getCurrentSliderVolume();
     });
 
     function getCurrentSliderVolume() {
@@ -144,11 +149,9 @@ window.addEventListener("load", (event) => {
     return audio;
   }
 
-  // const addAudio = song =>{
-  //   song.urlAudio = createAudioElement(song.url);
-  //   song.creditAudio = createAudioElement(cong.credit);
-  //   return song;
-  // }
+  /* 1. Define two functions: addAudioFromUrl and addAudioFromCredit. These functions take a song 
+  object as input, create an audio element for the song's URL, assign it to the song.audio property, 
+  and return the modified song object.*/
 
   const addAudioFromUrl = (song) => {
     song.audio = createAudioElement(song.url);
@@ -156,41 +159,38 @@ window.addEventListener("load", (event) => {
   };
 
   const addAudioFromCredit = (song) => {
-    // if (!song.credit) {
-    //   console.log("song has no credit", song);
-    // }
+    if (!song.credit) {
+      console.log("song has no credit", song);
+    }
     song.audio = createAudioElement(song.url);
     return song;
   };
 
+  /* 2. Define an array introTracks containing an object representing an intro track. Each object 
+  in the array is processed using the addAudioFromUrl function. */
   const introTracks = [
     {
-      // url: "./sounds/00_INTRO/INTRO1V2.mp3",
       name: "intro",
       url: "./sounds/00_INTRO/INTRO1V2.mp3",
       duration: 113,
+      medium: "special",
       tags: ["intro"],
       credit: "",
     },
   ].map(addAudioFromUrl);
 
+  /* Define an empty array creditsArray. */
   let creditsArray = [];
 
-  // let creditsArray = [
-  //   {
-  //     name: "hardcoded cred",
-  //     url: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
-  //     duration: 3,
-  //     tags: ["credits"],
-  //     credit: "./sounds/XX_OUTRO/NAMES/TURKWAZ.mp3",
-  //   },
-  // ].map(addAudioFromCredit);
+  /* 4. Define two more arrays outroAudioSounds and finalOutroAudioSounds, each containing an object
+   representing an outro track. Again, each object is processed using the addAudioFromUrl function. */
 
   const outroAudioSounds = [
     {
       name: "outro",
       url: "./sounds/XX_OUTRO/OUTRO2PT1SOLO.mp3",
-      duration: 3,
+      duration: 99,
+      medium: "special",
       tags: ["outro"],
       credit: "",
     },
@@ -200,11 +200,16 @@ window.addEventListener("load", (event) => {
     {
       name: "outroBGMusic",
       url: "./sounds/XX_OUTRO/OUTRO2PT2SOLO.mp3",
-      duration: 6,
+      duration: 60,
+      medium: "special",
       tags: ["outro"],
       credit: "",
     },
   ].map(addAudioFromUrl);
+
+  /* 5. Define an array SONGS containing multiple song objects. Each song object is processed using 
+the addAudioFromUrl function.
+ */
 
   const SONGS = [
     {
@@ -940,7 +945,6 @@ window.addEventListener("load", (event) => {
       name: "P_ALBERT_11",
       url: "./sounds/POETRY/P_ALBERT_11.mp3",
       duration: 89,
-      medium: "",
       medium: "typePoem",
       tags: [
         "Medium",
@@ -2023,40 +2027,40 @@ window.addEventListener("load", (event) => {
   ].map(addAudioFromUrl);
 
   // amount of time selected for the walk in seconds
+
   // let total_duration = parseInt(
   //   document.getElementById("total-duration").value
   // );
-  var total_duration = MAXDURATION;
 
-  // how many seconds before a song is completed that we should pre-fetch the next song
+  /* 6. Set the value of the total_duration variable (in seconds). */
+  var total_duration = MAXPLAYLISTDURATION;
+
+  /* 7. Define PREFETCH_BUFFER_SECONDS (how many seconds before a song is completed that we 
+  should pre-fetch the next song */
   const PREFETCH_BUFFER_SECONDS = 8;
 
-  // shuffle an array https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
-  // function shuffleElementsInAnArray(a) {
-  //   for (let i = a.length - 1; i > 0; i--) {
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     [a[i], a[j]] = [a[j], a[i]];
-  //   }
-  //   return a;
-  // }
+  /* 8. followTracklistRules takes a tracklist array as input and applies certain
+  rules to modify the tracklist. The function does the following:
+
+  * Moves an object with the tag "Beginning" to the beginning of the tracklist.
+  * Moves all objects with the tag "Long" to the end of the tracklist.
+  * Checks for forbidden tag combinations and prints an error message if found.
+  * Modifies the tracklist by adding an intro track at the beginning and an end object at the end.
+  * Returns the modified tracklist.
+  */
 
   function followTracklistRules(tracklist) {
-    // Find an object with "Beginning" tag and move it to the very beginning of the list (and log which object you moved)
+    // Move an object with the tag "Beginning" to the beginning of the tracklist.
     let beginningObject = tracklist.find((obj) =>
       obj.tags.includes("Beginning")
     );
-    console.log("beginningObject:", beginningObject);
     if (beginningObject) {
       tracklist.splice(tracklist.indexOf(beginningObject), 1);
       tracklist.unshift(beginningObject);
-      console.log(
-        `Moved "${beginningObject.name}" object to the beginning of the tracklist`
-      );
     }
 
-    // If there is an object with the tag "Long", move all the other objects with the tag "Long" to the end of the list
+    // Moves all objects with the tag "Long" to the end of the tracklist. Is this even what I want?
     let longObjects = tracklist.filter((obj) => obj.tags.includes("Long"));
-    // let longObjects = tracklist.filter((obj) => obj.tags.includes("Long") && !obj.tags.includes("Beginning"));
 
     if (longObjects.length > 0) {
       const longTitles = longObjects.map((obj) =>
@@ -2068,11 +2072,10 @@ window.addEventListener("load", (event) => {
         // console.log(`Moved "${obj.name}" to the end of the tracklist`);
       });
       tracklist.push(...longObjects);
-      console.log(
-        `Moved ${longObjects.length} "Long" objects to the end of the tracklist`
-      );
+      // console.log(`Moved ${longObjects.length} "Long" objects to the end of the tracklist`);
     }
 
+    // Checks for forbidden tag combinations and prints an error message if found.
     // if a list item has a "Heavy" tag, it should not be followed by an object with a "Laughing" tag
     for (let i = 0; i < tracklist.length - 1; i++) {
       let currentObj = tracklist[i];
@@ -2087,56 +2090,49 @@ window.addEventListener("load", (event) => {
       }
     }
 
-    // start the newrules logic
-   
-    function sortObjects(objects) {
-      // Sort objects by medium
-      objects.sort(function(a, b) {
-        if (a.medium === b.medium) {
-          return 0;
-        }
-        if ((a.medium === "typePoem" || a.medium === "typeInterview") && (b.medium === "typeShort" || b.medium === "typeMusic")) {
-          return 1;
-        }
-        if ((a.medium === "typeShort" || a.medium === "typeMusic") && (b.medium === "typePoem" || b.medium === "typeInterview")) {
-          return -1;
-        }
-        return 0;
-      });
-    
-      // Ensure no two consecutive items have the same medium value
-      for (let i = 1; i < objects.length; i++) {
-        if (objects[i].medium === objects[i-1].medium) {
-          let j = i;
-          while (j < objects.length && objects[j].medium === objects[i].medium) {
-            j++;
-          }
-          let subarray = objects.slice(i-1, j);
-          subarray.sort(function(a, b) {
-            if (a.tags.length !== b.tags.length) {
-              return a.tags.length - b.tags.length;
-            }
-            return a.tags.join("").localeCompare(b.tags.join(""));
-          });
-          for (let k = i-1; k < j; k++) {
-            objects[k] = subarray[k-i+1];
-          }
-          i = j - 1;
-        }
-      }
-    
-      return objects;
-    }
-        
-        
+    // findme
 
-    // end the newrules logic
+    // // start the newrules logic
+    // function sortTracklist(tracklist) {
+    //   let lastPoemOrInterviewIndex = -1;
+    //   let lastShortOrMusicIndex = -1;
+
+    //   for (let i = 0; i < tracklist.length; i++) {
+    //     if (tracklist[i].medium === 'typePoem' || tracklist[i].medium === 'typeInterview') {
+    //       if (lastShortOrMusicIndex > lastPoemOrInterviewIndex) {
+    //         const temp = tracklist[i];
+    //         tracklist.splice(i, 1);
+    //         tracklist.splice(lastShortOrMusicIndex + 1, 0, temp);
+    //         lastPoemOrInterviewIndex = lastShortOrMusicIndex + 1;
+    //         i--;
+    //       } else {
+    //         lastPoemOrInterviewIndex = i;
+    //       }
+    //     } else if (tracklist[i].medium === 'typeShort' || tracklist[i].medium === 'typeMusic') {
+    //       if (lastPoemOrInterviewIndex > lastShortOrMusicIndex) {
+    //         const temp = tracklist[i];
+    //         tracklist.splice(i, 1);
+    //         tracklist.splice(lastPoemOrInterviewIndex + 1, 0, temp);
+    //         lastShortOrMusicIndex = lastPoemOrInterviewIndex + 1;
+    //         i--;
+    //       } else {
+    //         lastShortOrMusicIndex = i;
+    //       }
+    //     } else {
+    //       console.error('Invalid medium value: ' + tracklist[i].medium);
+    //     }
+    //   }
+    //   return(tracklist);
+    // }
+    // // tracklist.push({ title: "New Song", medium: "typeMusic" });
+    // // sortTracklist(tracklist);
+
+    // // end the newrules logic
 
     let durationSum = 0;
     let objectsToRemove = [];
     let indexToRemove = -1;
     let endObject = null;
-    console.log(`tracklist length: ${tracklist.length}`);
 
     // Store the end object separately, if present
     for (let i = 0; i < tracklist.length; i++) {
@@ -2146,9 +2142,9 @@ window.addEventListener("load", (event) => {
         durationSum += endObject.duration; // add duration of end object
         break;
       } else {
-        console.log(
-          `Warning: Found multiple "End" objects in tracklist. Using first one and ignoring the rest.`
-        );
+        // console.log(
+        //   `Warning: Found multiple "End" objects in tracklist. Using first one and ignoring the rest.`
+        // );
       }
     }
 
@@ -2165,53 +2161,31 @@ window.addEventListener("load", (event) => {
       }
     }
 
-    console.log(`Total duration sum before deleting elements: ${durationSum}`);
-
     // Subtract duration of end object from maximum duration limit
-    let maxDurationMinusEndTrack = MAXDURATION - endObject.duration;
-    console.log("maxDurationMinusEndTrack:", maxDurationMinusEndTrack);
+    let maxDurationMinusEndTrackDur = MAXPLAYLISTDURATION - endObject.duration;
 
     // get the length of the introtrack
     let lauraIntroTrack = introTracks.find((obj) => obj.tags.includes("intro"));
-    console.log("lauraIntroTrack:", lauraIntroTrack);
-    console.log("lauraIntroTrack:", lauraIntroTrack.duration);
 
-    // append the intro track to the beginning of the array
+    // * Modify the tracklist by adding an intro track at the beginning and an end object at the end.
     if (lauraIntroTrack) {
       tracklist.splice(tracklist.indexOf(lauraIntroTrack), 1);
       tracklist.unshift(lauraIntroTrack);
-      console.log(
-        `Moved "${lauraIntroTrack.name}" object to the beginning of the tracklist`
-      );
     }
-
-    // console.log("laura dur " + lauraIntroTrack.duration)
 
     // Subtract duration of intro object from maximum duration limit
     let maxDurationMinusEndAndOpenTrack =
-      maxDurationMinusEndTrack - lauraIntroTrack.duration;
-    console.log(maxDurationMinusEndAndOpenTrack);
-    console.log(
-      "maxDurationMinusEndAndOpenTrack:",
-      maxDurationMinusEndAndOpenTrack
-    );
-
-    // console.log("lauraIntroTrack:", lauraIntroTrack.duration);
+      maxDurationMinusEndTrackDur - lauraIntroTrack.duration;
 
     if (durationSum > maxDurationMinusEndAndOpenTrack && indexToRemove !== -1) {
       const removed = tracklist.splice(indexToRemove);
       objectsToRemove.push(...removed);
-      // console.log(`Removed ${removed.length} objects from the tracklist`);
       durationSum -= removed.reduce((acc, obj) => acc + obj.duration, 0);
     }
 
     if (endObject !== null && !objectsToRemove.includes(endObject)) {
       tracklist.push(endObject);
-      // console.log("endobj duration " + endObject.duration);
-      // console.log(`Added end object to the end of the tracklist`);
     }
-
-    console.log(`Total duration sum after deleting elements: ${durationSum}`);
 
     if (endObject === null) {
       console.log("Error: No end object found in tracklist.");
@@ -2226,14 +2200,14 @@ window.addEventListener("load", (event) => {
     tracklist.forEach((obj) => {
       // console.log(`${obj.name} (${obj.duration} seconds)`);
     });
-
     return tracklist;
   }
 
-  // shuffle my list of songs
+  /* 9. Define a function shuffleTracklist that takes a tracklist array as input, shuffles its elements
+  randomly, and applies the followTracklistRules function to the shuffled tracklist. The function 
+  returns the shuffled and modified tracklist. */
+
   function shuffleTracklist(tracklist) {
-    // Shuffle the tracklist randomly
-    // function shuffleElementsInAnArray(tracklist) {
     for (let i = tracklist.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [tracklist[i], tracklist[j]] = [tracklist[j], tracklist[i]];
@@ -2242,20 +2216,16 @@ window.addEventListener("load", (event) => {
     return tracklist;
   }
 
-  // tracklist = shuffleElementsInAnArray(tracklist);
-  const forbiddenTagCombinations = [
-    // { firstTag: "drone", secondTag: "drone" },
-    // { firstTag: "interviews", secondTag: "interviews" },
-    // { firstTag: "shorts", secondTag: "shorts" },
-    // { firstTag: "music", secondTag: "music" },
-    // { firstTag: "longmusic", secondTag: "longmusic" },
-    // Add more forbidden tag combinations as needed
-  ];
+
+
+/* 10. Define a function fetchAndCacheAudio that takes an audioFileUrl and a cache object as input. The 
+function checks if the audio file is already in the cache, and if not, fetches it from the network, 
+adds it to the cache, and returns the audio response. */
 
   function fetchAndCacheAudio(audioFileUrl, cache) {
     // Check first if audio is in the cache.
     return cache.match(audioFileUrl).then((cacheResponse) => {
-      // Let's return cached response if audio is already in the cache.
+      // return cached response if audio is already in the cache.
       if (cacheResponse) {
         return cacheResponse;
       }
@@ -2276,7 +2246,6 @@ window.addEventListener("load", (event) => {
 
   // This recursive function processes each audio file at a time and then queues up
   // work for the next audio file to be processed.
-
   function playAndQueue(songs, index, currentRuntime, cache) {
     // if we're out of tracks or out of time, stop everything (should fade out eventually)
     if (index == songs.length || total_duration - currentRuntime < -100) {
@@ -2284,24 +2253,15 @@ window.addEventListener("load", (event) => {
     }
 
     // If we are near the end of the playlist, play the final three tracks.
-    //
     if (total_duration - currentRuntime <= 90) {
-      // console.log("near the end");
       function skipToEndOfThePlaylistFunction(songs, currentIndex, newIndex) {
         if (!hasSkippedToEnd) {
-          console.log("Skipping for the first time!");
           const numElementsToEnd = songs.length - currentIndex - 1;
           index = index + numElementsToEnd;
           let newIndex = index;
-
           songs.push(...outroAudioSounds);
           // songs.push(...creditsArray);
-
           creditsArray.forEach((credit) => songs.push(credit));
-
-          // console.log("after adding creditsArray", songs.length);
-          // console.log(songs);
-
           // songs.push(...creditsArray);
           songs.push(...finalOutroAudioSounds);
           hasSkippedToEnd = true;
@@ -2333,7 +2293,7 @@ window.addEventListener("load", (event) => {
       const currIndex = index;
 
       // don't play long tracks
-      console.log(currDurr);
+      // console.log(currDurr);
       if (currDurr > 1070) {
         console.log("forbidden!");
         playAndQueue(songs, index + 1, currentRuntime, cache);
@@ -2345,6 +2305,15 @@ window.addEventListener("load", (event) => {
       } else {
         console.log("no tags");
       }
+
+      const forbiddenTagCombinations = [
+        { firstTag: "drone", secondTag: "drone" },
+        { firstTag: "interviews", secondTag: "interviews" },
+        { firstTag: "shorts", secondTag: "shorts" },
+        { firstTag: "music", secondTag: "music" },
+        { firstTag: "longmusic", secondTag: "longmusic" },
+        // Add more forbidden tag combinations as needed
+      ];
 
       // need to make sure this still works - esp w mult tags
       if (LastSeenTags.length > 0) {
@@ -2395,7 +2364,6 @@ window.addEventListener("load", (event) => {
         console.log(song);
 
         // creditsArray.push(song);
-
         const createCreditObj = function (song) {
           const creditObj = {
             name: song.name,
@@ -2438,7 +2406,7 @@ window.addEventListener("load", (event) => {
     }
 
     const track = audioContext.createMediaElementSource(audio);
-    track.connect(gainNode);
+    track.connect(volumeNode);
 
     // when the song has ended, queue up the next one
     audio.addEventListener("ended", (e) => {
@@ -2484,7 +2452,7 @@ window.addEventListener("load", (event) => {
         }, timeoutDurationMs);
       }
     });
-    console.log(audio);
+    // console.log(audio);
     audio.play();
   }
 
@@ -2498,15 +2466,13 @@ window.addEventListener("load", (event) => {
       // for browser compatibility, redefine AudioContext
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       audioContext = new AudioContext();
-      gainNode = audioContext.createGain();
-      gainNode.connect(audioContext.destination);
+      volumeNode = audioContext.createGain();
+      volumeNode.connect(audioContext.destination);
     }
 
     // first we copy the array of songs
     const allSongs = [...SONGS];
-
     // next we shuffle it
-    // shuffleElementsInAnArray(shuffledSongs);
     const shuffledSongs = shuffleTracklist(allSongs);
 
     // next we add the intro to the beginning
@@ -2543,6 +2509,7 @@ window.addEventListener("load", (event) => {
   });
 
   const totalDurationInput = document.getElementById("total-duration");
+  
   let totalDuration = total_duration / 60; // use a separate variable to store the value in minutes
   if (totalDurationInput) {
     totalDurationInput.value = totalDuration;
