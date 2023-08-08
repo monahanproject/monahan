@@ -81,6 +81,26 @@
         <button type="button" class="btn" id="play">Begin</button>
       </ul>
     </form>
+    <div id="debug">
+      <!-- <p class="debugTit">DEBUG INFO</p> -->
+      <p><span class="debugHead">Track name:</span><span id="currTrackName"></span></p>
+      <p><span class="debugHead">Url:</span><span id="currURL"></span></p>
+      <p><span class="debugHead">Duration:</span><span id="currDurr"></span></p>
+      <p><span class="debugHead">Current Index:</span><span id="indexNo"></span></p>
+      <p><span class="debugHead">Total Index (number of tracks):</span><span id="totalIndex"></span></p>
+  
+  
+      <p><span class="debugHead">Tags for current track:</span><span id="currTags"></span></p>
+      <p><span class="debugHead">Credits:</span></p><p id="currCredit"></p>
+      <p><span class="debugHead">Accumulated credits (to be played at the end):</span></p><p id="creditsStack"></p>
+  
+      <p><br></p>
+      <p id="shuffle"><span class="debugHead">Full List:</span><span id="fullList"></span></p>
+  
+      <!-- <p><span class="debugHead">Next up:</span><span id="nextUp"></span></p> -->
+      <!-- <p><span class="debugHead">Forbidden? </span><span id="forbidden"></span></p> -->
+  
+    </div>
     
     <p id="textTranscript"><a href="testTranscript.txt" download>or download text transcript</a>
     </p>
@@ -97,31 +117,15 @@
         </form>
         <a href="texttranscript">or view text transcript</a> -->
   </main>
+  <script src="songs.js"></script>
+
   <script src="play.js"></script>
   <script src="audio.js"></script>
 
 
 </body>
 <footer>
-  <div id="debug">
-      <!-- <p class="debugTit">DEBUG INFO</p> -->
-      <p><span class="debugHead">Track name:</span><span id="currTrackName"></span></p>
-      <p><span class="debugHead">Url:</span><span id="currTrack"></span></p>
-      <p><span class="debugHead">Duration:</span><span id="currDurr"></span></p>
-      <p><span class="debugHead">Current Index:</span><span id="indexNo"></span></p>
-      <p><span class="debugHead">Total Index (number of tracks):</span><span id="totalIndex"></span></p>
-
-
-      <p><span class="debugHead">Tags for current track:</span><span id="currTags"></span></p>
-      <p><span class="debugHead">Accumulated credits (to be played at the end):</span></p><p id="creditsStack"></p>
-
-      <p><br></p>
-      <p id="shuffle"><span class="debugHead">Full List:</span><span id="fullList"></span></p>
-
-      <!-- <p><span class="debugHead">Next up:</span><span id="nextUp"></span></p> -->
-      <!-- <p><span class="debugHead">Forbidden? </span><span id="forbidden"></span></p> -->
-
-    </div>
+  
 </footer>
 
 </html>

@@ -134,6 +134,10 @@ window.addEventListener("load", (event) => {
     }, 50);
   }
 
+  /* 1. Define two functions: addAudioFromUrl and addAudioFromCredit. These functions take a song 
+  object as input, create an audio element for the song's URL, assign it to the song.audio property, 
+  and return the modified song object.*/
+
   function createAudioElement(url) {
     const audio = new Audio();
     audio.preload = "none";
@@ -141,10 +145,6 @@ window.addEventListener("load", (event) => {
     audio.controls = false;
     return audio;
   }
-
-  /* 1. Define two functions: addAudioFromUrl and addAudioFromCredit. These functions take a song 
-  object as input, create an audio element for the song's URL, assign it to the song.audio property, 
-  and return the modified song object.*/
 
   const addAudioFromUrl = (song) => {
     song.audio = createAudioElement(song.url);
@@ -160,9 +160,23 @@ window.addEventListener("load", (event) => {
   };
 
   /* 2. Define an array introTracks containing an object representing an intro track. Each object 
-  in the array is processed using the addAudioFromUrl function. */
-  const introTracks = [
-    {name: 'INTRO_2', url: './sounds/00_INTRO/INTRO_2.mp3', duration: 113, author: '', form: '', placement: [''], length: '', language: '', sentiment: ' ', tags: ['intro'], backgroundMusic: '', credit: ''},
+  in the array is processed using the addAudioFromUrl function. (right now it's just one track */
+
+  const standardIntro = [
+    {
+      name: "INTRO_2",
+      url: "./sounds/00_INTRO/INTRO_2.mp3",
+      duration: 113,
+      author: "",
+      form: "",
+      placement: [""],
+      length: "",
+      language: "",
+      sentiment: " ",
+      tags: ["intro"],
+      backgroundMusic: "",
+      credit: "",
+    },
   ].map(addAudioFromUrl);
 
   /* Define an empty array creditsArray. */
@@ -172,429 +186,639 @@ window.addEventListener("load", (event) => {
    representing an outro track. Again, each object is processed using the addAudioFromUrl function. */
 
   const outroAudioSounds = [
-    // {
-    //   name: "outro",
-    //   url: "./sounds/XX_OUTRO/OUTRO2PT1SOLO.mp3",
-    //   duration: 99,
-    //   medium: "special",
-    //   tags: ["outro"],
-    //   credit: "",
-    // },
-    {name: 'OUTRO_2.2', url: './sounds/XX_OUTRO/OUTRO_2.2.mp3', duration: 6, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: ['outro'], backgroundMusic: '', credit: ''},
-
+    {
+      name: "OUTRO_2.2",
+      url: "./sounds/XX_OUTRO/OUTRO_2.2.mp3",
+      duration: 6,
+      author: "",
+      form: "",
+      placement: [""],
+      length: "",
+      language: "",
+      sentiment: "",
+      tags: ["outro"],
+      backgroundMusic: "",
+      credit: "",
+    },
   ].map(addAudioFromUrl);
 
   const finalOutroAudioSounds = [
-    {name: 'OUTRO_2.2', url: './sounds/XX_OUTRO/OUTRO_2.2.mp3', duration: 6, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: ['outro'], backgroundMusic: '', credit: ''},
-
+    {
+      name: "OUTRO_2.2",
+      url: "./sounds/XX_OUTRO/OUTRO_2.2.mp3",
+      duration: 6,
+      author: "",
+      form: "",
+      placement: [""],
+      length: "",
+      language: "",
+      sentiment: "",
+      tags: ["outro"],
+      backgroundMusic: "",
+      credit: "",
+    },
   ].map(addAudioFromUrl);
 
-  /* 5. Define an array SONGS containing multiple song objects. Each song object is processed using 
-the addAudioFromUrl function.
- */
-
-  const SONGS = [
-{name: 'M_CHARLOTTE_10', url: './sounds/MUSIC/M_CHARLOTTE_10.mp3', duration: 130, author: 'CHARLOTTE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['Home', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_CHARLOTTE_11', url: './sounds/MUSIC/M_CHARLOTTE_11.mp3', duration: 95, author: 'CHARLOTTE', form: 'music', placement: ['middle', 'end'], length: 'short', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_CHARLOTTE_12', url: './sounds/MUSIC/M_CHARLOTTE_12.mp3', duration: 142, author: 'CHARLOTTE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_CHARLOTTE_13', url: './sounds/MUSIC/M_CHARLOTTE_13.mp3', duration: 147, author: 'CHARLOTTE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_CHARLOTTE_14', url: './sounds/MUSIC/M_CHARLOTTE_14.mp3', duration: 76, author: 'CHARLOTTE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_CHARLOTTE_15', url: './sounds/MUSIC/M_CHARLOTTE_15.mp3', duration: 61, author: 'CHARLOTTE', form: 'music', placement: ['end'], length: 'short', language: 'verbal', sentiment: 'moderate', tags: ['Home', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_CHARLOTTE_16', url: './sounds/MUSIC/M_CHARLOTTE_16.mp3', duration: 68, author: 'CHARLOTTE', form: 'music', placement: ['end', 'middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['wellness', 'Home', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'M_KIKO_B_01', url: './sounds/MUSIC/M_KIKO_B_01.mp3', duration: 163, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_B_02', url: './sounds/MUSIC/M_KIKO_B_02.mp3', duration: 149, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_B_03', url: './sounds/MUSIC/M_KIKO_B_03.mp3', duration: 114, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_C_05', url: './sounds/MUSIC/M_KIKO_C_05.mp3', duration: 61, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_C_06', url: './sounds/MUSIC/M_KIKO_C_06.mp3', duration: 80, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_S_02', url: './sounds/MUSIC/M_KIKO_S_02.mp3', duration: 64, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_Z_01', url: './sounds/MUSIC/M_KIKO_Z_01.mp3', duration: 77, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_KIKO_Z_02', url: './sounds/MUSIC/M_KIKO_Z_02.mp3', duration: 158, author: 'KIKO', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'M_DEMI_02', url: './sounds/MUSIC/M_DEMI_02.mp3', duration: 46, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: ' ', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_03', url: './sounds/MUSIC/M_DEMI_03.mp3', duration: 42, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_05', url: './sounds/MUSIC/M_DEMI_05.mp3', duration: 34, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_06', url: './sounds/MUSIC/M_DEMI_06.mp3', duration: 112, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_08', url: './sounds/MUSIC/M_DEMI_08.mp3', duration: 75, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_11', url: './sounds/MUSIC/M_DEMI_11.mp3', duration: 87, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_13', url: './sounds/MUSIC/M_DEMI_13.mp3', duration: 102, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_TURKWAZ_01', url: './sounds/MUSIC/M_TURKWAZ_01.mp3', duration: 384, author: 'TURKWAZ', form: 'music', placement: ['beginning', 'middle', 'end'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_02', url: './sounds/MUSIC/M_TURKWAZ_02.mp3', duration: 396, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'Home', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_03', url: './sounds/MUSIC/M_TURKWAZ_03.mp3', duration: 320, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'heavy', tags: ['Nature', 'Home', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_04', url: './sounds/MUSIC/M_TURKWAZ_04.mp3', duration: 111, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_05', url: './sounds/MUSIC/M_TURKWAZ_05.mp3', duration: 248, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['sound', 'Nature', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_09', url: './sounds/MUSIC/M_TURKWAZ_09.mp3', duration: 242, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_10', url: './sounds/MUSIC/M_TURKWAZ_10.mp3', duration: 160, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'P_ALBERT_01', url: './sounds/POETRY/P_ALBERT_01.mp3', duration: 58, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal', sentiment: 'heavy', tags: ['Nature', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_02', url: './sounds/POETRY/P_ALBERT_02.mp3', duration: 268, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'heavy', tags: ['Nature', 'wellness', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_03', url: './sounds/POETRY/P_ALBERT_03.mp3', duration: 42, author: 'ALBERT', form: 'poetry', placement: ['beginning', 'middle', 'end'], length: 'short', language: 'verbal ', sentiment: 'moderate', tags: ['wellness', 'Wound', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_04', url: './sounds/POETRY/P_ALBERT_04.mp3', duration: 53, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['wellness', 'Home', 'Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_05', url: './sounds/POETRY/P_ALBERT_05.mp3', duration: 39, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Nature', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_06', url: './sounds/POETRY/P_ALBERT_06.mp3', duration: 45, author: 'ALBERT', form: 'poetry', placement: ['beginning, end'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['sound', 'Home', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_07', url: './sounds/POETRY/P_ALBERT_07.mp3', duration: 36, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Nature', 'Home', 'wellness', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_08', url: './sounds/POETRY/P_ALBERT_08.mp3', duration: 49, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'moderate', tags: ['Nature', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_09', url: './sounds/POETRY/P_ALBERT_09.mp3', duration: 37, author: 'ALBERT', form: 'poetry', placement: ['middle', 'end'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Nature', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_10', url: './sounds/POETRY/P_ALBERT_10.mp3', duration: 23, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Home', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_11', url: './sounds/POETRY/P_ALBERT_11.mp3', duration: 90, author: 'ALBERT', form: 'poetry', placement: ['middle', 'end'], length: 'medium', language: 'verbal ', sentiment: 'moderate', tags: ['Home', 'sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_12', url: './sounds/POETRY/P_ALBERT_12.mp3', duration: 48, author: 'ALBERT', form: 'poetry', placement: ['beginning', 'middle'], length: 'short', language: 'verbal ', sentiment: 'moderate', tags: ['Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_13', url: './sounds/POETRY/P_ALBERT_13.mp3', duration: 73, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'moderate', tags: ['Nature', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_14', url: './sounds/POETRY/P_ALBERT_14.mp3', duration: 128, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'heavy', tags: ['Nature', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_15', url: './sounds/POETRY/P_ALBERT_15.mp3', duration: 111, author: 'ALBERT', form: 'poetry', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'light, Moderate', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_16', url: './sounds/POETRY/P_ALBERT_16.mp3', duration: 27, author: 'ALBERT', form: 'poetry', placement: ['beginning', 'middle', 'end'], length: 'short', language: 'verbal ', sentiment: 'moderate', tags: ['wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_17', url: './sounds/POETRY/P_ALBERT_17.mp3', duration: 62, author: 'ALBERT', form: 'poetry', placement: ['beginning', 'middle', 'end'], length: 'medium', language: 'verbal ', sentiment: 'light, Moderate', tags: ['Nature', 'Home', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_ALBERT_18', url: './sounds/POETRY/P_ALBERT_18.mp3', duration: 64, author: 'ALBERT', form: 'poetry', placement: ['middle', 'end'], length: 'medium', language: 'verbal ', sentiment: 'moderate', tags: ['Nature', 'wellness', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3'},
-{name: 'P_NAMITHA_01', url: './sounds/POETRY/P_NAMITHA_01.mp3', duration: 47, author: 'NAMITHA', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'light, Moderate', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3'},
-{name: 'P_NAMITHA_02', url: './sounds/POETRY/P_NAMITHA_02.mp3', duration: 55, author: 'NAMITHA', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'moderate', tags: ['Nature', 'Home', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3'},
-{name: 'P_NAMITHA_03', url: './sounds/POETRY/P_NAMITHA_03.mp3', duration: 30, author: 'NAMITHA', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Nature', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3'},
-{name: 'P_NAMITHA_04', url: './sounds/POETRY/P_NAMITHA_04.mp3', duration: 26, author: 'NAMITHA', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Nature', 'Trees', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3'},
-{name: 'P_NAMITHA_05', url: './sounds/POETRY/P_NAMITHA_05.mp3', duration: 30, author: 'NAMITHA', form: 'poetry', placement: ['beginning', 'middle'], length: 'short', language: 'verbal ', sentiment: 'heavy', tags: ['Home', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3'},
-{name: 'P_NAMITHA_06', url: './sounds/POETRY/P_NAMITHA_06.mp3', duration: 11, author: 'NAMITHA', form: 'poetry', placement: ['middle'], length: 'short', language: 'verbal ', sentiment: 'moderate', tags: ['Nature', 'wellness', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3'},
-{name: 'I_ELLEN_01', url: './sounds/Interview/I_ELLEN_01.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['beginning', 'middle'], length: 'medium', language: 'verbal ', sentiment: 'light', tags: ['sound', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_02', url: './sounds/Interview/I_ELLEN_02.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'moderate', tags: ['sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_03', url: './sounds/INTERVIEWS/I_ELLEN_03.mp3', duration: 245, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal ', sentiment: 'moderate', tags: ['Home', 'sound', 'informative'], backgroundMusic: 'DEMETRI', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_04', url: './sounds/INTERVIEWS/I_ELLEN_04.mp3', duration: 155, author: 'ELLEN', form: 'interview', placement: ['beginning', 'middle', 'end'], length: 'medium', language: 'verbal ', sentiment: 'light', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_05', url: './sounds/INTERVIEWS/I_ELLEN_05.mp3', duration: 151, author: 'ELLEN', form: 'interview', placement: ['beginning', 'middle'], length: 'medium', language: 'verbal ', sentiment: 'light', tags: ['sound', 'wellness'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_JAYNE_01', url: './sounds/INTERVIEWS/I_JAYNE_01.mp3', duration: 226, author: 'JAYNE', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal ', sentiment: 'light', tags: ['Nature', 'sound', 'informative'], backgroundMusic: 'JESSE', credit: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE.mp3'},
-{name: 'I_JAYNE_02', url: './sounds/INTERVIEWS/I_JAYNE_02.mp3', duration: 79, author: 'JAYNE', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'light', tags: ['Nature', 'informative'], backgroundMusic: 'DEMETRI', credit: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE.mp3'},
-{name: 'I_JAYNE_03', url: './sounds/INTERVIEWS/I_JAYNE_03.mp3', duration: 150, author: 'JAYNE', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'light', tags: ['Nature', 'sound', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE.mp3'},
-{name: 'I_JESSE_01', url: './sounds/INTERVIEWS/I_JESSE_01.mp3', duration: 230, author: 'JESSE', form: 'interview', placement: ['end', 'middle'], length: 'long', language: 'verbal ', sentiment: 'heavy', tags: ['sound', 'Nature', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'I_KIKO_01', url: './sounds/INTERVIEWS/I_KIKO_01.mp3', duration: 233, author: 'KIKO', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal ', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'I_KIKO_02', url: './sounds/INTERVIEWS/I_KIKO_02.mp3', duration: 247, author: 'KIKO', form: 'interview', placement: ['end'], length: 'long', language: 'verbal ', sentiment: 'heavy', tags: ['sound', 'wellness'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'I_KIKO_03', url: './sounds/INTERVIEWS/I_KIKO_03.mp3', duration: 175, author: 'KIKO', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal ', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'I_LOUELLA_01', url: './sounds/INTERVIEWS/I_LOUELLA_01.mp3', duration: 238, author: 'LOUELLA', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal ', sentiment: 'moderate', tags: ['sound', 'wellness', 'informative', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_LOUELLA.mp3'},
-{name: 'I_LOUELLA_02', url: './sounds/INTERVIEWS/I_LOUELLA_02.mp3', duration: 140, author: 'LOUELLA', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'moderate', tags: ['Nature', 'Home', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_LOUELLA.mp3'},
-{name: 'I_LOUELLA_03', url: './sounds/INTERVIEWS/I_LOUELLA_03.mp3', duration: 198, author: 'LOUELLA', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal ', sentiment: 'moderate', tags: ['wellness', 'Nature', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_LOUELLA.mp3'},
-{name: 'I_SAM_01', url: './sounds/INTERVIEWS/I_SAM_01.mp3', duration: 138, author: 'SAM', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal ', sentiment: 'light', tags: ['Nature', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SAM.mp3'},
-{name: 'S_BIRDS_01', url: './sounds/SHORTS/S_BIRDS_01.mp3', duration: 97, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_02', url: './sounds/SHORTS/S_BIRDS_02.mp3', duration: 84, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_03', url: './sounds/SHORTS/S_BIRDS_03.mp3', duration: 72, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_04', url: './sounds/SHORTS/S_BIRDS_04.mp3', duration: 60, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_05', url: './sounds/SHORTS/S_BIRDS_05.mp3', duration: 67, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_06', url: './sounds/SHORTS/S_BIRDS_06.mp3', duration: 89, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_07', url: './sounds/SHORTS/S_BIRDS_07.mp3', duration: 92, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_08', url: './sounds/SHORTS/S_BIRDS_08.mp3', duration: 57, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_09', url: './sounds/SHORTS/S_BIRDS_09.mp3', duration: 46, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_10', url: './sounds/SHORTS/S_BIRDS_10.mp3', duration: 66, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_11', url: './sounds/SHORTS/S_BIRDS_11.mp3', duration: 42, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_12', url: './sounds/SHORTS/S_BIRDS_12.mp3', duration: 32, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_13', url: './sounds/SHORTS/S_BIRDS_13.mp3', duration: 56, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_14', url: './sounds/SHORTS/S_BIRDS_14.mp3', duration: 73, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_15', url: './sounds/SHORTS/S_BIRDS_15.mp3', duration: 36, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_16', url: './sounds/SHORTS/S_BIRDS_16.mp3', duration: 33, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_17', url: './sounds/SHORTS/S_BIRDS_17.mp3', duration: 64, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_BIRDS_18', url: './sounds/SHORTS/S_BIRDS_18.mp3', duration: 63, author: 'PIERRE, ELLIOTT', form: 'Short', placement: ['middle'], length: 'short', language: 'NonHuman', sentiment: 'light', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE, ELLIOTT.mp3'},
-{name: 'S_CHARLOTTE_01', url: './sounds/SHORTS/S_CHARLOTTE_01.mp3', duration: 75, author: 'CHARLOTTE', form: 'Short', placement: ['end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'wellness', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'S_CHARLOTTE_02', url: './sounds/SHORTS/S_CHARLOTTE_02.mp3', duration: 25, author: 'CHARLOTTE', form: 'Short', placement: ['beginning', 'middle'], length: 'short', language: 'verbal', sentiment: 'light', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'S_CHARLOTTE_03', url: './sounds/SHORTS/S_CHARLOTTE_03.mp3', duration: 32, author: 'CHARLOTTE', form: 'Short', placement: ['middle'], length: 'short', language: 'verbal', sentiment: 'light', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'S_CHARLOTTE_07', url: './sounds/SHORTS/S_CHARLOTTE_07.mp3', duration: 41, author: 'CHARLOTTE', form: 'Short', placement: ['middle'], length: 'short', language: 'verbal', sentiment: 'light', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'S_CHARLOTTE_09', url: './sounds/SHORTS/S_CHARLOTTE_09.mp3', duration: 23, author: 'CHARLOTTE', form: 'Short', placement: ['middle'], length: 'short', language: 'verbal', sentiment: 'light', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3'},
-{name: 'S_DEMI_14', url: './sounds/SHORTS/S_DEMI_14.mp3', duration: 15, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_15', url: './sounds/SHORTS/S_DEMI_15.mp3', duration: 11, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_16', url: './sounds/SHORTS/S_DEMI_16.mp3', duration: 23, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_17', url: './sounds/SHORTS/S_DEMI_17.mp3', duration: 11, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_18', url: './sounds/SHORTS/S_DEMI_18.mp3', duration: 22, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_19', url: './sounds/SHORTS/S_DEMI_19.mp3', duration: 15, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_20', url: './sounds/SHORTS/S_DEMI_20.mp3', duration: 23, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_21', url: './sounds/SHORTS/S_DEMI_21.mp3', duration: 11, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_22', url: './sounds/SHORTS/S_DEMI_22.mp3', duration: 22, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_DEMI_23', url: './sounds/SHORTS/S_DEMI_23.mp3', duration: 22, author: 'DEMETRI', form: 'Short', placement: ['middle', 'end'], length: 'short', language: 'musical', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_KIKO_B_04', url: './sounds/SHORTS/S_KIKO_B_04.mp3', duration: 21, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_KIKO_C_01', url: './sounds/SHORTS/S_KIKO_C_01.mp3', duration: 55, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_KIKO_C_02', url: './sounds/SHORTS/S_KIKO_C_02.mp3', duration: 38, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_KIKO_C_09', url: './sounds/SHORTS/S_KIKO_C_09.mp3', duration: 41, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_KIKO_S_02', url: './sounds/SHORTS/S_KIKO_S_02.mp3', duration: 29, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_KIKO_S_03', url: './sounds/SHORTS/S_KIKO_S_03.mp3', duration: 37, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_KIKO_S_04', url: './sounds/SHORTS/S_KIKO_S_04.mp3', duration: 37, author: 'KIKO', form: 'Short', placement: ['middle'], length: 'short', language: 'musical', sentiment: 'moderate', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3'},
-{name: 'S_LAUGHING_01', url: './sounds/SHORTS/S_LAUGHING_01.mp3', duration: 16, author: 'BABIES', form: 'Short', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'light', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_BABIES.mp3'},
-{name: 'S_LAUGHING_02', url: './sounds/SHORTS/S_LAUGHING_02.mp3', duration: 28, author: 'BABIES', form: 'Short', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'light', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_BABIES.mp3'},
-
-{name: 'M_TURKWAZ_06', url: './sounds/Music/M_TURKWAZ_06.mp3', duration: 0, author: 'TURKWAZ', form: 'music', placement: ['middle', 'end'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['sound', 'Nature', 'Home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_07', url: './sounds/Music/M_TURKWAZ_07.mp3', duration: 0, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_TURKWAZ_08', url: './sounds/Music/M_TURKWAZ_08.mp3', duration: 0, author: 'TURKWAZ', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3'},
-{name: 'M_DEMI_01', url: './sounds/Music/M_DEMI_01.mp3', duration: 0, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'medium', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_04', url: './sounds/Music/M_DEMI_04.mp3', duration: 0, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_07', url: './sounds/Music/M_DEMI_07.mp3', duration: 0, author: 'DEMETRI', form: 'music', placement: ['middle'], length: 'medim', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_09', url: './sounds/Music/M_DEMI_09.mp3', duration: 0, author: 'DEMETRI', form: 'music', placement: ['middle, beginning'], length: 'short', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_10', url: './sounds/Music/M_DEMI_10.mp3', duration: 0, author: 'DEMETRI', form: 'music', placement: ['middle, beginning'], length: 'shot', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'M_DEMI_12', url: './sounds/Music/M_DEMI_12.mp3', duration: 0, author: 'DEMETRI', form: 'music', placement: ['middle, beginning'], length: 'short', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'home'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3'},
-{name: 'S_JESSE_01', url: './sounds/Music/S_JESSE_01.mp3', duration: 0, author: 'JESSE', form: 'music', placement: ['middle'], length: 'short', language: 'nonVerbal', sentiment: 'light', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'M_JESSE_02', url: './sounds/Music/M_JESSE_02.mp3', duration: 0, author: 'JESSE', form: 'music', placement: ['middle'], length: 'medium ', language: 'nonVerbal', sentiment: 'moderate', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'M_JESSE_05', url: './sounds/Music/M_JESSE_05.mp3', duration: 0, author: 'JESSE', form: 'music', placement: ['middle'], length: 'medium ', language: 'nonVerbal', sentiment: 'heavy', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'M_JESSE_06', url: './sounds/Music/M_JESSE_06.mp3', duration: 0, author: 'JESSE', form: 'music', placement: ['middle'], length: 'medium ', language: 'nonVerbal', sentiment: 'heavy', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'M_JESSE_07', url: './sounds/Music/M_JESSE_07.mp3', duration: 0, author: 'JESSE', form: 'music', placement: ['middle'], length: 'medium ', language: 'nonVerbal', sentiment: 'heavy', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'M_JESSE_09', url: './sounds/Music/M_JESSE_09.mp3', duration: 0, author: 'JESSE', form: 'music', placement: ['middle'], length: 'medium ', language: 'nonVerbal', sentiment: 'heavy', tags: ['sound', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3'},
-{name: 'I_DIANA_01', url: './sounds/Interview/I_DIANA_01.mp3', duration: 0, author: 'DIANA', form: 'interview', placement: ['middle, beginning'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'Home', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DIANA.mp3'},
-{name: 'I_DIANA_02', url: './sounds/Interview/I_DIANA_02.mp3', duration: 0, author: 'DIANA', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DIANA.mp3'},
-{name: 'I_DIANA_03', url: './sounds/Interview/I_DIANA_03.mp3', duration: 0, author: 'DIANA', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'heavy', tags: ['Home', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DIANA.mp3'},
-{name: 'I_DIANA_04', url: './sounds/Interview/I_DIANA_04.mp3', duration: 0, author: 'DIANA', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'heavy', tags: ['Nature', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_DIANA.mp3'},
-{name: 'I_FIDES_01', url: './sounds/Interview/I_FIDES_01.mp3', duration: 0, author: 'FIDES', form: 'interview', placement: ['middle '], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_FIDES.mp3'},
-{name: 'I_FIDES_03', url: './sounds/Interview/I_FIDES_03.mp3', duration: 0, author: 'FIDES', form: 'interview', placement: ['middle '], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_FIDES.mp3'},
-{name: 'I_FIDES_04', url: './sounds/Interview/I_FIDES_04.mp3', duration: 0, author: 'FIDES', form: 'interview', placement: ['middle '], length: 'medium', language: 'verbal', sentiment: 'heavy', tags: ['sound', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_FIDES.mp3'},
-{name: 'M_CARMEL_01', url: './sounds/Music/M_CARMEL_01.mp3', duration: 0, author: 'CARMELPATRICIA', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'heavy', tags: ['Nature', 'wellness', 'Home', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_CARMELPATRICIA.mp3'},
-{name: 'M_THUNDERBIRD_01', url: './sounds/Music/M_THUNDERBIRD_01.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'M_THUNDERBIRD_02', url: './sounds/Music/M_THUNDERBIRD_02.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'M_THUNDERBIRD_03', url: './sounds/Music/M_THUNDERBIRD_03.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'M_THUNDERBIRD_04', url: './sounds/Music/M_THUNDERBIRD_04.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'M_THUNDERBIRD_05', url: './sounds/Music/M_THUNDERBIRD_05.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'M_THUNDERBIRD_06', url: './sounds/Music/M_THUNDERBIRD_06.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle '], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'M_THUNDERBIRD_07', url: './sounds/Music/M_THUNDERBIRD_07.mp3', duration: 0, author: 'THUNDERBIRD', form: 'music', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_THUNDERBIRD.mp3'},
-{name: 'I_ELLEN_06', url: './sounds/Interview/I_ELLEN_06.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_07', url: './sounds/Interview/I_ELLEN_07.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_08', url: './sounds/Interview/I_ELLEN_08.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_09', url: './sounds/Interview/I_ELLEN_09.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_10', url: './sounds/Interview/I_ELLEN_10.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle', 'beginning'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_11', url: './sounds/Interview/I_ELLEN_11.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_ELLEN_12', url: './sounds/Interview/I_ELLEN_12.mp3', duration: 0, author: 'ELLEN', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['sound', 'wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3'},
-{name: 'I_AMY_01', url: './sounds/Interview/I_AMY_01.mp3', duration: 0, author: 'AMY', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['Nature', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_AMY.mp3'},
-{name: 'I_JAYNE_04', url: './sounds/Interview/I_JAYNE_04.mp3', duration: 0, author: 'JAYNE', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['Nature', 'sound', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE.mp3'},
-{name: 'I_JAYNE_05', url: './sounds/Interview/I_JAYNE_05.mp3', duration: 0, author: 'JAYNE, RACHEL', form: 'interview', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['Nature', 'sound', 'informative'], backgroundMusic: 'DEMETRI', credit: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE, RACHEL.mp3'},
-{name: 'I_JAYNE_07', url: './sounds/Interview/I_JAYNE_07.mp3', duration: 0, author: 'JAYNE', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['Nature', 'sound', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE.mp3'},
-{name: 'I_WRAY_01', url: './sounds/Interview/I_WRAY_01.mp3', duration: 0, author: 'WRAY', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_WRAY.mp3'},
-{name: 'I_KIM_01', url: './sounds/Interview/I_KIM_01.mp3', duration: 0, author: 'KIM, RACHEL ', form: 'interview', placement: ['middle  '], length: 'long', language: 'verbal', sentiment: 'light', tags: ['wellness', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM, RACHEL .mp3'},
-{name: 'S_KIM_02.1', url: './sounds/Short/S_KIM_02.1.mp3', duration: 0, author: 'KIM, RACHEL ', form: 'Short', placement: ['middle'], length: 'short', language: 'verbal', sentiment: 'light', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM, RACHEL .mp3'},
-{name: 'S_KIM_02.2', url: './sounds/Short/S_KIM_02.2.mp3', duration: 0, author: 'KIM, RACHEL ', form: 'Short', placement: ['middle '], length: 'short', language: 'verbal', sentiment: 'light', tags: ['nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM, RACHEL .mp3'},
-{name: 'I_KIM_03', url: './sounds/Interview/I_KIM_03.mp3', duration: 0, author: 'KIM', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['wellness', 'informative', 'nature'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM.mp3'},
-{name: 'I_KIM_04', url: './sounds/Interview/I_KIM_04.mp3', duration: 0, author: 'KIM', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM.mp3'},
-{name: 'I_KIM_05', url: './sounds/Interview/I_KIM_05.mp3', duration: 0, author: 'KIM', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM.mp3'},
-{name: 'I_KIM_06', url: './sounds/Interview/I_KIM_06.mp3', duration: 0, author: 'KIM', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM.mp3'},
-{name: 'I_KIM_07', url: './sounds/Interview/I_KIM_07.mp3', duration: 0, author: 'KIM, RACHEL ', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM, RACHEL .mp3'},
-{name: 'I_KIM_08', url: './sounds/Interview/I_KIM_08.mp3', duration: 0, author: 'KIM, RACHEL ', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'light', tags: ['wellness', 'informative'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_KIM, RACHEL .mp3'},
-{name: 'S_SARAH_01', url: './sounds/Short/S_SARAH_01.mp3', duration: 0, author: 'SARAH', form: 'Short', placement: ['beginning', 'middle'], length: 'short', language: 'verbal', sentiment: 'heavy', tags: ['wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'S_SARAH_02', url: './sounds/Short/S_SARAH_02.mp3', duration: 0, author: 'SARAH', form: 'Short', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'heavy', tags: ['Nature', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'I_SARAH_03', url: './sounds/Interview/I_SARAH_03.mp3', duration: 0, author: 'SARAH', form: 'interview', placement: ['middle', 'end'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'wellness'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'I_SARAH_04', url: './sounds/Interview/I_SARAH_04.mp3', duration: 0, author: 'SARAH', form: 'interview', placement: ['middle', 'end'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'wellness'], backgroundMusic: 'JESSE ', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'I_SARAH_05', url: './sounds/Interview/I_SARAH_05.mp3', duration: 0, author: 'SARAH', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['Nature', 'wellness'], backgroundMusic: 'JESSE ', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'I_SARAH_06', url: './sounds/Interview/I_SARAH_06.mp3', duration: 0, author: 'SARAH', form: 'interview', placement: ['middle'], length: 'medium', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'wellness'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'I_SARAH_07', url: './sounds/Interview/I_SARAH_07.mp3', duration: 0, author: 'SARAH', form: 'interview', placement: ['middle'], length: 'long', language: 'verbal', sentiment: 'moderate', tags: ['Nature', 'wellness', 'sound'], backgroundMusic: 'KIKO', credit: './sounds/XX_OUTRO/NAMES/NAMES_SARAH.mp3'},
-{name: 'M_MAR_01', url: './sounds/Music/M_MAR_01.mp3', duration: 0, author: 'SUTURE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SUTURE.mp3'},
-{name: 'M_MAR_02', url: './sounds/Music/M_MAR_02.mp3', duration: 0, author: 'SUTURE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SUTURE.mp3'},
-{name: 'M_MAR_03', url: './sounds/Music/M_MAR_03.mp3', duration: 0, author: 'SUTURE', form: 'music', placement: ['middle', 'end'], length: 'medium', language: 'verbal', sentiment: 'light', tags: ['sound', 'wellness'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SUTURE.mp3'},
-{name: 'S_MAR_04', url: './sounds/Music/S_MAR_04.mp3', duration: 0, author: 'SUTURE', form: 'music', placement: ['middle'], length: 'medium', language: 'musical', sentiment: 'heavy', tags: ['sound'], backgroundMusic: '', credit: './sounds/XX_OUTRO/NAMES/NAMES_SUTURE.mp3'},
-
-{name: 'INTRO_2', url: './sounds/00_INTRO/INTRO_2.mp3', duration: 113, author: '', form: '', placement: [''], length: '', language: '', sentiment: ' ', tags: [''], backgroundMusic: '', credit: ''},
-{name: 'OUTRO_2.1', url: './sounds//OUTRO_2.1 .mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-{name: 'OUTRO_2.2', url: './sounds/XX_OUTRO/OUTRO_2.2.mp3', duration: 6, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-{name: 'OUTRO_2.2_MUSIC', url: './sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3', duration: 35, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-{name: 'OUTRO_MusicOnly_Long', url: './sounds/XX_OUTRO/OUTRO_MusicOnly_Long.mp3', duration: 113, author: '', form: ' ', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-{name: 'OUTRO_MusicOnly_Short', url: './sounds/XX_OUTRO/OUTRO_MusicOnly_Short.mp3', duration: 39, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-
-// {name: 'NAMES_ALBERT', url: './sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3', duration: 2, author: ' ', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_AMY', url: './sounds/XX_OUTRO/NAMES/NAMES_AMY.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_CARMEL', url: './sounds/XX_OUTRO/NAMES/NAMES_CARMEL.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_CHARLOTTE', url: './sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_ELLEN', url: './sounds/XX_OUTRO/NAMES/NAMES_ELLEN.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_FIDES', url: './sounds/XX_OUTRO/NAMES/NAMES_FIDES.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_JAYNE', url: './sounds/XX_OUTRO/NAMES/NAMES_JAYNE.mp3', duration: 1, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_JESSE', url: './sounds/XX_OUTRO/NAMES/NAMES_JESSE.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_KIKO', url: './sounds/XX_OUTRO/NAMES/NAMES_KIKO.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_LOUELLA', url: './sounds/XX_OUTRO/NAMES/NAMES_LOUELLA.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_NAMITHA', url: './sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3', duration: 4, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_PIERRE', url: './sounds/XX_OUTRO/NAMES/NAMES_PIERRE.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_RACHEL', url: './sounds/XX_OUTRO/NAMES/NAMES_RACHEL.mp3', duration: 2, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_WRAY', url: './sounds/XX_OUTRO/NAMES/NAMES_WRAY.mp3', duration: 2, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_SAM', url: './sounds/XX_OUTRO/NAMES/NAMES_SAM.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_DEMETRI', url: './sounds/XX_OUTRO/NAMES/NAMES_DEMETRI.mp3', duration: 4, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_TURKWAZ', url: './sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3', duration: 3, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_SARAH', url: './sounds/NAMES_SARAH.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_DIANA', url: './sounds/NAMES_DIANA.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_KIM', url: './sounds/NAMES_KIM.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_ELLIOT', url: './sounds/NAMES_ELLIOT.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_CARMELPATRICIA', url: './sounds//NAMES_CARMELPATRICIA.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_SUTURE', url: './sounds/NAMES_SUTURE.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''},
-// {name: 'NAMES_THUNDERBIRD', url: './sounds/NAMES_THUNDERBIRD.mp3', duration: 0, author: '', form: '', placement: [''], length: '', language: '', sentiment: '', tags: [''], backgroundMusic: '', credit: ''}
-
-    
-  ].map(addAudioFromUrl);
-
-  // amount of time selected for the walk in seconds
-
-  // let total_duration = parseInt(
-  //   document.getElementById("total-duration").value
-  // );
+  /* 5. Define an array SONGS containing multiple song objects, each song object is 
+  processed using the addAudioFromUrl function. */
+  const SONGS = SONGSRAW.map(addAudioFromUrl);
 
   /* 6. Set the value of the total_duration variable (in seconds). */
   var total_duration = MAXPLAYLISTDURATION;
 
-  /* 7. Define PREFETCH_BUFFER_SECONDS (how many seconds before a song is completed that we 
-  should pre-fetch the next song */
+  /* 7. set how many seconds before a song is completed to pre-fetch the next song */
   const PREFETCH_BUFFER_SECONDS = 8;
 
-  /* 8. followTracklistRules takes a tracklist array as input and applies certain
-  rules to modify the tracklist. The function does the following:
-
-  * Moves an object with the tag "Beginning" to the beginning of the tracklist.
-  * Moves all objects with the tag "Long" to the end of the tracklist.
-  * Checks for forbidden tag combinations and prints an error message if found.
-  * Modifies the tracklist by adding an intro track at the beginning and an end object at the end.
-  * Returns the modified tracklist.
+  /* 8. followTracklistRules takes a tracklist array as input, applies certain
+  rules to modify the tracklist, and returns the modified tracklist.
   */
 
-  function followTracklistRules(tracklist) {
-    // Move an object with the tag "Beginning" to the beginning of the tracklist.
-    let beginningObject = tracklist.find((obj) =>
-      obj.placement.includes("beginning")
-    );
-    if (beginningObject) {
-      tracklist.splice(tracklist.indexOf(beginningObject), 1);
-      tracklist.unshift(beginningObject);
-    }
-
-    // Moves all objects with the tag "Long" to the end of the tracklist. Is this even what I want?
-    let longObjects = tracklist.filter((obj) => obj.length.includes("long"));
-
-    if (longObjects.length > 0) {
-      const longTitles = longObjects.map((obj) =>
-        obj.title && typeof obj.title === "string" ? obj.title : "Untitled"
+  function checkRulesForCuratedPlaylist(curatedPlaylist) {
+    function logError(ruleNumber, track, message) {
+      console.error(
+        `Rule ${ruleNumber} broken for track: ${track.name}. ${message}`
       );
-      longObjects.forEach((obj) => {
-        const index = tracklist.indexOf(obj);
-        tracklist.splice(index, 1);
-        // console.log(`Moved "${obj.name}" to the end of the tracklist`);
-      });
-      tracklist.push(...longObjects);
-      // console.log(`Moved ${longObjects.length} "Long" objects to the end of the tracklist`);
     }
 
-    // Checks for forbidden tag combinations and prints an error message if found.
-    // if a list item has a "Heavy" tag, it should not be followed by an object with a "Laughing" tag
-    for (let i = 0; i < tracklist.length - 1; i++) {
-      let currentObj = tracklist[i];
-      let nextObj = tracklist[i + 1];
+    for (let i = 0; i < curatedPlaylist.length; i++) {
+      const currentTrack = curatedPlaylist[i];
+      const prevTrack = curatedPlaylist[i - 1];
+      const nextTrack = curatedPlaylist[i + 1];
+
+      // Rule 1: No more than two tracks from the same author in a tracklist.
+      const authorCount = curatedPlaylist.filter(
+        (track) => track.author === currentTrack.author
+      ).length;
+      if (authorCount > 2) {
+        logError(
+          1,
+          currentTrack,
+          `More than two tracks from the same author: ${currentTrack.author}.`
+        );
+      }
+
+      // Rule 2: Tracks with the form shorts and the language musical can never follow tracks with the form music.
       if (
-        currentObj.sentiment.includes("heavy") &&
-        nextObj.sentiment.includes("light")
+        currentTrack.form === "shorts" &&
+        currentTrack.language === "musical" &&
+        prevTrack?.form === "music"
+      ) {
+        logError(
+          2,
+          currentTrack,
+          "Follows track with form 'music' and language 'musical'."
+        );
+      }
+
+      // Rule 3: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
+      if (
+        currentTrack.form === "music" &&
+        prevTrack?.form === "shorts" &&
+        prevTrack?.language === "musical"
+      ) {
+        logError(
+          3,
+          currentTrack,
+          "Follows track with form 'shorts' and language 'musical'."
+        );
+      }
+
+      // Rule 4: The value for backgroundMusic should never be the same as the author of the immediately preceding track or the immediately following track.
+      if (
+        (prevTrack && currentTrack.backgroundMusic === prevTrack.author) ||
+        (nextTrack && currentTrack.backgroundMusic === nextTrack.author)
+      ) {
+        logError(
+          4,
+          currentTrack,
+          "Background music matches author of the preceding or following track."
+        );
+      }
+
+      // Rule 5: If a track has the sentiment 'heavy', then the track right before it cannot have the 'laughter' tag.
+      if (
+        currentTrack.sentiment === "heavy" &&
+        prevTrack?.tags.includes("laughter")
+      ) {
+        logError(
+          5,
+          currentTrack,
+          "Track with sentiment 'heavy' follows track with 'laughter' tag."
+        );
+      }
+
+      // Rule 6: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist, none of the other two tracks should be added to the tracklist.
+      const forbiddenTracks = ["I_KIM_03", "I_KIM_04", "I_KIM_05"];
+      if (forbiddenTracks.includes(currentTrack.name)) {
+        const forbiddenInCurated = curatedPlaylist.some((track) =>
+          forbiddenTracks.includes(track.name)
+        );
+        if (forbiddenInCurated) {
+          logError(
+            6,
+            currentTrack,
+            "Another forbidden track is present in the tracklist."
+          );
+        }
+      }
+
+      // Rule 7: If there is one track with the author 'Sarah' and the form 'Interview' in the tracklist, there should not be any more tracks with the author 'Sarah' and the form 'Interview' in the tracklist.
+      if (
+        currentTrack.author === "Sarah" &&
+        currentTrack.form === "Interview" &&
+        curatedPlaylist.some(
+          (track) =>
+            track.author === "Sarah" &&
+            track.form === "Interview" &&
+            track !== currentTrack
+        )
+      ) {
+        logError(
+          7,
+          currentTrack,
+          "Another track with 'Sarah' and form 'Interview' is present in the tracklist."
+        );
+      }
+
+      // Rule 8: If there is one track with the author 'Louella' in the tracklist, there should not be any more tracks with the author 'Louella' in the tracklist.
+      if (
+        currentTrack.author === "Louella" &&
+        curatedPlaylist.some(
+          (track) => track.author === "Louella" && track !== currentTrack
+        )
+      ) {
+        logError(
+          8,
+          currentTrack,
+          "Another track with 'Louella' is present in the tracklist."
+        );
+      }
+    }
+    console.log("checked");
+  }
+
+  function followTracklistRules(tracklist) {
+    // ooo
+    let curatedTracklist = [];
+    console.log(curatedTracklist);
+
+    function trackExistsWithAttributes(curatedTracklist, attribute, value) {
+      return curatedTracklist.some((track) => track[attribute] === value);
+    }
+
+    // Log helper function to make logging more informative
+    function logRuleApplication(ruleNumber, description, isApplied) {
+      const ruleStatus = isApplied ? "applied" : "broken";
+      console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
+    }
+
+    // Updated function to check if a track is valid based on the new rules.
+    function isValidTrack(track, prevTrack1, prevTrack2, curatedTracklist) {
+      const index = curatedTracklist.length;
+
+      // Rule only for Track 2: The 2nd track should have the placement 'beginning'.
+      if (index === 1 && !track.placement.includes("beginning")) return false;
+
+      // Rule only for Track 3: The 3rd track should have the placement 'beginning' and a different form than the 2nd track.
+      if (index === 2) {
+        if (!track.placement.includes("beginning")) return false;
+        if (track.form === prevTrack1.form) return false;
+      }
+
+      // Rule only for Track 4: The 4th track should have the placement 'middle' and a different form than the 3rd track.
+      if (index === 3) {
+        if (!track.placement.includes("middle")) return false;
+        if (track.form === prevTrack1.form) return false;
+      }
+
+      // Rule only for Track 5: The 5th track should have the length 'short', not have the placement 'beginning',
+      // and have a different language than the 4th track.
+      if (index === 4) {
+        if (track.length !== "short") return false;
+        if (track.placement.includes("beginning")) return false;
+        if (track.language === prevTrack1.language) return false;
+      }
+
+      // Rule only for Track 6: The 6th track should have the placement 'middle' and a different form than the 5th track.
+      if (index === 5) {
+        if (!track.placement.includes("middle")) return false;
+        if (track.form === prevTrack1.form) return false;
+      }
+
+      // Rule only for Track 7: The 7th track should have the placement 'middle', a different form than the 6th track,
+      // and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
+      if (index === 6) {
+        if (!track.placement.includes("middle")) return false;
+        if (track.form === prevTrack1.form) return false;
+        if (track.form !== "MUSIC" && track.language === prevTrack1.language) {
+          return false;
+        }
+      }
+
+      // Rule only for Track 8: The 8th track should have the placement 'middle', a different form than the 6th and 7th tracks,
+      // and a different language than the 6th and 7th tracks.
+      if (index === 7) {
+        if (!track.placement.includes("middle")) return false;
+        if (track.form === prevTrack1.form || track.form === prevTrack2.form)
+          return false;
+        if (
+          track.language === prevTrack1.language ||
+          track.language === prevTrack2.language
+        ) {
+          return false;
+        }
+      }
+
+      // GENERAL RULES
+
+      // Rule: No more than two tracks from the same author in a tracklist.
+      const authorCount = curatedTracklist.filter(
+        (t) => t.author === track.author
+      ).length;
+      if (authorCount >= 2) {
+        return false;
+      }
+
+      // Rule: Tracks with the form shorts and the language musical can never follow tracks with the form music.
+      if (
+        track.form === "shorts" &&
+        track.language === "musical" &&
+        curatedTracklist.some((prevTrack) => prevTrack.form === "music")
+      ) {
+        return false;
+      }
+
+      // Rule: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
+      if (
+        track.form === "music" &&
+        curatedTracklist.some(
+          (prevTrack) =>
+            prevTrack.form === "shorts" && prevTrack.language === "musical"
+        )
+      ) {
+        return false;
+      }
+
+      // Rule: The value for backgroundMusic should never be the same as the author of the track right before it or the immediately following track.
+      const nextTrack = curatedTracklist[curatedTracklist.length - 1];
+      if (
+        (prevTrack1 && track.backgroundMusic === prevTrack1.author) ||
+        (nextTrack && track.backgroundMusic === nextTrack.author)
+      ) {
+        return false;
+      }
+
+      // Rule: If a track has the sentiment heavy, then the track right before it cannot have the laughter tag.
+      if (
+        track.sentiment === "heavy" &&
+        prevTrack1 &&
+        prevTrack1.tags.includes("laughter")
+      ) {
+        return false;
+      }
+
+      // Rule: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist,
+      // none of the other two tracks should be added to the tracklist.
+      const forbiddenTracks = ["I_KIM_03", "I_KIM_04", "I_KIM_05"];
+      if (
+        forbiddenTracks.includes(track.name) &&
+        curatedTracklist.some((t) => forbiddenTracks.includes(t.name))
+      ) {
+        return false;
+      }
+
+      // Rule: If there is one track with the author Sarah and the form Interview in the tracklist,
+      // there should not be any more tracks with the author Sarah and the form Interview in the tracklist.
+      if (
+        track.author === "Sarah" &&
+        track.form === "Interview" &&
+        curatedTracklist.some(
+          (prevTrack) =>
+            prevTrack.author === "Sarah" && prevTrack.form === "Interview"
+        )
+      ) {
+        return false;
+      }
+
+      // Rule: If there is one track with the author Louella in the tracklist,
+      // there should not be any more tracks with the author Louella in the tracklist.
+      if (
+        track.author === "Louella" &&
+        curatedTracklist.some((prevTrack) => prevTrack.author === "Louella")
+      ) {
+        return false;
+      }
+
+      // Rule: IF WE ARE LATER IN THE TRACKLIST
+      // Rule: IF WE ARE LATER IN THE TRACKLIST
+      // Rule: IF WE ARE LATER IN THE TRACKLIST
+
+      if (index > 8) {
+        // Helper function to check if a track exists with the given attribute and value in the curated tracklist
+        function trackExistsWithAttributes(curatedTracklist, attribute, value) {
+          return curatedTracklist.some((track) => track[attribute] === value);
+        }
+
+        // Rule: Ensure that the tracklist contains at least one track with the author "albert".
+        if (!trackExistsWithAttributes(curatedPlaylist, "author", "albert") && track.author !== "albert" ) {
+          console.log("no albert here!")
+          return false;
+        }
+
+        // Rule: Ensure that the tracklist contains at least one track with the author "birds".
+        if (!trackExistsWithAttributes(curatedPlaylist, "author", "birds") && track.author !== "birds" ) {
+          console.log("no birds here!")
+          return false;
+        }
+
+        // Rule: Ensure that the tracklist contains at least one track with the form "interview".
+        if (!trackExistsWithAttributes(curatedPlaylist, "form", "interview") && track.form !== "interview" ) {
+          return false;
+        }
+
+        // Rule: Ensure that the tracklist contains at least one track with the form "music".
+        if (!trackExistsWithAttributes(curatedPlaylist, "form", "music") && track.form !== "music" ) {
+          return false;
+        }
+
+        // Helper variables to track certain conditions for the later in the tracklist rules
+        let kikoTypeInterviewPresent = false;
+        let geeseTagPresent = false;
+
+        // Loop through the curated tracklist to apply the later in the tracklist rules
+        for (let i = 0; i < curatedPlaylist.length; i++) {
+          const currentTrack = curatedPlaylist[i];
+
+          // Rule: If a track with the author "kiko" and the form "typeInterview" is present in the tracklist,
+          // ensure that another track with the author "kiko" and the form "typeMusic" or "typeShort" is added at some point later in the tracklist.
+          if (
+            i > 8 &&
+            currentTrack.author === "kiko" &&
+            currentTrack.form === "typeInterview"
+          ) {
+            kikoTypeInterviewPresent = true;
+          }
+
+          if (
+            i > 8 &&
+            kikoTypeInterviewPresent &&
+            currentTrack.author === "kiko" &&
+            (currentTrack.form === "typeMusic" ||
+              currentTrack.form === "typeShort")
+          ) {
+            kikoTypeInterviewPresent = false;
+          }
+
+          // Rule: If there is a track in the tracklist with the "geese" tag,
+          // add another track with the "geese" tag later in the tracklist.
+          if (i > 8 && currentTrack.tags.includes("geese")) {
+            geeseTagPresent = true;
+          }
+
+          if (i > 8 && geeseTagPresent && currentTrack.tags.includes("geese")) {
+            geeseTagPresent = false;
+          }
+        }
+      }
+
+      // Rule: IF WE ARE LATER IN THE TRACKLIST
+      // Rule: IF WE ARE LATER IN THE TRACKLIST
+      // Rule: IF WE ARE LATER IN THE TRACKLIST
+
+      // if (index > 10) {
+      //   return false;
+      // }
+
+      // If all conditions are met, the track is considered valid.
+      return true;
+    }
+
+    // This function adds the next valid track to the curated tracklist from the given tracklist.
+    function addNextValidTrack(curatedTracklist, tracklist) {
+      // Get the previous two tracks in the curated tracklist for checking the validity of the next track.
+      const prevTrack1 = curatedTracklist[curatedTracklist.length - 1];
+      const prevTrack2 = curatedTracklist[curatedTracklist.length - 2];
+
+      // Find the next valid track in the tracklist using the isValidTrack function.
+      const nextValidTrack = tracklist.find((track) =>
+        isValidTrack(track, prevTrack1, prevTrack2, curatedTracklist)
+      );
+
+      if (nextValidTrack) {
+        // If a valid track is found, add it to the curated tracklist and remove it from the original tracklist.
+        curatedTracklist.push(nextValidTrack);
+        tracklist.splice(tracklist.indexOf(nextValidTrack), 1);
+        return nextValidTrack;
+      } else {
+        // If no valid track is found, return null to indicate that no valid track was found.
+        return null;
+      }
+    }
+
+    // Loop through the rules until there are no valid tracks left
+    let isRuleApplied = true;
+    while (isRuleApplied && tracklist.length > 0) {
+      isRuleApplied = false; // Reset the flag at the beginning of each iteration
+
+      // Rule 1: The 1st track should have the tag standardIntro.
+      let introTrack = tracklist.find((track) => track.tags.includes("intro"));
+      if (introTrack) {
+        curatedTracklist.push(introTrack);
+        tracklist.splice(tracklist.indexOf(introTrack), 1);
+        logRuleApplication(
+          1,
+          `The 1st track → has the tag standardIntro (${introTrack.tag}); name: ${introTrack.name};`,
+          true
+        );
+      } else {
+        introTrack;
+        logRuleApplication(
+          1,
+          "The 1st track should have the tag standardIntro.",
+          false
+        );
+      }
+
+      // Rule 2: The 2nd track should have the placement beginning.
+      let r2Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (r2Track && !r2Track.placement.includes("beginning")) {
+        logRuleApplication(
+          2,
+          `The 2nd track should have the placement beginning.`,
+          false
+        );
+      } else {
+        logRuleApplication(
+          2,
+          `The 2nd track → has the placement beginning: (${r2Track.placement}); name: ${r2Track.name};`,
+          true
+        );
+      }
+
+      // Rule 3: The 3rd track should have the placement beginning and should have a different form than the 2nd track.
+      let r3Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (!r3Track) {
+        console.log("No valid track found for Rule 3.");
+      } else if (
+        !r3Track.placement.includes("beginning") &&
+        r3Track.form !== r2Track.form
+      ) {
+        logRuleApplication(
+          3,
+          "The 3rd track should have the placement beginning and should have a different form than the 2nd track.",
+          false
+        );
+      } else {
+        logRuleApplication(
+          3,
+          `The 3rd track → has the placement beginning (${r3Track.placement}); and a different form (${r3Track.form}) vs the 2nd track (${r2Track.form}); name: ${r3Track.name};`,
+          true
+        );
+      }
+
+      // Rule 4: The 4th track should have the placement middle and should have a different form from the 3rd track.
+      let r4Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (!r4Track) {
+        console.log("No valid track found for Rule 4.");
+      } else if (
+        r4Track.placement.includes === "middle" &&
+        r4Track.form !== r3Track.form
       ) {
         console.log(
-          `Error: "${currentObj.name}" object with "Heavy" tag is followed by "${nextObj.name}" object with "Laughing" tag`
+          "The 4th track should have the placement middle and should have a different form from the 3rd track",
+          false
+        );
+      } else {
+        logRuleApplication(
+          4,
+          `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) vs the 3nd track (${r3Track.form}); name: ${r3Track.name};`,
+          true
+        );
+      }
+
+      // Rule 5: The 5th track should have the length short and should NOT have the placement beginning and should have a different language from the 4th track.
+      let r5Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (
+        r5Track &&
+        r5Track.length !== "short" &&
+        !r5Track.placement.includes("beginning") &&
+        r5Track.language === r4Track.language
+      ) {
+        logRuleApplication(
+          5,
+          `The 5th track should have the length short and should NOT have the placement beginning and should have a different language from the 4th track.`,
+          false
+        );
+      } else {
+        logRuleApplication(
+          5,
+          `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${r4Track.language}); name: ${r5Track.name};`,
+          true
+        );
+      }
+
+      // Rule 6: The 6th track should have the placement MIDDLE, and should have a different form from the 5th track.
+      let r6Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (
+        r6Track &&
+        r6Track.placement.includes === "middle" &&
+        r6Track.form !== r5Track.form
+      ) {
+        logRuleApplication(
+          6,
+          `The 6th track should have the placement MIDDLE, and should have a different form from the 5th track.`,
+          false
+        );
+      } else {
+        logRuleApplication(
+          6,
+          `The 6th track → has the placement MIDDLE (${r6Track.placement}); and has a different form (${r6Track.form}) vs the 5th track: (${r5Track.form}); name: ${r3Track.name};`,
+          true
+        );
+      }
+
+      // Rule 7: The 7th track should have the placement MIDDLE, and a different form from the 6th track. Additionally, unless the form of the 7th track is MUSIC, the 7th track must also have a different language from the 6th track.
+      let r7Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (
+        (r7Track &&
+          r7Track.placement.includes === "middle" &&
+          r7Track.form !== r6Track.form &&
+          r7Track.music) ||
+        r7Track.language !== r6Track.language
+      ) {
+        logRuleApplication(
+          7,
+          `The 7th track → has the placement MIDDLE (${r7Track.placement}); and has a different form (${r7Track.form}) vs the 6th track: (${r6Track.form}); AND unless the form of the 7th track is MUSIC (${r6Track.form}) the 7th track also has a different language (${r7Track.language}) from the 6th track (${r6Track.language}); name: ${r3Track.name};`,
+          true
+        );
+      } else {
+        logRuleApplication(
+          7,
+          `The 7th track should have the placement MIDDLE, and a different form from the 6th track. Additionally, unless the form of the 7th track is MUSIC, the 7th track must also have a different language from the 6th track.`,
+          false
+        );
+      }
+
+      // Rule 8: The 8th track should have the placement MIDDLE, and should have a different form from the 6th and 7th tracks, and a different language from the 6th and 7th tracks.
+      let r8Track = addNextValidTrack(curatedTracklist, tracklist);
+      if (
+        r8Track &&
+        r8Track.placement.includes === "middle" &&
+        (r8Track.form !== r7Track.form) !== r6Track.form &&
+        (r8Track.language !== r7Track.language) !== r6Track.language
+      ) {
+        logRuleApplication(
+          8,
+          `The 8th track should have the placement MIDDLE, and should have a different form from the 6th and 7th tracks, and a different language from the 6th and 7th tracks.`,
+          false
+        );
+      } else {
+        logRuleApplication(
+          8,
+          `The 8th track → has the placement MIDDLE (${r8Track.placement}); and a different form (${r8Track.form}) vs the 7th track (${r7Track.form}) or 6th track (${r6Track.form}); and has have a different language (${r8Track.language}) vs the 7th track(${r7Track.language}) or the 6th track (${r6Track.language}); name: ${r3Track.name};`,
+          true
         );
       }
     }
 
-    // findme
+    // Loop through the remaining tracklist to apply general rules and check if each track is valid
+  for (const track of tracklist) {
+    // Get the previous two tracks in the curated tracklist for checking the validity of the next track.
+    const prevTrack1 = curatedTracklist[curatedTracklist.length - 1];
+    const prevTrack2 = curatedTracklist[curatedTracklist.length - 2];
 
-    // // start the newrules logic
-    // function sortTracklist(tracklist) {
-    //   let lastPoemOrInterviewIndex = -1;
-    //   let lastShortOrMusicIndex = -1;
+    // Check if the track is valid using the isValidTrack function.
+    const isValid = isValidTrack(track, prevTrack1, prevTrack2, curatedTracklist);
 
-    //   for (let i = 0; i < tracklist.length; i++) {
-    //     if (tracklist[i].medium === 'typePoem' || tracklist[i].medium === 'typeInterview') {
-    //       if (lastShortOrMusicIndex > lastPoemOrInterviewIndex) {
-    //         const temp = tracklist[i];
-    //         tracklist.splice(i, 1);
-    //         tracklist.splice(lastShortOrMusicIndex + 1, 0, temp);
-    //         lastPoemOrInterviewIndex = lastShortOrMusicIndex + 1;
-    //         i--;
-    //       } else {
-    //         lastPoemOrInterviewIndex = i;
-    //       }
-    //     } else if (tracklist[i].medium === 'typeShort' || tracklist[i].medium === 'typeMusic') {
-    //       if (lastPoemOrInterviewIndex > lastShortOrMusicIndex) {
-    //         const temp = tracklist[i];
-    //         tracklist.splice(i, 1);
-    //         tracklist.splice(lastPoemOrInterviewIndex + 1, 0, temp);
-    //         lastShortOrMusicIndex = lastPoemOrInterviewIndex + 1;
-    //         i--;
-    //       } else {
-    //         lastShortOrMusicIndex = i;
-    //       }
-    //     } else {
-    //       console.error('Invalid medium value: ' + tracklist[i].medium);
-    //     }
-    //   }
-    //   return(tracklist);
-    // }
-    // // tracklist.push({ title: "New Song", medium: "typeMusic" });
-    // // sortTracklist(tracklist);
-
-    // // end the newrules logic
-
-    let durationSum = 0;
-    let objectsToRemove = [];
-    let indexToRemove = -1;
-    let endObject = null;
-
-    // Store the end object separately, if present
-    for (let i = 0; i < tracklist.length; i++) {
-      const object = tracklist[i];
-      if (object.placement.includes("end") && !object.placement.includes("beginning")) {
-        endObject = object;
-        durationSum += endObject.duration; // add duration of end object
-        break;
-      } else {
-        // console.log(
-        //   `Warning: Found multiple "End" objects in tracklist. Using first one and ignoring the rest.`
-        // );
-      }
+    if (isValid) {
+      // If the track is valid, add it to the curatedTracklist
+      curatedTracklist.push(track);
+    } else {
+      // If the track is not valid, log an error or take appropriate action
+      console.error(`Track '${track.name}' does not pass the general rules.`);
+      // ... (you can handle the error or continue to the next track, based on your requirement)
     }
-
-    for (let i = 0; i < tracklist.length; i++) {
-      const object = tracklist[i];
-      if (object.duration && typeof object.duration === "number") {
-        durationSum += object.duration;
-        // console.log(`${object.name} durationSum: ${durationSum}`);
-        if (durationSum >= 1000 && indexToRemove === -1) {
-          indexToRemove = i + 1;
-        }
-      } else {
-        objectsToRemove.push(object);
-      }
-    }
-
-    // Subtract duration of end object from maximum duration limit
-    let maxDurationMinusEndTrackDur = MAXPLAYLISTDURATION - endObject.duration;
-
-    // get the length of the introtrack
-    let lauraIntroTrack = introTracks.find((obj) => obj.tags.includes("intro"));
-
-    // * Modify the tracklist by adding an intro track at the beginning and an end object at the end.
-    if (lauraIntroTrack) {
-      tracklist.splice(tracklist.indexOf(lauraIntroTrack), 1);
-      tracklist.unshift(lauraIntroTrack);
-    }
-
-    // Subtract duration of intro object from maximum duration limit
-    let maxDurationMinusEndAndOpenTrack =
-      maxDurationMinusEndTrackDur - lauraIntroTrack.duration;
-
-    if (durationSum > maxDurationMinusEndAndOpenTrack && indexToRemove !== -1) {
-      const removed = tracklist.splice(indexToRemove);
-      objectsToRemove.push(...removed);
-      durationSum -= removed.reduce((acc, obj) => acc + obj.duration, 0);
-    }
-
-    if (endObject !== null && !objectsToRemove.includes(endObject)) {
-      tracklist.push(endObject);
-    }
-
-    if (endObject === null) {
-      console.log("Error: No end object found in tracklist.");
-      return;
-    }
-
-    if (lauraIntroTrack === undefined) {
-      console.log("Error: No intro track found in tracklist.");
-      return;
-    }
-
-    tracklist.forEach((obj) => {
-      // console.log(`${obj.name} (${obj.duration} seconds)`);
-    });
-    return tracklist;
   }
 
-  /* 9. Define a function shuffleTracklist that takes a tracklist array as input, shuffles its elements
-  randomly, and applies the followTracklistRules function to the shuffled tracklist. The function 
-  returns the shuffled and modified tracklist. */
+    console.log("Curated Tracklist: ", curatedTracklist);
+
+    checkRulesForCuratedPlaylist(curatedTracklist);
+
+    return curatedTracklist;
+  }
+
+  /* 9. shuffleTracklist takes a tracklist array as input, shuffles its elements
+  randomly, and returns the shuffled and modified tracklist. */
 
   function shuffleTracklist(tracklist) {
     for (let i = tracklist.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [tracklist[i], tracklist[j]] = [tracklist[j], tracklist[i]];
     }
-    followTracklistRules(tracklist);
     return tracklist;
   }
 
-  /* 10. Define a function fetchAndCacheAudio that takes an audioFileUrl and a cache object as input. The 
+  /* 10. fetchAndCacheAudio  takes an audioFileUrl and a cache object as input. The 
 function checks if the audio file is already in the cache, and if not, fetches it from the network, 
 adds it to the cache, and returns the audio response. */
 
@@ -617,50 +841,23 @@ adds it to the cache, and returns the audio response. */
   // Set up event listener for when the outro audio ends
   // outroAudio1.addEventListener("ended", () => {
 
-  let LastSeenTags = []; // store the tags of the last track, so we can make rules
-  // const currentTrackUrlElement = document.getElementById("currTrack");
-
   // This recursive function processes each audio file at a time and then queues up
   // work for the next audio file to be processed.
-  function playAndQueue(songs, index, currentRuntime, cache) {
-    // if we're out of tracks or out of time, stop everything (should fade out eventually)
-    if (index == songs.length || total_duration - currentRuntime < -100) {
-      return;
-    }
 
-    // If we are near the end of the playlist, play the final three tracks.
-    if (total_duration - currentRuntime <= 90) {
-      function skipToEndOfThePlaylistFunction(songs, currentIndex, newIndex) {
-        if (!hasSkippedToEnd) {
-          const numElementsToEnd = songs.length - currentIndex - 1;
-          index = index + numElementsToEnd;
-          let newIndex = index;
-          songs.push(...outroAudioSounds);
-          // songs.push(...creditsArray);
-          creditsArray.forEach((credit) => songs.push(credit));
-          // songs.push(...creditsArray);
-          songs.push(...finalOutroAudioSounds);
-          hasSkippedToEnd = true;
-        } else {
-          // console.log("Action already performed, skipping...");
-        }
-      }
-      skipToEndOfThePlaylistFunction(songs, index);
-    }
-
-    // get the song object
-    const song = songs[index];
-
+  function gatherAndPrintDebugInfo(song, index) {
     if (song) {
-      const currTagsHTMLElement = document.getElementById("currTags");
-      const currURLHTMLElement = document.getElementById("currTrack");
-      const currDurrHTMLElement = document.getElementById("currDurr");
+      // get debug ids so I can fill in debug info
       const currTrackNameHTMLElement = document.getElementById("currTrackName");
-      const currCreditStackHTMLElement =
-        document.getElementById("creditsStack");
+      const currURLHTMLElement = document.getElementById("currURL");
+      const currTagsHTMLElement = document.getElementById("currTags");
+      const currDurrHTMLElement = document.getElementById("currDurr");
+      const currCreditHTMLElement = document.getElementById("currCredit");
       const currIndexNokHTMLElement = document.getElementById("indexNo");
-      const currTotalIndexHTMLElement = document.getElementById("totalIndex");
+      // const currCreditStackHTMLElement = document.getElementById("creditsStack");
+      // const currTotalIndexHTMLElement = document.getElementById("totalIndex");
 
+      console.log(index);
+      // get the info for THIS song so I can print it to the debug
       const currTags = song.tags;
       const currUrl = song.url;
       const currDurr = song.duration;
@@ -668,114 +865,77 @@ adds it to the cache, and returns the audio response. */
       const currCredit = song.credit;
       const currIndex = index;
 
-      // don't play long tracks
-      // console.log(currDurr);
-      if (currDurr > 1070) {
-        console.log("forbidden!");
-        playAndQueue(songs, index + 1, currentRuntime, cache);
-        return;
-      }
-
-      if (currTags && currTags != "") {
-        currTagsHTMLElement.textContent = " " + currTags;
-      } else {
-        console.log("no tags");
-      }
-
-      const forbiddenTagCombinations = [
-        { firstTag: "drone", secondTag: "drone" },
-        { firstTag: "interviews", secondTag: "interviews" },
-        { firstTag: "shorts", secondTag: "shorts" },
-        { firstTag: "music", secondTag: "music" },
-        { firstTag: "longMusic", secondTag: "longMusic" },
-        // Add more forbidden tag combinations as needed
-      ];
-
-      // need to make sure this still works - esp w mult tags
-      if (LastSeenTags.length > 0) {
-        const forbiddenCombination = forbiddenTagCombinations.find(
-          (combination) =>
-            combination.firstTag === LastSeenTags[0] &&
-            combination.secondTag === currTags[0]
-        );
-        if (forbiddenCombination) {
-          console.log("forbidden!");
-          playAndQueue(songs, index + 1, currentRuntime, cache);
-          return;
+      function displayDebugText(element, text, defaultText) {
+        if (text && text !== "") {
+          element.textContent = " " + text;
+        } else {
+          element.textContent = defaultText;
         }
       }
-      LastSeenTags = currTags;
 
-      if (currUrl && currUrl != "") {
-        currURLHTMLElement.textContent = " " + currUrl;
-      } else {
-        console.log("no url");
-      }
-
-      if (currDurr && currDurr != "") {
-        currDurrHTMLElement.textContent = " " + currDurr;
-      } else {
-        console.log("no dur");
-      }
-
-      if (currIndex) {
-        currIndexNokHTMLElement.textContent = " " + currIndex;
-      } else {
-        // console.log("no index");
-      }
-
-      if (songs) {
-        currTotalIndexHTMLElement.textContent = " " + songs.length;
-      } else {
-        console.log("no index");
-      }
-
-      if (currName && currName != "") {
-        currTrackNameHTMLElement.textContent = " " + currName;
-      } else {
-        console.log("no name");
-      }
-
-      if (currCredit && currCredit !== "") {
-        console.log(song);
-
-        // creditsArray.push(song);
-        const createCreditObj = function (song) {
-          const creditObj = {
-            name: song.name,
-            url: song.credit, //flip on purpose
-            duration: song.duration,
-            tags: song.tags,
-            credit: song.url,
-          };
-          return creditObj;
-        };
-
-        const creditObj = createCreditObj(song);
-        creditsArray.push(addAudioFromCredit(creditObj));
-        console.log(creditsArray);
-        console.log(songs);
-
-        creditsArray.forEach((credit) => {
-          // console.log(`credits ${JSON.stringify(credit)}`);
-        });
-        // extract credits from the array of objects and join them with newlines
-        const mycredits = creditsArray.map((song) => song.credit);
-        const creditsText = mycredits
-          .map((credit) => credit.substring(credit.lastIndexOf("/") + 1))
-          .join("\n");
-        currCreditStackHTMLElement.textContent = creditsText;
-      } else {
-        // console.log("no credit");
-      }
+      displayDebugText(currTrackNameHTMLElement, currName, "no name");
+      displayDebugText(currURLHTMLElement, currUrl, "no url");
+      displayDebugText(currTagsHTMLElement, currTags, "no tags");
+      displayDebugText(currDurrHTMLElement, currDurr, "no duration");
+      displayDebugText(currCreditHTMLElement, currCredit, "no credit");
+      displayDebugText(currIndexNokHTMLElement, currIndex, "no index");
     } else {
-      console.log("NO SONG!!!");
+      console.log("OH NO, NO SONG!");
       return;
     }
+  }
 
+  function printEntireTracklistDebug(shuffledSongsWithOpen) {
+    // now we will print all the shuffled songs for the debug
+    const currTrackNameElement = document.getElementById("fullList");
+    while (currTrackNameElement.firstChild) {
+      currTrackNameElement.removeChild(currTrackNameElement.firstChild);
+    }
+
+    for (let i = 0; i < shuffledSongsWithOpen.length; i++) {
+      const itemElement = document.createElement("div");
+      itemElement.textContent =
+        shuffledSongsWithOpen[i].name +
+        ", " +
+        shuffledSongsWithOpen[i].author +
+        ", " +
+        shuffledSongsWithOpen[i].form +
+        ", " +
+        shuffledSongsWithOpen[i].placement +
+        ", " +
+        shuffledSongsWithOpen[i].language +
+        ", " +
+        shuffledSongsWithOpen[i].sentiment +
+        ", " +
+        shuffledSongsWithOpen[i].tags.join(", ") +
+        ". ";
+      shuffledSongsWithOpen[i].backgroundMusic +
+        "." +
+        currTrackNameElement.appendChild(itemElement);
+    }
+
+    if (shuffledSongsWithOpen.length > 0) {
+      currTrackNameElement.style.display = "block";
+    } else {
+      // console.log("no shuffle");
+    }
+  }
+
+  /* 
+  Queue next track (I have no idea what this is doing)
+
+
+  Each time the track changes, I should get the credits info and add it to the creditsArray
+
+  Are we out of time? If yes, it's time to play the final tracks 
+      There could be some kind of trigger point when I hit a certain amount of time remaining (only do this once!)
+      (if total_duration - currentRuntime <= 90???) where I trigger or add the  outroAudioSounds
+*/
+
+  function queueNextTrack(songs, index, currentRuntime, cache) {
+    const song = songs[index]; // get the song object
     const audio = song.audio;
-    // Update player to current audio
-    player = audio;
+    player = audio; // Update player to current audio
     // hopefully tell the browser to start downloading audio
     if (audio) {
       audio.preload = "auto";
@@ -787,53 +947,24 @@ adds it to the cache, and returns the audio response. */
     // when the song has ended, queue up the next one
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
-      playAndQueue(songs, index + 1, currentRuntime + duration, cache);
+      queueNextTrack(songs, index + 1, currentRuntime + duration, cache);
     });
 
-    // When metadata has been loaded, we know the
-    // audio duration. With the audio duration, we
-    // do two things depending on where we are in the
-    // play queue:
-    //
-    // 1. If the currentRuntime is greater than the total
-    //    duration, then we set a timeout to pause the song.
-    // 2. else, if there is a next song, we set a timeout
-    //    that will try and preload the song.
-    audio.addEventListener("loadedmetadata", (e) => {
-      const duration = audio.duration;
-      const durationInMin = Math.floor(duration / 60);
-      const remainingSec = Math.round(duration % 60);
-      const formattedMin =
-        durationInMin < 10 ? `0${durationInMin}` : durationInMin;
-      const formattedSec =
-        remainingSec < 10 ? `0${remainingSec}` : remainingSec;
-      const formattedDuration = `${formattedMin}:${formattedSec}`;
+    // set a timer to preload the next file
+    const timeoutDurationMs = (song.duration - PREFETCH_BUFFER_SECONDS) * 1000;
+    setTimeout(() => {
+      const nextAudio = songs[index + 1];
+      nextAudio.preload = "auto";
+      fetchAndCacheAudio(nextAudio.url, cache).then((p) =>
+        console.log(`loaded ${nextAudio.url} into cache`)
+      );
+    }, timeoutDurationMs);
+    gatherAndPrintDebugInfo(song, index); // print all the debug info to screen
 
-      if (currentRuntime + duration > total_duration) {
-        const remainingMs = (total_duration - currentRuntime) * 1000;
-        setTimeout(() => {
-          audioContext.suspend();
-          clearInterval(timerInterval);
-        }, remainingMs);
-      } else if (index < songs.length - 1) {
-        // set a timer to preload the next file
-        const timeoutDurationMs = (duration - PREFETCH_BUFFER_SECONDS) * 1000;
-        setTimeout(() => {
-          const nextAudio = songs[index + 1];
-          nextAudio.preload = "auto";
-          fetchAndCacheAudio(nextAudio.url, cache).then(
-            (p) => console.log(`loaded ${nextAudio.url} into cache`)
-            // document.getElementById("nextUp").innerHTML = nextAudio.url;
-          );
-        }, timeoutDurationMs);
-      }
-    });
-    // console.log(audio);
     audio.play();
   }
 
   const button = document.getElementById("play");
-
   // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API
   button.addEventListener("click", (event) => {
     displayLoadingGif();
@@ -846,55 +977,22 @@ adds it to the cache, and returns the audio response. */
       volumeNode.connect(audioContext.destination);
     }
 
-    // first we copy the array of songs
-    const allSongs = [...SONGS];
-    // next we shuffle it
-    const shuffledSongs = shuffleTracklist(allSongs);
-
-    // next we add the intro to the beginning
+    const allSongs = [...SONGS]; // first we copy the array of songs
+    const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
+    let shuffledWithRulesAppliedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
+    // next we add the intro to the beginning -- I'm doing this in the rules right now
     // const shuffledSongsWithOpen = [...introTracks, ...shuffledSongs];
-    const shuffledSongsWithOpen = [...shuffledSongs];
+    const shuffledSongsWithOpen = [...shuffledWithRulesAppliedTracklist];
 
-    // now we will print all the shuffled songs for the debug
-    const currTrackNameElement = document.getElementById("fullList");
-    while (currTrackNameElement.firstChild) {
-      currTrackNameElement.removeChild(currTrackNameElement.firstChild);
-    }
-
-    for (let i = 0; i < shuffledSongsWithOpen.length; i++) {
-      const itemElement = document.createElement("div");
-      itemElement.textContent =
-        shuffledSongsWithOpen[i].name +
-        " [" +
-        shuffledSongsWithOpen[i].medium +
-        "] (" +
-        shuffledSongsWithOpen[i].tags.join(", ") +
-        ")";
-      currTrackNameElement.appendChild(itemElement);
-    }
-
-    if (shuffledSongsWithOpen.length > 0) {
-      currTrackNameElement.style.display = "block";
-    } else {
-      // console.log("no shuffle");
-    }
+    printEntireTracklistDebug(shuffledSongsWithOpen); // print the whole tracklist
 
     window.caches
       .open("audio-pre-cache")
-      .then((cache) => playAndQueue(shuffledSongsWithOpen, 0, 0, cache));
+      .then((cache) => queueNextTrack(shuffledSongsWithOpen, 0, 0, cache));
   });
 
-  const totalDurationInput = document.getElementById("total-duration");
-
-  let totalDuration = total_duration / 60; // use a separate variable to store the value in minutes
-  if (totalDurationInput) {
-    totalDurationInput.value = totalDuration;
-    totalDurationInput.addEventListener("input", (event) => {
-      totalDuration = parseInt(event.target.value);
-      total_duration = totalDuration * 60; // update the global variable in seconds
-    });
-  }
-  function updateProgress(seconds, previousDuration) {
+  // code to update the timer
+  function updateProgressTimer(seconds, previousDuration) {
     let currTime = document.getElementById("current-time");
     if (!currTime) {
       throw new Error("Missing element: current-time");
@@ -922,7 +1020,7 @@ adds it to the cache, and returns the audio response. */
     return setInterval(() => {
       let delta = Date.now() - start; // milliseconds since elapsed
       let deltaSeconds = Math.floor(delta / 1000);
-      updateProgress(deltaSeconds, previousDuration);
+      updateProgressTimer(deltaSeconds, previousDuration);
     }, 200);
   }
 });

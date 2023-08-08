@@ -178,7 +178,8 @@ body {
 
 @media screen and (min-width: 900px) {
   .container {
-    padding-top: 11%;
+    /* findme */
+    /* padding-top: 11%; */
   }
 }
 
@@ -989,11 +990,12 @@ footer {
   /* flex-direction: column; */
   /* justify-content: flex-start; */
   /* align-items: flex-start; */
-  position: absolute;
+  /* position: absolute; */
   /* background-color: red; */
   /* width: 30vw; */
   /* height: 200px; */
   top: 10rem;
+  width: 100%;
   /* left: 0; */
   padding-left: 10px;
   overflow: scroll;
@@ -1004,7 +1006,7 @@ footer {
 #debug p {
   font-size: 1rem;
   text-align: left;
-  max-width: 45%;
+  /* max-width: 45%; */
   /* display: flex; */
   /* flex-direction: column; */
 }
