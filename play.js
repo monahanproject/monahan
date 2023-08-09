@@ -127,7 +127,7 @@ function displayLoadingGif() {
   musicPlayerh1.innerHTML =
     "Generating beautiful sounds for you, this might take a minute";
   document.getElementById("launchMusicPlayerForm").remove();
-  document.getElementById("textTranscript").remove();
+  // document.getElementById("textTranscript").remove();
   // temp loader content
   let loaderDiv = document.createElement("div");
   loaderDiv.classList.add("loader");
@@ -244,8 +244,8 @@ const PREFETCH_BUFFER_SECONDS = 8;
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-function trackExistsWithAttributes(curatedPlaylist, attribute, value) {
-  return curatedPlaylist.some((track) => track[attribute] === value);
+function trackExistsWithAttributes(curatedTracklist, attribute, value) {
+  return curatedTracklist.some((track) => track[attribute] === value);
 }
 
 // Log helper function to make logging more informative
@@ -255,8 +255,8 @@ function logRuleApplication(ruleNumber, description, isApplied) {
 }
 
 // Updated function to check if a track is valid based on the new rules.
-function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
-  const index = curatedPlaylist.length;
+function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedTracklist) {
+  const index = curatedTracklist.length;
 
   // Rule only for Track 1: The 1st track should have the tag 'intro'.
   if (index === 0 && !track.tags.includes("intro")) return false;
@@ -328,16 +328,16 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
     }
   }
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXX GENERAL RULES XXXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  //  XXXXXXXX GENERAL RULES XXXXXXXXXX
+  //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
   // Rule: No more than two tracks from the same author in a tracklist.
-  const authorCount = curatedPlaylist
+  const authorCount = curatedTracklist
     .filter((t) => t.author.trim() !== "") // Filter out tracks with blank authors
     .filter((t) => t.author === track.author).length;
 
-  // console.log(`curatedPlaylist authorcount (${authorCount})`);
+  // console.log(`curatedTracklist authorcount (${authorCount})`);
   if (authorCount >= 2) {
     // console.log(
     //   `General Rule ENFORCED: authorcount (author ${track.author} count is ${authorCount})`
@@ -349,7 +349,7 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
   if (
     track.form === "shorts" &&
     track.language === "musical" &&
-    curatedPlaylist.some((prevTrack) => prevTrack.form === "music")
+    curatedTracklist.some((prevTrack) => prevTrack.form === "music")
   ) {
     console.log(
       `General Rule ENFORCED: tracks with the form shorts (this track's form: ${track.form}) and the language musical (this track lang ${track.language}) can never follow tracks with the form music (prev track form ${prevTrack1.form})`
@@ -360,7 +360,7 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
   // // Rule: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
   if (
     track.form === "music" &&
-    curatedPlaylist.some(
+    curatedTracklist.some(
       (prevTrack) =>
         prevTrack.form === "shorts" && prevTrack.language === "musical"
     )
@@ -372,20 +372,23 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
   }
 
   // Rule: The value for backgroundMusic should never be the same as the author of the track right before it or the immediately following track.
-  const nextTrack = curatedPlaylist[curatedPlaylist.length - 1];
-  if (
-    (prevTrack1 &&
-      prevTrack1.author.trim() !== "" &&
-      track.backgroundMusic === prevTrack1.author) ||
-    (nextTrack &&
-      nextTrack.author.trim() !== "" &&
-      track.backgroundMusic === nextTrack.author)
-  ) {
-    console.log(
-      `General Rule ENFORCED: The value for backgroundMusic (this track's background music ${track.backgroundMusic}) should never be the same as the author of the track right before it (previous track's author ${prevTrack1.author}) or the immediately following track.`
-    );
-    return false;
-  }
+const nextTrack = curatedTracklist[curatedTracklist.length - 1];
+if (
+  (prevTrack1 &&
+    prevTrack1.author.trim() !== "" &&
+    track.backgroundMusic.trim() !== "" &&
+    track.backgroundMusic === prevTrack1.author) ||
+  (nextTrack &&
+    nextTrack.author.trim() !== "" &&
+    track.backgroundMusic.trim() !== "" &&
+    track.backgroundMusic === nextTrack.author)
+) {
+  console.log(
+    `General Rule ENFORCED: The value for backgroundMusic (this track's background music ${track.backgroundMusic}) should never be the same as the author of the track right before it (previous track's author ${prevTrack1.author}) or the immediately following track.`
+  );
+  return false;
+}
+
 
   // // Rule: If a track has the sentiment heavy, then the track right before it cannot have the laughter tag.
   if (
@@ -399,12 +402,25 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
     return false;
   }
 
+  // Rule: If a track has the length long and the form typeMusic, then the immediately preceeding track should have the form typeInterview.
+  if (
+    track.length === "long" &&
+    track.form === "typeMusic" &&
+    prevTrack1 &&
+    prevTrack1.form !== "typeInterview"
+  ) {
+    console.log(
+      `Rule ENFORCED: If a track has the length long and the form typeMusic (this track's length ${track.length} and form ${track.form}), then the immediately preceeding track should have the form typeInterview (previous track's form ${prevTrack1.form})`
+    );
+    return false;
+  }
+
   // // Rule: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist,
   // // none of the other two tracks should be added to the tracklist.
   const forbiddenTracks = ["I_KIM_03", "I_KIM_04", "I_KIM_05"];
   if (
     forbiddenTracks.includes(track.name) &&
-    curatedPlaylist.some((t) => forbiddenTracks.includes(t.name))
+    curatedTracklist.some((t) => forbiddenTracks.includes(t.name))
   ) {
     console.log(
       `If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist... ${track.name})`
@@ -418,7 +434,7 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
   if (
     track.author === "Sarah" &&
     track.form === "Interview" &&
-    curatedPlaylist.some(
+    curatedTracklist.some(
       (prevTrack) =>
         prevTrack.author === "Sarah" && prevTrack.form === "Interview"
     )
@@ -434,7 +450,7 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
   // // there should not be any more tracks with the author Louella in the tracklist.
   if (
     track.author === "Louella" &&
-    curatedPlaylist.some((prevTrack) => prevTrack.author === "Louella")
+    curatedTracklist.some((prevTrack) => prevTrack.author === "Louella")
   ) {
     console.log(
       `If there is one track with the author Louella in the tracklist, there should not be any more tracks with the author Louella in the tracklist (this track's author ${track.author})`
@@ -448,17 +464,20 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
 
   if (index > 8) {
     // Helper function to check if a track exists with the given attribute and value in the curated tracklist
-    function trackExistsWithAttributes(curatedPlaylist, attribute, value) {
-      return curatedPlaylist.some((track) => track[attribute] === value);
+    function trackExistsWithAttributes(curatedTracklist, attribute, value) {
+      return curatedTracklist.some((track) => track[attribute] === value);
     }
     // Rule: Ensure that the tracklist contains at least one track with the author "albert".
-    if (!trackExistsWithAttributes(curatedPlaylist, "author", "albert") && track.author !== "albert") {
+    if (
+      !trackExistsWithAttributes(curatedTracklist, "author", "albert") &&
+      track.author !== "albert"
+    ) {
       return false;
     }
 
     // Rule: Ensure that the tracklist contains at least one track with the author "birds".
     if (
-      !trackExistsWithAttributes(curatedPlaylist, "author", "birds") &&
+      !trackExistsWithAttributes(curatedTracklist, "author", "birds") &&
       track.author !== "birds"
     ) {
       console.log("no birds here!");
@@ -466,14 +485,14 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
     }
     // Rule: Ensure that the tracklist contains at least one track with the form "interview".
     if (
-      !trackExistsWithAttributes(curatedPlaylist, "form", "interview") &&
+      !trackExistsWithAttributes(curatedTracklist, "form", "interview") &&
       track.form !== "interview"
     ) {
       return false;
     }
     // Rule: Ensure that the tracklist contains at least one track with the form "music".
     if (
-      !trackExistsWithAttributes(curatedPlaylist, "form", "music") &&
+      !trackExistsWithAttributes(curatedTracklist, "form", "music") &&
       track.form !== "music"
     ) {
       return false;
@@ -482,8 +501,8 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
     let kikoTypeInterviewPresent = false;
     let geeseTagPresent = false;
     // Loop through the curated tracklist to apply the later in the tracklist rules
-    for (let i = 0; i < curatedPlaylist.length; i++) {
-      const currentTrack = curatedPlaylist[i];
+    for (let i = 0; i < curatedTracklist.length; i++) {
+      const currentTrack = curatedTracklist[i];
       // Rule: If a track with the author "kiko" and the form "typeInterview" is present in the tracklist,
       // ensure that another track with the author "kiko" and the form "typeMusic" or "typeShort" is added at some point later in the tracklist.
       if (
@@ -497,8 +516,7 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
         i > 8 &&
         kikoTypeInterviewPresent &&
         currentTrack.author === "kiko" &&
-        (currentTrack.form === "typeMusic" ||
-          currentTrack.form === "typeShort")
+        (currentTrack.form === "typeMusic" || currentTrack.form === "typeShort")
       ) {
         kikoTypeInterviewPresent = false;
       }
@@ -515,24 +533,34 @@ function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedPlaylist) {
   return true;
 }
 
-function addNextValidTrack(curatedPlaylist, tracklist) {
-  const myPrevTrack1 = curatedPlaylist[curatedPlaylist.length - 1];
-  const myPrevTrack2 = curatedPlaylist[curatedPlaylist.length - 2];
+function addNextValidTrack(curatedTracklist, tracklist) {
+  const index = curatedTracklist.length;
+
+  /* If index is greater than 0, myPrevTrack1 is assigned the value of curatedTracklist[index - 1],
+   which is the element in curatedTracklist one index before the current index. If index is 0 or less,
+    myPrevTrack1 is assigned null.
+    
+    It's part of the logic that ensures i have access to the two most recent tracks added to the 
+    curatedTracklist during the application of different rules.
+    */
+
+  const myPrevTrack1 = index > 0 ? curatedTracklist[index - 1] : null;
+  const myPrevTrack2 = index > 1 ? curatedTracklist[index - 2] : null;
   let tracksSearched = 0;
 
   const nextValidTrack = tracklist.find((track) => {
     tracksSearched++;
-    return isThisAValidTrack(track, myPrevTrack1, myPrevTrack2, curatedPlaylist);
+    return isThisAValidTrack(track, myPrevTrack1, myPrevTrack2, curatedTracklist);
   });
 
   if (nextValidTrack) {
-    curatedPlaylist.push(nextValidTrack);
+    curatedTracklist.push(nextValidTrack);
     const indexToRemove = tracklist.indexOf(nextValidTrack);
     if (indexToRemove !== -1) {
       // console.log("remove " + indexToRemove + " ~ " + nextValidTrack.name);
       tracklist.splice(indexToRemove, 1); // Remove the track from tracklist.
     }
-    console.log(`Searched through ${tracksSearched} tracks.`);
+    // console.log(`Searched through ${tracksSearched} tracks.`);
     return nextValidTrack;
   } else {
     const tracksNotSearched = tracklist.length - tracksSearched;
@@ -543,20 +571,37 @@ function addNextValidTrack(curatedPlaylist, tracklist) {
   }
 }
 
-// Rule 1 - The 1st track should have the tag standardIntro.
-function applyRule1(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const introTrack = addNextValidTrack(curatedPlaylist, tracklist);
 
-  if (!introTrack) {
+// Rule 1 - The 1st track should have the tag standardIntro.
+function applyRule1(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r1Track = addNextValidTrack(curatedTracklist, tracklist);
+  
+  // console.log("1 prevTrack1:", JSON.stringify(prevTrack1, null, 2));
+  // console.log("1 prevTrack2:", JSON.stringify(prevTrack2, null, 2));
+
+  // console.log(`1 prevTrack1 name: ${prevTrack1.name}`);
+  // console.log(`1 prevTrack2 name: ${prevTrack2.name}`);
+
+  // Call the function to update prevTrack1 and prevTrack2
+// Calculate prevTrack1 and prevTrack2 based on curatedTracklist
+const curTracklistLength = curatedTracklist.length;
+if (curTracklistLength >= 1) {
+  prevTrack1 = curatedTracklist[curTracklistLength - 1];
+}
+if (curTracklistLength >= 2) {
+  prevTrack2 = curatedTracklist[curTracklistLength - 2];
+}
+
+  if (!r1Track) {
     logRuleApplication(1, "No valid track found for Rule 1.", false);
     return {
       success: false,
       message: "No valid track found for Rule 1.",
     };
-  } else if (introTrack && !introTrack.tags.includes("intro")) {
+  } else if (r1Track && !r1Track.tags.includes("intro")) {
     logRuleApplication(
-      2,
-      `The 1st track → has the tag intro: (${introTrack.tags}); name: ${introTrack.name};`,
+      1,
+      `The 1st track → has the tag intro: (${r1Track.tags}); name: ${r1Track.name};`,
       false
     );
     return {
@@ -565,21 +610,35 @@ function applyRule1(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
     };
   } else {
     logRuleApplication(
-      2,
-      `The 1st track → has the tag intro: (${introTrack.tags}); name: ${introTrack.name};`,
+      1,
+      `The 1st track → has the tag intro: (${r1Track.tags}); name: ${r1Track.name};`,
       true
     );
     return {
       success: true,
-      message: `The 1st track → has the tag intro: (${introTrack.tags}); name: ${introTrack.name};`,
-      updatedPrevTrack1: introTrack,
+      message: `The 1st track → has the tag intro: (${r1Track.tags}); name: ${r1Track.name};`,
+      updatedPrevTrack1: r1Track,
     };
   }
 }
 
 // Rule 2 - The 2nd track should have the placement beginning.
-function applyRule2(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r2Track = addNextValidTrack(curatedPlaylist, tracklist);
+function applyRule2(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r2Track = addNextValidTrack(curatedTracklist, tracklist);
+  // console.log("2 prevTrack1:", JSON.stringify(prevTrack1, null, 2));
+  // console.log("2 prevTrack2:", JSON.stringify(prevTrack2, null, 2));
+
+  // Call the function to update prevTrack1 and prevTrack2
+// Calculate prevTrack1 and prevTrack2 based on curatedTracklist
+// const curTracklistLength = curatedTracklist.length;
+// if (curTracklistLength >= 1) {
+//   prevTrack1 = curatedTracklist[curTracklistLength - 1];
+// }
+// if (curTracklistLength >= 2) {
+//   prevTrack2 = curatedTracklist[curTracklistLength - 2];
+// }
+  // console.log("2 prevTrack1:", JSON.stringify(prevTrack1, null, 2));
+  // console.log("2 prevTrack2:", JSON.stringify(prevTrack2, null, 2));
 
   if (!r2Track) {
     logRuleApplication(2, "No valid track found for Rule 2.", false);
@@ -612,9 +671,23 @@ function applyRule2(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
 }
 
 // Rule 3 - The 3rd track should have the placement beginning and should have a different form than the 2nd track.
-function applyRule3(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r3Track = addNextValidTrack(curatedPlaylist, tracklist);
-  console.log(prevTrack1);
+function applyRule3(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r3Track = addNextValidTrack(curatedTracklist, tracklist);
+  console.log("3 prevTrack1:", JSON.stringify(prevTrack1, null, 2));
+  console.log("3 prevTrack2:", JSON.stringify(prevTrack2, null, 2));
+
+  // Call the function to update prevTrack1 and prevTrack2
+// Calculate prevTrack1 and prevTrack2 based on curatedTracklist
+const curTracklistLength = curatedTracklist.length;
+if (curTracklistLength >= 1) {
+  prevTrack1 = curatedTracklist[curTracklistLength - 1];
+}
+if (curTracklistLength >= 2) {
+  prevTrack2 = curatedTracklist[curTracklistLength - 2];
+}
+  console.log("3 prevTrack1:", JSON.stringify(prevTrack1, null, 2));
+  console.log("3 prevTrack2:", JSON.stringify(prevTrack2, null, 2));
+
   if (!r3Track) {
     logRuleApplication(3, "No valid track found for Rule 3.", false);
     return {
@@ -649,9 +722,16 @@ function applyRule3(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
   }
 }
 
-// Rule 4 - The 4th track should have the placement middle and should have a different form from the 3rd track.
-function applyRule4(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r4Track = addNextValidTrack(curatedPlaylist, tracklist);
+function applyRule4(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r4Track = addNextValidTrack(curatedTracklist, tracklist);
+  console.log(`4 prevTrack1 name: ${prevTrack1.name}`);
+  console.log(`4 prevTrack2 name: ${prevTrack2.name}`);
+
+  // Call the function to update prevTrack1 and prevTrack2
+  const { updatedPrevTrack1, updatedPrevTrack2 } = updateTrackVariables(curatedTracklist);
+
+  console.log(`4 prevTrack1 name: ${prevTrack1.name}`);
+  console.log(`4 prevTrack2 name: ${prevTrack2.name}`);
 
   if (!r4Track) {
     logRuleApplication(4, "No valid track found for Rule 4.", false);
@@ -665,13 +745,12 @@ function applyRule4(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
   ) {
     logRuleApplication(
       4,
-      `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) vs the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
+      `The 4th track → has the placement middle (${r4Track.placement}); and the same form (${r4Track.form}) as the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
       false
     );
     return {
       success: false,
-      message: `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) vs the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
-      updatedPrevTrack1: r4Track,
+      message: `The 4th track → has the placement middle (${r4Track.placement}); and the same form (${r4Track.form}) as the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
     };
   } else if (
     r4Track.placement.includes("middle") &&
@@ -679,58 +758,64 @@ function applyRule4(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
   ) {
     logRuleApplication(
       4,
-      `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) vs the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
-      true
-    );
-    return {
-      success: true, // Changed from false to true for success
-      message: `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) vs the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
-    };
-  }
-}
-
-// rule 5 - The 5th track should have the length short and should NOT have the placement beginning and should have a different language from the 4th track.
-function applyRule5(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r5Track = addNextValidTrack(curatedPlaylist, tracklist);
-  if (!r5Track) {
-    logRuleApplication(5, "No valid track found for Rule 5.", false);
-    return {
-      success: false,
-      message: "No valid track found for Rule 5.",
-    };
-  } else if (
-    r5Track &&
-    r5Track.length !== "short" &&
-    !r5Track.placement.includes("beginning") &&
-    r5Track.language === prevTrack1.language
-  ) {
-    logRuleApplication(
-      5,
-      `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${prevTrack1.language}); name: ${r5Track.name};`,
-      false
-    );
-    return {
-      success: false,
-      message:
-        "The 5th track should have the length short and should NOT have the placement beginning and should have a different language from the 4th track.",
-    };
-  } else {
-    logRuleApplication(
-      5,
-      `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${prevTrack1.language}); name: ${r5Track.name};`,
+      `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) from the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
       true
     );
     return {
       success: true,
-      message: `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${prevTrack1.language}); name: ${r5Track.name};`,
-      updatedPrevTrack1: r5Track,
+      message: `The 4th track → has the placement middle (${r4Track.placement}); and a different form (${r4Track.form}) from the 3rd track (${prevTrack1.form}); name: ${r4Track.name};`,
+      updatedPrevTrack1: r4Track,
     };
   }
 }
 
+
+  // rule 5 - The 5th track should have the length short and should NOT have the placement beginning and should have a different language from the 4th track.
+  function applyRule5(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+    const r5Track = addNextValidTrack(curatedTracklist, tracklist);
+    console.log(`5 prevTrack1 name: ${prevTrack1.name}`);
+    console.log(`5 prevTrack2 name: ${prevTrack2.name}`);
+    if (!r5Track) {
+      logRuleApplication(5, "No valid track found for Rule 5.", false);
+      return {
+        success: false,
+        message: "No valid track found for Rule 5.",
+      };
+    } else if (
+      r5Track &&
+      r5Track.length !== "short" &&
+      !r5Track.placement.includes("beginning") &&
+      r5Track.language === prevTrack1.language
+    ) {
+      logRuleApplication(
+        5,
+        `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${prevTrack1.language}); name: ${r5Track.name};`,
+        false
+      );
+      return {
+        success: false,
+        message:
+          "The 5th track should have the length short and should NOT have the placement beginning and should have a different language from the 4th track.",
+      };
+    } else {
+      logRuleApplication(
+        5,
+        `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${prevTrack1.language}); name: ${r5Track.name};`,
+        true
+      );
+      return {
+        success: true,
+        message: `The 5th track → has the length short (${r5Track.length}); and should NOT have the placement beginning (${r5Track.placement}); and has a different language: (${r5Track.language}); from track 4 (${prevTrack1.language}); name: ${r5Track.name};`,
+        updatedPrevTrack1: r5Track,
+      };
+    }
+  }
+
 // Rule 6 - The 6th track should have the placement MIDDLE, and should have a different form from the 5th preceding track.
-function applyRule6(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r6Track = addNextValidTrack(curatedPlaylist, tracklist);
+function applyRule6(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r6Track = addNextValidTrack(curatedTracklist, tracklist);
+  console.log(`prevTrack1 name: ${prevTrack1.name}`);
+  console.log(`prevTrack2 name: ${prevTrack2.name}`);
   if (!r6Track) {
     logRuleApplication(6, "No valid track found for Rule 6.", false);
     return {
@@ -767,8 +852,8 @@ function applyRule6(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
 }
 
 // Rule 7 - The 7th track should have the placement MIDDLE, and a different form from the 6th track. Additionally, unless the form of the 7th track is MUSIC, the 7th track must also have a different language from the 6th track.
-function applyRule7(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r7Track = addNextValidTrack(curatedPlaylist, tracklist);
+function applyRule7(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r7Track = addNextValidTrack(curatedTracklist, tracklist);
   if (!r7Track) {
     logRuleApplication(7, "No valid track found for Rule 7.", false);
     return {
@@ -805,9 +890,8 @@ function applyRule7(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
   }
 }
 
-// Rule 8 - The 8th track should have the placement MIDDLE, and should have a different form from the 6th and 7th tracks, and a different language from the 6th and 7th tracks.
-function applyRule8(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
-  const r8Track = addNextValidTrack(curatedPlaylist, tracklist);
+function applyRule8(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
+  const r8Track = addNextValidTrack(curatedTracklist, tracklist);
   if (!r8Track) {
     logRuleApplication(8, "No valid track found for Rule 8.", false);
     return {
@@ -818,7 +902,8 @@ function applyRule8(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
     r8Track &&
     r8Track.placement.includes("middle") &&
     (r8Track.form === prevTrack1.form ||
-      r8Track.language === prevTrack1.language)
+      r8Track.language === prevTrack1.language || // Corrected condition
+      r8Track.language === prevTrack2.language) // Added condition
   ) {
     logRuleApplication(
       8,
@@ -844,12 +929,16 @@ function applyRule8(curatedPlaylist, tracklist, prevTrack1, prevTrack2) {
   }
 }
 
-function followTracklistRules(tracklist) {
-  // ooo
-  let curatedPlaylist = [];
-  // console.log(curatedPlaylist);
+function updateTrackVariables(curatedTracklist) {
+  const updatedPrevTrack1 = curatedTracklist[curatedTracklist.length - 1];
+  const updatedPrevTrack2 = curatedTracklist[curatedTracklist.length - 2];
+  return { updatedPrevTrack1, updatedPrevTrack2 };
+}
 
-  let prevTrack1 = null; // Initialize prevTrack1 and prevTrack2
+
+function followTracklistRules(tracklist) {
+  let curatedTracklist = [];
+  let prevTrack1 = null;
   let prevTrack2 = null;
 
   const rules = [
@@ -863,58 +952,60 @@ function followTracklistRules(tracklist) {
     applyRule8,
   ];
 
-  let ruleIndicesApplied = new Set();
-
-  // Loop through each rule and apply it to the tracklist
   for (let ruleIndex = 0; ruleIndex < rules.length; ruleIndex++) {
     const ruleFunction = rules[ruleIndex];
-
-    // Call the rule function with the correct arguments
     const result = ruleFunction(
-      curatedPlaylist,
+      curatedTracklist,
       tracklist,
       prevTrack1,
       prevTrack2
     );
+
     if (result.success) {
-      // console.log(`Rule ${ruleIndex + 1} successfully applied.`);
-
-      if (ruleIndex === 0) {
-        prevTrack1 = result.updatedPrevTrack1; // Update prevTrack1 using the updated value
-      } else if (ruleIndex === 1) {
-        console.log();
-        prevTrack2 = curatedPlaylist[curatedPlaylist.length - 1];
-      } else {
-        console.log();
-        prevTrack1 = curatedPlaylist[curatedPlaylist.length - 1];
-        console.log();
-        prevTrack2 = curatedPlaylist[curatedPlaylist.length - 2];
-      }
-    }
-  }
-
-  // Add the remaining tracks
-  for (let i = 8; i < tracklist.length; i++) {
-    const currentTrack = tracklist[i];
-    // Update prevTrack1 and prevTrack2 for the next iteration
-    prevTrack1 = prevTrack2;
-    prevTrack2 = currentTrack;
-    // Use the addNextValidTrack function
-    const addedTrack = addNextValidTrack(curatedPlaylist, tracklist);
-    if (addedTrack) {
-      console.log(`Added track '${addedTrack.name}' to curated playlist.`);
-    } else {
-      console.error(
-        // `Track '${currentTrack.name}' does not pass the general rules, sorry friend.`
+      // Call the function to update prevTrack1 and prevTrack2 based on ruleIndex
+      const { updatedPrevTrack1, updatedPrevTrack2 } = updateTrackVariables(
+        ruleIndex + 1, // Rules are 1-indexed
+        curatedTracklist,
+        prevTrack1,
+        prevTrack2,
+        2, // requiredIndex1
+        3  // requiredIndex2
       );
-      // Handle the error or continue to the next track
+
+      prevTrack1 = updatedPrevTrack1;
+      prevTrack2 = updatedPrevTrack2;
+
+      // console.log(curatedTracklist);
+
+      // console.log("LENGTH " + curatedTracklist.length + " I got curatedTracklist.length - 2, that's: " + prevTrack1);
+      // console.log("LENGTH " + curatedTracklist.length + " I got curatedTracklist.length - 2, and -3, that's: " + prevTrack1 + " and " + prevTrack2);
     }
   }
 
-  console.log("Curated Tracklist: ", curatedPlaylist);
-
-  return curatedPlaylist;
+  console.log("Curated Tracklist: ", curatedTracklist);
+  return curatedTracklist;
 }
+
+
+
+// // Add the remaining tracks
+  // for (let i = 8; i < tracklist.length; i++) {
+  //   const currentTrack = tracklist[i];
+  //   // Update prevTrack1 and prevTrack2 for the next iteration
+  //   prevTrack1 = prevTrack2;
+  //   prevTrack2 = currentTrack;
+  //   // Use the addNextValidTrack function
+  //   const addedTrack = addNextValidTrack(curatedTracklist, tracklist);
+  //   if (addedTrack) {
+  //     console.log(`Added track '${addedTrack.name}' to curated playlist.`);
+  //   } else {
+  //     console
+  //       .error
+  //       // `Track '${currentTrack.name}' does not pass the general rules, sorry friend.`
+  //       ();
+  //     // Handle the error or continue to the next track
+  //   }
+  // }
 
 /* 9. shuffleTracklist takes a tracklist array as input, shuffles its elements
 randomly, and returns the shuffled and modified tracklist. */
@@ -1012,7 +1103,7 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
       ", " +
       shuffledSongsWithOpen[i].placement.join(", ") +
       ". ";
-      shuffledSongsWithOpen[i].language +
+    shuffledSongsWithOpen[i].language +
       ", " +
       shuffledSongsWithOpen[i].sentiment +
       ", " +
@@ -1133,4 +1224,21 @@ function createTimerLoop(previousDuration) {
   }, 200);
 }
 
-window.addEventListener("load", (event) => {});
+window.addEventListener("load", (event) => {
+  // Create a div element to hold the output
+  const outputContainer = document.createElement('div');
+outputContainer.id = 'errorBox'; // Set the id attribute
+
+// Add content to the output container
+outputContainer.innerHTML = `
+  <p class="debugHeader">Test Results</p>
+  <p>Songs raw length: ${SONGSRAW.length}</p>
+`;
+
+  // Get the target container where you want to add the output
+  const targetContainer = document.getElementById('debugdiv');
+
+
+  // Append the output container to the target container
+  targetContainer.appendChild(outputContainer);
+});
