@@ -867,7 +867,7 @@ function applyRule8(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
       success: false,
       message: "No valid track found for Rule 8.",
     };
-  } else if (r8Track.tempo <= prevTrack1.tempo) {
+  } else if (r8Track.placement !== "MIDDLE" || r8Track.form === prevTrack1.form || r8Track.form === prevTrack2.form || r8Track.language === prevTrack1.language || r8Track.language === prevTrack2.language) {
     logRuleApplication(8, msg, false);
     return {
       success: false,
