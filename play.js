@@ -9,7 +9,7 @@ var remainingTime;
 let playerPlayState = "play";
 // let muteState = "unmute";
 let hasSkippedToEnd = false;
-const MAXPLAYLISTDURATION = 30;
+const MAXPLAYLISTDURATION = 5000;
 
 // const MAXPLAYLISTDURATION = 1080;
 
@@ -248,7 +248,10 @@ function trackExistsWithAttributes(curatedTracklist, attribute, value) {
 function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedTracklist) {
   const index = curatedTracklist.length;
 
-console.log(remainingTime);
+
+if (total_duration - currentRuntime < 100) {
+  console.log("eeeeek");
+}
   
   if (remainingTime <= 300) {
     // IF WE ARE ALMOST OUT OF TIME let's check on these edge cases
@@ -1220,7 +1223,7 @@ button.addEventListener("click", (event) => {
 // This function updates the progress timer displayed on the webpage.
 // It takes the time in seconds and the previous duration as inputs.
 function updateProgressTimer(seconds, previousDuration) {
-  // Get the HTML element for displaying the current time
+  // Get the HTML element for displaying the current timehttps://www.reddit.com/r/graphic_design/?f=flair_name%3A%22Asking%20Question%20(Rule%204)%22
   let currTime = document.getElementById("current-time");
 
   // Throw an error if the current time element is missing
