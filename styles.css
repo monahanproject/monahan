@@ -596,15 +596,27 @@ header {
 }
 
 main {
-  display: flex;
-  flex-direction: row;
+  /* display: flex; */
+  /* flex-direction: row; */
   align-content: center;
   justify-content: space-around;
   align-items: center;
   top: 20rem;
-
-
 }
+
+@media screen and (min-width: 900px) {
+  #playerPageMain {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    top: 20rem;
+  }
+}
+
+
+
 
 /***********************/
 /** MUSIC PLAYER DIV ***/
@@ -1097,3 +1109,5 @@ footer {
 .failure::before {
   content: "✘ ";
 }
+
+
