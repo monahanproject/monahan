@@ -612,6 +612,7 @@ main {
     justify-content: space-around;
     align-items: center;
     top: 20rem;
+    align-items: flex-start;
   }
 }
 
@@ -624,11 +625,24 @@ main {
 
 #musicPlayerDiv {
   display:flex;
-  /* flex: 0 0 50%; */
+  flex: 0 0 40%;
 
   flex-direction: column;
   align-items: center;
 }
+
+@media screen and (min-width: 900px) {
+  #musicPlayerDiv {
+    display:flex;
+    flex: 0 0 40%;
+  
+    flex-direction: column;
+    align-items: center;
+    /* align-items: flex-start; */
+
+  }
+}
+
 
 #wrapper {
   text-align: center;

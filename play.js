@@ -9,7 +9,16 @@ var remainingTime;
 let playerPlayState = "play";
 // let muteState = "unmute";
 let hasSkippedToEnd = false;
-const MAXPLAYLISTDURATION = 5000;
+const MAXPLAYLISTDURATION = 410;
+const EONSOFTIME = 400;
+const SOMETIME = 200;
+let eonsOfTimeLeft = true;
+let someTimeLeft = true;
+let noTimeLeft = true;
+let first8RulesMet = false;
+
+let creditStack;
+let displayConsoleLog = "<br>";
 
 // const MAXPLAYLISTDURATION = 1080;
 
@@ -221,329 +230,376 @@ const PREFETCH_BUFFER_SECONDS = 8;
   rules to modify the tracklist, and returns the modified tracklist.
   */
 
+
+  function getTheCreditStack(curatedTracklist) {
+    const credits = curatedTracklist.map((item) =>
+      item.credit.replace(/\.\/sounds\/XX_OUTRO\/NAMES\/NAMES_/g, "")
+    );
+    return credits.join(", ");
+  }
+
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX TRACKLIST CREATION XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-function trackExistsWithAttributes(curatedTracklist, attribute, value) {
-  return curatedTracklist.some((track) => track[attribute] === value);
-}
-
-// Log helper function to make logging more informative
-function logRuleApplication(ruleNumber, description, isApplied) {
-  const ruleStatus = isApplied ? "applied" : "broken";
-  console.log(`Track ${ruleNumber} Rules ${ruleStatus}: ${description}`);
-}
-
-
-
 // Helper function for isThisAValidTrack to check if a track exists with the given attribute and value in the curated tracklist
 function trackExistsWithAttributes(curatedTracklist, attribute, value) {
   return curatedTracklist.some((track) => track[attribute] === value);
 }
 
+function updateLogDisplay() {
+  const logElement = document.getElementById("displayConsoleLog");
+  logElement.innerHTML = displayConsoleLog;
+}
+
+// Helper function for logging rules
+function logRuleApplication(ruleNumber, description, isApplied) {
+  const ruleStatus = isApplied ? "applied" : "broken";
+  console.log(`Track ${ruleNumber} Rules ${ruleStatus}: ${description}`);
+  displayConsoleLog += `→ Track ${ruleNumber} Rules ${ruleStatus}: ${description}<br>`;
+  updateLogDisplay();
+}
+
+
+function checkAndLogRule(condition, message) {
+  if (!condition) {
+    displayConsoleLog += `→ ${message}<br>`;
+    updateLogDisplay();
+    return false;
+  }
+  return true;
+}
+
+////////////////////////////////////////////////////
+/////////////  isThisAValidTrack   ////////////////
+////////////////////////////////////////////////////
+
 // Updated function to check if a track is valid based on the new rules.
 function isThisAValidTrack(track, prevTrack1, prevTrack2, curatedTracklist) {
   const index = curatedTracklist.length;
 
+  //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  //  XXXXXXXX GENERAL RULES XXXXXXXXXX
+  //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-if (total_duration - currentRuntime < 100) {
-  console.log("eeeeek");
-}
-  
-  if (remainingTime <= 300) {
-    // IF WE ARE ALMOST OUT OF TIME let's check on these edge cases
+  // Rule: No more than two tracks from the same author in a tracklist.
+  const authorCount = curatedTracklist
+    .filter((t) => t.author.trim() !== "") // Filter out tracks with blank authors
+    .filter((t) => t.author === track.author).length;
+
+  if (authorCount >= 2) {
     console.log(
-      "Almost out of time: 500 seconds left, let's look for last minute rules! TIME " +
-        remainingTime
+      `Track skipped (${track.name}): No more than two tracks from the same author (this author ${track.author}).`
+    );
+    return false;
+  }
+
+  // Rule: Tracks with the form shorts and the language musical can never follow tracks with the form music.
+  if (
+    track.form === "shorts" &&
+    track.language === "musical" &&
+    curatedTracklist.some((prevTrack) => prevTrack.form === "music")
+  ) {
+    console.log(
+      `Track skipped (${track.name}): Tracks with form 'shorts' and language 'musical' (this track's form ${track.form} and (${track.language}) cannot follow tracks with form 'music' (last track's form ${prevTrack1.form}).`
+    );
+    return false;
+  }
+
+  // Rule: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
+  if (
+    track.form === "music" &&
+    curatedTracklist.some(
+      (prevTrack) =>
+        prevTrack.form === "shorts" && prevTrack.language === "musical"
+    )
+  ) {
+    console.log(
+      `Track skipped (${track.name}): Tracks with form 'music' (this track's form  ${track.form}) cannot follow tracks with form 'shorts' and language 'musical' (last track's form ${prevTrack1.form} and language ${prevTrack1.language}).`
+    );
+    return false;
+  }
+
+  // Rule: The value for backgroundMusic should never be the same as the author of the track right before it or the immediately following track.
+  const nextTrack = curatedTracklist[curatedTracklist.length - 1];
+  if (
+    (prevTrack1 &&
+      prevTrack1.author.trim() !== "" &&
+      track.backgroundMusic.trim() !== "" &&
+      track.backgroundMusic === prevTrack1.author) ||
+    (nextTrack &&
+      nextTrack.author.trim() !== "" &&
+      track.backgroundMusic.trim() !== "" &&
+      track.backgroundMusic === nextTrack.author)
+  ) {
+    console.log(
+      `Track skipped (${track.name}): The value for backgroundMusic (this track's ${track.backgroundMusic}) should never match the author of the track before or after (last track's ${prevTrack1.author}).`
+    );
+    return false;
+  }
+
+  // Rule: If a track has the sentiment heavy, then the track right before it cannot have the laughter tag.
+  if (
+    track.sentiment === "heavy" &&
+    prevTrack1 &&
+    prevTrack1.tags.includes("laughter")
+  ) {
+    console.log(
+      `Track skipped (${track.name}): If a track has sentiment 'heavy' (this track's ${track.sentiment}), the track before cannot have 'laughter' tag (last track's ${prevTrack1.tags}).`
+    );
+    return false;
+  }
+
+  // Rule: If a track has the length long and the form music, then the immediately preceding track should have the form interview.
+  if (
+    track.length === "long" &&
+    track.form === "music" &&
+    prevTrack1 &&
+    prevTrack1.form !== "interview"
+  ) {
+    console.log(
+      `Rule ENFORCED (${track.name}): If a track has length 'long' (this track's length ${track.length}) and form 'music' (this track's form ${track.form}), the preceding track should have form 'interview' (last track's ${prevTrack1.form}).`
+    );
+    return false;
+  }
+
+  // Rule: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist,
+  // none of the other two tracks should be added to the tracklist.
+  const forbiddenTracks = ["I_KIM_03", "I_KIM_04", "I_KIM_05"];
+  if (
+    forbiddenTracks.includes(track.name) &&
+    curatedTracklist.some((t) => forbiddenTracks.includes(t.name))
+  ) {
+    console.log(
+      `Track skipped (${track.name}): If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added, the others should not be.`
+    );
+    return false;
+  }
+
+  // Rule: If there is one track with the author SARAH and the form Interview in the tracklist,
+  // there should not be any more tracks with the author SARAH and the form Interview in the tracklist.
+  if (
+    track.author === "SARAH" &&
+    track.form === "Interview" &&
+    trackExistsWithAttributes(curatedTracklist, "author", "SARAH") &&
+    trackExistsWithAttributes(curatedTracklist, "form", "Interview")
+  ) {
+    console.log(
+      `Track skipped (${track.name}): If there is a track with author 'SARAH' (this track's ${track.author}) and form 'Interview' (this track's ${track.form}), no more such tracks should be added.`
+    );
+    return false;
+  }
+
+  // Rule: If there is one track with the author LOUELLA in the tracklist,
+  // there should not be any more tracks with the author LOUELLA in the tracklist.
+  if (
+    track.author === "LOUELLA" &&
+    trackExistsWithAttributes(curatedTracklist, "author", "LOUELLA")
+  ) {
+    console.log(
+      `Track skipped (${track.name}): If there is a track with author 'LOUELLA' (this track's author ${track.author}), no more tracks with that author should be added.`
+    );
+    return false;
+  }
+
+  ////////////////////////////////////////////////////
+  ///~~~~~   create our base tracks  ~~~~~~~~////
+  ////////////////////////////////////////////////////
+
+  // Rule only for Track 1: The 1st track should have the tag 'intro'.
+  if (index === 0 && !track.tags.includes("intro")) {
+    console.log("Track 1 Rule: The 1st track should have the tag 'intro'.");
+    return false;
+  }
+  // Rule only for Track 2: The 2nd track should have the placement 'beginning'.
+  if (index === 1 && !track.placement.includes("beginning")) {
+    console.log(
+      "Track 2 Rule: The 2nd track should have the placement 'beginning'."
+    );
+    return false;
+  }
+  // Rule only for Track 3: The 3rd track should have the placement 'beginning' and a different form than the 2nd track.
+  if (index === 2) {
+    if (!track.placement.includes("beginning")) {
+      console.log(
+        "Track 3 Rule: The 3rd track should have the placement 'beginning'."
+      );
+      return false;
+    }
+    if (track.form === prevTrack1.form) {
+      console.log(
+        "Track 3 Rule: The 3rd track should have a different form than the 2nd track."
+      );
+      return false;
+    }
+  }
+  // Rule only for Track 4: The 4th track should have the placement 'middle' and a different form than the 3rd track.
+  if (index === 3) {
+    if (!track.placement.includes("middle")) {
+      console.log(
+        "Track 4 Rule: The 4th track should have the placement 'middle'."
+      );
+      return false;
+    }
+    if (track.form === prevTrack1.form) {
+      console.log(
+        "Track 4 Rule: The 4th track should have a different form than the 3rd track."
+      );
+      return false;
+    }
+  }
+  // Rule only for Track 5: The 5th track should have the length 'short', not have the placement 'beginning', and have a different language than the 4th track.
+  if (index === 4) {
+    if (track.length !== "short") {
+      console.log(
+        "Track 5 Rule: The 5th track should have the length 'short'."
+      );
+      return false;
+    }
+    if (track.placement.includes("beginning")) {
+      console.log(
+        "Track 5 Rule: The 5th track should not have the placement 'beginning'."
+      );
+      return false;
+    }
+    if (track.language === prevTrack1.language) {
+      console.log(
+        "Track 5 Rule: The 5th track should have a different language than the 4th track."
+      );
+      return false;
+    }
+  }
+  // Rule only for Track 6: The 6th track should have the placement 'middle' and a different form than the 5th track.
+  if (index === 5) {
+    if (!track.placement.includes("middle")) {
+      console.log(
+        "Track 6 Rule: The 6th track should have the placement 'middle'."
+      );
+      return false;
+    }
+    if (track.form === prevTrack1.form) {
+      console.log(
+        "Track 6 Rule: The 6th track should have a different form than the 5th track."
+      );
+      return false;
+    }
+  }
+  // Rule only for Track 7: The 7th track should have the placement 'middle', a different form than the 6th track, and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
+  if (index === 6) {
+    if (!track.placement.includes("middle")) {
+      console.log(
+        "Track 7 Rule: The 7th track should have the placement 'middle'."
+      );
+      return false;
+    }
+    if (track.form === prevTrack1.form) {
+      console.log(
+        "Track 7 Rule: The 7th track should have a different form than the 6th track."
+      );
+      return false;
+    }
+    if (track.form !== "MUSIC" && track.language === prevTrack1.language) {
+      console.log(
+        "Track 7 Rule: Unless the form is 'MUSIC', the 7th track should have a different language from the 6th track."
+      );
+      return false;
+    }
+  }
+  // Rule only for Track 8: The 8th track should have the placement 'middle', a different form than the 6th and 7th tracks,and a different language than the 6th and 7th tracks.
+  if (index === 7) {
+    if (!track.placement.includes("middle")) {
+      console.log(
+        "Track 8 Rule: The 8th track should have the placement 'middle'."
+      );
+      return false;
+    }
+    if (track.form === prevTrack1.form || track.form === prevTrack2.form) {
+      console.log(
+        "Track 8 Rule: The 8th track should have a different form than the 6th and 7th tracks."
+      );
+      return false;
+    }
+    if (
+      track.language === prevTrack1.language ||
+      track.language === prevTrack2.language
+    ) {
+      console.log(
+        "Track 8 Rule: The 8th track should have a different language than the 6th and 7th tracks."
+      );
+      return false;
+    }
+  }
+
+  ////////////////////////////////////////////////////
+  ///~~~~~  if we have our base tracks  ~~~~~~~~/////
+  ////////////////////////////////////////////////////
+
+  if (curatedTracklist.length >= 9) {
+    const makeSureWeHaveAlbertRule = checkAndLogRule(
+      trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") ||
+        track.author === "ALBERT",
+      "no albert"
     );
 
-    // Helper variables to track certain conditions for the later in the tracklist rules
-    let KIKOTypeInterviewPresent = false;
-    let geeseTagPresent = false;
-    // Loop through the curated tracklist to apply the later in the tracklist rules
-    for (let i = 0; i < curatedTracklist.length; i++) {
-      const currentTrack = curatedTracklist[i];
-      // Rule: If a track with the author "KIKO" and the form "typeInterview" is present in the tracklist,
-      // ensure that another track with the author "KIKO" and the form "typeMusic" or "typeShort" is added at some point later in the tracklist.
-      if (
-        i > 8 &&
-        currentTrack.author === "KIKO" &&
-        currentTrack.form === "typeInterview"
-      ) {
-        KIKOTypeInterviewPresent = true;
-      }
-      if (
-        i > 8 &&
-        KIKOTypeInterviewPresent &&
-        currentTrack.author === "KIKO" &&
-        (currentTrack.form === "typeMusic" || currentTrack.form === "typeShort")
-      ) {
-        console.log("no KIKO here!");
-        KIKOTypeInterviewPresent = false;
-      }
-      // Rule: If there is a track in the tracklist with the "geese" tag,
-      // add another track with the "geese" tag later in the tracklist.
-      if (i > 8 && currentTrack.tags.includes("geese")) {
-        geeseTagPresent = true;
-      }
-      if (i > 8 && geeseTagPresent && currentTrack.tags.includes("geese")) {
-        geeseTagPresent = false;
-      }
-    }
-  } else if (remainingTime <= 500) {
-    // LET'S MAKE SURE WE HAVE OUR MANDATORY FRIENDS
-    console.log(
-      "Time is getting a little low, let's make sure we have albert and friends! TIME " +
-        remainingTime
+    const makeSureWeHaveAnInterviewRule = checkAndLogRule(
+      trackExistsWithAttributes(curatedTracklist, "form", "interview") ||
+        track.form === "interview",
+      `Skipping ${track.name}, ${track.form} because we need an interview`
     );
-    // Rule: Ensure that the tracklist contains at least one track with the author "albert".
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") &&
-      track.author !== "ALBERT"
-    ) {
-      console.log("no albert");
-      return false;
-    }
 
-    // Rule: Ensure that the tracklist contains at least one track with the author "birds".
-    // if (
-    //   !trackExistsWithAttributes(curatedTracklist, "author", "birds") &&
-    //   track.author !== "BIRDS"
-    // ) {
-    //   console.log("no birds here!");
-    //   return false;
-    // }
-    // Rule: Ensure that the tracklist contains at least one track with the form "interview".
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "form", "interview") &&
-      track.form !== "interview"
-    ) {
-      return false;
-    }
-    // Rule: Ensure that the tracklist contains at least one track with the form "music".
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "form", "music") &&
-      track.form !== "music"
-    ) {
-      console.log("no music here!");
-      return false;
-    }
+    const makeSureWeHaveMusicRule = checkAndLogRule(
+      trackExistsWithAttributes(curatedTracklist, "form", "music") ||
+        track.form === "music",
+      `Skipping ${track.name}, ${track.form} because we need music`
+    );
 
-  } else {
-    // NO STRESS WE HAVE TIME! Let's implement some rules
+    const ifWeHave1Kiko2KikoRule =
+      trackExistsWithAttributes(curatedTracklist, "author", "KIKO") &&
+      trackExistsWithAttributes(curatedTracklist, "form", "interview");
 
-    // Rule only for Track 1: The 1st track should have the tag 'intro'.
-    if (index === 0 && !track.tags.includes("intro")) return false;
+    const ifWeHave1Goose2GeeseRule = trackExistsWithAttributes(
+      curatedTracklist,
+      "tags",
+      "geese"
+    );
 
-    // Rule only for Track 2: The 2nd track should have the placement 'beginning'.
-    if (index === 1 && !track.placement.includes("beginning")) return false;
-
-    // Rule only for Track 3: The 3rd track should have the placement 'beginning' and a different form than the 2nd track.
-    if (index === 2) {
-      if (!track.placement.includes("beginning")) return false;
-      if (track.form === prevTrack1.form) return false;
-    }
-
-    // Rule only for Track 4: The 4th track should have the placement 'middle' and a different form than the 3rd track.
-    if (index === 3) {
-      if (!track.placement.includes("middle")) return false;
-      if (track.form === prevTrack1.form) return false;
-    }
-
-    // Rule only for Track 5: The 5th track should have the length 'short', not have the placement 'beginning',
-    // and have a different language than the 4th track.
-    if (index === 4) {
-      if (track.length !== "short") return false;
-      if (track.placement.includes("beginning")) return false;
-      if (track.language === prevTrack1.language) return false;
-    }
-
-    // Rule only for Track 6: The 6th track should have the placement 'middle' and a different form than the 5th track.
-    if (index === 5) {
-      if (!track.placement.includes("middle")) return false;
-      if (track.form === prevTrack1.form) return false;
-    }
-
-    // Rule only for Track 7: The 7th track should have the placement 'middle', a different form than the 6th track,
-    // and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
-    if (index === 6) {
-      if (!track.placement.includes("middle")) return false;
-      if (track.form === prevTrack1.form) return false;
-      if (track.form !== "MUSIC" && track.language === prevTrack1.language) {
-        return false;
-      }
-    }
-
-    // Rule only for Track 8: The 8th track should have the placement 'middle', a different form than the 6th and 7th tracks,
-    // and a different language than the 6th and 7th tracks.
-    if (index === 7) {
-      if (!track.placement.includes("middle")) {
-        // console.log("a) darn, not a middle!");
-        return false;
-      } else {
-        // console.log(`a) yes, a middle! (${track.placement});`);
-      }
-
-      if (track.form === prevTrack1.form || track.form === prevTrack2.form) {
-        // console.log(`b) darn, my form (${track.form}) vs the track1 (${prevTrack1.form}) or track2 (${prevTrack2.form}`);
-        return false;
-      } else {
-        // console.log(`b) yes --- my form (${track.form}) track1 (${prevTrack1.form}) track2 (${prevTrack2.form})`);
-      }
-
+    if (ifWeHave1Kiko2KikoRule) {
       if (
-        track.language === prevTrack1.language ||
-        track.language === prevTrack2.language
+        track.author === "KIKO" &&
+        (track.form === "music" || track.form === "short")
       ) {
+        console.log("KIKO Interview Rule: Track added as a related track.");
+      } else {
         console.log(
-          `c) It turns out it's impossible to meet this rule!! my lang (${track.language}) vs the track1 (${prevTrack1.language}) or track2 (${prevTrack2.language})`
+          "KIKO Interview Rule: Track not added. Another related KIKO track is required."
         );
-        // return false;
-      } else {
-        // console.log(`c) yes my lang is fortunately different! --- my lang (${track.language}) vs the track1 (${prevTrack1.language}) or track2 (${prevTrack2.language})`);
+        return false; // Exit the function and indicate it's an invalid track
       }
     }
 
-    //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    //  XXXXXXXX GENERAL RULES XXXXXXXXXX
-    //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-    // Rule: No more than two tracks from the same author in a tracklist.
-    const authorCount = curatedTracklist
-      .filter((t) => t.author.trim() !== "") // Filter out tracks with blank authors
-      .filter((t) => t.author === track.author).length;
-
-    // console.log(`curatedTracklist authorcount (${authorCount})`);
-    if (authorCount >= 2) {
-      // console.log(
-      //   `General Rule ENFORCED: authorcount (author ${track.author} count is ${authorCount})`
-      // );
-      return false;
-    }
-
-    // Rule: Tracks with the form shorts and the language musical can never follow tracks with the form music.
-    if (
-      track.form === "shorts" &&
-      track.language === "musical" &&
-      curatedTracklist.some((prevTrack) => prevTrack.form === "music")
-    ) {
-      console.log(
-        `General Rule ENFORCED: tracks with the form shorts (this track's form: ${track.form}) and the language musical (this track lang ${track.language}) can never follow tracks with the form music (prev track form ${prevTrack1.form})`
-      );
-      return false;
-    }
-
-    // // Rule: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
-    if (
-      track.form === "music" &&
-      curatedTracklist.some(
-        (prevTrack) =>
-          prevTrack.form === "shorts" && prevTrack.language === "musical"
-      )
-    ) {
-      console.log(
-        `General Rule ENFORCED: Tracks with the form music (this track's form ${track.form}) can never follow tracks with both the form shorts (prev track's form ${prevTrack1.form}) and the language musical (prev track's language ${prevTrack1.language}.`
-      );
-      return false;
-    }
-
-    // Rule: The value for backgroundMusic should never be the same as the author of the track right before it or the immediately following track.
-    const nextTrack = curatedTracklist[curatedTracklist.length - 1];
-    if (
-      (prevTrack1 &&
-        prevTrack1.author.trim() !== "" &&
-        track.backgroundMusic.trim() !== "" &&
-        track.backgroundMusic === prevTrack1.author) ||
-      (nextTrack &&
-        nextTrack.author.trim() !== "" &&
-        track.backgroundMusic.trim() !== "" &&
-        track.backgroundMusic === nextTrack.author)
-    ) {
-      console.log(
-        `General Rule ENFORCED: The value for backgroundMusic (this track's background music ${track.backgroundMusic}) should never be the same as the author of the track right before it (previous track's author ${prevTrack1.author}) or the immediately following track.`
-      );
-      return false;
-    }
-
-    // // Rule: If a track has the sentiment heavy, then the track right before it cannot have the laughter tag.
-    if (
-      track.sentiment === "heavy" &&
-      prevTrack1 &&
-      prevTrack1.tags.includes("laughter")
-    ) {
-      console.log(
-        `If a track has the sentiment heavy (this track's sentiment ${track.sentiment}), then the track right before it cannot have the laughter tag (previous track's tags ${prevTrack1.tags})`
-      );
-      return false;
-    }
-
-    // Rule: If a track has the length long and the form typeMusic, then the immediately preceeding track should have the form typeInterview.
-    if (
-      track.length === "long" &&
-      track.form === "typeMusic" &&
-      prevTrack1 &&
-      prevTrack1.form !== "typeInterview"
-    ) {
-      console.log(
-        `Rule ENFORCED: If a track has the length long and the form typeMusic (this track's length ${track.length} and form ${track.form}), then the immediately preceeding track should have the form typeInterview (previous track's form ${prevTrack1.form})`
-      );
-      return false;
-    }
-
-    // // Rule: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist,
-    // // none of the other two tracks should be added to the tracklist.
-    const forbiddenTracks = ["I_KIM_03", "I_KIM_04", "I_KIM_05"];
-    if (
-      forbiddenTracks.includes(track.name) &&
-      curatedTracklist.some((t) => forbiddenTracks.includes(t.name))
-    ) {
-      console.log(
-        `If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist... ${track.name})`
-      );
-
-      return false;
-    }
-
-    // // Rule: If there is one track with the author SARAH and the form Interview in the tracklist,
-    // // there should not be any more tracks with the author SARAH and the form Interview in the tracklist.
-    if (
-      track.author === "SARAH" &&
-      track.form === "Interview" &&
-      curatedTracklist.some(
-        (prevTrack) =>
-          prevTrack.author === "SARAH" && prevTrack.form === "Interview"
-      )
-    ) {
-      console.log(
-        `If there is one track with the author SARAH and the form Interview in the tracklist, that's enough(this track's author ${track.author} and form ${track.form})`
-      );
-
-      return false;
-    }
-
-    // // Rule: If there is one track with the author LOUELLA in the tracklist,
-    // // there should not be any more tracks with the author LOUELLA in the tracklist.
-    if (
-      track.author === "LOUELLA" &&
-      curatedTracklist.some((prevTrack) => prevTrack.author === "LOUELLA")
-    ) {
-      console.log(
-        `If there is one track with the author LOUELLA in the tracklist, there should not be any more tracks with the author LOUELLA in the tracklist (this track's author ${track.author})`
-      );
-      return false;
+    if (ifWeHave1Goose2GeeseRule) {
+      if (track.tags.includes("geese")) {
+        console.log("Geese Tag Rule: Track added as a related track.");
+      } else {
+        console.log(
+          "Geese Tag Rule: Track not added. Another track with the 'geese' tag is required."
+        );
+        return false; // Exit the function and indicate it's an invalid track
+      }
     }
   }
   return true;
 }
 
 function addNextValidTrack(curatedTracklist, tracklist) {
-  const index = curatedTracklist.length;
+  const nextValidTrackIndex = curatedTracklist.length;
 
-  const myPrevTrack1 = index > 0 ? curatedTracklist[index - 1] : null;
-  const myPrevTrack2 = index > 1 ? curatedTracklist[index - 2] : null;
+  const myPrevTrack1 =
+    nextValidTrackIndex > 0 ? curatedTracklist[nextValidTrackIndex - 1] : null;
+  const myPrevTrack2 =
+    nextValidTrackIndex > 1 ? curatedTracklist[nextValidTrackIndex - 2] : null;
   let tracksSearched = 0;
 
   const nextValidTrack = tracklist.find((track) => {
@@ -922,7 +978,7 @@ function reportOnRule8(curatedTracklist, tracklist, prevTrack1, prevTrack2) {
   }
 }
 
-// Rule 666 More Tracks -
+// Rule 9 More Tracks -
 function reportOnRuleMoreTracks(
   curatedTracklist,
   tracklist,
@@ -932,24 +988,24 @@ function reportOnRuleMoreTracks(
   const anotherTrack = addNextValidTrack(curatedTracklist, tracklist);
   let msg = anotherTrack
     ? `Adding another track! (${anotherTrack.name})`
-    : "No valid track found for Rule 666.";
+    : "No valid track found for Rule 9.";
   // console.log(`prevTrack1 name: ${prevTrack1.name}`);
   // console.log(`prevTrack2 name: ${prevTrack2.name}`);
   if (!anotherTrack) {
     logRuleApplication(
-      666,
+      9,
       "No valid track found for applyRuleMoreTracks",
       false
     );
     return {
       success: false,
-      message: "No valid track found for Rule 666.",
+      message: "No valid track found for Rule 9.",
     };
   } else {
     prevTrack2 = prevTrack1;
     prevTrack1 = anotherTrack;
 
-    logRuleApplication(666, msg, true);
+    logRuleApplication(9, msg, true);
     return {
       success: true,
       message: msg,
@@ -1026,10 +1082,12 @@ function followTracklistRules(tracklist) {
 
       // console.log(`Rule ${ruleIndex + 1} applied successfully.`);
     } else {
-      console.log(`RULE FAILED!! Rule 666 not applicable: ${result.message}`);
+      console.log(`RULE FAILED!! Rule 9 not applicable: ${result.message}`);
       break; // Stop applying rules if one rule fails
     }
   }
+
+  creditStack = getTheCreditStack(curatedTracklist);
 
   // iii
   console.log("Curated Tracklist:", curatedTracklist);
@@ -1088,12 +1146,12 @@ function gatherAndPrintDebugInfo(song, index) {
     const currURLHTMLElement = document.getElementById("currURL");
     const currTagsHTMLElement = document.getElementById("currTags");
     const currDurrHTMLElement = document.getElementById("currDurr");
+    // const displayConsoleLogHTMLElement = document.getElementById("displayConsoleLog");
     const currCreditHTMLElement = document.getElementById("currCredit");
     const currIndexNokHTMLElement = document.getElementById("indexNo");
-    // const currCreditStackHTMLElement = document.getElementById("creditsStack");
+    const currCreditStackHTMLElement = document.getElementById("creditsStack");
     // const currTotalIndexHTMLElement = document.getElementById("totalIndex");
 
-    console.log(index);
     // get the info for THIS song so I can print it to the debug
     const currTags = song.tags;
     const currUrl = song.url;
@@ -1101,12 +1159,15 @@ function gatherAndPrintDebugInfo(song, index) {
     const currName = song.name;
     const currCredit = song.credit;
     const currIndex = index;
+    // creditstack defined elsewhere
 
     displayDebugText(currTrackNameHTMLElement, currName, "no name");
     displayDebugText(currURLHTMLElement, currUrl, "no url");
     displayDebugText(currTagsHTMLElement, currTags, "no tags");
     displayDebugText(currDurrHTMLElement, currDurr, "no duration");
+    // displayDebugText(displayConsoleLogHTMLElement, displayConsoleLog, "no log");
     displayDebugText(currCreditHTMLElement, currCredit, "no credit");
+    displayDebugText(currCreditStackHTMLElement, creditStack, "no credit");
     displayDebugText(currIndexNokHTMLElement, currIndex, "no index");
   } else {
     console.log("OH NO, NO SONG!");
@@ -1115,15 +1176,20 @@ function gatherAndPrintDebugInfo(song, index) {
 }
 
 function printEntireTracklistDebug(shuffledSongsWithOpen) {
-  // now we will print all the shuffled songs for the debug
   const currTrackNameElement = document.getElementById("fullList");
+
+  // Clear the existing content
   while (currTrackNameElement.firstChild) {
     currTrackNameElement.removeChild(currTrackNameElement.firstChild);
   }
 
+  // Loop through the shuffled songs and add each track with a number
   for (let i = 0; i < shuffledSongsWithOpen.length; i++) {
     const itemElement = document.createElement("div");
+    const trackNumber = i + 1; // Adding 1 to the index to start numbering from 1
     itemElement.textContent =
+      trackNumber +
+      ". " +
       shuffledSongsWithOpen[i].name +
       ", " +
       shuffledSongsWithOpen[i].author +
@@ -1131,16 +1197,17 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
       shuffledSongsWithOpen[i].form +
       ", " +
       shuffledSongsWithOpen[i].placement.join(", ") +
-      ". ";
-    shuffledSongsWithOpen[i].language +
+      ", " +
+      shuffledSongsWithOpen[i].language +
       ", " +
       shuffledSongsWithOpen[i].sentiment +
       ", " +
       shuffledSongsWithOpen[i].tags.join(", ") +
-      ". ";
-    shuffledSongsWithOpen[i].backgroundMusic +
-      "." +
-      currTrackNameElement.appendChild(itemElement);
+      ", " +
+      shuffledSongsWithOpen[i].backgroundMusic +
+      ".";
+
+    currTrackNameElement.appendChild(itemElement);
   }
 
   if (shuffledSongsWithOpen.length > 0) {
@@ -1223,7 +1290,7 @@ button.addEventListener("click", (event) => {
 // This function updates the progress timer displayed on the webpage.
 // It takes the time in seconds and the previous duration as inputs.
 function updateProgressTimer(seconds, previousDuration) {
-  // Get the HTML element for displaying the current timehttps://www.reddit.com/r/graphic_design/?f=flair_name%3A%22Asking%20Question%20(Rule%204)%22
+  // Get the HTML element for displaying the current time
   let currTime = document.getElementById("current-time");
 
   // Throw an error if the current time element is missing
@@ -1231,28 +1298,20 @@ function updateProgressTimer(seconds, previousDuration) {
     throw new Error("Missing element: current-time");
   }
 
-  // Calculate the total timer duration by adding seconds and previous duration
-  timerDuration = seconds + previousDuration;
+  // Calculate the remaining time until the end of the playlist
+  let remaining = total_duration - (seconds + previousDuration);
+  let minutes = Math.floor(remaining / 60);
 
-  // If the current time element exists
-  if (currTime == null) {
-    // Do nothing, there might be a delay when the player is initialized
+  // If time has run out, display "done"
+  if (remaining <= 0) {
+    currTime.innerHTML = "done";
   } else {
-    // Calculate the remaining time until the end of the playlist
-    let remaining = total_duration - (seconds + previousDuration);
-    let minutes = Math.floor(remaining / 60);
-
-    // If time has run out, display "done"
-    if (remaining <= 0) {
-      currTime.innerHTML = "done";
-    } else {
-      // Calculate remaining seconds and format the time display
-      let remainingSeconds = (remaining % 60).toLocaleString("en-US", {
-        minimumIntegerDigits: 2,
-        useGrouping: false,
-      });
-      currTime.innerHTML = `${minutes}:${remainingSeconds}`;
-    }
+    // Calculate remaining seconds and format the time display
+    let remainingSeconds = (remaining % 60).toLocaleString("en-US", {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
+    currTime.innerHTML = `${minutes}:${remainingSeconds}`;
   }
 }
 
@@ -1264,22 +1323,100 @@ function createTimerLoop(previousDuration) {
   return setInterval(() => {
     let delta = Date.now() - start; // Calculate elapsed milliseconds
     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-    updateProgressTimer(deltaSeconds, previousDuration); // Update the timer display
+    let timerDuration = deltaSeconds + previousDuration; // Calculate the timer duration
 
-    // Update the timerDuration variable with elapsed time
-    timerDuration = deltaSeconds + previousDuration;
+    updateProgressTimer(deltaSeconds, previousDuration); // Update the timer display
 
     // Calculate remaining time using the calculateRemainingTime function
     remainingTime = calculateRemainingTime(timerDuration);
 
-    // Log the remaining time to the console
-    console.log("Remaining time:", remainingTime);
+    // console.log("remainingTime " + remainingTime);
+    // console.log("EONSOFTIME" + EONSOFTIME);
+
+    // Update flags based on remaining time
+    if (remainingTime <= EONSOFTIME && eonsOfTimeLeft) {
+      console.log("timer entered");
+      eonsOfTimeLeft = false;
+      // Trigger other actions for eons of time left
+    }
+
+    if (remainingTime <= SOMETIME && someTimeLeft) {
+      someTimeLeft = false;
+      // Trigger other actions for some time left
+    }
+
+    if (remainingTime <= 0 && noTimeLeft) {
+      noTimeLeft = false;
+      // Trigger other actions for no time left
+    }
 
     // Perform other actions based on remaining time if needed
-
   }, 200); // Run the loop every 200 milliseconds
 }
 
+// // This function updates the progress timer displayed on the webpage.
+// // It takes the time in seconds and the previous duration as inputs.
+// function updateProgressTimer(seconds, previousDuration) {
+//   // Get the HTML element for displaying the current timehttps://www.reddit.com/r/graphic_design/?f=flair_name%3A%22Asking%20Question%20(Rule%204)%22
+//   let currTime = document.getElementById("current-time");
+
+//   // Throw an error if the current time element is missing
+//   if (!currTime) {
+//     throw new Error("Missing element: current-time");
+//   }
+
+//   // Calculate the total timer duration by adding seconds and previous duration
+//   timerDuration = seconds + previousDuration;
+
+//   // If the current time element exists
+//   if (currTime == null) {
+//     // Do nothing, there might be a delay when the player is initialized
+//   } else {
+//     // Calculate the remaining time until the end of the playlist
+//     let remaining = total_duration - (seconds + previousDuration);
+//     let minutes = Math.floor(remaining / 60);
+
+//     // let eonsOfTimeLeft = true;
+//     // let someTimeLeft = true;
+//     // let noTimeLeft = true;
+
+//     // If time has run out, display "done"
+//     if (remaining <= 0) {
+//       currTime.innerHTML = "done";
+//     } else {
+//       // Calculate remaining seconds and format the time display
+//       let remainingSeconds = (remaining % 60).toLocaleString("en-US", {
+//         minimumIntegerDigits: 2,
+//         useGrouping: false,
+//       });
+//       currTime.innerHTML = `${minutes}:${remainingSeconds}`;
+//     }
+//   }
+// }
+
+// // This function creates a loop that updates the progress timer at intervals.
+// function createTimerLoop(previousDuration) {
+//   var start = Date.now(); // Record the start time of the loop
+
+//   // Set up an interval to run the loop every 200 milliseconds
+//   return setInterval(() => {
+//     let delta = Date.now() - start; // Calculate elapsed milliseconds
+//     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
+//     updateProgressTimer(deltaSeconds, previousDuration); // Update the timer display
+
+//     // Update the timerDuration variable with elapsed time
+//     timerDuration = deltaSeconds + previousDuration;
+
+//     // Calculate remaining time using the calculateRemainingTime function
+//     remainingTime = calculateRemainingTime(timerDuration);
+
+//     // Log the remaining time to the console
+//     // console.log("Remaining time:", remainingTime);
+
+//     // Perform other actions based on remaining time if needed
+
+//   }, 200); // Run the loop every 200 milliseconds
+// }
 
 window.addEventListener("load", (event) => {
   // Create a div element to hold the output

@@ -64,7 +64,6 @@
       </nav>
       <button type="button" class="btn" id="langToggle">FR</button>
     </header>
-    
 
     <main id="playerPageMain">
       <div id="musicPlayerDiv" class="container">
@@ -103,17 +102,16 @@
           </p>
           <p><span class="debugHead">Url:</span><span id="currURL"></span></p>
           <p>
-            <span class="debugHead">Duration:</span><span id="currDurr"></span>
+            <span class="debugHead">Track duration (seconds):</span><span id="currDurr"></span>
           </p>
           <p>
-            <span class="debugHead">Current Index:</span
+            <span class="debugHead">Current Index: </span
             ><span id="indexNo"></span>
           </p>
-          <p>
+          <!-- <p>
             <span class="debugHead">Total Index (number of tracks):</span
             ><span id="totalIndex"></span>
-          </p>
-  
+          </p> -->
           <p>
             <span class="debugHead">Tags for current track:</span
             ><span id="currTags"></span>
@@ -122,32 +120,35 @@
           <p id="currCredit"></p>
           <p>
             <span class="debugHead"
-              >Accumulated credits (to be played at the end):</span
+              >Credits (to be played at the end):</span
             >
           </p>
           <p id="creditsStack"></p>
-  
+
           <p><br /></p>
           <p id="shuffle">
-            <span class="debugHead">Full List:</span><span id="fullList"></span>
+            <span class="debugHead">Full TrackList:</span
+            ><span id="fullList"></span>
           </p>
-  
+          <br />
+          <p>
+            <span class="debugHead">Log:</span
+            ><span id="displayConsoleLog"></span>
+          </p>
           <!-- <p><span class="debugHead">Next up:</span><span id="nextUp"></span></p> -->
           <!-- <p><span class="debugHead">Forbidden? </span><span id="forbidden"></span></p> -->
         </div>
       </div>
-
-      
     </main>
 
-      <footer>
-        <div id="scriptOutputContainer"></div>
-      </footer>
+    <footer>
+      <div id="scriptOutputContainer"></div>
+    </footer>
 
-      <!-- <p id="textTranscript">
+    <!-- <p id="textTranscript">
         <a href="testTranscript.txt" download>or download text transcript</a>
       </p> -->
-        
+
     <script src="songs.js"></script>
 
     <script src="play.js"></script>
@@ -156,9 +157,7 @@
     <script src="test_micro_framework.js"></script>
 
     <script>
-      window.addEventListener("load", () => {
-        
-      });
+      window.addEventListener("load", () => {});
     </script>
   </body>
   <footer></footer>
