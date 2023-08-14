@@ -251,6 +251,21 @@ function getTheCreditStack(curatedTracklist) {
 //  XXXXXXXX GENERAL RULES XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+// Rule 10: The current track should have a different author than the last track
+function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
+  if (prevTrack1 && track.author === prevTrack1.author) {
+    // If the current track has the same author as the previous track, log a rule violation
+    const logMessage = `✔ ${track.name} Rule enforced! The current track has the same author(${track.author}) as the previous track (${prevTrack1.author}).`;
+    logRuleApplication(10, logMessage, false);
+    return false;
+  }
+  // If the current track has a different author than the previous track, log successful rule application
+  const logMessage = `🌱 ${track.name} No problem! The current track has a different author (${track.author}) than the previous track (${prevTrack1.author}).`;
+  logRuleApplication(10, logMessage, true);
+  return true;
+}
+
+
 // Rule 11: No more than two tracks from the same author in a tracklist.
 function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   // Count the number of tracks in curatedTracklist by the same author as the current track
@@ -273,6 +288,8 @@ function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   // If the condition is met (authorCount < 2), log successful rule application
   const logMessage = `🌱! ${track.name} No problem! No more than two tracks from the same author (this author ${track.author}).`;
   // logRuleApplication(11, logMessage, true);
+  logRuleApplication(11, logMessage, true);
+
   return true;
 }
 
@@ -670,30 +687,31 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 ///~~~~~  buggy rules  ~~~~~~~~/////
 ////////////////////////////////////////////////////
 
-// Rule 31: If the curatedTracklist already has a track with the author KIKO and the form “interview”, add another track with the author KIKO and the form “interview”.
-function r31(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+function r31(track, curatedTracklist, trackIndex) {
   if (trackIndex >= 9) {
-    const ifWeHave1Kiko2KikoRule =
+    const interviewTrackExists =
       trackExistsWithAttributes(curatedTracklist, "author", "KIKO") &&
       trackExistsWithAttributes(curatedTracklist, "form", "interview");
-    if (ifWeHave1Kiko2KikoRule) {
-      if (
-        track.author === "KIKO" &&
-        (track.form === "music" || track.form === "short")
-      ) {
+      
+    if (interviewTrackExists) {
+      if (track.author === "KIKO" && (track.form === "typeMusic" || track.form === "typeShort")) {
         console.log("KIKO Interview Rule: Track added as a related track.");
+        // Add the new track with author "KIKO" and form "typeMusic" or "typeShort"
+        curatedTracklist.push({ author: "KIKO", form: track.form });
       } else {
-        const logMessage = `"KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
+        const logMessage = `✔ KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
         // logRuleApplication(31, logMessage, false);
         return false;
       }
     }
   }
+  
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌻! KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
+  const logMessage = `🦭 KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
   logRuleApplication(31, logMessage, true);
   return true;
 }
+
 
 // Rule 32: If the curatedTracklist already has a track that contains the geese tag, add another track that contains the geese tag.
 function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -1030,12 +1048,6 @@ function followTracklistRules(tracklist) {
   console.log("Curated Tracklist:", curatedTracklist);
   return curatedTracklist;
 }
-
-
-
-
-
-
 
 /* 9. shuffleTracklist takes a tracklist array as input, shuffles its elements
 randomly, and returns the shuffled and modified tracklist. */
