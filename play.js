@@ -862,7 +862,7 @@ function followTracklistRules(tracklist) {
   const TOTALPLAYLISTDURATIONTIME = 1220; // Maximum total playlist duration
 
   // Define general rule functions for phase 1
-  const generalRuleFunctions = [r11, r12, r13, r14, r15, r16, r17, r18, r19];
+  const generalRuleFunctions = [r10, r11, r12, r13, r14, r15, r16, r17, r18, r19];
 
   // Define ensure and final check rules for phase 2
   const ensureRules = [r21, r22, r23, r24];
