@@ -16,8 +16,10 @@ let eonsOfTimeLeft = true;
 let someTimeLeft = true;
 let noTimeLeft = true;
 let first8RulesMet = false;
+/* 2. Define an empty array creditsArray. */
+let arrayOfCreditSongs = []; // this is where I'll store the credit songs
+let creditsLog = [];
 
-let creditStack;
 let displayConsoleLog = "<br>";
 
 // const MAXPLAYLISTDURATION = 1080;
@@ -170,14 +172,11 @@ const addAudioFromUrl = (song) => {
 
 const addAudioFromCredit = (song) => {
   if (!song.credit) {
-    console.log("song has no credit", song);
+    // console.log("song has no credit", song);
   }
   song.audio = createAudioElement(song.url);
   return song;
 };
-
-/* 2. Define an empty array creditsArray. */
-let creditsArray = [];
 
 /* 4. Define two more arrays outroAudioSounds and finalOutroAudioSounds, each containing an object
    representing an outro track. Again, each object is processed using the addAudioFromUrl function. */
@@ -230,11 +229,41 @@ const PREFETCH_BUFFER_SECONDS = 8;
   rules to modify the tracklist, and returns the modified tracklist.
   */
 
-function getTheCreditStack(curatedTracklist) {
-  const credits = curatedTracklist.map((item) =>
-    item.credit.replace(/\.\/sounds\/XX_OUTRO\/NAMES\/NAMES_/g, "")
+function addToCreditsLog(songCredit) {
+  const creditsText = songCredit;
+  const strippedCredit = creditsText.substring(
+    creditsText.lastIndexOf("_") + 1
   );
-  return credits.join(", ");
+  const strippedCreditWN = strippedCredit + "</br>";
+  creditsLog.push(strippedCreditWN);
+}
+
+function createCreditObjectAndAddToArray(song) {
+  const creditObj = {
+    name: song.name,
+    url: song.credit, //flip on purpose
+    duration: song.duration,
+    tags: song.tags,
+    credit: song.url,
+  };
+  arrayOfCreditSongs.push(addAudioFromCredit(creditObj));
+  // console.log(creditsArray);
+}
+
+function gatherTheCreditSongs(curatedTracklist) {
+  for (let index = 0; index < curatedTracklist.length; index++) {
+    const song = curatedTracklist[index];
+    if (song.credit != "") { // TODO need to also make sure it isn't already in the list
+      addToCreditsLog(song.credit);
+      createCreditObjectAndAddToArray(song);
+    } else {
+      console.log("song has no credit");
+    }
+  }
+  const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
+  // currCreditStackHTMLElement.textContent = logOfCredits; // TODO need to figure out how to do a newline
+    console.log("credits array " + arrayOfCreditSongs);
+
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -264,7 +293,6 @@ function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(10, logMessage, true);
   return true;
 }
-
 
 // Rule 11: No more than two tracks from the same author in a tracklist.
 function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
@@ -691,9 +719,12 @@ function r31(track, curatedTracklist, trackIndex) {
     const interviewTrackExists =
       trackExistsWithAttributes(curatedTracklist, "author", "KIKO") &&
       trackExistsWithAttributes(curatedTracklist, "form", "interview");
-      
+
     if (interviewTrackExists) {
-      if (track.author === "KIKO" && (track.form === "typeMusic" || track.form === "typeShort")) {
+      if (
+        track.author === "KIKO" &&
+        (track.form === "typeMusic" || track.form === "typeShort")
+      ) {
         console.log("KIKO Interview Rule: Track added as a related track.");
         // Add the new track with author "KIKO" and form "typeMusic" or "typeShort"
         curatedTracklist.push({ author: "KIKO", form: track.form });
@@ -704,13 +735,12 @@ function r31(track, curatedTracklist, trackIndex) {
       }
     }
   }
-  
+
   // If the condition is not met, return true to indicate rule followed
   const logMessage = `🦭 KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
   logRuleApplication(31, logMessage, true);
   return true;
 }
-
 
 // Rule 32: If the curatedTracklist already has a track that contains the geese tag, add another track that contains the geese tag.
 function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -771,7 +801,7 @@ function logRuleApplication(
   // console.log("getting into the loop");
   const ruleStatus = isApplied ? "passed" : "broken";
   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
-  addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`)
+  addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
 
   if (message !== null) {
     // console.log("never making");
@@ -864,7 +894,18 @@ function followTracklistRules(tracklist) {
   const TOTALPLAYLISTDURATIONTIME = 1220; // Maximum total playlist duration
 
   // Define general rule functions for phase 1
-  const generalRuleFunctions = [r10, r11, r12, r13, r14, r15, r16, r17, r18, r19];
+  const generalRuleFunctions = [
+    r10,
+    r11,
+    r12,
+    r13,
+    r14,
+    r15,
+    r16,
+    r17,
+    r18,
+    r19,
+  ];
 
   // Define ensure and final check rules for phase 2
   const ensureRules = [r21, r22, r23, r24];
@@ -1047,7 +1088,18 @@ function followTracklistRules(tracklist) {
       );
     }
   }
-  console.log("Curated Tracklist:", curatedTracklist);
+  // console.log("Curated Tracklist:", curatedTracklist);
+
+  // messing around with this stuff
+  // append the credits
+  let theCredits = gatherTheCreditSongs(curatedTracklist);
+  // const SONGS = SONGSRAW.map(addAudioFromUrl);
+  // const SONGCREDITS = SONGSRAW.map(addAudioFromCredit);
+
+  // console.log(theCredits);
+  curatedTracklist.push(...arrayOfCreditSongs);
+
+
   return curatedTracklist;
 }
 
@@ -1106,7 +1158,7 @@ function gatherAndPrintDebugInfo(song, index) {
     // const displayConsoleLogHTMLElement = document.getElementById("displayConsoleLog");
     const currCreditHTMLElement = document.getElementById("currCredit");
     const currIndexNokHTMLElement = document.getElementById("indexNo");
-    const currCreditStackHTMLElement = document.getElementById("creditsStack");
+    // const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
     // const currTotalIndexHTMLElement = document.getElementById("totalIndex");
 
     // get the info for THIS song so I can print it to the debug
@@ -1124,7 +1176,7 @@ function gatherAndPrintDebugInfo(song, index) {
     displayDebugText(currDurrHTMLElement, currDurr, "no duration");
     // displayDebugText(displayConsoleLogHTMLElement, displayConsoleLog, "no log");
     displayDebugText(currCreditHTMLElement, currCredit, "no credit");
-    displayDebugText(currCreditStackHTMLElement, creditStack, "no credit");
+    // displayDebugText(currCreditStackHTMLElement, creditsArray, "no credit");
     displayDebugText(currIndexNokHTMLElement, ohcurrIndex, "no index");
   } else {
     console.log("OH NO, NO SONG!");
@@ -1153,8 +1205,8 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
       ", " +
       shuffledSongsWithOpen[i].form +
       ", " +
-      shuffledSongsWithOpen[i].placement.join(", ") +
-      ", " +
+      // shuffledSongsWithOpen[i].placement.join(", ") +
+      // ", " +
       shuffledSongsWithOpen[i].language +
       ", " +
       shuffledSongsWithOpen[i].sentiment +
