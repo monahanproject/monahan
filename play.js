@@ -17,8 +17,6 @@ let someTimeLeft = true;
 let noTimeLeft = true;
 let first8RulesMet = false;
 /* 2. Define an empty array creditsArray. */
-let arrayOfCreditSongs = []; // this is where I'll store the credit songs
-let creditsLog = [];
 
 let displayConsoleLog = "<br>";
 
@@ -229,13 +227,12 @@ const PREFETCH_BUFFER_SECONDS = 8;
   rules to modify the tracklist, and returns the modified tracklist.
   */
 
+let arrayOfCreditSongs = []; // TODO - find out where to store this
+let creditsLog = []; // TODO - find out where to store this
+
 function addToCreditsLog(songCredit) {
-  const creditsText = songCredit;
-  const strippedCredit = creditsText.substring(
-    creditsText.lastIndexOf("_") + 1
-  );
-  const strippedCreditWN = strippedCredit + "</br>";
-  creditsLog.push(strippedCreditWN);
+  const strippedCredit = songCredit.substring(songCredit.lastIndexOf("_") + 1);
+  creditsLog.push(`${strippedCredit}<br>`);
 }
 
 function createCreditObjectAndAddToArray(song) {
@@ -253,28 +250,49 @@ function createCreditObjectAndAddToArray(song) {
 function gatherTheCreditSongs(curatedTracklist) {
   for (let index = 0; index < curatedTracklist.length; index++) {
     const song = curatedTracklist[index];
-    if (song.credit != "") { // TODO need to also make sure it isn't already in the list
+
+    // console.log(song.url);
+         const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
+      // console.log("song credits are " + songTitles);
+
+    if (song.credit == "") {
+      console.log("song has no credit");
+    } else if (trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit)) {
+      // console.log("already got this credit " + song.credit);
+    } else {
       addToCreditsLog(song.credit);
       createCreditObjectAndAddToArray(song);
-    } else {
-      console.log("song has no credit");
+      // console.log("credit being added " + song.credit);
     }
   }
-  const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
-  // currCreditStackHTMLElement.textContent = logOfCredits; // TODO need to figure out how to do a newline
-    console.log("credits array " + arrayOfCreditSongs);
 
+  function gatherTheCreditSongs(curatedTracklist) {
+    for (const song of curatedTracklist) {
+  
+      console.log(song.url);
+        const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
+        console.log("song credits are " + songTitles);
+  
+        if (!song.credit) {
+          console.log("song has no credit");
+      } else if (songTitles.some(credit => trackExistsWithAttributes(arrayOfCreditSongs, "url", credit))) {
+        console.log("already got this credit " + song.credit);
+      } else {
+        addToCreditsLog(song.credit);
+        createCreditObjectAndAddToArray(song);
+        console.log("credit being added " + song.credit);
+      }
+    }
+  }  
+
+  const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
+  currCreditStackHTMLElement.innerHTML = creditsLog;
+  return arrayOfCreditSongs;
 }
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  XXXXXX TRACKLIST CREATION XXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-////////////////////////////////////////////////////
-/////////////  rule functions   ////////////////
-////////////////////////////////////////////////////
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXX GENERAL RULES XXXXXXXXXX
@@ -1089,17 +1107,6 @@ function followTracklistRules(tracklist) {
     }
   }
   // console.log("Curated Tracklist:", curatedTracklist);
-
-  // messing around with this stuff
-  // append the credits
-  let theCredits = gatherTheCreditSongs(curatedTracklist);
-  // const SONGS = SONGSRAW.map(addAudioFromUrl);
-  // const SONGCREDITS = SONGSRAW.map(addAudioFromCredit);
-
-  // console.log(theCredits);
-  curatedTracklist.push(...arrayOfCreditSongs);
-
-
   return curatedTracklist;
 }
 
@@ -1290,6 +1297,10 @@ button.addEventListener("click", (event) => {
   const shuffledSongsWithOpen = [...shuffledWithRulesAppliedTracklist];
 
   printEntireTracklistDebug(shuffledSongsWithOpen); // print the whole tracklist
+
+  let theCredits = gatherTheCreditSongs(shuffledSongsWithOpen);
+  shuffledSongsWithOpen.push(...arrayOfCreditSongs);
+  // console.log(shuffledSongsWithOpen);
 
   window.caches
     .open("audio-pre-cache")
