@@ -16,8 +16,6 @@ let eonsOfTimeLeft = true;
 let someTimeLeft = true;
 let noTimeLeft = true;
 let first8RulesMet = false;
-/* 2. Define an empty array creditsArray. */
-
 let displayConsoleLog = "<br>";
 
 // const MAXPLAYLISTDURATION = 1080;
@@ -151,7 +149,7 @@ function displayLoadingGif() {
   }, 50);
 }
 
-/* 1. Define two functions: addAudioFromUrl and addAudioFromCredit. These functions take a song 
+/* 1. Define two functions: addAudioFromUrl and addAudioFromUrl. These functions take a song 
   object as input, create an audio element for the song's URL, assign it to the song.audio property, 
   and return the modified song object.*/
 
@@ -168,21 +166,44 @@ const addAudioFromUrl = (song) => {
   return song;
 };
 
-const addAudioFromCredit = (song) => {
-  if (!song.credit) {
-    // console.log("song has no credit", song);
-  }
-  song.audio = createAudioElement(song.url);
-  return song;
-};
+const intro = [
+  {
+    name: "INTRO_2",
+    url: "./sounds/00_INTRO/INTRO_2.mp3",
+    duration: 113,
+    author: "",
+    form: "",
+    placement: [""],
+    length: "",
+    language: "",
+    sentiment: "",
+    tags: ["intro"],
+    backgroundMusic: "",
+    credit: "",
+  },
+].map(addAudioFromUrl);
 
 /* 4. Define two more arrays outroAudioSounds and finalOutroAudioSounds, each containing an object
    representing an outro track. Again, each object is processed using the addAudioFromUrl function. */
 
+/* Ideally, the OUTRO would have music underneath the text like in the files:
+To create this type of OUTRO we have provided a series of files the would be played in the following order:
+OUTRO MUSIC ONLY (SHORT or LONG)
+Then on top of that you would add 
+OUTRO 2 PT 1 SOLO
+Then the required NAMES that correspond to the chapters that have just played
+OUTRO 2 PT 2 SOLO 
+If it’s too cumbersome to program more than one file to play at the same time, you could tell the code to play:
+
+OUTRO PT 1 SOLO (no music underneath)
+Then the required NAMES that correspond to the chapters that have just played (no music underneath)
+Then OUTRO 2 PT 2 with MUSIC
+*/
+
 const outroAudioSounds = [
   {
-    name: "OUTRO_2.2",
-    url: "./sounds/XX_OUTRO/OUTRO_2.2.mp3",
+    name: "OUTRO2PT1SOLO",
+    url: "./sounds/XX_OUTRO/OUTRO2PT1SOLO.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -198,8 +219,8 @@ const outroAudioSounds = [
 
 const finalOutroAudioSounds = [
   {
-    name: "OUTRO_2.2",
-    url: "./sounds/XX_OUTRO/OUTRO_2.2.mp3",
+    name: "OUTRO2PT2withMUSIC",
+    url: "./sounds/XX_OUTRO/OUTRO2PT2withMUSIC.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -223,9 +244,9 @@ var total_duration = MAXPLAYLISTDURATION;
 /* 7. set how many seconds before a song is completed to pre-fetch the next song */
 const PREFETCH_BUFFER_SECONDS = 8;
 
-/* 8. followTracklistRules takes a tracklist array as input, applies certain
-  rules to modify the tracklist, and returns the modified tracklist.
-  */
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXXXX CREDITS XXXXXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 let arrayOfCreditSongs = []; // TODO - find out where to store this
 let creditsLog = []; // TODO - find out where to store this
@@ -239,12 +260,18 @@ function createCreditObjectAndAddToArray(song) {
   const creditObj = {
     name: song.name,
     url: song.credit, //flip on purpose
-    duration: song.duration,
-    tags: song.tags,
+    duration: "",
+    author: song.author,
+    form: "",
+    placement: [""],
+    length: "",
+    language: "",
+    sentiment: "",
+    backgroundMusic: "",
+    tags: [""],
     credit: song.url,
   };
-  arrayOfCreditSongs.push(addAudioFromCredit(creditObj));
-  // console.log(creditsArray);
+  arrayOfCreditSongs.push(addAudioFromUrl(creditObj));
 }
 
 function gatherTheCreditSongs(curatedTracklist) {
@@ -252,13 +279,15 @@ function gatherTheCreditSongs(curatedTracklist) {
     const song = curatedTracklist[index];
 
     // console.log(song.url);
-         const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
-      // console.log("song credits are " + songTitles);
+    const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
+    console.log("song credits are " + songTitles);
 
     if (song.credit == "") {
       console.log("song has no credit");
-    } else if (trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit)) {
-      // console.log("already got this credit " + song.credit);
+    } else if (
+      trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit)
+    ) {
+      console.log("already got this credit " + song.credit);
     } else {
       addToCreditsLog(song.credit);
       createCreditObjectAndAddToArray(song);
@@ -266,29 +295,16 @@ function gatherTheCreditSongs(curatedTracklist) {
     }
   }
 
-  function gatherTheCreditSongs(curatedTracklist) {
-    for (const song of curatedTracklist) {
-  
-      console.log(song.url);
-        const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
-        console.log("song credits are " + songTitles);
-  
-        if (!song.credit) {
-          console.log("song has no credit");
-      } else if (songTitles.some(credit => trackExistsWithAttributes(arrayOfCreditSongs, "url", credit))) {
-        console.log("already got this credit " + song.credit);
-      } else {
-        addToCreditsLog(song.credit);
-        createCreditObjectAndAddToArray(song);
-        console.log("credit being added " + song.credit);
-      }
-    }
-  }  
-
   const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
   currCreditStackHTMLElement.innerHTML = creditsLog;
+
+  console.log(arrayOfCreditSongs);
   return arrayOfCreditSongs;
 }
+
+/* 8. followTracklistRules takes a tracklist array as input, applies certain
+  rules to modify the tracklist, and returns the modified tracklist.
+  */
 
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  XXXXXX TRACKLIST CREATION XXXXXXX
@@ -816,68 +832,21 @@ function logRuleApplication(
   isApplied,
   message = null
 ) {
-  // console.log("getting into the loop");
   const ruleStatus = isApplied ? "passed" : "broken";
   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
   addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
 
   if (message !== null) {
-    // console.log("never making");
     displayConsoleLog += `→ Track ${ruleNumber} Rules ${ruleStatus}: ${description}<br>`;
     updateLogDisplay();
   }
 }
 
-// function checkAndLogRule(condition, message) {
-//   if (!condition) {
-//     const logMessage = `→ ${message}`;
-//     console.log(logMessage);
-//     addToLogDisplay(logMessage);
-//     return false;
-//   }
-//   return true;
-// }
-
-// Helper function to update the log display on your webpage
+// Helper function to update the log display on the webpage
 function addToLogDisplay(logMessage) {
   const logElement = document.getElementById("displayConsoleLog");
   logElement.innerHTML += logMessage + "<br>";
 }
-
-// Define a helper function to apply rules and log results
-// function applyAndLogRules(
-//   track,
-//   generalRuleFunctions,
-//   description,
-//   prevTrack1,
-//   prevTrack2,
-//   curatedTracklist,
-//   trackIndex
-// ) {
-//   // Initialize an array to store the results of rule applications
-//   const results = [];
-
-//   // Iterate through each general rule function
-//   for (const rule of generalRuleFunctions) {
-//     // Apply the rule to the current track
-//     const isRuleApplied = rule(
-//       track,
-//       prevTrack1,
-//       prevTrack2,
-//       curatedTracklist,
-//       trackIndex
-//     );
-
-//     // Log the application of the rule along with its result
-//     logRuleApplication(rule.ruleNumber, description, isRuleApplied);
-
-//     // Store the result in the results array
-//     results.push(isRuleApplied);
-//   }
-
-//   // Return the array of results indicating which rules were applied successfully
-//   return results;
-// }
 
 // Helper function to manage prevTrack1 and prevTrack2
 function updatePrevTracks(track, prevTrack1, prevTrack2) {
@@ -1114,8 +1083,9 @@ function followTracklistRules(tracklist) {
 randomly, and returns the shuffled and modified tracklist. */
 
 function shuffleTracklist(tracklist) {
-  for (let i = tracklist.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  // Skip the first track and shuffle the rest of the tracks
+  for (let i = tracklist.length - 1; i > 1; i--) {
+    const j = Math.floor(Math.random() * (i - 1)) + 1; // Ensure j is at least 1
     [tracklist[i], tracklist[j]] = [tracklist[j], tracklist[i]];
   }
   return tracklist;
@@ -1212,8 +1182,8 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
       ", " +
       shuffledSongsWithOpen[i].form +
       ", " +
-      // shuffledSongsWithOpen[i].placement.join(", ") +
-      // ", " +
+      shuffledSongsWithOpen[i].placement.join(", ") +
+      ", " +
       shuffledSongsWithOpen[i].language +
       ", " +
       shuffledSongsWithOpen[i].sentiment +
@@ -1232,13 +1202,6 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     // console.log("no shuffle");
   }
 }
-
-/* 
-
-Are we out of time? If yes, it's time to play the final tracks 
-    There could be some kind of trigger point when I hit a certain amount of time remaining (only do this once!)
-    (if total_duration - currentRuntime <= 90???) where I trigger or add the  outroAudioSounds
-*/
 
 function calculateRemainingTime(currentRuntime) {
   return total_duration - currentRuntime;
@@ -1291,20 +1254,23 @@ button.addEventListener("click", (event) => {
 
   const allSongs = [...SONGS]; // first we copy the array of songs
   const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
-  let shuffledWithRulesAppliedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
-  // next we add the intro to the beginning -- I'm doing this in the rules right now
-  // const shuffledSongsWithOpen = [...introTracks, ...shuffledSongs];
-  const shuffledSongsWithOpen = [...shuffledWithRulesAppliedTracklist];
+  let curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
 
-  printEntireTracklistDebug(shuffledSongsWithOpen); // print the whole tracklist
+  const outro1 = outroAudioSounds.map(addAudioFromUrl);
+  curatedTracklist.push(...outro1);
 
-  let theCredits = gatherTheCreditSongs(shuffledSongsWithOpen);
-  shuffledSongsWithOpen.push(...arrayOfCreditSongs);
-  // console.log(shuffledSongsWithOpen);
+  let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
+
+  curatedTracklist.push(...creditsTracklist);
+
+  const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
+  curatedTracklist.push(...outro2);
+
+  printEntireTracklistDebug(curatedTracklist);
 
   window.caches
     .open("audio-pre-cache")
-    .then((cache) => queueNextTrack(shuffledSongsWithOpen, 0, 0, cache));
+    .then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });
 
 // This function updates the progress timer displayed on the webpage.
