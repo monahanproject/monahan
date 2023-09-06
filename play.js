@@ -3,20 +3,14 @@ var player;
 var audioContext = null;
 var volumeNode = null;
 // var previousVolume = "100";
-var timerInterval;
-var timerDuration;
-var remainingTime;
 let playerPlayState = "play";
 // let muteState = "unmute";
 let hasSkippedToEnd = false;
-const MAXPLAYLISTDURATION = 410;
-const EONSOFTIME = 400;
-const SOMETIME = 200;
-let eonsOfTimeLeft = true;
-let someTimeLeft = true;
-let noTimeLeft = true;
-let first8RulesMet = false;
 let displayConsoleLog = "<br>";
+
+const MAX_PLAYLIST_DURATION_SECONDS = 1020;
+const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
 // const MAXPLAYLISTDURATION = 1080;
 
@@ -79,7 +73,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
       audioContext.resume();
-      timerInterval = createTimerLoop(timerDuration);
+      timerInterval = createTimerLoopAndUpdateProgressTimer(timerDuration);
     }
   });
 
@@ -127,7 +121,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   });
 
   startplayer();
-  timerInterval = createTimerLoop(0);
+  timerInterval = createTimerLoopAndUpdateProgressTimer(0);
 }
 
 function displayLoadingGif() {
@@ -165,23 +159,6 @@ const addAudioFromUrl = (song) => {
   song.audio = createAudioElement(song.url);
   return song;
 };
-
-const intro = [
-  {
-    name: "INTRO_2",
-    url: "./sounds/00_INTRO/INTRO_2.mp3",
-    duration: 113,
-    author: "",
-    form: "",
-    placement: [""],
-    length: "",
-    language: "",
-    sentiment: "",
-    tags: ["intro"],
-    backgroundMusic: "",
-    credit: "",
-  },
-].map(addAudioFromUrl);
 
 /* 4. Define two more arrays outroAudioSounds and finalOutroAudioSounds, each containing an object
    representing an outro track. Again, each object is processed using the addAudioFromUrl function. */
@@ -238,9 +215,6 @@ const finalOutroAudioSounds = [
   processed using the addAudioFromUrl function. */
 const SONGS = SONGSRAW.map(addAudioFromUrl);
 
-/* 6. Set the value of the total_duration variable (in seconds). */
-var total_duration = MAXPLAYLISTDURATION;
-
 /* 7. set how many seconds before a song is completed to pre-fetch the next song */
 const PREFETCH_BUFFER_SECONDS = 8;
 
@@ -280,14 +254,14 @@ function gatherTheCreditSongs(curatedTracklist) {
 
     // console.log(song.url);
     const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
-    console.log("song credits are " + songTitles);
+    // console.log("song credits are " + songTitles);
 
     if (song.credit == "") {
-      console.log("song has no credit");
+      // console.log("song has no credit");
     } else if (
       trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit)
     ) {
-      console.log("already got this credit " + song.credit);
+      // console.log("already got this credit " + song.credit);
     } else {
       addToCreditsLog(song.credit);
       createCreditObjectAndAddToArray(song);
@@ -410,7 +384,8 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 
-// Rule 15: If a track has the sentiment heavy, then the track right before it cannot have the laughter tag.
+// Rule 15: If a track has the sentiment heavy, then the track after it cannot have the laughter tag.
+// if the last track is heavy, this one can't be laughter TODO FINDME
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
     track.sentiment === "heavy" &&
@@ -578,21 +553,22 @@ function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-// Rule 65: Rule 5 (only for Track 5): The 5th track should have the length 'short', not have the placement 'beginning', and have a different language than the 4th track.
+// Rule 65: Rule 5 (only for Track 5): The 5th track should have the form 'short'; should have the placement 'middile'; and have a different language than the 4th track.
+// TODO FINDME
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 4) {
     if (
-      track.length !== "short" ||
-      track.placement.includes("beginning") ||
+      track.form !== "short" ||
+      !track.placement.includes("middle") ||
       track.language === prevTrack1.language
     ) {
-      const logMessage = `❌ (${track.name}): The 5th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) from the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
+      const logMessage = `❌ (${track.name}): The 5th track → should have the form short (this track's form is ${track.form}); should have the placement MIDDLE (this track's placement is ${track.placement}); and a different language (this track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
       logRuleApplication(65, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 5th track → has the placement MIDDLE (this track's placement is ${track.placement}) and a different form (this track's form is ${track.form}) from the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
+  const logMessage = `🌻! (${track.name}): Found valid track. The 5th track → has the form "short" (this track's form is ${track.form}); should have the placement MIDDLE (this track's placement is ${track.placement}); and a different language (this track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
   logRuleApplication(65, logMessage, true);
   return true;
 }
@@ -670,6 +646,8 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 21. Ensure that the tracklist contains at least one track with the author albert.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  // console.log("yooooooooo");
+  console.log("my auth is " + track.author);
   if (curatedTracklist.length >= 9) {
     if (
       !trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") &&
@@ -688,15 +666,15 @@ function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-// Rule 22. Ensure that the tracklist contains at least one track with the author birds.
+// Rule 22. Ensure that the tracklist contains at least one track with the author birds (PIERREELLIOTT).
 function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (curatedTracklist.length >= 9) {
     if (
-      !trackExistsWithAttributes(curatedTracklist, "author", "BIRDS") &&
-      track.author !== "BIRDS"
+      !trackExistsWithAttributes(curatedTracklist, "author", "PIERREELLIOTT") &&
+      track.author !== "PIERREELLIOTT"
     ) {
       {
-        const logMessage = `❌ ${track.name}: We need a birds track but we already have one or this one isn't a birds track (this track's author is ${track.author})`;
+        const logMessage = `❌ ${track.name}: We need a PIERREELLIOTT track but we already have one or this one isn't a PIERREELLIOTT track (this track's author is ${track.author})`;
         logRuleApplication(22, logMessage, false);
         return false;
       }
@@ -748,34 +726,6 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 ///~~~~~  buggy rules  ~~~~~~~~/////
 ////////////////////////////////////////////////////
 
-function r31(track, curatedTracklist, trackIndex) {
-  if (trackIndex >= 9) {
-    const interviewTrackExists =
-      trackExistsWithAttributes(curatedTracklist, "author", "KIKO") &&
-      trackExistsWithAttributes(curatedTracklist, "form", "interview");
-
-    if (interviewTrackExists) {
-      if (
-        track.author === "KIKO" &&
-        (track.form === "typeMusic" || track.form === "typeShort")
-      ) {
-        console.log("KIKO Interview Rule: Track added as a related track.");
-        // Add the new track with author "KIKO" and form "typeMusic" or "typeShort"
-        curatedTracklist.push({ author: "KIKO", form: track.form });
-      } else {
-        const logMessage = `❌ ${track.name}: KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
-        logRuleApplication(31, logMessage, false);
-        return false;
-      }
-    }
-  }
-
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🦭 KIKO Interview Rule: Track not added. Another related KIKO track is required."`;
-  logRuleApplication(31, logMessage, true);
-  return true;
-}
-
 // Rule 32: If the curatedTracklist already has a track that contains the geese tag, add another track that contains the geese tag.
 function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex >= 9) {
@@ -804,12 +754,21 @@ function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 /////////////  helper functions   ////////////////
 ////////////////////////////////////////////////////
 
-function calculateCuratedTracklistTotalTime(curatedTracklist) {
-  let totalTime = 0;
-  for (const track of curatedTracklist) {
-    totalTime += track.duration; // Assuming track has a property 'duration'
+let curatedTracklistTotalTime = 0;
+
+function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
+  if (curatedTracklistTotalTime === 0) {
+    for (const track of curatedTracklist) {
+      console.log("ttt track name is " + track.name);
+      console.log("ttt track time is " + track.duration);
+      curatedTracklistTotalTime += track.duration; // Assuming track has a property 'duration'
+    }
+    return curatedTracklistTotalTime;
+  } else {
+    curatedTracklistTotalTime += track.duration; // Assuming track has a property 'duration'
+    console.log("curatedTracklistTotalTime is " + curatedTracklistTotalTime);
+    return curatedTracklistTotalTime;
   }
-  return totalTime;
 }
 
 function addNextValidTrack(track, curatedTracklist, tracks) {
@@ -876,10 +835,6 @@ function followTracklistRules(tracklist) {
   let currIndex = 0; // Used to loop through tracklist
   let trackIndex = 0; // Used to index curatedTracklist
 
-  // Define constants for time limits and rules
-  const LASTCHANCEFORSONGSTIME = 200; // Maximum time allowed for last tracks
-  const TOTALPLAYLISTDURATIONTIME = 1220; // Maximum total playlist duration
-
   // Define general rule functions for phase 1
   const generalRuleFunctions = [
     r10,
@@ -896,12 +851,14 @@ function followTracklistRules(tracklist) {
 
   // Define ensure and final check rules for phase 2
   const ensureRules = [r21, r22, r23, r24];
-  const finalCheckRules = [r31, r32];
+  const finalCheckRules = [r32];
 
   // Define closing track rules
   const closingTracksRules = [r11];
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 1: Apply track-specific rules and general rules
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   for (let i = 0; i < 8; i++) {
     // Get the specific rule function based on index
     const ruleFunction = window["r" + (i + 61)];
@@ -962,6 +919,10 @@ function followTracklistRules(tracklist) {
       if (generalRulesPassed) {
         // All conditions met, add the track to curatedTracklist
         addNextValidTrack(track, curatedTracklist, tracklist);
+        curatedTracklistTotalTime = calculateOrUpdateCuratedTracklistDuration(
+          track,
+          curatedTracklist
+        );
 
         // Update the previous tracks with the added track
         [prevTrack1, prevTrack2] = updatePrevTracks(
@@ -981,28 +942,45 @@ function followTracklistRules(tracklist) {
       currIndex++;
     }
   }
-
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 2: Ensure rules and final check rules
-  while (
-    calculateCuratedTracklistTotalTime(curatedTracklist) <=
-    LASTCHANCEFORSONGSTIME
-  ) {
-    const track = tracklist[currIndex];
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    // Apply ensure rules or final check rules based on the condition
-    const rulesToApply =
-      calculateCuratedTracklistTotalTime(curatedTracklist) >
-      LASTCHANCEFORSONGSTIME
-        ? finalCheckRules
-        : ensureRules;
+  // const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+  // const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
+
+// while the total time of the playlist is less than the actual time limit
+  while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
+    console.log("sss we still have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS);
+    const track = tracklist[currIndex]; // Get the track at the current index from the tracklist array
+
+    // Decide which set of rules to apply based on the current total duration
+    let rulesToApply;
+    // while the total time of the playlist is less than the "almost done" time limit
+    // todo: need to get more fine-tuned control over the last tracks that we add. 
+    // currently the track might be very long and push us past our limit
+    // I can do this by checking how long the track is
+
+    if (curatedTracklistTotalTime < ALMOST_DONE_THRESHOLD_SECONDS) {
+      console.log("sss we STILL have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the ALMOST_DONE_THRESHOLD_SECONDS is " + ALMOST_DONE_THRESHOLD_SECONDS);
+      rulesToApply = finalCheckRules;
+    } else {
+      rulesToApply = ensureRules;
+    }
+
+    // Initialize a flag to track if any rule fails for the current track
     let ruleFailed = false;
+
+    // Iterate through the selected set of rules (either final check or ensure rules)
     for (const rule of rulesToApply) {
+      // Check if the current track violates the rule
       if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
         console.log(`Ensure/Final rule failed for track: ${track.name}`);
         ruleFailed = true;
-        break; // Handle rule failure here
+        break; // Exit the loop early since a rule has failed
       }
+
       // Apply general rule functions for the track
       for (const generalRule of generalRuleFunctions) {
         if (
@@ -1016,38 +994,48 @@ function followTracklistRules(tracklist) {
         ) {
           console.log(`General rule failed for track: ${track.name}`);
           ruleFailed = true;
-          break; // Handle rule failure here
+          break; // Exit the loop early since a rule has failed
         }
       }
     }
 
+    // If no rules have failed, add the track to the curated tracklist
     if (!ruleFailed) {
-      // All conditions met, add the track to curatedTracklist
-      addNextValidTrack(track, curatedTracklist, tracks);
+      addNextValidTrack(track, curatedTracklist, tracklist);
+      calculateOrUpdateCuratedTracklistDuration(
+        track,
+        curatedTracklist
+      );
       [prevTrack1, prevTrack2] = updatePrevTracks(
         track,
         prevTrack1,
         prevTrack2
       );
+     
     }
 
-    // Move to the next track in the tracklist
+    // Move to the next track in the tracklist for the next iteration
     currIndex++;
   }
+  console.log("sss out of time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS);
+  console.log("sss shifting to closing tracks now");
 
   // Search for closing tracks that meet conditions
   for (const track of tracklist) {
     let ruleFailed = false;
+
+    // Iterate through closing track rules to check if any rule fails for the current track
     for (const rule of closingTracksRules) {
       if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
-        // console.log(`Closing track rule failed for track: ${track.name}`);
+        // If a closing track rule fails, mark the rule as failed and exit the loop
         ruleFailed = true;
-        break; // Handle rule failure here
+        break; // Exit the loop since a rule has failed
       }
     }
 
+    // If no closing track rules have failed, proceed to additional checks
     if (!ruleFailed) {
-      // Apply general rule functions for the track
+      // Iterate through general rule functions to perform additional checks
       for (const generalRule of generalRuleFunctions) {
         if (
           !generalRule(
@@ -1060,14 +1048,18 @@ function followTracklistRules(tracklist) {
         ) {
           console.log(`General rule failed for track: ${track.name}`);
           ruleFailed = true;
-          break; // Handle rule failure here
+          break; // Exit the loop since a rule has failed
         }
       }
     }
 
+    // If both closing track rules and general rules have passed, add the track to curatedTracklist
     if (!ruleFailed) {
-      // All conditions met, add the track to curatedTracklist
       addNextValidTrack(track, curatedTracklist, tracklist);
+      calculateOrUpdateCuratedTracklistDuration(
+        track,
+        curatedTracklist
+      );
       [prevTrack1, prevTrack2] = updatePrevTracks(
         track,
         prevTrack1,
@@ -1075,7 +1067,10 @@ function followTracklistRules(tracklist) {
       );
     }
   }
+
   // console.log("Curated Tracklist:", curatedTracklist);
+
+  // Return the final curated tracklist
   return curatedTracklist;
 }
 
@@ -1203,10 +1198,6 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
   }
 }
 
-function calculateRemainingTime(currentRuntime) {
-  return total_duration - currentRuntime;
-}
-
 function queueNextTrack(songs, index, currentRuntime, cache) {
   const song = songs[index]; // get the song object
   const audio = song.audio;
@@ -1273,151 +1264,99 @@ button.addEventListener("click", (event) => {
     .then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });
 
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+// var timerInterval;
+// var timerDuration;
+// var remainingTime;
+
+// Constants
+// const MAX_PLAYLIST_DURATION_SECONDS = 1020;
+// const ALMOST_DONE_THRESHOLD_SECONDS = 1010;
+// const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
+
+// Initialize variables
+var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
+var elapsedDurationSeconds = 0;
+var remainingDurationSeconds = totalDurationSeconds;
+
+/* 6. Set the value of the total_duration variable (in seconds). */
+var totalDurationSeconds = MAXPLAYLISTDURATION;
+
 // This function updates the progress timer displayed on the webpage.
 // It takes the time in seconds and the previous duration as inputs.
-function updateProgressTimer(seconds, previousDuration) {
+
+/* updateProgressTimer(seconds, previousDuration): This function updates the progress timer 
+displayed on the webpage. It takes the current time in seconds and the previous duration 
+as input parameters. It performs the following steps:
+
+It gets the HTML element with the ID "current-time," the element where the timer is displayed.
+It checks if the "current-time" element exists. If it doesn't, it throws an error.
+
+It calculates the remaining time until the end of the playlist by subtracting the current time 
+and previous duration from the total duration.
+
+It calculates the remaining minutes and, based on some conditions, either displays "done" 
+if there's no time left or formats the remaining time in minutes and seconds and updates 
+the "current-time" element.
+*/
+
+function updateProgressTimer(elapsedSeconds, previousDuration) {
   // Get the HTML element for displaying the current time
-  let currTime = document.getElementById("current-time");
+  let currentTimeElement = document.getElementById("current-time");
 
   // Throw an error if the current time element is missing
-  if (!currTime) {
+  if (!currentTimeElement) {
     throw new Error("Missing element: current-time");
   }
 
   // Calculate the remaining time until the end of the playlist
-  let remaining = total_duration - (seconds + previousDuration);
-  let minutes = Math.floor(remaining / 60);
+  let remainingDurationSeconds =
+    totalDurationSeconds - (elapsedSeconds + previousDuration);
+  let remainingDurationMinutes = Math.floor(remainingDurationSeconds / 60);
 
-  // If time has run out, display "done"
-  if (remaining <= 0) {
-    currTime.innerHTML = "done";
+  // Check if there's no time left
+  if (remainingDurationSeconds <= NO_TIME_LEFT_THRESHOLD_SECONDS) {
+    console.log("out");
+    currentTimeElement.innerHTML = "Done";
+  } else if (remainingDurationSeconds <= ALMOST_DONE_THRESHOLD_SECONDS) {
+    console.log("ALMOST out");
   } else {
     // Calculate remaining seconds and format the time display
-    let remainingSeconds = (remaining % 60).toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    });
-    currTime.innerHTML = `${minutes}:${remainingSeconds}`;
+    let remainingMinutes = Math.floor(remainingDurationSeconds / 60);
+    let remainingSeconds = (remainingDurationSeconds % 60).toLocaleString(
+      "en-US",
+      {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      }
+    );
+    currentTimeElement.innerHTML = `${remainingMinutes}:${remainingSeconds}`;
   }
 }
 
-// This function creates a loop that updates the progress timer at intervals.
-function createTimerLoop(previousDuration) {
+// Calculate the remaining time
+function calculateRemainingTime(elapsedSeconds) {
+  return totalDurationSeconds - elapsedSeconds;
+}
+
+function createTimerLoopAndUpdateProgressTimer(previousDuration) {
   var start = Date.now(); // Record the start time of the loop
 
   // Set up an interval to run the loop every 200 milliseconds
+  // In the callback function, calculate the elapsed time in milliseconds since the start of the loop
+  // and convert it to seconds.
   return setInterval(() => {
     let delta = Date.now() - start; // Calculate elapsed milliseconds
     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-    let timerDuration = deltaSeconds + previousDuration; // Calculate the timer duration
+    timerDuration = deltaSeconds + previousDuration; // Calculate the timer duration by adding the delta seconds to the previous duration.
 
-    updateProgressTimer(deltaSeconds, previousDuration); // Update the timer display
-
+    // Call the updateProgressTimer function to update the timer display based on the calculated timer
+    // duration.
+    updateProgressTimer(deltaSeconds, previousDuration);
     // Calculate remaining time using the calculateRemainingTime function
     remainingTime = calculateRemainingTime(timerDuration);
-
-    // console.log("remainingTime " + remainingTime);
-    // console.log("EONSOFTIME" + EONSOFTIME);
-
-    // Update flags based on remaining time
-    if (remainingTime <= EONSOFTIME && eonsOfTimeLeft) {
-      console.log("timer entered");
-      eonsOfTimeLeft = false;
-      // Trigger other actions for eons of time left
-    }
-
-    if (remainingTime <= SOMETIME && someTimeLeft) {
-      someTimeLeft = false;
-      // Trigger other actions for some time left
-    }
-
-    if (remainingTime <= 0 && noTimeLeft) {
-      noTimeLeft = false;
-      // Trigger other actions for no time left
-    }
-
-    // Perform other actions based on remaining time if needed
   }, 200); // Run the loop every 200 milliseconds
 }
-
-// // This function updates the progress timer displayed on the webpage.
-// // It takes the time in seconds and the previous duration as inputs.
-// function updateProgressTimer(seconds, previousDuration) {
-//   // Get the HTML element for displaying the current timehttps://www.reddit.com/r/graphic_design/?f=flair_name%3A%22Asking%20Question%20(Rule%204)%22
-//   let currTime = document.getElementById("current-time");
-
-//   // Throw an error if the current time element is missing
-//   if (!currTime) {
-//     throw new Error("Missing element: current-time");
-//   }
-
-//   // Calculate the total timer duration by adding seconds and previous duration
-//   timerDuration = seconds + previousDuration;
-
-//   // If the current time element exists
-//   if (currTime == null) {
-//     // Do nothing, there might be a delay when the player is initialized
-//   } else {
-//     // Calculate the remaining time until the end of the playlist
-//     let remaining = total_duration - (seconds + previousDuration);
-//     let minutes = Math.floor(remaining / 60);
-
-//     // let eonsOfTimeLeft = true;
-//     // let someTimeLeft = true;
-//     // let noTimeLeft = true;
-
-//     // If time has run out, display "done"
-//     if (remaining <= 0) {
-//       currTime.innerHTML = "done";
-//     } else {
-//       // Calculate remaining seconds and format the time display
-//       let remainingSeconds = (remaining % 60).toLocaleString("en-US", {
-//         minimumIntegerDigits: 2,
-//         useGrouping: false,
-//       });
-//       currTime.innerHTML = `${minutes}:${remainingSeconds}`;
-//     }
-//   }
-// }
-
-// // This function creates a loop that updates the progress timer at intervals.
-// function createTimerLoop(previousDuration) {
-//   var start = Date.now(); // Record the start time of the loop
-
-//   // Set up an interval to run the loop every 200 milliseconds
-//   return setInterval(() => {
-//     let delta = Date.now() - start; // Calculate elapsed milliseconds
-//     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-//     updateProgressTimer(deltaSeconds, previousDuration); // Update the timer display
-
-//     // Update the timerDuration variable with elapsed time
-//     timerDuration = deltaSeconds + previousDuration;
-
-//     // Calculate remaining time using the calculateRemainingTime function
-//     remainingTime = calculateRemainingTime(timerDuration);
-
-//     // Log the remaining time to the console
-//     // console.log("Remaining time:", remainingTime);
-
-//     // Perform other actions based on remaining time if needed
-
-//   }, 200); // Run the loop every 200 milliseconds
-// }
-
-window.addEventListener("load", (event) => {
-  // Create a div element to hold the output
-  const outputContainer = document.createElement("div");
-  outputContainer.id = "errorBox"; // Set the id attribute
-
-  // Add content to the output container
-  //   outputContainer.innerHTML = `
-  //   <p class="debugHeader">Test Results</p>
-  //   <p>Songs raw length: ${SONGSRAW.length}</p>
-  // `;
-
-  // Get the target container where you want to add the output
-  const targetContainer = document.getElementById("debugdiv");
-
-  // Append the output container to the target container
-  targetContainer.appendChild(outputContainer);
-});
