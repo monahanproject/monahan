@@ -421,7 +421,8 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 
 
 
-// If this track has the length long and the form typeMusic, then the next track should have the form typeInterview.
+// If this track has the length long and the form typeMusic, then the next track should have the 
+// form typeInterview.
 
 
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
@@ -617,7 +618,7 @@ function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-// Rule 22. Ensure that the tracklist contains at least one track with the author birds (PIERREELLIOTT).
+// Rule 22. Ensure that the tracklist contains at least one track with the author PIERREELLIOTT.
 function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (curatedTracklist.length >= 9) {
     if (
