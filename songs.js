@@ -3,7 +3,7 @@ window.SONGSRAW = [
     name: "INTRO_2",
     url: "./sounds/00_INTRO/INTRO_2.mp3",
     duration: 113,
-    author: "",
+    author: "LauraIntro",
     form: "",
     placement: [""],
     length: "",

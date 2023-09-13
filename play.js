@@ -952,7 +952,7 @@ function followTracklistRules(tracklist) {
 
 // while the total time of the playlist is less than the actual time limit
   while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-    console.log("sss we still have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS);
+    console.log("sss we still have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS + " and the last track name is " + prevTrack1.name + " and the last track duration is " + prevTrack1.duration);
     const track = tracklist[currIndex]; // Get the track at the current index from the tracklist array
 
     // Decide which set of rules to apply based on the current total duration
@@ -963,7 +963,7 @@ function followTracklistRules(tracklist) {
     // I can do this by checking how long the track is
 
     if (curatedTracklistTotalTime < ALMOST_DONE_THRESHOLD_SECONDS) {
-      console.log("sss we STILL have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the ALMOST_DONE_THRESHOLD_SECONDS is " + ALMOST_DONE_THRESHOLD_SECONDS);
+      console.log("sss we STILL have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the ALMOST_DONE_THRESHOLD_SECONDS is " + ALMOST_DONE_THRESHOLD_SECONDS + " and the last track name is " + prevTrack1.name + " and the last track duration is " + prevTrack1.duration);
       rulesToApply = finalCheckRules;
     } else {
       rulesToApply = ensureRules;
@@ -1020,53 +1020,62 @@ function followTracklistRules(tracklist) {
   console.log("sss out of time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS);
   console.log("sss shifting to closing tracks now");
 
-  // Search for closing tracks that meet conditions
-  for (const track of tracklist) {
-    let ruleFailed = false;
+ 
 
-    // Iterate through closing track rules to check if any rule fails for the current track
-    for (const rule of closingTracksRules) {
-      if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
-        // If a closing track rule fails, mark the rule as failed and exit the loop
-        ruleFailed = true;
-        break; // Exit the loop since a rule has failed
-      }
-    }
 
-    // If no closing track rules have failed, proceed to additional checks
-    if (!ruleFailed) {
-      // Iterate through general rule functions to perform additional checks
-      for (const generalRule of generalRuleFunctions) {
-        if (
-          !generalRule(
-            track,
-            prevTrack1,
-            prevTrack2,
-            curatedTracklist,
-            currIndex
-          )
-        ) {
-          console.log(`General rule failed for track: ${track.name}`);
-          ruleFailed = true;
-          break; // Exit the loop since a rule has failed
-        }
-      }
-    }
 
-    // If both closing track rules and general rules have passed, add the track to curatedTracklist
-    if (!ruleFailed) {
-      addNextValidTrack(track, curatedTracklist, tracklist);
-      calculateOrUpdateCuratedTracklistDuration(
-        track,
-        curatedTracklist
-      );
-      [prevTrack1, prevTrack2] = updatePrevTracks(
-        track,
-        prevTrack1,
-        prevTrack2
-      );
-    }
-  }
+
+
+
+  //  // Search for closing tracks that meet conditions
+  //  for (const track of tracklist) {
+  //   let ruleFailed = false;
+
+  //   // Iterate through closing track rules to check if any rule fails for the current track
+  //   for (const rule of closingTracksRules) {
+  //     if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
+  //       // If a closing track rule fails, mark the rule as failed and exit the loop
+  //       ruleFailed = true;
+  //       break; // Exit the loop since a rule has failed
+  //     }
+  //   }
+
+  //   // If no closing track rules have failed, proceed to additional checks
+  //   if (!ruleFailed) {
+  //     // Iterate through general rule functions to perform additional checks
+  //     for (const generalRule of generalRuleFunctions) {
+  //       if (
+  //         !generalRule(
+  //           track,
+  //           prevTrack1,
+  //           prevTrack2,
+  //           curatedTracklist,
+  //           currIndex
+  //         )
+  //       ) {
+  //         console.log(`General rule failed for track: ${track.name}`);
+  //         ruleFailed = true;
+  //         break; // Exit the loop since a rule has failed
+  //       }
+  //     }
+  //   }
+
+  //   // If both closing track rules and general rules have passed, add the track to curatedTracklist
+  //   if (!ruleFailed) {
+  //     addNextValidTrack(track, curatedTracklist, tracklist);
+  //     calculateOrUpdateCuratedTracklistDuration(
+  //       track,
+  //       curatedTracklist
+  //     );
+  //     [prevTrack1, prevTrack2] = updatePrevTracks(
+  //       track,
+  //       prevTrack1,
+  //       prevTrack2
+  //     );
+  //   }
+  // }
+
+
 
   // console.log("Curated Tracklist:", curatedTracklist);
 
@@ -1127,6 +1136,7 @@ function gatherAndPrintDebugInfo(song, index) {
     const currURLHTMLElement = document.getElementById("currURL");
     const currTagsHTMLElement = document.getElementById("currTags");
     const currDurrHTMLElement = document.getElementById("currDurr");
+    const totalDurrHTMLElement = document.getElementById("totalDurr");
     // const displayConsoleLogHTMLElement = document.getElementById("displayConsoleLog");
     const currCreditHTMLElement = document.getElementById("currCredit");
     const currIndexNokHTMLElement = document.getElementById("indexNo");
@@ -1137,6 +1147,7 @@ function gatherAndPrintDebugInfo(song, index) {
     const currTags = song.tags;
     const currUrl = song.url;
     const currDurr = song.duration;
+    const totalDurr = Math.floor(curatedTracklistTotalTime/60);
     const currName = song.name;
     const currCredit = song.credit;
     const ohcurrIndex = index;
@@ -1146,6 +1157,8 @@ function gatherAndPrintDebugInfo(song, index) {
     displayDebugText(currURLHTMLElement, currUrl, "no url");
     displayDebugText(currTagsHTMLElement, currTags, "no tags");
     displayDebugText(currDurrHTMLElement, currDurr, "no duration");
+    displayDebugText(totalDurrHTMLElement, totalDurr, "no duration");
+
     // displayDebugText(displayConsoleLogHTMLElement, displayConsoleLog, "no log");
     displayDebugText(currCreditHTMLElement, currCredit, "no credit");
     // displayDebugText(currCreditStackHTMLElement, creditsArray, "no credit");
@@ -1172,21 +1185,31 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
       trackNumber +
       ". " +
       shuffledSongsWithOpen[i].name +
-      ", " +
+      "- " +
       shuffledSongsWithOpen[i].author +
-      ", " +
-      shuffledSongsWithOpen[i].form +
-      ", " +
-      shuffledSongsWithOpen[i].placement.join(", ") +
-      ", " +
-      shuffledSongsWithOpen[i].language +
-      ", " +
-      shuffledSongsWithOpen[i].sentiment +
-      ", " +
-      shuffledSongsWithOpen[i].tags.join(", ") +
-      ", " +
-      shuffledSongsWithOpen[i].backgroundMusic +
-      ".";
+      " (" +
+      shuffledSongsWithOpen[i].duration +
+      " seconds)";
+
+    // itemElement.textContent =
+    //   trackNumber +
+    //   ". " +
+    //   shuffledSongsWithOpen[i].name +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].author +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].form +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].placement.join(", ") +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].language +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].sentiment +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].tags.join(", ") +
+    //   ", " +
+    //   shuffledSongsWithOpen[i].backgroundMusic +
+    //   ".";
 
     currTrackNameElement.appendChild(itemElement);
   }
