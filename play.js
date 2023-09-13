@@ -401,16 +401,17 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 // if the last track is heavy, this one can't be laughter TODO FINDME
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
-    track.sentiment === "heavy" &&
-    prevTrack1 &&
-    prevTrack1.tags.includes("laughter")
+    track.tags.includes("laughter") &&
+    track &&
+    prevTrack1.sentiment === "" &&
+    prevTrack1.sentiment === "heavy" &&
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! If a track has sentiment 'heavy' (this track's sentiment is ${track.sentiment}), the track before cannot have 'laughter' tag (last track's tags are ${prevTrack1.tags})`;
+    const logMessage = `❌ ${track.name}: Rule enforced! If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (this track's tags are ${track.tags})`;
     logRuleApplication(15, logMessage, false);
     return false;
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: If a track has sentiment 'heavy' (this track's sentiment is ${track.sentiment}), the track before cannot have 'laughter' tag (last track's tags are ${prevTrack1.tags})`;
+  const logMessage = `🌱! ${track.name}: Track passes this rule: if the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (this track's tags are ${track.tags})`;
   logRuleApplication(15, logMessage, true);
   return true;
 }
