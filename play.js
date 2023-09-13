@@ -436,75 +436,6 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 
-// Rule 17: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added to the tracklist, none of the other two tracks should be added to the tracklist.
-function r17(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  const forbiddenTracks = ["I_KIM_03", "I_KIM_04", "I_KIM_05"];
-  const violatingForbiddenTracks = curatedTracklist
-    .filter((t) => forbiddenTracks.includes(t.name))
-    .map((t) => t.name)
-    .join(", ");
-
-  if (
-    forbiddenTracks.includes(track.name) &&
-    curatedTracklist.some((t) => forbiddenTracks.includes(t.name))
-  ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added, the others should not be. Violating tracks: ${violatingForbiddenTracks}`;
-    logRuleApplication(17, logMessage, false);
-    return false;
-  }
-
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: If any of the tracks I_KIM_03, I_KIM_04, or I_KIM_05 are added, the others should not be.`;
-  logRuleApplication(17, logMessage, true);
-  return true;
-}
-
-// Rule 18: If there is one track with the author SARAH and the form Interview in the tracklist, there should not be any more tracks with the author SARAH and the form Interview in the tracklist.
-function r18(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  const sarahInterviewExists = curatedTracklist.some(
-    (t) => t.author === "SARAH" && t.form === "Interview"
-  );
-
-  if (
-    track.author === "SARAH" &&
-    track.form === "Interview" &&
-    sarahInterviewExists
-  ) {
-    const violatingTracks = curatedTracklist
-      .filter((t) => t.author === "SARAH" && t.form === "Interview")
-      .map((t) => t.name)
-      .join(", ");
-
-    const logMessage = `x${track.name}: Rule enforced! If there is a track with author 'SARAH' (this track's ${track.author}) and form 'Interview' (this track's ${track.form}), no more such tracks should be added. Violating tracks: ${violatingTracks}`;
-    logRuleApplication(18, logMessage, false);
-    return false;
-  }
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: If there is a track with author 'SARAH' (this track's ${track.author}) and form 'Interview' (this track's ${track.form}), no more such tracks should be added.`;
-  logRuleApplication(18, logMessage, true);
-  return true;
-}
-
-// Rule 19: If there is one track with the author LOUELLA in the tracklist, there should not be any more tracks with the author LOUELLA in the tracklist.
-function r19(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  const louellaExists = curatedTracklist.some((t) => t.author === "LOUELLA");
-
-  if (track.author === "LOUELLA" && louellaExists) {
-    const violatingTracks = curatedTracklist
-      .filter((t) => t.author === "LOUELLA")
-      .map((t) => t.name)
-      .join(", ");
-
-    const logMessage = `❌ ${track.name}: Rule enforced! If there is a track with author 'LOUELLA' (this track's author ${track.author}), no more tracks with that author should be added. Violating tracks: ${violatingTracks}`;
-    logRuleApplication(19, logMessage, false);
-    return false;
-  }
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: If there is a track with author 'LOUELLA' (this track's author ${track.author}), no more tracks with that author should be added.`;
-  logRuleApplication(19, logMessage, true);
-  return true;
-}
-
 ////////////////////////////////////////////////////
 ///~~~~~   create our base tracks  ~~~~~~~~////
 ////////////////////////////////////////////////////
@@ -856,10 +787,7 @@ function followTracklistRules(tracklist) {
     r13,
     r14,
     r15,
-    r16,
-    r17,
-    r18,
-    r19,
+    r16
   ];
 
   // Define ensure and final check rules for phase 2
