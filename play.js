@@ -302,29 +302,42 @@ function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 
-// Rule 11: No more than two tracks from the same author in a tracklist.
+// Rule 11: No more than one track from the same author in a tracklist unless it is charlotte
 function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  // Count the number of tracks in curatedTracklist by the same author as the current track
-  const authorCount = curatedTracklist
-    .filter((t) => t.author.trim() !== "") // Filter out tracks with no author
-    .filter((t) => t.author === track.author).length;
+  // Check if the author is CHARLOTTE
+  if (track.author === "CHARLOTTE") {
+    // Count the number of tracks from CHARLOTTE in the curatedTracklist
+    const charlotteCount = curatedTracklist
+      .filter((t) => t.author.trim() !== "") // Filter out tracks with no author
+      .filter((t) => t.author === "CHARLOTTE").length;
 
-  if (authorCount >= 2) {
-    // Get the names of the tracks from the same author in the curated playlist
-    const violatingTracks = curatedTracklist
-      .filter((t) => t.author === track.author)
-      .map((t) => t.name)
-      .join(", ");
+    if (charlotteCount >= 2) {
+      // If there are already 2 tracks from CHARLOTTE, log a rule violation
+      const logMessage = `❌ ${track.name}: Rule enforced! No more than two tracks from author CHARLOTTE.`;
+      logRuleApplication(11, logMessage, false);
+      return false;
+    }
+  } else {
+    // For authors other than CHARLOTTE, count the number of tracks by the same author
+    const authorCount = curatedTracklist
+      .filter((t) => t.author.trim() !== "") // Filter out tracks with no author
+      .filter((t) => t.author === track.author).length;
 
-    // If the condition is met (authorCount >= 2), log a rule violation
-    const logMessage = `❌ ${track.name}: Rule enforced! No more than two tracks from the same author (this track's author is ${track.author}). Violating tracks are: ${violatingTracks}`;
-    logRuleApplication(11, logMessage, false);
-    return false;
+    if (authorCount >= 1) {
+      // If there is already a track from the same author, log a rule violation
+      const violatingTracks = curatedTracklist
+        .filter((t) => t.author === track.author)
+        .map((t) => t.name)
+        .join(", ");
+      const logMessage = `❌ ${track.name}: Rule enforced! No more than one track from the same author (this track's author is ${track.author}). Violating tracks are: ${violatingTracks}`;
+      logRuleApplication(11, logMessage, false);
+      return false;
+    }
   }
-  // If the condition is met (authorCount < 2), log successful rule application
-  const logMessage = `🌱! ${track.name}: Track passes this rule: No more than two tracks from the same author (this track's author is ${track.author})`;
-  logRuleApplication(11, logMessage, true);
 
+  // If the condition is met (no rule violation), log successful rule application
+  const logMessage = `🌱! ${track.name}: Track passes this rule.`;
+  logRuleApplication(11, logMessage, true);
   return true;
 }
 
