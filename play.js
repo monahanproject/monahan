@@ -418,24 +418,30 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 
 // the way I'm handling this is a bit sideways, I'd like to think of something better
 // Rule 16: If a track has the length long and the form music, then the immediately preceding track should have the form interview.
+
+
+
+// If this track has the length long and the form typeMusic, then the next track should have the form typeInterview.
+
+
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  // Check if the current track's length is "long" and its form is "music",
-  // and if there is a preceding track (prevTrack1) in the curated tracklist.
   if (
-    track.length === "long" &&
-    track.form === "music" &&
     prevTrack1 &&
-    prevTrack1.form !== "interview"
+    prevTrack1.length === "long" &&
+    prevTrack1.form === "music" &&
+    track.form !== "interview"
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! If a track has length 'long' (this track's length is ${track.length}) and form 'music' (this track's form ${track.form}), the preceding track should have the form 'interview' (last track's form was ${prevTrack1.form})`;
+    const logMessage = `❌ ${track.name}: Rule enforced! If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track should have the form 'interview' (this track's form is ${track.form})`;
     logRuleApplication(16, logMessage, false);
     return false; // Return false to indicate the rule is broken.
   }
-  // or the preceding track's form is "interview"), return true to indicate rule followed.
-  const logMessage = `🌱! ${track.name}: Track passes this rule: If a track has length 'long' (this track's length is ${track.length}) and form 'music' (this track's form ${track.form}), the preceding track should have the form 'interview' (last track's form was ${prevTrack1.form})`;
+  
+  // If the rule is not violated, return true to indicate that the rule is followed.
+  const logMessage = `🌱! ${track.name}: Track passes this rule: If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track should have the form 'interview' (this track's form is ${track.form})`;
   logRuleApplication(16, logMessage, true);
   return true;
 }
+
 
 ////////////////////////////////////////////////////
 ///~~~~~   create our base tracks  ~~~~~~~~////
