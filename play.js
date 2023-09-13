@@ -404,8 +404,7 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     track.tags.includes("laughter") &&
     track &&
     prevTrack1.sentiment === "" &&
-    prevTrack1.sentiment === "heavy" &&
-  ) {
+    prevTrack1.sentiment === "heavy") {
     const logMessage = `❌ ${track.name}: Rule enforced! If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (this track's tags are ${track.tags})`;
     logRuleApplication(15, logMessage, false);
     return false;
