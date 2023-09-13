@@ -180,7 +180,7 @@ Then OUTRO 2 PT 2 with MUSIC
 const outroAudioSounds = [
   {
     name: "OUTRO2PT1SOLO",
-    url: "./sounds/XX_OUTRO/OUTRO2PT1SOLO.mp3",
+    url: "./sounds/XX_OUTRO/OUTRO_2.2.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -197,7 +197,7 @@ const outroAudioSounds = [
 const finalOutroAudioSounds = [
   {
     name: "OUTRO2PT2withMUSIC",
-    url: "./sounds/XX_OUTRO/OUTRO2PT2withMUSIC.mp3",
+    url: "./sounds/XX_OUTRO/OUTROMUSICONLYSHORT.mp3",
     duration: 6,
     author: "",
     form: "",
