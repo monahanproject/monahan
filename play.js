@@ -180,7 +180,7 @@ Then OUTRO 2 PT 2 with MUSIC
 const outroAudioSounds = [
   {
     name: "OUTRO2PT1SOLO",
-    url: "./sounds/XX_OUTRO/OUTRO_2.2.mp3",
+    url: "./sounds/XX_OUTRO/OUTRO_2.1.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -197,7 +197,7 @@ const outroAudioSounds = [
 const finalOutroAudioSounds = [
   {
     name: "OUTRO2PT2withMUSIC",
-    url: "./sounds/XX_OUTRO/OUTROMUSICONLYSHORT.mp3",
+    url: "./sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -598,8 +598,8 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 21. Ensure that the tracklist contains at least one track with the author albert.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   // console.log("yooooooooo");
-  console.log("my auth is " + track.author);
-  if (curatedTracklist.length >= 9) {
+  // console.log("my auth is " + track.author);
+  if (track && curatedTracklist.length >= 9) {
     if (
       !trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") &&
       track.author !== "ALBERT"
@@ -1129,45 +1129,80 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
   for (let i = 0; i < shuffledSongsWithOpen.length; i++) {
     const itemElement = document.createElement("div");
     const trackNumber = i + 1; // Adding 1 to the index to start numbering from 1
-    itemElement.textContent =
-      trackNumber +
-      ". " +
-      shuffledSongsWithOpen[i].name +
-      "- " +
-      shuffledSongsWithOpen[i].author +
-      " (" +
-      shuffledSongsWithOpen[i].duration +
-      " seconds)";
+    let itemText = trackNumber + ". ";
 
-    // itemElement.textContent =
-    //   trackNumber +
-    //   ". " +
-    //   shuffledSongsWithOpen[i].name +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].author +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].form +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].placement.join(", ") +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].language +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].sentiment +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].tags.join(", ") +
-    //   ", " +
-    //   shuffledSongsWithOpen[i].backgroundMusic +
-    //   ".";
+    // Define an object with the properties you want to include
+    const songInfo = {
+      Name: shuffledSongsWithOpen[i].name,
+      Author: shuffledSongsWithOpen[i].author,
+      Duration: shuffledSongsWithOpen[i].duration,
+      Form: shuffledSongsWithOpen[i].form,
+      Language: shuffledSongsWithOpen[i].language,
+      Sentiment: shuffledSongsWithOpen[i].sentiment,
+      BackgroundMusic: shuffledSongsWithOpen[i].backgroundMusic,
+    };
 
+    // Define CSS styles for labels (teal and bold)
+    const labelStyle = 'color: teal; font-weight: bold;';
+
+    // Iterate through the properties and add non-empty values to itemText
+    for (const property in songInfo) {
+      const value = songInfo[property];
+      if (value !== undefined && value !== null && value !== "") {
+        // Add labels with styling
+        itemText += `<span style="${labelStyle}">${property}:</span> ${value}, `;
+      }
+    }
+
+    // Handle placement and tags separately
+    const placement = shuffledSongsWithOpen[i].placement;
+    const tags = shuffledSongsWithOpen[i].tags;
+
+    if (Array.isArray(placement) && placement.some(value => value !== "")) {
+      itemText += `<span style="${labelStyle}">placement:</span> ${placement.filter(value => value !== "").join(", ")}, `;
+    }
+
+    if (Array.isArray(tags) && tags.some(value => value !== "")) {
+      itemText += `<span style="${labelStyle}">tags:</span> ${tags.filter(value => value !== "").join(", ")}, `;
+    }
+
+    // Remove the trailing ", " if it exists
+    if (itemText.endsWith(", ")) {
+      itemText = itemText.slice(0, -2);
+    }
+
+    // Set the HTML content with formatted labels
+    itemElement.innerHTML = itemText;
     currTrackNameElement.appendChild(itemElement);
   }
 
   if (shuffledSongsWithOpen.length > 0) {
     currTrackNameElement.style.display = "block";
   } else {
-    // console.log("no shuffle");
+    console.log("No items to display.");
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function queueNextTrack(songs, index, currentRuntime, cache) {
   const song = songs[index]; // get the song object
