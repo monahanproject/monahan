@@ -7,17 +7,21 @@ let playerPlayState = "play";
 // let muteState = "unmute";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
+let curatedTracklistTotalTime = 0;
 
+
+/* 7. set how many seconds before a song is completed to pre-fetch the next song */
+const PREFETCH_BUFFER_SECONDS = 8;
 const MAX_PLAYLIST_DURATION_SECONDS = 1020;
 const ALMOST_DONE_THRESHOLD_SECONDS = 800;
 const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
 // const MAXPLAYLISTDURATION = 1080;
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function startplayer() {
@@ -77,6 +81,58 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     }
   });
 
+   // Create skip backward button
+let skipBackwardButton = document.createElement("button");
+skipBackwardButton.id = "skip-backward";
+skipBackwardButton.innerHTML = "Skip Backward 10s";
+audioPlayerContainer.appendChild(skipBackwardButton);
+
+// Create skip forward button
+let skipForwardButton = document.createElement("button");
+skipForwardButton.id = "skip-forward";
+skipForwardButton.innerHTML = "Skip Forward 10s";
+audioPlayerContainer.appendChild(skipForwardButton);
+
+// Add event listeners for these buttons to handle skipping
+skipBackwardButton.addEventListener("click", () => {
+  console.log("hhh Skip Backward Button Clicked");
+  if (musicPlayer.currentTime >= 10) {
+    musicPlayer.currentTime -= 10; // Skip backward 10 seconds
+  } else {
+    musicPlayer.currentTime = 0; // Go to the beginning if less than 10 seconds
+  }
+});
+
+skipForwardButton.addEventListener("click", () => {
+  console.log("Skip Forward Button Clicked");
+  
+  // Check if the current track is playing
+  if (playerPlayState === "play") {
+    if (musicPlayer.currentTime + 10 < musicPlayer.duration) {
+      musicPlayer.currentTime += 10; // Skip forward 10 seconds
+    } else {
+      // Handle the natural end of the track here
+      console.log("hhh End of Track Reached");
+      // Implement logic to switch to the next track in your playlist
+      if (currentTrackIndex < curatedTracklist.length - 1) {
+        currentTrackIndex++; // Increment to the next track if available
+        playCurrentTrack(); // Play the next track
+      } else {
+        // If there are no more tracks in the playlist, you can handle it here
+        console.log("hhh End of Playlist Reached");
+        // For example, you can stop playback or loop back to the beginning
+        musicPlayer.pause(); // Stop playback when the playlist ends
+      }
+    }
+  }
+});
+
+
+
+
+
+
+
   let volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
   volumeSlider.id = "volume-slider";
@@ -124,6 +180,11 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   timerInterval = createTimerLoopAndUpdateProgressTimer(0);
 }
 
+
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXX LOADING GIF  XXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 function displayLoadingGif() {
   let musicPlayerDiv = document.getElementById("musicPlayerDiv");
   let musicPlayerh1 = document.getElementById("musicPlayerH1");
@@ -143,10 +204,6 @@ function displayLoadingGif() {
   }, 50);
 }
 
-/* 1. Define two functions: addAudioFromUrl and addAudioFromUrl. These functions take a song 
-  object as input, create an audio element for the song's URL, assign it to the song.audio property, 
-  and return the modified song object.*/
-
 function createAudioElement(url) {
   const audio = new Audio();
   audio.preload = "none";
@@ -155,27 +212,53 @@ function createAudioElement(url) {
   return audio;
 }
 
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX AUDIO CACHING SO WE DOWNLOAD SONGS AS WE GO XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+/* fetchAndCacheAudio takes an audioFileUrl and a cache object as input. The 
+function checks if the audio file is already in the cache, and if not, fetches it from the network, 
+adds it to the cache, and returns the audio response. */
+
+function fetchAndCacheAudio(audioFileUrl, cache) {
+  // Check first if audio is in the cache.
+  return cache.match(audioFileUrl).then((cacheResponse) => {
+    // return cached response if audio is already in the cache.
+    if (cacheResponse) {
+      return cacheResponse;
+    }
+    // Otherwise, fetch the audio from the network.
+    return fetch(audioFileUrl).then((networkResponse) => {
+      // Add the response to the cache and return network response in parallel.
+      cache.put(audioFileUrl, networkResponse.clone());
+      return networkResponse;
+    });
+  });
+}
+// Set up event listener for when the outro audio ends
+// outroAudio1.addEventListener("ended", () => {
+// This recursive function processes each audio file at a time and then queues up
+// work for the next audio file to be processed.
+
+
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXX CREATE EACH SONG!  XXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+/* Takes a song object as input, create an audio element for the song's URL, 
+assignS it to the song.audio property, and returns the modified song object.*/
+
 const addAudioFromUrl = (song) => {
   song.audio = createAudioElement(song.url);
   return song;
 };
 
-/* 4. Define two more arrays outroAudioSounds and finalOutroAudioSounds, each containing an object
-   representing an outro track. Again, each object is processed using the addAudioFromUrl function. */
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX CREATE OUTRO AUDIO!  XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-/* Ideally, the OUTRO would have music underneath the text like in the files:
-To create this type of OUTRO we have provided a series of files the would be played in the following order:
-OUTRO MUSIC ONLY (SHORT or LONG)
-Then on top of that you would add 
-OUTRO 2 PT 1 SOLO
-Then the required NAMES that correspond to the chapters that have just played
-OUTRO 2 PT 2 SOLO 
-If it’s too cumbersome to program more than one file to play at the same time, you could tell the code to play:
-
-OUTRO PT 1 SOLO (no music underneath)
-Then the required NAMES that correspond to the chapters that have just played (no music underneath)
-Then OUTRO 2 PT 2 with MUSIC
-*/
+/* Define two more arrays outroAudioSounds and finalOutroAudioSounds, each containing an object
+   representing an outro track. Each object is processed using the addAudioFromUrl function. */
 
 const outroAudioSounds = [
   {
@@ -211,19 +294,20 @@ const finalOutroAudioSounds = [
   },
 ].map(addAudioFromUrl);
 
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX GET OUR SONGS & TURN THEM INTO SONG OBJECTS!  XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 /* 5. Define an array SONGS containing multiple song objects, each song object is 
   processed using the addAudioFromUrl function. */
 const SONGS = SONGSRAW.map(addAudioFromUrl);
 
-/* 7. set how many seconds before a song is completed to pre-fetch the next song */
-const PREFETCH_BUFFER_SECONDS = 8;
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXXXX CREDITS STUFF XXXXXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXXXXX CREDITS XXXXXXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-let arrayOfCreditSongs = []; // TODO - find out where to store this
-let creditsLog = []; // TODO - find out where to store this
+let arrayOfCreditSongs = []; 
+let creditsLog = []; 
 
 function addToCreditsLog(songCredit) {
   const strippedCredit = songCredit.substring(songCredit.lastIndexOf("_") + 1);
@@ -276,12 +360,10 @@ function gatherTheCreditSongs(curatedTracklist) {
   return arrayOfCreditSongs;
 }
 
-/* 8. followTracklistRules takes a tracklist array as input, applies certain
-  rules to modify the tracklist, and returns the modified tracklist.
-  */
-
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  XXXXXX TRACKLIST CREATION XXXXXXX
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  ~~~~~~ TRACKLIST CREATION ~~~~~~~
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -301,7 +383,6 @@ function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(10, logMessage, true);
   return true;
 }
-
 // Rule 11: No more than one track from the same author in a tracklist unless it is charlotte
 function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   // Check if the author is CHARLOTTE
@@ -340,7 +421,6 @@ function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(11, logMessage, true);
   return true;
 }
-
 // Rule 12: Tracks with the form shorts and the language musical can never follow tracks with the form music.
 function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   console.log(`my track is ${track.name}`);
@@ -358,7 +438,6 @@ function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(12, logMessage, true);
   return true;
 }
-
 // Rule 13: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
 function r13(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
@@ -377,7 +456,6 @@ function r13(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(13, logMessage, true);
   return true;
 }
-
 // Rule 14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
 function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
@@ -396,7 +474,6 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(14, logMessage, true);
   return true;
 }
-
 // Rule 15: If a track has the sentiment heavy, then the track after it cannot have the laughter tag.
 // if the last track is heavy, this one can't be laughter TODO FINDME
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
@@ -414,16 +491,8 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(15, logMessage, true);
   return true;
 }
-
-// the way I'm handling this is a bit sideways, I'd like to think of something better
-// Rule 16: If a track has the length long and the form music, then the immediately preceding track should have the form interview.
-
-
-
-// If this track has the length long and the form typeMusic, then the next track should have the 
+// Rule 16: If this track has the length long and the form typeMusic, then the next track should have the 
 // form typeInterview.
-
-
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
     prevTrack1 &&
@@ -442,10 +511,9 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 
-
-////////////////////////////////////////////////////
-///~~~~~   create our base tracks  ~~~~~~~~////
-////////////////////////////////////////////////////
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXX BASE TRACK RULES (TRACKS 1-8) XXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // Rule 61: Rule 1 (only for Track 1): The 1st track must have the tag 'intro'.
 function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -459,7 +527,6 @@ function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   logRuleApplication(61, logMessage, true);
   return true;
 }
-
 // Rule 62: Rule 2 (only for Track 2):The 2nd track should have the placement 'beginning'.
 function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 1 && !track.placement.includes("beginning")) {
@@ -591,15 +658,15 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-////////////////////////////////////////////////////
-///~~~~~  if we have our base tracks  ~~~~~~~~/////
-////////////////////////////////////////////////////
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXX ENSURE RULES (NEAR THE END) XXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // Rule 21. Ensure that the tracklist contains at least one track with the author albert.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   // console.log("yooooooooo");
   // console.log("my auth is " + track.author);
-  if (track && curatedTracklist.length >= 9) {
+  if (track.name && curatedTracklist.length >= 9) {
     if (
       !trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") &&
       track.author !== "ALBERT"
@@ -673,9 +740,9 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-////////////////////////////////////////////////////
-///~~~~~  buggy rules  ~~~~~~~~/////
-////////////////////////////////////////////////////
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXX ENSURE RULES (AT THE VERY END) XXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // Rule 32: If the curatedTracklist already has a track that contains the geese tag, add another track that contains the geese tag.
 function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -701,11 +768,10 @@ function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-////////////////////////////////////////////////////
-/////////////  helper functions   ////////////////
-////////////////////////////////////////////////////
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-let curatedTracklistTotalTime = 0;
 
 function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
   if (curatedTracklistTotalTime === 0) {
@@ -772,11 +838,11 @@ function updatePrevTracks(track, prevTrack1, prevTrack2) {
   return [prevTrack1, prevTrack2];
 }
 
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-/////////////  isThisAValidTrack   ////////////////
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
+//  ///////////////////////////////////////////////////
+//  //////////  A LONG AND COMPLICATED FUNCTION ///////
+//  //////////  THAT MAKES A CURATED TRACKLIST ////////
+//  //////////  BY FOLLOWING THE RULES  ///////////////
+//  ///////////////////////////////////////////////////
 
 function followTracklistRules(tracklist) {
   const curatedTracklist = [];
@@ -1034,6 +1100,10 @@ function followTracklistRules(tracklist) {
 /* 9. shuffleTracklist takes a tracklist array as input, shuffles its elements
 randomly, and returns the shuffled and modified tracklist. */
 
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX BEFORE THE RULES, WE SHUFFLE OUR TRACKLIST XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 function shuffleTracklist(tracklist) {
   // Skip the first track and shuffle the rest of the tracks
   for (let i = tracklist.length - 1; i > 1; i--) {
@@ -1043,31 +1113,9 @@ function shuffleTracklist(tracklist) {
   return tracklist;
 }
 
-/* 10. fetchAndCacheAudio  takes an audioFileUrl and a cache object as input. The 
-function checks if the audio file is already in the cache, and if not, fetches it from the network, 
-adds it to the cache, and returns the audio response. */
-
-function fetchAndCacheAudio(audioFileUrl, cache) {
-  // Check first if audio is in the cache.
-  return cache.match(audioFileUrl).then((cacheResponse) => {
-    // return cached response if audio is already in the cache.
-    if (cacheResponse) {
-      return cacheResponse;
-    }
-    // Otherwise, fetch the audio from the network.
-    return fetch(audioFileUrl).then((networkResponse) => {
-      // Add the response to the cache and return network response in parallel.
-      cache.put(audioFileUrl, networkResponse.clone());
-      return networkResponse;
-    });
-  });
-}
-
-// Set up event listener for when the outro audio ends
-// outroAudio1.addEventListener("ended", () => {
-
-// This recursive function processes each audio file at a time and then queues up
-// work for the next audio file to be processed.
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX CREATE AND PRINT DEBUG TEXT SO LAURA CAN SEE DETAILS XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function displayDebugText(element, text, defaultText) {
   if (text && text !== "") {
