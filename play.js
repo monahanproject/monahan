@@ -9,16 +9,18 @@ let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
 let curatedTracklistTotalTime = 0;
 
-
 /* 7. set how many seconds before a song is completed to pre-fetch the next song */
 const PREFETCH_BUFFER_SECONDS = 8;
-const MAX_PLAYLIST_DURATION_SECONDS = 1020;
-const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+
+const MAX_PLAYLIST_DURATION_SECONDS = 1680;
+const ALMOST_DONE_THRESHOLD_SECONDS = 1400;
 const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
+// const MAX_PLAYLIST_DURATION_SECONDS = 1020;
+// const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+// const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
+
 // const MAXPLAYLISTDURATION = 1080;
-
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -81,57 +83,51 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     }
   });
 
-   // Create skip backward button
-let skipBackwardButton = document.createElement("button");
-skipBackwardButton.id = "skip-backward";
-skipBackwardButton.innerHTML = "Skip Backward 10s";
-audioPlayerContainer.appendChild(skipBackwardButton);
+  // Create skip backward button
+  let skipBackwardButton = document.createElement("button");
+  skipBackwardButton.id = "skip-backward";
+  skipBackwardButton.innerHTML = "Skip Backward 10s";
+  audioPlayerContainer.appendChild(skipBackwardButton);
 
-// Create skip forward button
-let skipForwardButton = document.createElement("button");
-skipForwardButton.id = "skip-forward";
-skipForwardButton.innerHTML = "Skip Forward 10s";
-audioPlayerContainer.appendChild(skipForwardButton);
+  // Create skip forward button
+  let skipForwardButton = document.createElement("button");
+  skipForwardButton.id = "skip-forward";
+  skipForwardButton.innerHTML = "Skip Forward 10s";
+  audioPlayerContainer.appendChild(skipForwardButton);
 
-// Add event listeners for these buttons to handle skipping
-skipBackwardButton.addEventListener("click", () => {
-  console.log("hhh Skip Backward Button Clicked");
-  if (musicPlayer.currentTime >= 10) {
-    musicPlayer.currentTime -= 10; // Skip backward 10 seconds
-  } else {
-    musicPlayer.currentTime = 0; // Go to the beginning if less than 10 seconds
-  }
-});
-
-skipForwardButton.addEventListener("click", () => {
-  console.log("Skip Forward Button Clicked");
-  
-  // Check if the current track is playing
-  if (playerPlayState === "play") {
-    if (musicPlayer.currentTime + 10 < musicPlayer.duration) {
-      musicPlayer.currentTime += 10; // Skip forward 10 seconds
+  // Add event listeners for these buttons to handle skipping
+  skipBackwardButton.addEventListener("click", () => {
+    console.log("hhh Skip Backward Button Clicked");
+    if (musicPlayer.currentTime >= 10) {
+      musicPlayer.currentTime -= 10; // Skip backward 10 seconds
     } else {
-      // Handle the natural end of the track here
-      console.log("hhh End of Track Reached");
-      // Implement logic to switch to the next track in your playlist
-      if (currentTrackIndex < curatedTracklist.length - 1) {
-        currentTrackIndex++; // Increment to the next track if available
-        playCurrentTrack(); // Play the next track
+      musicPlayer.currentTime = 0; // Go to the beginning if less than 10 seconds
+    }
+  });
+
+  skipForwardButton.addEventListener("click", () => {
+    console.log("Skip Forward Button Clicked");
+
+    // Check if the current track is playing
+    if (playerPlayState === "play") {
+      if (musicPlayer.currentTime + 10 < musicPlayer.duration) {
+        musicPlayer.currentTime += 10; // Skip forward 10 seconds
       } else {
-        // If there are no more tracks in the playlist, you can handle it here
-        console.log("hhh End of Playlist Reached");
-        // For example, you can stop playback or loop back to the beginning
-        musicPlayer.pause(); // Stop playback when the playlist ends
+        // Handle the natural end of the track here
+        console.log("hhh End of Track Reached");
+        // Implement logic to switch to the next track in your playlist
+        if (currentTrackIndex < curatedTracklist.length - 1) {
+          currentTrackIndex++; // Increment to the next track if available
+          playCurrentTrack(); // Play the next track
+        } else {
+          // If there are no more tracks in the playlist, you can handle it here
+          console.log("hhh End of Playlist Reached");
+          // For example, you can stop playback or loop back to the beginning
+          musicPlayer.pause(); // Stop playback when the playlist ends
+        }
       }
     }
-  }
-});
-
-
-
-
-
-
+  });
 
   let volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
@@ -179,7 +175,6 @@ skipForwardButton.addEventListener("click", () => {
   startplayer();
   timerInterval = createTimerLoopAndUpdateProgressTimer(0);
 }
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX LOADING GIF  XXXXXXXXXX
@@ -239,7 +234,6 @@ function fetchAndCacheAudio(audioFileUrl, cache) {
 // outroAudio1.addEventListener("ended", () => {
 // This recursive function processes each audio file at a time and then queues up
 // work for the next audio file to be processed.
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXX CREATE EACH SONG!  XXXXXXXXX
@@ -306,8 +300,8 @@ const SONGS = SONGSRAW.map(addAudioFromUrl);
 //  XXXXXXXXXXX CREDITS STUFF XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-let arrayOfCreditSongs = []; 
-let creditsLog = []; 
+let arrayOfCreditSongs = [];
+let creditsLog = [];
 
 function addToCreditsLog(songCredit) {
   const strippedCredit = songCredit.substring(songCredit.lastIndexOf("_") + 1);
@@ -481,7 +475,8 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     track.tags.includes("laughter") &&
     track &&
     prevTrack1.sentiment === "" &&
-    prevTrack1.sentiment === "heavy") {
+    prevTrack1.sentiment === "heavy"
+  ) {
     const logMessage = `❌ ${track.name}: Rule enforced! If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (this track's tags are ${track.tags})`;
     logRuleApplication(15, logMessage, false);
     return false;
@@ -491,7 +486,7 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(15, logMessage, true);
   return true;
 }
-// Rule 16: If this track has the length long and the form typeMusic, then the next track should have the 
+// Rule 16: If this track has the length long and the form typeMusic, then the next track should have the
 // form typeInterview.
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
@@ -504,7 +499,7 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     logRuleApplication(16, logMessage, false);
     return false; // Return false to indicate the rule is broken.
   }
-  
+
   // If the rule is not violated, return true to indicate that the rule is followed.
   const logMessage = `🌱! ${track.name}: Track passes this rule: If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track should have the form 'interview' (this track's form is ${track.form})`;
   logRuleApplication(16, logMessage, true);
@@ -772,7 +767,6 @@ function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-
 function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
   if (curatedTracklistTotalTime === 0) {
     for (const track of curatedTracklist) {
@@ -853,15 +847,7 @@ function followTracklistRules(tracklist) {
   let trackIndex = 0; // Used to index curatedTracklist
 
   // Define general rule functions for phase 1
-  const generalRuleFunctions = [
-    r10,
-    r11,
-    r12,
-    r13,
-    r14,
-    r15,
-    r16
-  ];
+  const generalRuleFunctions = [r10, r11, r12, r13, r14, r15, r16];
 
   // Define ensure and final check rules for phase 2
   const ensureRules = [r21, r22, r23, r24];
@@ -963,21 +949,61 @@ function followTracklistRules(tracklist) {
   // const ALMOST_DONE_THRESHOLD_SECONDS = 800;
   // const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
+  let iterationCounter = 0; // Initialize the iteration counter
 
-// while the total time of the playlist is less than the actual time limit
+  // while the total time of the playlist is less than the actual time limit
   while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-    console.log("sss we still have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS + " and the last track name is " + prevTrack1.name + " and the last track duration is " + prevTrack1.duration);
+    console.log("Iteration: " + iterationCounter);
+    console.log(
+      "sss we still have time because the curatedTracklistTotalTime is " +
+        curatedTracklistTotalTime +
+        " and the MAX_PLAYLIST_DURATION_SECONDS is " +
+        MAX_PLAYLIST_DURATION_SECONDS +
+        " and the last track name is " +
+        prevTrack1.name +
+        " and the last track duration is " +
+        prevTrack1.duration
+    );
+
+    // Check if currIndex exceeds the length of the tracklist
+    if (currIndex >= tracklist.length) {
+      currIndex = 0; // Reset currIndex to the beginning of the tracklist
+      iterationCounter++; // Increment the iteration counter
+    }
+
+    // Check if we've exceeded the maximum number of iterations
+    if (iterationCounter >= 3) {
+      console.log("Emergency stop: Maximum iterations reached.");
+      break; // Exit the loop
+    }
+
     const track = tracklist[currIndex]; // Get the track at the current index from the tracklist array
 
+    // Check if adding the current track would exceed the maximum duration
+    if (
+      curatedTracklistTotalTime + track.duration >
+      MAX_PLAYLIST_DURATION_SECONDS
+    ) {
+      break; // Exit the loop if adding the track exceeds the maximum duration
+    }
     // Decide which set of rules to apply based on the current total duration
     let rulesToApply;
     // while the total time of the playlist is less than the "almost done" time limit
-    // todo: need to get more fine-tuned control over the last tracks that we add. 
+    // todo: need to get more fine-tuned control over the last tracks that we add.
     // currently the track might be very long and push us past our limit
     // I can do this by checking how long the track is
 
     if (curatedTracklistTotalTime < ALMOST_DONE_THRESHOLD_SECONDS) {
-      console.log("sss we STILL have time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the ALMOST_DONE_THRESHOLD_SECONDS is " + ALMOST_DONE_THRESHOLD_SECONDS + " and the last track name is " + prevTrack1.name + " and the last track duration is " + prevTrack1.duration);
+      console.log(
+        "sss we STILL have time because the curatedTracklistTotalTime is " +
+          curatedTracklistTotalTime +
+          "and the ALMOST_DONE_THRESHOLD_SECONDS is " +
+          ALMOST_DONE_THRESHOLD_SECONDS +
+          " and the last track name is " +
+          prevTrack1.name +
+          " and the last track duration is " +
+          prevTrack1.duration
+      );
       rulesToApply = finalCheckRules;
     } else {
       rulesToApply = ensureRules;
@@ -1016,30 +1042,23 @@ function followTracklistRules(tracklist) {
     // If no rules have failed, add the track to the curated tracklist
     if (!ruleFailed) {
       addNextValidTrack(track, curatedTracklist, tracklist);
-      calculateOrUpdateCuratedTracklistDuration(
-        track,
-        curatedTracklist
-      );
+      calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
       [prevTrack1, prevTrack2] = updatePrevTracks(
         track,
         prevTrack1,
         prevTrack2
       );
-     
     }
 
-    // Move to the next track in the tracklist for the next iteration
-    currIndex++;
+    currIndex++; // Move to the next track in the tracklist
   }
-  console.log("sss out of time because the curatedTracklistTotalTime is " + curatedTracklistTotalTime + "and the MAX_PLAYLIST_DURATION_SECONDS is " + MAX_PLAYLIST_DURATION_SECONDS);
+  console.log(
+    "sss out of time because the curatedTracklistTotalTime is " +
+      curatedTracklistTotalTime +
+      "and the MAX_PLAYLIST_DURATION_SECONDS is " +
+      MAX_PLAYLIST_DURATION_SECONDS
+  );
   console.log("sss shifting to closing tracks now");
-
- 
-
-
-
-
-
 
   //  // Search for closing tracks that meet conditions
   //  for (const track of tracklist) {
@@ -1089,8 +1108,6 @@ function followTracklistRules(tracklist) {
   //   }
   // }
 
-
-
   // console.log("Curated Tracklist:", curatedTracklist);
 
   // Return the final curated tracklist
@@ -1110,6 +1127,7 @@ function shuffleTracklist(tracklist) {
     const j = Math.floor(Math.random() * (i - 1)) + 1; // Ensure j is at least 1
     [tracklist[i], tracklist[j]] = [tracklist[j], tracklist[i]];
   }
+  console.log(tracklist);
   return tracklist;
 }
 
@@ -1143,7 +1161,7 @@ function gatherAndPrintDebugInfo(song, index) {
     const currTags = song.tags;
     const currUrl = song.url;
     const currDurr = song.duration;
-    const totalDurr = Math.floor(curatedTracklistTotalTime/60);
+    const totalDurr = Math.floor(curatedTracklistTotalTime / 60);
     const currName = song.name;
     const currCredit = song.credit;
     const ohcurrIndex = index;
@@ -1191,7 +1209,7 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     };
 
     // Define CSS styles for labels (teal and bold)
-    const labelStyle = 'color: teal; font-weight: bold;';
+    const labelStyle = "color: teal; font-weight: bold;";
 
     // Iterate through the properties and add non-empty values to itemText
     for (const property in songInfo) {
@@ -1206,12 +1224,16 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     const placement = shuffledSongsWithOpen[i].placement;
     const tags = shuffledSongsWithOpen[i].tags;
 
-    if (Array.isArray(placement) && placement.some(value => value !== "")) {
-      itemText += `<span style="${labelStyle}">placement:</span> ${placement.filter(value => value !== "").join(", ")}, `;
+    if (Array.isArray(placement) && placement.some((value) => value !== "")) {
+      itemText += `<span style="${labelStyle}">placement:</span> ${placement
+        .filter((value) => value !== "")
+        .join(", ")}, `;
     }
 
-    if (Array.isArray(tags) && tags.some(value => value !== "")) {
-      itemText += `<span style="${labelStyle}">tags:</span> ${tags.filter(value => value !== "").join(", ")}, `;
+    if (Array.isArray(tags) && tags.some((value) => value !== "")) {
+      itemText += `<span style="${labelStyle}">tags:</span> ${tags
+        .filter((value) => value !== "")
+        .join(", ")}, `;
     }
 
     // Remove the trailing ", " if it exists
@@ -1230,27 +1252,6 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     console.log("No items to display.");
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function queueNextTrack(songs, index, currentRuntime, cache) {
   const song = songs[index]; // get the song object
@@ -1337,7 +1338,7 @@ var elapsedDurationSeconds = 0;
 var remainingDurationSeconds = totalDurationSeconds;
 
 /* 6. Set the value of the total_duration variable (in seconds). */
-var totalDurationSeconds = MAXPLAYLISTDURATION;
+var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 
 // This function updates the progress timer displayed on the webpage.
 // It takes the time in seconds and the previous duration as inputs.
