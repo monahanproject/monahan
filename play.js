@@ -36,6 +36,7 @@ function change_vol(event) {
 }
 
 // https://css-tricks.com/lets-create-a-custom-audio-player/
+
 function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   // wrapper div
   let wrapperDiv = document.createElement("div");
@@ -47,17 +48,20 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   audioPlayerContainer.id = "audio-player-container";
   wrapperDiv.append(audioPlayerContainer);
 
-  // music player audio element
-  let musicPlayer = document.createElement("audio");
-  musicPlayer.id = "music_player";
-  audioPlayerContainer.append(musicPlayer);
+   // music player audio element
+   let musicPlayer = document.createElement("audio");
+   musicPlayer.id = "music_player";
+   audioPlayerContainer.append(musicPlayer);
 
-  // inputs
-  let currTime = document.createElement("span");
-  currTime.classList.add("time");
-  currTime.id = "current-time";
-  currTime.innerHTML = "0:00";
-  audioPlayerContainer.append(currTime);
+   // inputs
+   let currTime = document.createElement("span");
+   currTime.classList.add("time");
+   currTime.id = "current-time";
+   currTime.innerHTML = "0:00";
+   audioPlayerContainer.append(currTime);
+
+
+   
 
   let playIconContainer = document.createElement("button");
   playIconContainer.id = "play-icon";
@@ -66,6 +70,8 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   // playIconContainer.innerHTML = "pause";
   audioPlayerContainer.append(playIconContainer);
 
+
+  
   playIconContainer.addEventListener("click", () => {
     if (playerPlayState === "play") {
       // playIconContainer.innerHTML = "play";
