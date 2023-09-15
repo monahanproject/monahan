@@ -8,19 +8,18 @@ let playerPlayState = "play";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
 let curatedTracklistTotalTime = 0;
+let curatedTracklist;
+let timerDuration = 0
 
-/* 7. set how many seconds before a song is completed to pre-fetch the next song */
-const PREFETCH_BUFFER_SECONDS = 8;
+const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
-const MAX_PLAYLIST_DURATION_SECONDS = 1680;
-const ALMOST_DONE_THRESHOLD_SECONDS = 1400;
+const MAX_PLAYLIST_DURATION_SECONDS = 680;
+const ALMOST_DONE_THRESHOLD_SECONDS = 400;
 const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
 // const MAX_PLAYLIST_DURATION_SECONDS = 1020;
 // const ALMOST_DONE_THRESHOLD_SECONDS = 800;
 // const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
-
-// const MAXPLAYLISTDURATION = 1080;
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -36,7 +35,6 @@ function change_vol(event) {
 }
 
 // https://css-tricks.com/lets-create-a-custom-audio-player/
-
 function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   // wrapper div
   let wrapperDiv = document.createElement("div");
@@ -60,18 +58,26 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
    currTime.innerHTML = "0:00";
    audioPlayerContainer.append(currTime);
 
+   // Create a container div for the buttons
+let buttonContainer = document.createElement("div");
+buttonContainer.classList.add("button-container");
+audioPlayerContainer.appendChild(buttonContainer);
 
-   
-
-  let playIconContainer = document.createElement("button");
-  playIconContainer.id = "play-icon";
-  playIconContainer.classList.add("play-icon");
-  playIconContainer.classList.add("paused");
-  // playIconContainer.innerHTML = "pause";
-  audioPlayerContainer.append(playIconContainer);
+  // Create skip backward button
+let skipBackwardButton = document.createElement("button");
+skipBackwardButton.classList.add("skip-button");
+skipBackwardButton.innerHTML = "<<20";
+buttonContainer.appendChild(skipBackwardButton);
 
 
-  
+  // Create play button and append it to the button container
+let playIconContainer = document.createElement("button");
+playIconContainer.id = "play-icon";
+playIconContainer.classList.add("play-icon");
+playIconContainer.classList.add("paused");
+buttonContainer.appendChild(playIconContainer); // Append to the button container
+
+
   playIconContainer.addEventListener("click", () => {
     if (playerPlayState === "play") {
       // playIconContainer.innerHTML = "play";
@@ -89,52 +95,36 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     }
   });
 
-  // Create skip backward button
-  let skipBackwardButton = document.createElement("button");
-  skipBackwardButton.id = "skip-backward";
-  skipBackwardButton.innerHTML = "Skip Backward 10s";
-  audioPlayerContainer.appendChild(skipBackwardButton);
+  let currentTrackIndex = 0;
 
-  // Create skip forward button
-  let skipForwardButton = document.createElement("button");
-  skipForwardButton.id = "skip-forward";
-  skipForwardButton.innerHTML = "Skip Forward 10s";
-  audioPlayerContainer.appendChild(skipForwardButton);
 
-  // Add event listeners for these buttons to handle skipping
+
+// Create skip forward button
+let skipForwardButton = document.createElement("button");
+skipForwardButton.classList.add("skip-button");
+skipForwardButton.innerHTML = "20>>";
+buttonContainer.appendChild(skipForwardButton);
+
+
   skipBackwardButton.addEventListener("click", () => {
-    console.log("hhh Skip Backward Button Clicked");
-    if (musicPlayer.currentTime >= 10) {
-      musicPlayer.currentTime -= 10; // Skip backward 10 seconds
-    } else {
-      musicPlayer.currentTime = 0; // Go to the beginning if less than 10 seconds
+    if (playerPlayState === "play") {
+      let newTime = player.currentTime - 20;
+      player.currentTime = Math.max(newTime, 0);
+      // Directly update the timer display based on the new time
+      updateProgressTimer(Math.floor(newTime), timerDuration);
     }
   });
 
   skipForwardButton.addEventListener("click", () => {
-    console.log("Skip Forward Button Clicked");
-
-    // Check if the current track is playing
     if (playerPlayState === "play") {
-      if (musicPlayer.currentTime + 10 < musicPlayer.duration) {
-        musicPlayer.currentTime += 10; // Skip forward 10 seconds
-      } else {
-        // Handle the natural end of the track here
-        console.log("hhh End of Track Reached");
-        // Implement logic to switch to the next track in your playlist
-        if (currentTrackIndex < curatedTracklist.length - 1) {
-          currentTrackIndex++; // Increment to the next track if available
-          playCurrentTrack(); // Play the next track
-        } else {
-          // If there are no more tracks in the playlist, you can handle it here
-          console.log("hhh End of Playlist Reached");
-          // For example, you can stop playback or loop back to the beginning
-          musicPlayer.pause(); // Stop playback when the playlist ends
-        }
-      }
+      let newTime = player.currentTime + 20;
+      newTime = Math.min(newTime, MAX_PLAYLIST_DURATION_SECONDS);
+      // Directly update the timer display based on the new time
+      updateProgressTimer(Math.floor(newTime), timerDuration);
+      player.currentTime = newTime;
     }
   });
-
+  
   let volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
   volumeSlider.id = "volume-slider";
@@ -179,8 +169,88 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   });
 
   startplayer();
-  timerInterval = createTimerLoopAndUpdateProgressTimer(0);
+  let timerDuration = 0; // Declare timerDuration as a local variable
+  timerInterval = createTimerLoopAndUpdateProgressTimer(timerDuration);
+
+  // timerInterval = createTimerLoopAndUpdateProgressTimer(0);
 }
+
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+// Initialize variables
+var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
+var elapsedDurationSeconds = 0;
+var remainingDurationSeconds = totalDurationSeconds;
+
+// /* 6. Set the value of the total_duration variable (in seconds). */
+// var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
+
+let currentTimeElement;
+let timerInterval; // Declare timerInterval
+
+
+function updateProgressTimer(elapsedSeconds, previousDuration) {
+  console.log(`ggg Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}`);
+
+  // musicPlayer.currentTime = curatedTracklistTotalTime;
+
+  // Get the HTML element for displaying the current time
+  currentTimeElement = document.getElementById("current-time");
+
+  // Throw an error if the current time element is missing
+  if (!currentTimeElement) {
+    throw new Error("Missing element: current-time");
+  }
+
+  // Calculate the remaining time until the end of the playlist
+  let remainingDurationSeconds =
+    totalDurationSeconds - (elapsedSeconds + previousDuration);
+  let remainingDurationMinutes = Math.floor(remainingDurationSeconds / 60);
+
+  // Check if there's no time left
+  if (remainingDurationSeconds <= NO_TIME_LEFT_THRESHOLD_SECONDS) {
+    console.log("out");
+    currentTimeElement.innerHTML = "Done";
+  } else if (remainingDurationSeconds <= ALMOST_DONE_THRESHOLD_SECONDS) {
+    console.log("ALMOST out");
+  } else {
+    // Calculate remaining seconds and format the time display
+    let remainingMinutes = Math.floor(remainingDurationSeconds / 60);
+    let remainingSeconds = (remainingDurationSeconds % 60).toLocaleString(
+      "en-US",
+      {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      }
+    );
+    currentTimeElement.innerHTML = `${remainingMinutes}:${remainingSeconds}`;
+  }
+}
+
+// Calculate the remaining time
+function calculateRemainingTime(elapsedSeconds) {
+  return totalDurationSeconds - elapsedSeconds;
+}
+
+function createTimerLoopAndUpdateProgressTimer() {
+  var start = Date.now(); // Record the start time of the loop
+
+  // Set up an interval to run the loop every 200 milliseconds
+  // In the callback function, calculate the elapsed time in milliseconds since the start of the loop.
+  return setInterval(() => {
+    let delta = Date.now() - start; // Calculate elapsed milliseconds
+    let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
+
+    // Directly update the timer display based on the audio player's current time
+    updateProgressTimer(Math.floor(player.currentTime), timerDuration);
+
+    // Calculate remaining time using the calculateRemainingTime function
+    remainingTime = calculateRemainingTime(deltaSeconds);
+  }, 200); // Run the loop every 200 milliseconds
+}
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX LOADING GIF  XXXXXXXXXX
@@ -1306,7 +1376,7 @@ button.addEventListener("click", (event) => {
 
   const allSongs = [...SONGS]; // first we copy the array of songs
   const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
-  let curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
+  curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
 
   const outro1 = outroAudioSounds.map(addAudioFromUrl);
   curatedTracklist.push(...outro1);
@@ -1325,99 +1395,4 @@ button.addEventListener("click", (event) => {
     .then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// var timerInterval;
-// var timerDuration;
-// var remainingTime;
-
-// Constants
-// const MAX_PLAYLIST_DURATION_SECONDS = 1020;
-// const ALMOST_DONE_THRESHOLD_SECONDS = 1010;
-// const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
-
-// Initialize variables
-var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
-var elapsedDurationSeconds = 0;
-var remainingDurationSeconds = totalDurationSeconds;
-
-/* 6. Set the value of the total_duration variable (in seconds). */
-var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
-
-// This function updates the progress timer displayed on the webpage.
-// It takes the time in seconds and the previous duration as inputs.
-
-/* updateProgressTimer(seconds, previousDuration): This function updates the progress timer 
-displayed on the webpage. It takes the current time in seconds and the previous duration 
-as input parameters. It performs the following steps:
-
-It gets the HTML element with the ID "current-time," the element where the timer is displayed.
-It checks if the "current-time" element exists. If it doesn't, it throws an error.
-
-It calculates the remaining time until the end of the playlist by subtracting the current time 
-and previous duration from the total duration.
-
-It calculates the remaining minutes and, based on some conditions, either displays "done" 
-if there's no time left or formats the remaining time in minutes and seconds and updates 
-the "current-time" element.
-*/
-
-function updateProgressTimer(elapsedSeconds, previousDuration) {
-  // Get the HTML element for displaying the current time
-  let currentTimeElement = document.getElementById("current-time");
-
-  // Throw an error if the current time element is missing
-  if (!currentTimeElement) {
-    throw new Error("Missing element: current-time");
-  }
-
-  // Calculate the remaining time until the end of the playlist
-  let remainingDurationSeconds =
-    totalDurationSeconds - (elapsedSeconds + previousDuration);
-  let remainingDurationMinutes = Math.floor(remainingDurationSeconds / 60);
-
-  // Check if there's no time left
-  if (remainingDurationSeconds <= NO_TIME_LEFT_THRESHOLD_SECONDS) {
-    console.log("out");
-    currentTimeElement.innerHTML = "Done";
-  } else if (remainingDurationSeconds <= ALMOST_DONE_THRESHOLD_SECONDS) {
-    console.log("ALMOST out");
-  } else {
-    // Calculate remaining seconds and format the time display
-    let remainingMinutes = Math.floor(remainingDurationSeconds / 60);
-    let remainingSeconds = (remainingDurationSeconds % 60).toLocaleString(
-      "en-US",
-      {
-        minimumIntegerDigits: 2,
-        useGrouping: false,
-      }
-    );
-    currentTimeElement.innerHTML = `${remainingMinutes}:${remainingSeconds}`;
-  }
-}
-
-// Calculate the remaining time
-function calculateRemainingTime(elapsedSeconds) {
-  return totalDurationSeconds - elapsedSeconds;
-}
-
-function createTimerLoopAndUpdateProgressTimer(previousDuration) {
-  var start = Date.now(); // Record the start time of the loop
-
-  // Set up an interval to run the loop every 200 milliseconds
-  // In the callback function, calculate the elapsed time in milliseconds since the start of the loop
-  // and convert it to seconds.
-  return setInterval(() => {
-    let delta = Date.now() - start; // Calculate elapsed milliseconds
-    let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-    timerDuration = deltaSeconds + previousDuration; // Calculate the timer duration by adding the delta seconds to the previous duration.
-
-    // Call the updateProgressTimer function to update the timer display based on the calculated timer
-    // duration.
-    updateProgressTimer(deltaSeconds, previousDuration);
-    // Calculate remaining time using the calculateRemainingTime function
-    remainingTime = calculateRemainingTime(timerDuration);
-  }, 200); // Run the loop every 200 milliseconds
-}

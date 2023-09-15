@@ -662,6 +662,38 @@ main {
   background-color: rgb(224, 223, 255);
 }
 
+/* Style for the skip buttons container */
+.button-container {
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Space evenly between items */
+  margin: 0 auto; /* Center the container */
+}
+
+/* Style for the individual skip buttons */
+.skip-button {
+  background-color: #e0dfff; /* Background color */
+  color: black; /* Text color */
+  padding: 5px 10px; /* Padding around the text */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Cursor on hover */
+  font-size: 1rem; /* Small font size for the number */
+}
+
+/* Style for the "<<" and ">>" text */
+.skip-text {
+  font-size: 5rem; /* Large font size for the text */
+  padding: 10px; /* Padding around the text to increase click area */
+}
+
+/* Hover effect for the skip buttons */
+.skip-button:hover {
+  background-color: #e0dfff; /* Background color */
+  color: violet; /* Text color */
+}
+
+
 #exitBtn {
   background: none!important;
   border: none;
