@@ -365,16 +365,15 @@ const finalOutroAudioSounds = [
 
 /* 5. Define an array SONGS containing multiple song objects, each song object is 
   processed using the addAudioFromUrl function. */
-// const SONGS = SONGSRAW.map(addAudioFromUrl);
 
-let SONGS; // Initialize SONGS with your data
+let songs; // Initialize SONGS with the data
 
 // Load JSON data from the file
 fetch('songs.json')
   .then(response => response.json())
   .then(data => {
     // Use the JSON data in your script
-    SONGS = data.map(addAudioFromUrl);
+    songs = data.map(addAudioFromUrl);
     // ...
   })
   .catch(error => {
@@ -1462,8 +1461,8 @@ button.addEventListener("click", (event) => {
     volumeNode.connect(audioContext.destination);
   }
 
-  const allSongs = [...SONGS]; // first we copy the array of songs
-  const AREYOUOK = isValidTracklist(allSongs); // next we shuffle it
+  const allSongs = [...songs]; // first we copy the array of songs
+  const checkValidityOfURLS = isValidTracklist(allSongs); // 
 
   const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
   curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
