@@ -13,13 +13,21 @@ let curatedTracklistTotalTime = 0;
 let curatedTracklist;
 let timerDuration = 0;
 
-const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
-
 const MAX_PLAYLIST_DURATION_SECONDS = 1020;
 const TOTHEWIRE_THRESHOLD_SECONDS = 800;
 const ALMOST_DONE_THRESHOLD_SECONDS = 700;
 
 const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
+
+var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
+var elapsedDurationSeconds = 0;
+var remainingDurationSeconds = totalDurationSeconds;
+let currentTimeElement;
+let timerInterval; // Declare timerInterval
+
+const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
+
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -78,14 +86,25 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 
   playIconContainer.addEventListener("click", () => {
     if (playerPlayState === "play") {
-      // playIconContainer.innerHTML = "play";
+      // Pause the audio and store the current time
       playIconContainer.classList.remove("paused");
+      player.pause();
+      timerDuration = Math.floor(player.currentTime);
       playerPlayState = "pause";
       audioContext.suspend();
       clearInterval(timerInterval);
     } else {
-      player.currentTime = 0;
-      // playIconContainer.innerHTML = "pause";
+      // Check if we have a stored timerDuration (indicating a paused state)
+      if (timerDuration > 0) {
+        // Set the player's current time to the stored time
+        player.currentTime = timerDuration;
+      } else {
+        // This is a new play, start from the beginning
+        player.currentTime = 0;
+      }
+
+      // Play the audio and update the UI
+      player.play();
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
       audioContext.resume();
@@ -113,7 +132,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   skipForwardButton.addEventListener("click", () => {
     if (playerPlayState === "play") {
       let newTime = player.currentTime + 20;
-      newTime = Math.min(newTime, curatedTracklistTotalTime);
+      newTime = Math.min(newTime, totalDurationSeconds); //findmee
       // Directly update the timer display based on the new time
       updateProgressTimer(Math.floor(newTime), timerDuration);
       player.currentTime = newTime;
@@ -176,54 +195,68 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 
   startplayer();
   let timerDuration = 0; // Declare timerDuration as a local variable
-  timerInterval = createTimerLoopAndUpdateProgressTimer(timerDuration);
+  // timerInterval = createTimerLoopAndUpdateProgressTimer(timerDuration);
 
-  // timerInterval = createTimerLoopAndUpdateProgressTimer(0);
+  timerInterval = createTimerLoopAndUpdateProgressTimer(0);
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Initialize variables
-var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
-var elapsedDurationSeconds = 0;
-var remainingDurationSeconds = totalDurationSeconds;
 
-let currentTimeElement;
-let timerInterval; // Declare timerInterval
+
+// const { minutes, seconds } = calculateMinutesAndSeconds(
+//   curatedTracklistTotalTime
+// );
+// updateTimeDisplay(minutes, seconds);
 
 function updateProgressTimer(elapsedSeconds, previousDuration) {
   // Get the HTML element for displaying the current time
   currentTimeElement = document.getElementById("current-time");
+  // console.log(`current time element ${currentTimeElement}`);
 
-  // Throw an error if the current time element is missing
   if (!currentTimeElement) {
     throw new Error("Missing element: current-time");
   }
+  totalDurationSeconds = curatedTracklistTotalTime;
 
-  // Calculate the remaining time until the end of the playlist
-  let remainingDurationSeconds =
+
+  const remainingDurationSeconds =
     totalDurationSeconds - (elapsedSeconds + previousDuration);
-  let remainingDurationMinutes = Math.floor(remainingDurationSeconds / 60);
 
-  // Check if there's no time left
-  if (remainingDurationSeconds <= NO_TIME_LEFT_THRESHOLD_SECONDS) {
-    // currentTimeElement.innerHTML = "Done";
-  } else if (remainingDurationSeconds <= ALMOST_DONE_THRESHOLD_SECONDS) {
-  } else {
-    // Calculate remaining seconds and format the time display
-    let remainingMinutes = Math.floor(remainingDurationSeconds / 60);
-    let remainingSeconds = (remainingDurationSeconds % 60).toLocaleString(
-      "en-US",
-      {
-        minimumIntegerDigits: 2,
-        useGrouping: false,
-      }
-    );
-    currentTimeElement.innerHTML = `${remainingMinutes}:${remainingSeconds}`;
-  }
+  // Determine the timer display based on remaining time
+  const { minutes, seconds } = calculateMinutesAndSeconds(
+    remainingDurationSeconds
+  );
+  updateTimeDisplay(minutes, seconds);
 }
+
+function handleTimerCompletion() {
+  currentTimeElement.innerHTML = "Done";
+}
+
+function calculateMinutesAndSeconds(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = (seconds % 60).toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
+  return { minutes, seconds: remainingSeconds };
+}
+
+function updateTimeDisplay(minutes, seconds) {
+  // console.log(`currentTimeElement 1 is ${currentTimeElement}`);
+  currentTimeElement = document.getElementById("current-time");
+  // console.log(`currentTimeElement 2 is ${currentTimeElement}`);
+  currentTimeElement.innerHTML = `${minutes}:${seconds}`;
+}
+
+// findme
+// const { minutes, seconds } = calculateMinutesAndSeconds(
+//   curatedTracklistTotalTime
+// );
+// updateTimeDisplay(minutes, seconds);
 
 // Calculate the remaining time
 function calculateRemainingTime(elapsedSeconds) {
@@ -327,36 +360,36 @@ const addAudioFromUrl = (song) => {
 
 const outroAudioSounds = [
   {
-    "name": "OUTRO2PT1SOLO",
-    "url": "./sounds/XX_OUTRO/OUTRO_2.1.mp3",
-    "duration": 6,
-    "author": "",
-    "form": "",
-    "placement": [""],
-    "length": "",
-    "language": "",
-    "sentiment": "",
-    "tags": ["outro"],
-    "backgroundMusic": "",
-    "credit": ""
-  }
+    name: "OUTRO2PT1SOLO",
+    url: "./sounds/XX_OUTRO/OUTRO_2.1.mp3",
+    duration: 6,
+    author: "",
+    form: "",
+    placement: [""],
+    length: "",
+    language: "",
+    sentiment: "",
+    tags: ["outro"],
+    backgroundMusic: "",
+    credit: "",
+  },
 ].map(addAudioFromUrl);
 
 const finalOutroAudioSounds = [
   {
-    "name": "OUTRO2PT2withMUSIC",
-    "url": "./sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3",
-    "duration": 6,
-    "author": "",
-    "form": "",
-    "placement": [""],
-    "length": "",
-    "language": "",
-    "sentiment": "",
-    "tags": ["outro"],
-    "backgroundMusic": "",
-    "credit": ""
-  }
+    name: "OUTRO2PT2withMUSIC",
+    url: "./sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3",
+    duration: 6,
+    author: "",
+    form: "",
+    placement: [""],
+    length: "",
+    language: "",
+    sentiment: "",
+    tags: ["outro"],
+    backgroundMusic: "",
+    credit: "",
+  },
 ].map(addAudioFromUrl);
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -369,17 +402,16 @@ const finalOutroAudioSounds = [
 let songs; // Initialize SONGS with the data
 
 // Load JSON data from the file
-fetch('songs.json')
-  .then(response => response.json())
-  .then(data => {
+fetch("songs.json")
+  .then((response) => response.json())
+  .then((data) => {
     // Use the JSON data in your script
     songs = data.map(addAudioFromUrl);
     // ...
   })
-  .catch(error => {
-    console.error('Error loading JSON data:', error);
+  .catch((error) => {
+    console.error("Error loading JSON data:", error);
   });
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX CREDITS STUFF XXXXXXXXXXXXX
@@ -848,11 +880,13 @@ function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-
 // todo this is no good because of course it's always the last track when we get to any track
 // Rule 99: The last track should have the placement "end".
 function r99(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex === curatedTracklist.length - 1 && !track.placement.includes("end")) {
+  if (
+    trackIndex === curatedTracklist.length - 1 &&
+    !track.placement.includes("end")
+  ) {
     const logMessage = `❌ ${track.name}: End Rule: Last track must include the placement "end" (placement ${track.placement})`;
     logRuleApplication(99, logMessage, false);
     return false;
@@ -863,7 +897,6 @@ function r99(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     return true;
   }
 }
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
@@ -1088,30 +1121,32 @@ function followTracklistRules(tracklist) {
     ) {
       break; // Exit the loop if adding the track exceeds the maximum duration
     }
-  
-    
-// Calculate the remaining time until the maximum duration is reached
-const myRemainingTime = MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
 
-// Decide which set of rules to apply based on the current remaining time
-let rulesToApply;
+    // Calculate the remaining time until the maximum duration is reached
+    const myRemainingTime =
+      MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
 
-if (
-  curatedTracklistTotalTime >=
-    MAX_PLAYLIST_DURATION_SECONDS - TOTHEWIRE_THRESHOLD_SECONDS &&
-  curatedTracklistTotalTime <
-    MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS
-) {  console.log("fff TO THE WIRE time!");
-  rulesToApply = closingTracksRules;
-} else if (myRemainingTime <= (MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS)) {
-  console.log("fff ALMOST DONE time!");
-  rulesToApply = ensureRules;
-} else {
-  console.log("fff we still have time!");
-  rulesToApply = finalCheckRules;
-}
+    // Decide which set of rules to apply based on the current remaining time
+    let rulesToApply;
 
-
+    if (
+      curatedTracklistTotalTime >=
+        MAX_PLAYLIST_DURATION_SECONDS - TOTHEWIRE_THRESHOLD_SECONDS &&
+      curatedTracklistTotalTime <
+        MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS
+    ) {
+      console.log("fff TO THE WIRE time!");
+      rulesToApply = closingTracksRules;
+    } else if (
+      myRemainingTime <=
+      MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS
+    ) {
+      console.log("fff ALMOST DONE time!");
+      rulesToApply = ensureRules;
+    } else {
+      console.log("fff we still have time!");
+      rulesToApply = finalCheckRules;
+    }
 
     // if (curatedTracklistTotalTime <= TOTHEWIRE_THRESHOLD_SECONDS) {
     //   console.log("fff TO THE WIRE time! The tracklist time is " + curatedTracklistTotalTime +
@@ -1445,6 +1480,9 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
   }, timeoutDurationMs);
   gatherAndPrintDebugInfo(song, index); // print all the debug info to screen
 
+  // timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
+  // updateProgressTimer(Math.floor(player.currentTime), curatedTracklistTotalTime);
+
   audio.play();
 }
 
@@ -1462,7 +1500,7 @@ button.addEventListener("click", (event) => {
   }
 
   const allSongs = [...songs]; // first we copy the array of songs
-  const checkValidityOfURLS = isValidTracklist(allSongs); // 
+  const checkValidityOfURLS = isValidTracklist(allSongs); //
 
   const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
   curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
@@ -1476,6 +1514,19 @@ button.addEventListener("click", (event) => {
 
   const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
   curatedTracklist.push(...outro2);
+
+  // Calculate curatedTracklistTotalTime - is this necessary?
+  // calculateOrUpdateCuratedTracklistDuration(
+  //   curatedTracklist[0],
+  //   curatedTracklist
+  // ); //new
+
+  // console.log(`curatedTracklistTotalTime is ${curatedTracklistTotalTime}`); //new
+  // timerDuration = curatedTracklistTotalTime; //new
+
+  // updateProgressTimer(0, timerDuration);
+
+  // findme
 
   printEntireTracklistDebug(curatedTracklist);
 
