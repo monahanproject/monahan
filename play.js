@@ -1,3 +1,5 @@
+// I still don't have a track with the tag "end"
+
 var myLang = localStorage["lang"] || "defaultValue";
 var player;
 var audioContext = null;
@@ -13,12 +15,10 @@ let timerDuration = 0;
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
-// const MAX_PLAYLIST_DURATION_SECONDS = 680;
-// const ALMOST_DONE_THRESHOLD_SECONDS = 400;
-// const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
-
 const MAX_PLAYLIST_DURATION_SECONDS = 1020;
-const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+const TOTHEWIRE_THRESHOLD_SECONDS = 800;
+const ALMOST_DONE_THRESHOLD_SECONDS = 700;
+
 const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -113,7 +113,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   skipForwardButton.addEventListener("click", () => {
     if (playerPlayState === "play") {
       let newTime = player.currentTime + 20;
-      newTime = Math.min(newTime, MAX_PLAYLIST_DURATION_SECONDS);
+      newTime = Math.min(newTime, curatedTracklistTotalTime);
       // Directly update the timer display based on the new time
       updateProgressTimer(Math.floor(newTime), timerDuration);
       player.currentTime = newTime;
@@ -190,19 +190,10 @@ var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 var elapsedDurationSeconds = 0;
 var remainingDurationSeconds = totalDurationSeconds;
 
-// /* 6. Set the value of the total_duration variable (in seconds). */
-// var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
-
 let currentTimeElement;
 let timerInterval; // Declare timerInterval
 
 function updateProgressTimer(elapsedSeconds, previousDuration) {
-  // console.log(
-  //   `ggg Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}`
-  // );
-
-  // musicPlayer.currentTime = curatedTracklistTotalTime;
-
   // Get the HTML element for displaying the current time
   currentTimeElement = document.getElementById("current-time");
 
@@ -218,10 +209,8 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
 
   // Check if there's no time left
   if (remainingDurationSeconds <= NO_TIME_LEFT_THRESHOLD_SECONDS) {
-    console.log("out");
-    currentTimeElement.innerHTML = "Done";
+    // currentTimeElement.innerHTML = "Done";
   } else if (remainingDurationSeconds <= ALMOST_DONE_THRESHOLD_SECONDS) {
-    console.log("ALMOST out");
   } else {
     // Calculate remaining seconds and format the time display
     let remainingMinutes = Math.floor(remainingDurationSeconds / 60);
@@ -432,7 +421,7 @@ function gatherTheCreditSongs(curatedTracklist) {
   const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
   currCreditStackHTMLElement.innerHTML = creditsLog;
 
-  console.log(arrayOfCreditSongs);
+  // console.log(arrayOfCreditSongs);
   return arrayOfCreditSongs;
 }
 
@@ -845,6 +834,23 @@ function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
+
+// todo this is no good because of course it's always the last track when we get to any track
+// Rule 99: The last track should have the placement "end".
+function r99(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  if (trackIndex === curatedTracklist.length - 1 && !track.placement.includes("end")) {
+    const logMessage = `❌ ${track.name}: End Rule: Last track must include the placement "end" (placement ${track.placement})`;
+    logRuleApplication(99, logMessage, false);
+    return false;
+  } else {
+    // If the condition is met, return true to indicate the rule is followed
+    const logMessage = `🌻 ${track.name}: Found a valid track. Track includes the placement "end" (placement ${track.placement})`;
+    logRuleApplication(99, logMessage, true);
+    return true;
+  }
+}
+
+
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -933,10 +939,10 @@ function followTracklistRules(tracklist) {
 
   // Define ensure and final check rules for phase 2
   const ensureRules = [r21, r22, r23, r24];
-  const finalCheckRules = [r32];
+  const finalCheckRules = [r32, r99];
 
   // Define closing track rules
-  const closingTracksRules = [r11];
+  const closingTracksRules = [r99];
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 1: Apply track-specific rules and general rules
@@ -1035,17 +1041,17 @@ function followTracklistRules(tracklist) {
 
   // while the total time of the playlist is less than the actual time limit
   while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-    console.log("Iteration: " + iterationCounter);
-    console.log(
-      "sss we still have time because the curatedTracklistTotalTime is " +
-        curatedTracklistTotalTime +
-        " and the MAX_PLAYLIST_DURATION_SECONDS is " +
-        MAX_PLAYLIST_DURATION_SECONDS +
-        " and the last track name is " +
-        prevTrack1.name +
-        " and the last track duration is " +
-        prevTrack1.duration
-    );
+    // console.log("Iteration: " + iterationCounter);
+    // console.log(
+    //   "sss we still have time because the curatedTracklistTotalTime is " +
+    //     curatedTracklistTotalTime +
+    //     " and the MAX_PLAYLIST_DURATION_SECONDS is " +
+    //     MAX_PLAYLIST_DURATION_SECONDS +
+    //     " and the last track name is " +
+    //     prevTrack1.name +
+    //     " and the last track duration is " +
+    //     prevTrack1.duration
+    // );
 
     // Check if currIndex exceeds the length of the tracklist
     if (currIndex >= tracklist.length) {
@@ -1068,28 +1074,53 @@ function followTracklistRules(tracklist) {
     ) {
       break; // Exit the loop if adding the track exceeds the maximum duration
     }
-    // Decide which set of rules to apply based on the current total duration
-    let rulesToApply;
-    // while the total time of the playlist is less than the "almost done" time limit
-    // todo: need to get more fine-tuned control over the last tracks that we add.
-    // currently the track might be very long and push us past our limit
-    // I can do this by checking how long the track is
+  
+    
+// Calculate the remaining time until the maximum duration is reached
+const myRemainingTime = MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
 
-    if (curatedTracklistTotalTime < ALMOST_DONE_THRESHOLD_SECONDS) {
-      console.log(
-        "sss we STILL have time because the curatedTracklistTotalTime is " +
-          curatedTracklistTotalTime +
-          "and the ALMOST_DONE_THRESHOLD_SECONDS is " +
-          ALMOST_DONE_THRESHOLD_SECONDS +
-          " and the last track name is " +
-          prevTrack1.name +
-          " and the last track duration is " +
-          prevTrack1.duration
-      );
-      rulesToApply = finalCheckRules;
-    } else {
-      rulesToApply = ensureRules;
-    }
+// Decide which set of rules to apply based on the current remaining time
+let rulesToApply;
+
+if (
+  curatedTracklistTotalTime >=
+    MAX_PLAYLIST_DURATION_SECONDS - TOTHEWIRE_THRESHOLD_SECONDS &&
+  curatedTracklistTotalTime <
+    MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS
+) {  console.log("fff TO THE WIRE time!");
+  rulesToApply = closingTracksRules;
+} else if (myRemainingTime <= (MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS)) {
+  console.log("fff ALMOST DONE time!");
+  rulesToApply = ensureRules;
+} else {
+  console.log("fff we still have time!");
+  rulesToApply = finalCheckRules;
+}
+
+
+
+    // if (curatedTracklistTotalTime <= TOTHEWIRE_THRESHOLD_SECONDS) {
+    //   console.log("fff TO THE WIRE time! The tracklist time is " + curatedTracklistTotalTime +
+    //       "and the ToTheWireThresh is " + TOTHEWIRE_THRESHOLD_SECONDS +
+    //       "and the AlmostDoneThresh is " + ALMOST_DONE_THRESHOLD_SECONDS +
+    //       " and the last track name is " + prevTrack1.name +
+    //       " and the last track duration is " + prevTrack1.duration);
+    //   rulesToApply = closingTracksRules;
+    // } else if (curatedTracklistTotalTime <= ALMOST_DONE_THRESHOLD_SECONDS) {
+    //   console.log("fff ALMOST DONE time! The tracklist time is " + curatedTracklistTotalTime +
+    //       "and the ToTheWireThresh is " + TOTHEWIRE_THRESHOLD_SECONDS +
+    //       "and the AlmostDoneThresh is " + ALMOST_DONE_THRESHOLD_SECONDS +
+    //       " and the last track name is " + prevTrack1.name +
+    //       " and the last track duration is " + prevTrack1.duration);
+    //   rulesToApply = ensureRules;
+    // } else {
+    //   console.log("fff we still have time! The tracklist time is " + curatedTracklistTotalTime +
+    //       "and the ToTheWireThresh is " + TOTHEWIRE_THRESHOLD_SECONDS +
+    //       "and the AlmostDoneThresh is " + ALMOST_DONE_THRESHOLD_SECONDS +
+    //       " and the last track name is " + prevTrack1.name +
+    //       " and the last track duration is " + prevTrack1.duration);
+    //   rulesToApply = finalCheckRules;
+    // }
 
     // Initialize a flag to track if any rule fails for the current track
     let ruleFailed = false;
@@ -1134,13 +1165,13 @@ function followTracklistRules(tracklist) {
 
     currIndex++; // Move to the next track in the tracklist
   }
-  console.log(
-    "sss out of time because the curatedTracklistTotalTime is " +
-      curatedTracklistTotalTime +
-      "and the MAX_PLAYLIST_DURATION_SECONDS is " +
-      MAX_PLAYLIST_DURATION_SECONDS
-  );
-  console.log("sss shifting to closing tracks now");
+  // console.log(
+  //   "sss out of time because the curatedTracklistTotalTime is " +
+  //     curatedTracklistTotalTime +
+  //     "and the MAX_PLAYLIST_DURATION_SECONDS is " +
+  //     MAX_PLAYLIST_DURATION_SECONDS
+  // );
+  // console.log("sss shifting to closing tracks now");
 
   //  // Search for closing tracks that meet conditions
   //  for (const track of tracklist) {
@@ -1245,7 +1276,6 @@ async function isValidTracklist(tracklist) {
   return invalidTracks.length === 0;
 }
 
-
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX CREATE AND PRINT DEBUG TEXT SO LAURA CAN SEE DETAILS XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1262,7 +1292,8 @@ function gatherAndPrintDebugInfo(song, index) {
   if (song) {
     // get debug ids so I can fill in debug info
     const currTrackNameHTMLElement = document.getElementById("currTrackName");
-    const playerTrackNameHTMLElement = document.getElementById("playerTrackName");
+    const playerTrackNameHTMLElement =
+      document.getElementById("playerTrackName");
 
     const currURLHTMLElement = document.getElementById("currURL");
     const currTagsHTMLElement = document.getElementById("currTags");
