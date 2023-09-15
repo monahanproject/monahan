@@ -327,36 +327,36 @@ const addAudioFromUrl = (song) => {
 
 const outroAudioSounds = [
   {
-    name: "OUTRO2PT1SOLO",
-    url: "./sounds/XX_OUTRO/OUTRO_2.1.mp3",
-    duration: 6,
-    author: "",
-    form: "",
-    placement: [""],
-    length: "",
-    language: "",
-    sentiment: "",
-    tags: ["outro"],
-    backgroundMusic: "",
-    credit: "",
-  },
+    "name": "OUTRO2PT1SOLO",
+    "url": "./sounds/XX_OUTRO/OUTRO_2.1.mp3",
+    "duration": 6,
+    "author": "",
+    "form": "",
+    "placement": [""],
+    "length": "",
+    "language": "",
+    "sentiment": "",
+    "tags": ["outro"],
+    "backgroundMusic": "",
+    "credit": ""
+  }
 ].map(addAudioFromUrl);
 
 const finalOutroAudioSounds = [
   {
-    name: "OUTRO2PT2withMUSIC",
-    url: "./sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3",
-    duration: 6,
-    author: "",
-    form: "",
-    placement: [""],
-    length: "",
-    language: "",
-    sentiment: "",
-    tags: ["outro"],
-    backgroundMusic: "",
-    credit: "",
-  },
+    "name": "OUTRO2PT2withMUSIC",
+    "url": "./sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3",
+    "duration": 6,
+    "author": "",
+    "form": "",
+    "placement": [""],
+    "length": "",
+    "language": "",
+    "sentiment": "",
+    "tags": ["outro"],
+    "backgroundMusic": "",
+    "credit": ""
+  }
 ].map(addAudioFromUrl);
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -365,7 +365,22 @@ const finalOutroAudioSounds = [
 
 /* 5. Define an array SONGS containing multiple song objects, each song object is 
   processed using the addAudioFromUrl function. */
-const SONGS = SONGSRAW.map(addAudioFromUrl);
+// const SONGS = SONGSRAW.map(addAudioFromUrl);
+
+let SONGS; // Initialize SONGS with your data
+
+// Load JSON data from the file
+fetch('songs.json')
+  .then(response => response.json())
+  .then(data => {
+    // Use the JSON data in your script
+    SONGS = data.map(addAudioFromUrl);
+    // ...
+  })
+  .catch(error => {
+    console.error('Error loading JSON data:', error);
+  });
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX CREDITS STUFF XXXXXXXXXXXXX
