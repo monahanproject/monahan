@@ -9,17 +9,17 @@ let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
 let curatedTracklistTotalTime = 0;
 let curatedTracklist;
-let timerDuration = 0
+let timerDuration = 0;
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
-const MAX_PLAYLIST_DURATION_SECONDS = 680;
-const ALMOST_DONE_THRESHOLD_SECONDS = 400;
-const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
-
-// const MAX_PLAYLIST_DURATION_SECONDS = 1020;
-// const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+// const MAX_PLAYLIST_DURATION_SECONDS = 680;
+// const ALMOST_DONE_THRESHOLD_SECONDS = 400;
 // const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
+
+const MAX_PLAYLIST_DURATION_SECONDS = 1020;
+const ALMOST_DONE_THRESHOLD_SECONDS = 800;
+const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -46,37 +46,35 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   audioPlayerContainer.id = "audio-player-container";
   wrapperDiv.append(audioPlayerContainer);
 
-   // music player audio element
-   let musicPlayer = document.createElement("audio");
-   musicPlayer.id = "music_player";
-   audioPlayerContainer.append(musicPlayer);
+  // music player audio element
+  let musicPlayer = document.createElement("audio");
+  musicPlayer.id = "music_player";
+  audioPlayerContainer.append(musicPlayer);
 
-   // inputs
-   let currTime = document.createElement("span");
-   currTime.classList.add("time");
-   currTime.id = "current-time";
-   currTime.innerHTML = "0:00";
-   audioPlayerContainer.append(currTime);
+  // inputs
+  let currTime = document.createElement("span");
+  currTime.classList.add("time");
+  currTime.id = "current-time";
+  currTime.innerHTML = "0:00";
+  audioPlayerContainer.append(currTime);
 
-   // Create a container div for the buttons
-let buttonContainer = document.createElement("div");
-buttonContainer.classList.add("button-container");
-audioPlayerContainer.appendChild(buttonContainer);
+  // Create a container div for the buttons
+  let buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("button-container");
+  audioPlayerContainer.appendChild(buttonContainer);
 
   // Create skip backward button
-let skipBackwardButton = document.createElement("button");
-skipBackwardButton.classList.add("skip-button");
-skipBackwardButton.innerHTML = "<<20";
-buttonContainer.appendChild(skipBackwardButton);
-
+  let skipBackwardButton = document.createElement("button");
+  skipBackwardButton.classList.add("skip-button");
+  skipBackwardButton.innerHTML = "<<20";
+  buttonContainer.appendChild(skipBackwardButton);
 
   // Create play button and append it to the button container
-let playIconContainer = document.createElement("button");
-playIconContainer.id = "play-icon";
-playIconContainer.classList.add("play-icon");
-playIconContainer.classList.add("paused");
-buttonContainer.appendChild(playIconContainer); // Append to the button container
-
+  let playIconContainer = document.createElement("button");
+  playIconContainer.id = "play-icon";
+  playIconContainer.classList.add("play-icon");
+  playIconContainer.classList.add("paused");
+  buttonContainer.appendChild(playIconContainer); // Append to the button container
 
   playIconContainer.addEventListener("click", () => {
     if (playerPlayState === "play") {
@@ -97,14 +95,11 @@ buttonContainer.appendChild(playIconContainer); // Append to the button containe
 
   let currentTrackIndex = 0;
 
-
-
-// Create skip forward button
-let skipForwardButton = document.createElement("button");
-skipForwardButton.classList.add("skip-button");
-skipForwardButton.innerHTML = "20>>";
-buttonContainer.appendChild(skipForwardButton);
-
+  // Create skip forward button
+  let skipForwardButton = document.createElement("button");
+  skipForwardButton.classList.add("skip-button");
+  skipForwardButton.innerHTML = "20>>";
+  buttonContainer.appendChild(skipForwardButton);
 
   skipBackwardButton.addEventListener("click", () => {
     if (playerPlayState === "play") {
@@ -124,7 +119,7 @@ buttonContainer.appendChild(skipForwardButton);
       player.currentTime = newTime;
     }
   });
-  
+
   let volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
   volumeSlider.id = "volume-slider";
@@ -140,6 +135,17 @@ buttonContainer.appendChild(skipForwardButton);
     let value = volumeSlider.value;
     return parseFloat(value) / 100;
   }
+
+  // Create a div for the currently playing track name
+  let trackNameContainer = document.createElement("div");
+  trackNameContainer.id = "playerTrackNameContainer";
+  audioPlayerContainer.appendChild(trackNameContainer);
+
+  // Create an element (e.g., a <p> element) to display the track name
+  let trackNameElement = document.createElement("p");
+  trackNameElement.id = "playerTrackName";
+  trackNameElement.innerText = "Currently Playing: Your Track Name"; // Replace with the actual track name
+  trackNameContainer.appendChild(trackNameElement);
 
   let exitBtn = document.createElement("button");
   exitBtn.innerHTML = "exit";
@@ -190,9 +196,10 @@ var remainingDurationSeconds = totalDurationSeconds;
 let currentTimeElement;
 let timerInterval; // Declare timerInterval
 
-
 function updateProgressTimer(elapsedSeconds, previousDuration) {
-  console.log(`ggg Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}`);
+  console.log(
+    `ggg Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}`
+  );
 
   // musicPlayer.currentTime = curatedTracklistTotalTime;
 
@@ -250,7 +257,6 @@ function createTimerLoopAndUpdateProgressTimer() {
     remainingTime = calculateRemainingTime(deltaSeconds);
   }, 200); // Run the loop every 200 milliseconds
 }
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX LOADING GIF  XXXXXXXXXX
@@ -1223,6 +1229,8 @@ function gatherAndPrintDebugInfo(song, index) {
   if (song) {
     // get debug ids so I can fill in debug info
     const currTrackNameHTMLElement = document.getElementById("currTrackName");
+    const playerTrackNameHTMLElement = document.getElementById("playerTrackName");
+
     const currURLHTMLElement = document.getElementById("currURL");
     const currTagsHTMLElement = document.getElementById("currTags");
     const currDurrHTMLElement = document.getElementById("currDurr");
@@ -1244,6 +1252,7 @@ function gatherAndPrintDebugInfo(song, index) {
     // creditstack defined elsewhere
 
     displayDebugText(currTrackNameHTMLElement, currName, "no name");
+    displayDebugText(playerTrackNameHTMLElement, currName, "no name");
     displayDebugText(currURLHTMLElement, currUrl, "no url");
     displayDebugText(currTagsHTMLElement, currTags, "no tags");
     displayDebugText(currDurrHTMLElement, currDurr, "no duration");
@@ -1394,5 +1403,3 @@ button.addEventListener("click", (event) => {
     .open("audio-pre-cache")
     .then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });
-
-

@@ -771,7 +771,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_01",
-    url: "./sounds/Interview/I_ELLEN_01.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_01_TempMusic.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -785,7 +785,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_02",
-    url: "./sounds/Interview/I_ELLEN_02.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_02_TempMusic.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -1583,7 +1583,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_TURKWAZ_06",
-    url: "./sounds/Music/M_TURKWAZ_06.mp3",
+    url: "./sounds/MUSIC/M_TURKWAZ_06.mp3",
     duration: 0,
     author: "TURKWAZ",
     form: "music",
@@ -1597,7 +1597,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_TURKWAZ_07",
-    url: "./sounds/Music/M_TURKWAZ_07.mp3",
+    url: "./sounds/MUSIC/M_TURKWAZ_07.mp3",
     duration: 0,
     author: "TURKWAZ",
     form: "music",
@@ -1611,7 +1611,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_TURKWAZ_08",
-    url: "./sounds/Music/M_TURKWAZ_08.mp3",
+    url: "./sounds/MUSIC/M_TURKWAZ_08.mp3",
     duration: 0,
     author: "TURKWAZ",
     form: "music",
@@ -1625,7 +1625,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_DEMI_01",
-    url: "./sounds/Music/M_DEMI_01.mp3",
+    url: "./sounds/MUSIC/M_DEMI_01.mp3",
     duration: 0,
     author: "DEMETRI",
     form: "music",
@@ -1639,7 +1639,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_DEMI_04",
-    url: "./sounds/Music/M_DEMI_04.mp3",
+    url: "./sounds/MUSIC/M_DEMI_04.mp3",
     duration: 0,
     author: "DEMETRI",
     form: "music",
@@ -1653,7 +1653,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_DEMI_07",
-    url: "./sounds/Music/M_DEMI_07.mp3",
+    url: "./sounds/MUSIC/M_DEMI_07.mp3",
     duration: 0,
     author: "DEMETRI",
     form: "music",
@@ -1667,7 +1667,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_DEMI_09",
-    url: "./sounds/Music/M_DEMI_09.mp3",
+    url: "./sounds/MUSIC/M_DEMI_09.mp3",
     duration: 0,
     author: "DEMETRI",
     form: "music",
@@ -1681,7 +1681,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_DEMI_10",
-    url: "./sounds/Music/M_DEMI_10.mp3",
+    url: "./sounds/MUSIC/M_DEMI_10.mp3",
     duration: 0,
     author: "DEMETRI",
     form: "music",
@@ -1695,7 +1695,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_DEMI_12",
-    url: "./sounds/Music/M_DEMI_12.mp3",
+    url: "./sounds/MUSIC/M_DEMI_12.mp3",
     duration: 0,
     author: "DEMETRI",
     form: "music",
@@ -1709,7 +1709,7 @@ window.SONGSRAW = [
   },
   {
     name: "S_JESSE_01",
-    url: "./sounds/Music/S_JESSE_01.mp3",
+    url: "./sounds/MUSIC/S_JESSE_01.mp3",
     duration: 0,
     author: "JESSE",
     form: "music",
@@ -1723,7 +1723,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_JESSE_02",
-    url: "./sounds/Music/M_JESSE_02.mp3",
+    url: "./sounds/MUSIC/M_JESSE_02.mp3",
     duration: 0,
     author: "JESSE",
     form: "music",
@@ -1737,7 +1737,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_JESSE_05",
-    url: "./sounds/Music/M_JESSE_05.mp3",
+    url: "./sounds/MUSIC/M_JESSE_05.mp3",
     duration: 0,
     author: "JESSE",
     form: "music",
@@ -1751,7 +1751,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_JESSE_06",
-    url: "./sounds/Music/M_JESSE_06.mp3",
+    url: "./sounds/MUSIC/M_JESSE_06.mp3",
     duration: 0,
     author: "JESSE",
     form: "music",
@@ -1765,7 +1765,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_JESSE_07",
-    url: "./sounds/Music/M_JESSE_07.mp3",
+    url: "./sounds/MUSIC/M_JESSE_07.mp3",
     duration: 0,
     author: "JESSE",
     form: "music",
@@ -1779,7 +1779,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_JESSE_09",
-    url: "./sounds/Music/M_JESSE_09.mp3",
+    url: "./sounds/MUSIC/M_JESSE_09.mp3",
     duration: 0,
     author: "JESSE",
     form: "music",
@@ -1793,7 +1793,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_DIANA_01",
-    url: "./sounds/Interview/I_DIANA_01.mp3",
+    url: "./sounds/INTERVIEWS/I_DIANA_01.mp3",
     duration: 0,
     author: "DIANA",
     form: "interview",
@@ -1807,7 +1807,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_DIANA_02",
-    url: "./sounds/Interview/I_DIANA_02.mp3",
+    url: "./sounds/INTERVIEWS/I_DIANA_02.mp3",
     duration: 0,
     author: "DIANA",
     form: "interview",
@@ -1821,7 +1821,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_DIANA_03",
-    url: "./sounds/Interview/I_DIANA_03.mp3",
+    url: "./sounds/INTERVIEWS/I_DIANA_03.mp3",
     duration: 0,
     author: "DIANA",
     form: "interview",
@@ -1835,7 +1835,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_DIANA_04",
-    url: "./sounds/Interview/I_DIANA_04.mp3",
+    url: "./sounds/INTERVIEWS/I_DIANA_04.mp3",
     duration: 0,
     author: "DIANA",
     form: "interview",
@@ -1849,7 +1849,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_FIDES_01",
-    url: "./sounds/Interview/I_FIDES_01.mp3",
+    url: "./sounds/INTERVIEWS/I_FIDES_01.mp3",
     duration: 0,
     author: "FIDES",
     form: "interview",
@@ -1863,7 +1863,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_FIDES_03",
-    url: "./sounds/Interview/I_FIDES_03.mp3",
+    url: "./sounds/INTERVIEWS/I_FIDES_03.mp3",
     duration: 0,
     author: "FIDES",
     form: "interview",
@@ -1877,7 +1877,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_FIDES_04",
-    url: "./sounds/Interview/I_FIDES_04.mp3",
+    url: "./sounds/INTERVIEWS/I_FIDES_04.mp3",
     duration: 0,
     author: "FIDES",
     form: "interview",
@@ -1891,7 +1891,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_CARMEL_01",
-    url: "./sounds/Music/M_CARMEL_01.mp3",
+    url: "./sounds/MUSIC/M_CARMEL_01.mp3",
     duration: 0,
     author: "CARMELPATRICIA",
     form: "music",
@@ -1905,7 +1905,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_01",
-    url: "./sounds/Music/M_THUNDERBIRD_01.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_01.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -1919,7 +1919,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_02",
-    url: "./sounds/Music/M_THUNDERBIRD_02.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_02.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -1933,7 +1933,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_03",
-    url: "./sounds/Music/M_THUNDERBIRD_03.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_03.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -1947,7 +1947,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_04",
-    url: "./sounds/Music/M_THUNDERBIRD_04.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_04.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -1961,7 +1961,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_05",
-    url: "./sounds/Music/M_THUNDERBIRD_05.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_05.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -1975,7 +1975,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_06",
-    url: "./sounds/Music/M_THUNDERBIRD_06.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_06.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -1989,7 +1989,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_THUNDERBIRD_07",
-    url: "./sounds/Music/M_THUNDERBIRD_07.mp3",
+    url: "./sounds/MUSIC/M_THUNDERBIRD_07.mp3",
     duration: 0,
     author: "THUNDERBIRD",
     form: "music",
@@ -2003,7 +2003,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_06",
-    url: "./sounds/Interview/I_ELLEN_06.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_06.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2017,7 +2017,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_07",
-    url: "./sounds/Interview/I_ELLEN_07.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_07.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2031,7 +2031,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_08",
-    url: "./sounds/Interview/I_ELLEN_08.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_08.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2045,7 +2045,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_09",
-    url: "./sounds/Interview/I_ELLEN_09.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_09.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2059,7 +2059,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_10",
-    url: "./sounds/Interview/I_ELLEN_10.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_10.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2073,7 +2073,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_11",
-    url: "./sounds/Interview/I_ELLEN_11.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_11.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2087,7 +2087,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_ELLEN_12",
-    url: "./sounds/Interview/I_ELLEN_12.mp3",
+    url: "./sounds/INTERVIEWS/I_ELLEN_12.mp3",
     duration: 0,
     author: "ELLEN",
     form: "interview",
@@ -2101,7 +2101,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_AMY_01",
-    url: "./sounds/Interview/I_AMY_01.mp3",
+    url: "./sounds/INTERVIEWS/I_AMY_01.mp3",
     duration: 0,
     author: "AMY",
     form: "interview",
@@ -2115,7 +2115,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_JAYNE_04",
-    url: "./sounds/Interview/I_JAYNE_04.mp3",
+    url: "./sounds/INTERVIEWS/I_JAYNE_04.mp3",
     duration: 0,
     author: "JAYNE",
     form: "interview",
@@ -2129,7 +2129,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_JAYNE_05",
-    url: "./sounds/Interview/I_JAYNE_05.mp3",
+    url: "./sounds/INTERVIEWS/I_JAYNE_05.mp3",
     duration: 0,
     author: "JAYNE, RACHEL",
     form: "interview",
@@ -2143,7 +2143,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_JAYNE_07",
-    url: "./sounds/Interview/I_JAYNE_07.mp3",
+    url: "./sounds/INTERVIEWS/I_JAYNE_07.mp3",
     duration: 0,
     author: "JAYNE",
     form: "interview",
@@ -2157,7 +2157,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_WRAY_01",
-    url: "./sounds/Interview/I_WRAY_01.mp3",
+    url: "./sounds/INTERVIEWS/I_WRAY_01.mp3",
     duration: 0,
     author: "WRAY",
     form: "interview",
@@ -2171,7 +2171,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_KIM_01",
-    url: "./sounds/Interview/I_KIM_01.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_01.mp3",
     duration: 0,
     author: "KIM, RACHEL",
     form: "interview",
@@ -2213,7 +2213,7 @@ window.SONGSRAW = [
   // },
   {
     name: "I_KIM_03",
-    url: "./sounds/Interview/I_KIM_03.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_03.mp3",
     duration: 0,
     author: "KIM",
     form: "interview",
@@ -2227,7 +2227,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_KIM_04",
-    url: "./sounds/Interview/I_KIM_04.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_04.mp3",
     duration: 0,
     author: "KIM",
     form: "interview",
@@ -2241,7 +2241,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_KIM_05",
-    url: "./sounds/Interview/I_KIM_05.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_05.mp3",
     duration: 0,
     author: "KIM",
     form: "interview",
@@ -2255,7 +2255,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_KIM_06",
-    url: "./sounds/Interview/I_KIM_06.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_06.mp3",
     duration: 0,
     author: "KIM",
     form: "interview",
@@ -2269,7 +2269,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_KIM_07",
-    url: "./sounds/Interview/I_KIM_07.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_07.mp3",
     duration: 0,
     author: "KIM, RACHEL",
     form: "interview",
@@ -2283,7 +2283,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_KIM_08",
-    url: "./sounds/Interview/I_KIM_08.mp3",
+    url: "./sounds/INTERVIEWS/I_KIM_08.mp3",
     duration: 0,
     author: "KIM, RACHEL",
     form: "interview",
@@ -2325,7 +2325,7 @@ window.SONGSRAW = [
   // },
   {
     name: "I_SARAH_03",
-    url: "./sounds/Interview/I_SARAH_03.mp3",
+    url: "./sounds/INTERVIEWS/I_SARAH_03.mp3",
     duration: 0,
     author: "SARAH",
     form: "interview",
@@ -2339,7 +2339,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_SARAH_04",
-    url: "./sounds/Interview/I_SARAH_04.mp3",
+    url: "./sounds/INTERVIEWS/I_SARAH_04.mp3",
     duration: 0,
     author: "SARAH",
     form: "interview",
@@ -2353,7 +2353,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_SARAH_05",
-    url: "./sounds/Interview/I_SARAH_05.mp3",
+    url: "./sounds/INTERVIEWS/I_SARAH_05.mp3",
     duration: 0,
     author: "SARAH",
     form: "interview",
@@ -2367,7 +2367,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_SARAH_06",
-    url: "./sounds/Interview/I_SARAH_06.mp3",
+    url: "./sounds/INTERVIEWS/I_SARAH_06.mp3",
     duration: 0,
     author: "SARAH",
     form: "interview",
@@ -2381,7 +2381,7 @@ window.SONGSRAW = [
   },
   {
     name: "I_SARAH_07",
-    url: "./sounds/Interview/I_SARAH_07.mp3",
+    url: "./sounds/INTERVIEWS/I_SARAH_07.mp3",
     duration: 0,
     author: "SARAH",
     form: "interview",
@@ -2395,7 +2395,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_MAR_01",
-    url: "./sounds/Music/M_MAR_01.mp3",
+    url: "./sounds/MUSIC/M_MAR_01.mp3",
     duration: 0,
     author: "SUTURE",
     form: "music",
@@ -2409,7 +2409,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_MAR_02",
-    url: "./sounds/Music/M_MAR_02.mp3",
+    url: "./sounds/MUSIC/M_MAR_02.mp3",
     duration: 0,
     author: "SUTURE",
     form: "music",
@@ -2423,7 +2423,7 @@ window.SONGSRAW = [
   },
   {
     name: "M_MAR_03",
-    url: "./sounds/Music/M_MAR_03.mp3",
+    url: "./sounds/MUSIC/M_MAR_03.mp3",
     duration: 0,
     author: "SUTURE",
     form: "music",
@@ -2437,7 +2437,7 @@ window.SONGSRAW = [
   },
   {
     name: "S_MAR_04",
-    url: "./sounds/Music/S_MAR_04.mp3",
+    url: "./sounds/MUSIC/S_MAR_04.mp3",
     duration: 0,
     author: "SUTURE",
     form: "music",
