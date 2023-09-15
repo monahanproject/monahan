@@ -197,9 +197,9 @@ let currentTimeElement;
 let timerInterval; // Declare timerInterval
 
 function updateProgressTimer(elapsedSeconds, previousDuration) {
-  console.log(
-    `ggg Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}`
-  );
+  // console.log(
+  //   `ggg Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}`
+  // );
 
   // musicPlayer.currentTime = curatedTracklistTotalTime;
 
@@ -1213,6 +1213,39 @@ function shuffleTracklist(tracklist) {
   return tracklist;
 }
 
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX CHECK THOSE TRACKS!!!! XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+async function isValidTracklist(tracklist) {
+  const invalidTracks = [];
+
+  for (let i = 0; i < tracklist.length; i++) {
+    const track = tracklist[i];
+    try {
+      const response = await fetch(track.url);
+      if (response.status !== 200) {
+        // The URL is not valid
+        invalidTracks.push(track.url); // Add the invalid URL to the array
+      }
+    } catch (error) {
+      // There was an error fetching the URL
+      invalidTracks.push(track.url); // Add the invalid URL to the array
+    }
+  }
+
+  if (invalidTracks.length > 0) {
+    console.log("Invalid track URLs:");
+    console.log(invalidTracks);
+  } else {
+    console.log("All track URLs are valid.");
+  }
+
+  // Return true if there are no invalid tracks
+  return invalidTracks.length === 0;
+}
+
+
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX CREATE AND PRINT DEBUG TEXT SO LAURA CAN SEE DETAILS XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1384,6 +1417,8 @@ button.addEventListener("click", (event) => {
   }
 
   const allSongs = [...SONGS]; // first we copy the array of songs
+  const AREYOUOK = isValidTracklist(allSongs); // next we shuffle it
+
   const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
   curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
 
