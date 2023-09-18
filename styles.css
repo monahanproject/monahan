@@ -624,6 +624,7 @@ main {
 /***********************/
 
 #musicPlayerDiv {
+  
   display:flex;
   flex: 0 0 40%;
 
@@ -639,6 +640,8 @@ main {
     flex-direction: column;
     align-items: center;
     /* align-items: flex-start; */
+    flex-grow: 0; /* Prevent this element from growing */
+
 
   }
 }
@@ -1066,6 +1069,17 @@ footer {
   flex-direction: column;
   text-align: left;
   font-size: 1rem;
+}
+
+@media screen and (min-width: 900px) {
+  #debugdiv{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 1rem;
+    flex-grow: 1; /* Allow this element to occupy the remaining space */
+
+  }
 }
 
 #debug{

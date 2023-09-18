@@ -457,8 +457,8 @@ function gatherTheCreditSongs(curatedTracklist) {
     }
   }
 
-  const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
-  currCreditStackHTMLElement.innerHTML = creditsLog;
+  // const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
+  // currCreditStackHTMLElement.innerHTML = creditsLog;
 
   // console.log(arrayOfCreditSongs);
   return arrayOfCreditSongs;
@@ -474,31 +474,32 @@ function gatherTheCreditSongs(curatedTracklist) {
 //  XXXXXXXX GENERAL RULES XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Rule 10: The current track should have a different author than the last track
+// Rule 10: The current track must have a different author than the last track
 function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (prevTrack1 && track.author === prevTrack1.author) {
     // If the current track has the same author as the previous track, log a rule violation
-    const logMessage = `❌ ${track.name}: Rule enforced! The current track has the same author(${track.author}) as the previous track (${prevTrack1.author})`;
+    const logMessage = ` ❌ ${track.name}: The current track must have a different author (${track.author}) than the previous track (${prevTrack1.author})`;
+
     logRuleApplication(10, logMessage, false);
     return false;
   }
   // If the current track has a different author than the previous track, log successful rule application
-  const logMessage = `🌱 ${track.name}: Track passes this rule: The current track has a different author (${track.author}) than the previous track (${prevTrack1.author})`;
+  const logMessage = ` 🌱 ${track.name}: The current track must have a different author (${track.author}) than the previous track (${prevTrack1.author})`;
   logRuleApplication(10, logMessage, true);
   return true;
 }
-// Rule 11: No more than one track from the same author in a tracklist unless it is charlotte
+// Rule 11: No more than one track from the same author in a tracklist unless it is CHARLOTTE
 function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   // Check if the author is CHARLOTTE
   if (track.author === "CHARLOTTE") {
     // Count the number of tracks from CHARLOTTE in the curatedTracklist
-    const charlotteCount = curatedTracklist
+    const CHARLOTTECount = curatedTracklist
       .filter((t) => t.author.trim() !== "") // Filter out tracks with no author
       .filter((t) => t.author === "CHARLOTTE").length;
 
-    if (charlotteCount >= 2) {
+    if (CHARLOTTECount >= 2) {
       // If there are already 2 tracks from CHARLOTTE, log a rule violation
-      const logMessage = `❌ ${track.name}: Rule enforced! No more than two tracks from author CHARLOTTE.`;
+      const logMessage = `❌ ${track.name}: No more than one track from the same author (track's author is ${track.author}) in a tracklist unless it is CHARLOTTE. No more than 2 tracks from author CHARLOTTE (CHARLOTTECount is  ${CHARLOTTECount})`;
       logRuleApplication(11, logMessage, false);
       return false;
     }
@@ -514,14 +515,14 @@ function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
         .filter((t) => t.author === track.author)
         .map((t) => t.name)
         .join(", ");
-      const logMessage = `❌ ${track.name}: Rule enforced! No more than one track from the same author (this track's author is ${track.author}). Violating tracks are: ${violatingTracks}`;
+      const logMessage = `❌ ${track.name}: No more than one track from the same author (track's author is ${track.author}) in a tracklist unless it is CHARLOTTE. Violating tracks are: ${violatingTracks}`;
       logRuleApplication(11, logMessage, false);
       return false;
     }
   }
 
   // If the condition is met (no rule violation), log successful rule application
-  const logMessage = `🌱! ${track.name}: Track passes this rule.`;
+  const logMessage = ` 🌱! ${track.name}: No more than one track from the same author (track's author is ${track.author}) in a tracklist unless it is CHARLOTTE`;
   logRuleApplication(11, logMessage, true);
   return true;
 }
@@ -533,12 +534,12 @@ function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     track.language === "musical" &&
     prevTrack1.form === "music"
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! Tracks with form 'shorts' (this track's form is ${track.form}) and language 'musical' (this track's language is ${track.language}) cannot follow tracks with form 'music' (last track's form is ${prevTrack1.form})`;
+    const logMessage = `❌ ${track.name}: Tracks with form 'shorts' (track's form is ${track.form}) and language 'musical' (track's language is ${track.language}) cannot follow tracks with form 'music' (last track's form is ${prevTrack1.form})`;
     logRuleApplication(12, logMessage, false);
     return false;
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}): Track passes this rule: Tracks with form 'shorts' and language 'musical' (this track's form is ${track.form}) and language (this track's language is ${track.language}) cannot follow tracks with form 'music' (last track's form is ${prevTrack1.form})`;
+  const logMessage = ` 🌱! ${track.name}: Tracks with form 'shorts' and language 'musical' (track's form is ${track.form}) and language (track's language is ${track.language}) cannot follow tracks with form 'music' (last track's form is ${prevTrack1.form})`;
   logRuleApplication(12, logMessage, true);
   return true;
 }
@@ -551,12 +552,12 @@ function r13(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
         prevTrack.form === "shorts" && prevTrack.language === "musical"
     )
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! Tracks with form 'music' (this track's form ${track.form}) cannot follow tracks with form 'shorts' and language 'musical' (last track's form was ${prevTrack1.form} and language was ${prevTrack1.language})`;
+    const logMessage = `❌ ${track.name}: Tracks with form 'music' (track's form ${track.form}) cannot follow tracks with form 'shorts' and language 'musical' (last track's form was ${prevTrack1.form} and language was ${prevTrack1.language})`;
     logRuleApplication(13, logMessage, false);
     return false;
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: Tracks with form 'music' (this track's form ${track.form}) cannot follow tracks with form 'shorts' and language 'musical' (last track's form was ${prevTrack1.form} and language was ${prevTrack1.language})`;
+  const logMessage = ` 🌱! ${track.name}: Tracks with form 'music' (track's form ${track.form}) cannot follow tracks with form 'shorts' and language 'musical' (last track's form was ${prevTrack1.form} and language was ${prevTrack1.language})`;
   logRuleApplication(13, logMessage, true);
   return true;
 }
@@ -569,16 +570,16 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     (track.backgroundMusic === prevTrack1.author ||
       track.author === prevTrack1.backgroundMusic)
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! The value for backgroundMusic (this track's background Music is '${track.backgroundMusic}') should never match the author of the track before (last track's author is '${prevTrack1.author}') or the backgroundMusic of the track before (last track's backgroundMusic is ${prevTrack1.backgroundMusic})`;
+    const logMessage = `❌ ${track.name}: The value for backgroundMusic (track's background Music is '${track.backgroundMusic}') should never match the author of the track before (last track's author is '${prevTrack1.author}') or the backgroundMusic of the track before (last track's backgroundMusic is ${prevTrack1.backgroundMusic})`;
     logRuleApplication(14, logMessage, false);
     return false;
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: The value for backgroundMusic (this track's  background Music is '${track.backgroundMusic}') should never match the author of the track before (last track's author is '${prevTrack1.author}') or the backgroundMusic of the track before (last track's backgroundMusic is ${prevTrack1.backgroundMusic})`;
+  const logMessage = ` 🌱! ${track.name}: The value for backgroundMusic (track's background Music is '${track.backgroundMusic}') should never match the author of the track before (last track's author is '${prevTrack1.author}') or the backgroundMusic of the track before (last track's backgroundMusic is ${prevTrack1.backgroundMusic})`;
   logRuleApplication(14, logMessage, true);
   return true;
 }
-// Rule 15: If a track has the sentiment heavy, then the track after it cannot have the laughter tag.
+// Rule 15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
     track.tags.includes("laughter") &&
@@ -586,17 +587,16 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     prevTrack1.sentiment === "" &&
     prevTrack1.sentiment === "heavy"
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (this track's tags are ${track.tags})`;
+    const logMessage = `❌ ${track.name}: If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (track's tags are ${track.tags})`;
     logRuleApplication(15, logMessage, false);
     return false;
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Track passes this rule: if the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (this track's tags are ${track.tags})`;
+  const logMessage = ` 🌱! ${track.name}: if the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (track's tags are ${track.tags})`;
   logRuleApplication(15, logMessage, true);
   return true;
 }
-// Rule 16: If this track has the length long and the form typeMusic, then the next track should have the
-// form typeInterview.
+// Rule 16: If the previous track has length long and form music, this track must have the form interview`;
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
     prevTrack1 &&
@@ -604,13 +604,13 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     prevTrack1.form === "music" &&
     track.form !== "interview"
   ) {
-    const logMessage = `❌ ${track.name}: Rule enforced! If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track should have the form 'interview' (this track's form is ${track.form})`;
+    const logMessage = `❌ ${track.name}: If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track must have the form 'interview' (track's form is ${track.form})`;
     logRuleApplication(16, logMessage, false);
     return false; // Return false to indicate the rule is broken.
   }
 
   // If the rule is not violated, return true to indicate that the rule is followed.
-  const logMessage = `🌱! ${track.name}: Track passes this rule: If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track should have the form 'interview' (this track's form is ${track.form})`;
+  const logMessage = ` 🌱! ${track.name}: If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track must have the form 'interview' (track's form is ${track.form})`;
   logRuleApplication(16, logMessage, true);
   return true;
 }
@@ -619,15 +619,15 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 //  XXXXXXXX BASE TRACK RULES (TRACKS 1-8) XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Rule 60: Rule 0 (only for Track 0): The Oth track must have the tag 'intro'.
+// Rule 60: Rule 0 (only for Track 0): The Oth track must have the placement end (we'll be moving this to the end).
 function r60(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 0 && !track.placement.includes("end")) {
-    const logMessage = `❌ ${track.name}: End Rule: Last track must include the placement "end" (placement ${track.placement})`;
+    const logMessage = `❌ ${track.name}: The 0th (eventually final) track includes the placement end (placement ${track.placement})`;
     logRuleApplication(60, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻 ${track.name}: Found valid track. The 0th (eventually final) track includes the placement "end" (placement ${track.placement})`;
+  const logMessage = `  ✅ ${track.name}: The 0th (eventually final) track includes the placement end (placement ${track.placement})`;
   logRuleApplication(60, logMessage, true);
   return true;
 }
@@ -635,60 +635,60 @@ function r60(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 61: Rule 1 (only for Track 1): The 1st track must have the tag 'intro'.
 function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 0 && !track.tags.includes("intro")) {
-    const logMessage = `❌ (${track.name}): The 1st track → has the tag intro. (This track's tags are ${track.tags})`;
+    const logMessage = `❌ (${track.name}): The 1st track must have the tag intro (track's tags are ${track.tags})`;
     logRuleApplication(61, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 1st track → has the tag intro. (This track's tags are ${track.tags})`;
+  const logMessage = `✅ (${track.name}): The 1st track must have the tag intro (track's tags are ${track.tags})`;
   logRuleApplication(61, logMessage, true);
   return true;
 }
-// Rule 62: Rule 2 (only for Track 2):The 2nd track should have the placement 'beginning'.
+// Rule 62: Rule 2 (only for Track 2):The 2nd track must have the placement 'beginning'.
 function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 1 && !track.placement.includes("beginning")) {
-    const logMessage = `❌ (${track.name}): The 2nd track → has the placement beginning. (This track's placement is ${track.placement})`;
+    const logMessage = `❌ (${track.name}): The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
     logRuleApplication(62, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 2nd track → has the placement beginning. (This track's placement is ${track.placement})`;
+  const logMessage = `  ✅! (${track.name}): The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
   logRuleApplication(62, logMessage, true);
   return true;
 }
 
-// Rule 63: Rule 3 (only for Track 3): The 3rd track should have the placement 'beginning' and a different form than the 2nd track.
+// Rule 63: Rule 3 (only for Track 3): The 3rd track must have the placement beginning and a different form than the 2nd track.
 function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (
     (trackIndex === 2 && !track.placement.includes("beginning")) ||
     (trackIndex === 2 && track.form === prevTrack1.form)
   ) {
-    const logMessage = `❌ (${track.name}): The 3rd track → has the placement beginning (this track's placement is ${track.placement}) and a different form (this track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
+    const logMessage = `❌ (${track.name}): The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
     logRuleApplication(63, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 3rd track → has the placement beginning (this track's placement is ${track.placement}) and a different form (this track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
+  const logMessage = `  ✅! (${track.name}): The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
   logRuleApplication(63, logMessage, true);
   return true;
 }
-// Rule 64: Rule 4 (only for Track 4): The 4th track should have the placement 'middle' and a different form than the 3rd track.
+// Rule 64: Rule 4 (only for Track 4): The 4th track must have the placement middle and a different form than the 3rd track.
 function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (
     (trackIndex === 3 && !track.placement.includes("middle")) ||
     (trackIndex === 3 && track.form === prevTrack1.form)
   ) {
-    const logMessage = `❌ (${track.name}): The 4th track → has the placement middle (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
+    const logMessage = `❌ (${track.name}): The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
     logRuleApplication(64, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 4th track → has the placement middle (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}); than the 3rd track (${prevTrack1.form})`;
+  const logMessage = `  ✅! (${track.name}): The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
   logRuleApplication(64, logMessage, true);
   return true;
 }
 
-// Rule 65: Rule 5 (only for Track 5): The 5th track should have the form 'short'; should have the placement 'middle'; and have a different language than the 4th track.
+// Rule 65: Rule 5 (only for Track 5): The 5th track must have the form 'short'; must have the placement 'middle'; and have a different language than the 4th track.
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 4) {
     if (
@@ -696,38 +696,38 @@ function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
       !track.placement.includes("middle") ||
       track.language === prevTrack1.language
     ) {
-      const logMessage = `❌ (${track.name}): The 5th track → should have the form short (this track's form is ${track.form}); should have the placement MIDDLE (this track's placement is ${track.placement}); and a different language (this track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
+      const logMessage = `❌ (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
       logRuleApplication(65, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 5th track → has the form "short" (this track's form is ${track.form}); should have the placement MIDDLE (this track's placement is ${track.placement}); and a different language (this track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
+  const logMessage = `  ✅! (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
   logRuleApplication(65, logMessage, true);
   return true;
 }
 
-// Rule 66: Rule 6 (only for Track 6): The 6th track should have the placement 'middle' and a different form than the 5th track.
+// Rule 66: Rule 6 (only for Track 6): The 6th track must have the placement 'middle' and a different form than the 5th track.
 function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 5) {
     if (!track.placement.includes("middle")) {
-      const logMessage = `❌ (${track.name}): The 6th track → has the placement MIDDLE (this track's placement is ${track.placement}); and has a different form (this track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
+      const logMessage = `❌ (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
       logRuleApplication(66, logMessage, false);
       return false;
     }
     if (track.form === prevTrack1.form) {
-      const logMessage = `❌ (${track.name}): The 6th track → has the placement MIDDLE (this track's placement is ${track.placement}); and has a different form (this track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
+      const logMessage = `❌ (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
       logRuleApplication(66, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 6th track → has the placement MIDDLE (this track's placement is ${track.placement}); and has a different form (this track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
+  const logMessage = `  ✅! (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
   logRuleApplication(66, logMessage, true);
   return true;
 }
 
-// Rule 67: Rule 7 (only for Track 7): The 7th track should have the placement 'middle', a different form than the 6th track, and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
+// Rule 67: Rule 7 (only for Track 7): The 7th track must have the placement 'middle', a different form than the 6th track, and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
 function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 6) {
     if (
@@ -735,27 +735,27 @@ function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
       track.form === prevTrack1.form ||
       (track.form !== "MUSIC" && track.language === prevTrack1.language)
     ) {
-      const logMessage = `❌ (${track.name}): The 7th track → has the placement MIDDLE (this track's placement is ${track.placement}) and has a different form (this track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
+      const logMessage = `❌ (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
       logRuleApplication(67, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 7th track → has the placement MIDDLE (this track's placement is ${track.placement}) and has a different form (this track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
+  const logMessage = `  ✅! (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
   logRuleApplication(67, logMessage, true);
   return true;
 }
 
-// Rule 68: Rule 8 (only for Track 8): The 8th track should have the placement 'middle', a different form than the 6th and 7th tracks, and a different language than the 6th and 7th tracks. (NOTE: this rule is too restrictive, it breaks the playlist sometimes!)
+// Rule 68: Rule 8 (only for Track 8): The 8th track must have the placement 'middle', a different form than the 6th and 7th tracks, and a different language than the 6th and 7th tracks. (NOTE: this rule is too restrictive, it breaks the playlist sometimes!)
 function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 7) {
     if (!track.placement.includes("middle")) {
-      const logMessage = `❌ (${track.name}): The 8th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (this track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+      const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
     }
     if (track.form === prevTrack1.form || track.form === prevTrack2.form) {
-      const logMessage = `❌ (${track.name}): The 8th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (this track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+      const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
     }
@@ -763,13 +763,13 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
       track.language === prevTrack1.language ||
       track.language === prevTrack2.language
     ) {
-      const logMessage = `❌ (${track.name}): The 8th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (this track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+      const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 8th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (this track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+  const logMessage = `  ✅! (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
   logRuleApplication(68, logMessage, true);
   return true;
 }
@@ -778,28 +778,26 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXXXXX ENSURE RULES (NEAR THE END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Rule 21. Ensure that the tracklist contains at least one track with the author albert.
+// Rule 21. The tracklist must contain at least one track with the author ALBERT.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  // console.log("my auth is " + track.author);
   if (track.name && curatedTracklist.length >= 9) {
     if (
       !trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") &&
       track.author !== "ALBERT"
     ) {
-      {
-        const logMessage = `❌ ${track.name}: We need an Albert but we already have one or this one isn't an Albert (this track's author is ${track.author})`;
-        logRuleApplication(r21, logMessage, false);
-        return false;
-      }
+      const logMessage = `❌ ${track.name}: The tracklist must contain at least one track with the author ALBERT (track's author is ${track.author})`;
+      logRuleApplication(21, logMessage, false);
+      return false;
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need an Albert and this track's author is ${track.author}`;
-  logRuleApplication(r21, logMessage, true);
+  const logMessage = `🌱 ${track.name}: The tracklist must contain at least one track with the author ALBERT (track's author is ${track.author})`;
+  logRuleApplication(21, logMessage, true);
   return true;
 }
 
-// Rule 22. Ensure that the tracklist contains at least one track with the author PIERREELLIOTT.
+
+// Rule 22. The tracklist must contain at least one track with the author PIERREELLIOTT.
 function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (curatedTracklist.length >= 9) {
     if (
@@ -807,50 +805,50 @@ function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
       track.author !== "PIERREELLIOTT"
     ) {
       {
-        const logMessage = `❌ ${track.name}: We need a PIERREELLIOTT track but we already have one or this one isn't a PIERREELLIOTT track (this track's author is ${track.author})`;
+        const logMessage = `❌ ${track.name}: The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.author})`;
         logRuleApplication(22, logMessage, false);
         return false;
       }
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need a birds track and this track's author is ${track.author}`;
+  const logMessage = `🌱 ${track.name}: The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.author})`;
   logRuleApplication(22, logMessage, true);
   return true;
 }
 
-// Rule 23. Ensure that the tracklist contains at least one track with the form interview.
+// Rule 23. The tracklist must contain at least one track with the form interview.
 function r23(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (curatedTracklist.length >= 9) {
     if (
       !trackExistsWithAttributes(curatedTracklist, "form", "interview") &&
       track.form !== "interview"
     ) {
-      const logMessage = `❌ ${track.name}: We need an interview track track but we already have one or this one isn't an interview track (this track's form is ${track.form})`;
+      const logMessage = `❌ ${track.name}:  The tracklist must contain at least one track with the form interview (track's form is ${track.form})`;
       logRuleApplication(23, logMessage, false);
       return false;
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need an interview track and this track's form is ${track.form}`;
+  const logMessage = `🌱 ${track.name}:  The tracklist must contain at least one track with the form interview (track's form is ${track.form})`;
   logRuleApplication(23, logMessage, true);
   return true;
 }
 
-// Rule 24. Ensure that the tracklist contains at least one track with the form music.
+// Rule 24. The tracklist must contain at least one track with the form music.
 function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (curatedTracklist.length >= 9) {
     if (
       !trackExistsWithAttributes(curatedTracklist, "form", "music") &&
       track.form !== "music"
     ) {
-      const logMessage = `❌ ${track.name}: We need an music track track but we already have one or this one isn't a music track (this track's form is ${track.form})`;
+      const logMessage = `❌ ${track.name}: The tracklist must contain at least one track with the form music (track's form is ${track.form})`;
       logRuleApplication(24, logMessage, false);
       return false;
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need a music track and this track's form is ${track.form}`;
+  const logMessage = ` 🌱! ${track.name}: The tracklist must contain at least one track with the form music (track's form is ${track.form})`;
   logRuleApplication(24, logMessage, true);
   return true;
 }
@@ -882,23 +880,23 @@ function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     if (hasAtLeastOneGeeseTagInCurated) {
       // Add the current track to the curatedTracklist if it meets the conditions
       curatedTracklist[trackIndex] = track;
-      const logMessage = `🌱! ${track.name}: Passed this ensure rule! We got a second goose track`;
+      const logMessage = ` 🌱! ${track.name}: If there is one geese, we need two geese`;
       logRuleApplication(32, logMessage, true);
       return true;
     } else {
       let rejectionReasons = [];
       if (!hasAtLeastOneGeeseTagInCurated) {
         rejectionReasons.push(
-          "No track with the 'geese' tag in the curated tracklist"
+          "no track with the 'geese' tag currently in the curated tracklist"
         );
       }
       if (prevTrack1HasGeeseTag) {
-        rejectionReasons.push("prevTrack1 has the 'geese' tag");
+        rejectionReasons.push("prevTrack1 has the 'geese' tag, so let's wait");
       }
 
       const logMessage = `❌ ${
         track.name
-      }: Geese Tag Rule: Track not added. Reasons: ${rejectionReasons.join(
+      }: If there is one geese, we need two geese - reason for rejection ${rejectionReasons.join(
         ", "
       )}`;
       logRuleApplication(32, logMessage, false);
@@ -950,14 +948,8 @@ function trackExistsWithAttributes(curatedTracklist, attribute, value) {
   return false;
 }
 
-// Helper function for logging rules
-function logRuleApplication(
-  ruleNumber,
-  description,
-  isApplied,
-  message = null
-) {
-  const ruleStatus = isApplied ? "passed" : "broken";
+function logRuleApplication(ruleNumber, description, isApplied, message = null) {
+  const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
   addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
 
@@ -966,6 +958,25 @@ function logRuleApplication(
     updateLogDisplay();
   }
 }
+
+
+
+// // Helper function for logging rules
+// function logRuleApplication(
+//   ruleNumber,
+//   description,
+//   isApplied,
+//   message = null
+// ) {
+//   const ruleStatus = isApplied ? "passed" : "broken";
+//   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
+//   addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
+
+//   if (message !== null) {
+//     displayConsoleLog += `→ Track ${ruleNumber} Rules ${ruleStatus}: ${description}<br>`;
+//     updateLogDisplay();
+//   }
+// }
 
 // Helper function to update the log display on the webpage
 function addToLogDisplay(logMessage) {
@@ -1181,7 +1192,7 @@ function followTracklistRules(tracklist) {
       if (
         !generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)
       ) {
-        console.log(`General rule failed for track: ${track.name}`);
+        // console.log(`General rule failed for track: ${track.name}`);
         ruleFailed = true;
         break; // Exit the loop early since a rule has failed
       }
@@ -1241,7 +1252,7 @@ function shuffleTracklist(tracklist) {
     const j = Math.floor(Math.random() * (i - 1)) + 1; // Ensure j is at least 1
     [tracklist[i], tracklist[j]] = [tracklist[j], tracklist[i]];
   }
-  console.log(tracklist);
+  // console.log(tracklist);
   return tracklist;
 }
 
