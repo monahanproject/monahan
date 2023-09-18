@@ -13,11 +13,9 @@ let curatedTracklistTotalTime = 0;
 let curatedTracklist;
 let timerDuration = 0;
 
-const MAX_PLAYLIST_DURATION_SECONDS = 1020;
-const TOTHEWIRE_THRESHOLD_SECONDS = 800;
-const ALMOST_DONE_THRESHOLD_SECONDS = 700;
+const MAX_PLAYLIST_DURATION_SECONDS = 3140; //(19m)
 
-const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
+// const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 var elapsedDurationSeconds = 0;
@@ -26,8 +24,6 @@ let currentTimeElement;
 let timerInterval; // Declare timerInterval
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
-
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -204,8 +200,6 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-
-
 // const { minutes, seconds } = calculateMinutesAndSeconds(
 //   curatedTracklistTotalTime
 // );
@@ -220,7 +214,6 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
     throw new Error("Missing element: current-time");
   }
   totalDurationSeconds = curatedTracklistTotalTime;
-
 
   const remainingDurationSeconds =
     totalDurationSeconds - (elapsedSeconds + previousDuration);
@@ -429,7 +422,7 @@ function createCreditObjectAndAddToArray(song) {
   const creditObj = {
     name: song.name,
     url: song.credit, //flip on purpose
-    duration: "",
+    duration: "2",
     author: song.author,
     form: "",
     placement: [""],
@@ -586,7 +579,6 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 // Rule 15: If a track has the sentiment heavy, then the track after it cannot have the laughter tag.
-// if the last track is heavy, this one can't be laughter TODO FINDME
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (
     track.tags.includes("laughter") &&
@@ -627,6 +619,19 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 //  XXXXXXXX BASE TRACK RULES (TRACKS 1-8) XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+// Rule 60: Rule 0 (only for Track 0): The Oth track must have the tag 'intro'.
+function r60(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  if (trackIndex === 0 && !track.placement.includes("end")) {
+    const logMessage = `❌ ${track.name}: End Rule: Last track must include the placement "end" (placement ${track.placement})`;
+    logRuleApplication(60, logMessage, false);
+    return false;
+  }
+  // If the conditions are met, return true to indicate rule followed
+  const logMessage = `🌻 ${track.name}: Found valid track. The 0th (eventually final) track includes the placement "end" (placement ${track.placement})`;
+  logRuleApplication(60, logMessage, true);
+  return true;
+}
+
 // Rule 61: Rule 1 (only for Track 1): The 1st track must have the tag 'intro'.
 function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 0 && !track.tags.includes("intro")) {
@@ -647,7 +652,7 @@ function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 2nd track → has the placement beginning. (This track's placement is ${track.placement})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 2nd track → has the placement beginning. (This track's placement is ${track.placement})`;
   logRuleApplication(62, logMessage, true);
   return true;
 }
@@ -663,7 +668,7 @@ function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 3rd track → has the placement beginning (this track's placement is ${track.placement}) and a different form (this track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 3rd track → has the placement beginning (this track's placement is ${track.placement}) and a different form (this track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
   logRuleApplication(63, logMessage, true);
   return true;
 }
@@ -678,13 +683,12 @@ function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 4th track → has the placement middle (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}); than the 3rd track (${prevTrack1.form})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 4th track → has the placement middle (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}); than the 3rd track (${prevTrack1.form})`;
   logRuleApplication(64, logMessage, true);
   return true;
 }
 
-// Rule 65: Rule 5 (only for Track 5): The 5th track should have the form 'short'; should have the placement 'middile'; and have a different language than the 4th track.
-// TODO FINDME
+// Rule 65: Rule 5 (only for Track 5): The 5th track should have the form 'short'; should have the placement 'middle'; and have a different language than the 4th track.
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 4) {
     if (
@@ -698,7 +702,7 @@ function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 5th track → has the form "short" (this track's form is ${track.form}); should have the placement MIDDLE (this track's placement is ${track.placement}); and a different language (this track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 5th track → has the form "short" (this track's form is ${track.form}); should have the placement MIDDLE (this track's placement is ${track.placement}); and a different language (this track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
   logRuleApplication(65, logMessage, true);
   return true;
 }
@@ -718,7 +722,7 @@ function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 6th track → has the placement MIDDLE (this track's placement is ${track.placement}); and has a different form (this track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 6th track → has the placement MIDDLE (this track's placement is ${track.placement}); and has a different form (this track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
   logRuleApplication(66, logMessage, true);
   return true;
 }
@@ -737,7 +741,7 @@ function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 7th track → has the placement MIDDLE (this track's placement is ${track.placement}) and has a different form (this track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 7th track → has the placement MIDDLE (this track's placement is ${track.placement}) and has a different form (this track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
   logRuleApplication(67, logMessage, true);
   return true;
 }
@@ -765,7 +769,7 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `🌻! (${track.name}): Found valid track. The 8th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (this track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+  const logMessage = `🌻! (${track.name}): Passed this base track rule! The 8th track → has the placement MIDDLE (this track's placement is ${track.placement}); and a different form (this track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (this track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
   logRuleApplication(68, logMessage, true);
   return true;
 }
@@ -776,7 +780,6 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 21. Ensure that the tracklist contains at least one track with the author albert.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  // console.log("yooooooooo");
   // console.log("my auth is " + track.author);
   if (track.name && curatedTracklist.length >= 9) {
     if (
@@ -791,7 +794,7 @@ function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌻! ${track.name}: Found valid track. We need an Albert and this track's author is ${track.author}`;
+  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need an Albert and this track's author is ${track.author}`;
   logRuleApplication(r21, logMessage, true);
   return true;
 }
@@ -811,7 +814,7 @@ function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌻! ${track.name}: Found valid track. We need a birds track and this track's author is ${track.author}`;
+  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need a birds track and this track's author is ${track.author}`;
   logRuleApplication(22, logMessage, true);
   return true;
 }
@@ -829,7 +832,7 @@ function r23(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌻! ${track.name}: Found valid track. We need an interview track and this track's form is ${track.form}`;
+  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need an interview track and this track's form is ${track.form}`;
   logRuleApplication(23, logMessage, true);
   return true;
 }
@@ -847,54 +850,63 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌻! ${track.name}: Found valid track. We need a music track and this track's form is ${track.form}`;
+  const logMessage = `🌱! ${track.name}: Passed this ensure rule! We need a music track and this track's form is ${track.form}`;
   logRuleApplication(24, logMessage, true);
   return true;
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXX ENSURE RULES (AT THE VERY END) XXXXXXX
+//  XXXXXXXX GOOSE RULE (AT THE VERY END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Rule 32: If the curatedTracklist already has a track that contains the geese tag, add another track that contains the geese tag.
+// if this track has the tag "geese" AND if a track with the tag "geese" is already in curatedTracklist AND if prevTrack1 does NOT have the tag geese:
 function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex >= 9) {
-    const ifWeHave1Goose2GeeseRule = trackExistsWithAttributes(
-      curatedTracklist,
-      "tags",
-      "geese"
-    );
-    if (ifWeHave1Goose2GeeseRule) {
-      if (track.tags.includes("geese")) {
-        console.log("Geese Tag Rule: Track added as a related track.");
-      } else {
-        const logMessage = `❌ ${track.name}: Geese Tag Rule: Track not added. Another track with the 'geese' tag is required`;
-        logRuleApplication(32, logMessage, false);
-        return false;
-      }
-    }
-  }
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `v`;
-  logRuleApplication(32, logMessage, true);
-  return true;
-}
+  // Check if prevTrack1 doesn't have the "geese" tag
+  const attribute = "tags";
+  const value = "geese";
 
-// todo this is no good because of course it's always the last track when we get to any track
-// Rule 99: The last track should have the placement "end".
-function r99(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (
-    trackIndex === curatedTracklist.length - 1 &&
-    !track.placement.includes("end")
-  ) {
-    const logMessage = `❌ ${track.name}: End Rule: Last track must include the placement "end" (placement ${track.placement})`;
-    logRuleApplication(99, logMessage, false);
-    return false;
+  const prevTrack1HasGeeseTag = trackExistsWithAttributes(
+    prevTrack1,
+    attribute,
+    value
+  );
+
+  // Check if curatedTracklist has at least one track with the "geese" tag
+  const hasAtLeastOneGeeseTagInCurated = trackExistsWithAttributes(
+    curatedTracklist,
+    attribute,
+    value
+  );
+
+  if (!prevTrack1HasGeeseTag) {
+    if (hasAtLeastOneGeeseTagInCurated) {
+      // Add the current track to the curatedTracklist if it meets the conditions
+      curatedTracklist[trackIndex] = track;
+      const logMessage = `🌱! ${track.name}: Passed this ensure rule! We got a second goose track`;
+      logRuleApplication(32, logMessage, true);
+      return true;
+    } else {
+      let rejectionReasons = [];
+      if (!hasAtLeastOneGeeseTagInCurated) {
+        rejectionReasons.push(
+          "No track with the 'geese' tag in the curated tracklist"
+        );
+      }
+      if (prevTrack1HasGeeseTag) {
+        rejectionReasons.push("prevTrack1 has the 'geese' tag");
+      }
+
+      const logMessage = `❌ ${
+        track.name
+      }: Geese Tag Rule: Track not added. Reasons: ${rejectionReasons.join(
+        ", "
+      )}`;
+      logRuleApplication(32, logMessage, false);
+      return false;
+    }
   } else {
-    // If the condition is met, return true to indicate the rule is followed
-    const logMessage = `🌻 ${track.name}: Found a valid track. Track includes the placement "end" (placement ${track.placement})`;
-    logRuleApplication(99, logMessage, true);
-    return true;
+    console.log("prevTrack1 has the 'geese' tag, rule not applied.");
+    return false;
   }
 }
 
@@ -927,7 +939,15 @@ function addNextValidTrack(track, curatedTracklist, tracks) {
 
 // Helper function for isThisAValidTrack to check if a track exists with the given attribute and value in the curated tracklist
 function trackExistsWithAttributes(curatedTracklist, attribute, value) {
-  return curatedTracklist.some((track) => track[attribute] === value);
+  for (const key in curatedTracklist) {
+    if (curatedTracklist.hasOwnProperty(key)) {
+      const track = curatedTracklist[key];
+      if (track[attribute] === value) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 // Helper function for logging rules
@@ -974,7 +994,7 @@ function updatePrevTracks(track, prevTrack1, prevTrack2) {
 //  ///////////////////////////////////////////////////
 
 function followTracklistRules(tracklist) {
-  const curatedTracklist = [];
+  let curatedTracklist = [];
   let prevTrack1 = null;
   let prevTrack2 = null;
   // Initialize index variables for iterating through the tracklist
@@ -985,19 +1005,22 @@ function followTracklistRules(tracklist) {
   const generalRuleFunctions = [r10, r11, r12, r13, r14, r15, r16];
 
   // Define ensure and final check rules for phase 2
-  const ensureRules = [r21, r22, r23, r24];
-  const finalCheckRules = [r32, r99];
+  // Define ensure and final check rules for phase 2
+  const unshuffledEnsureRules = [r21, r22, r23, r24];
+  // Shuffle the array
+  shuffleArrayOfRules(unshuffledEnsureRules);
 
+  const lateCheckRules = [r32];
   // Define closing track rules
-  const closingTracksRules = [r99];
+  // const finalTrackRule = [r99];
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 1: Apply track-specific rules and general rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   for (let i = 0; i < 8; i++) {
     // Get the specific rule function based on index
-    const ruleFunction = window["r" + (i + 61)];
-    const description = `Rule ${i + 61} description`;
+    const ruleFunction = window["r" + (i + 60)];
+    const description = `Rule ${i + 60} description`;
 
     // Reset the current index for each rule iteration
     currIndex = 0;
@@ -1018,17 +1041,12 @@ function followTracklistRules(tracklist) {
         trackIndex
       );
 
-      // Log the application of the specific rule
-      // logRuleApplication(ruleFunction.ruleNumber, description, isSpecificRuleApplied);
-
       // Check if the specific rule is met
       if (!isSpecificRuleApplied) {
-        // console.log(`Specific rule failed for track: ${track.name}`);
         // Move to the next track in the tracklist
         currIndex++;
         continue; // Skip the rest of the loop and move to the next iteration
       }
-
       // Apply general rule functions for the track
       let generalRulesPassed = true;
       // so we don't deal with previos tracks before we have them
@@ -1077,132 +1095,118 @@ function followTracklistRules(tracklist) {
       currIndex++;
     }
   }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Calculate the remaining time until the maximum playlist duration is reached
+  const myRemainingTime =
+    MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
 
-  // const ALMOST_DONE_THRESHOLD_SECONDS = 800;
-  // const NO_TIME_LEFT_THRESHOLD_SECONDS = 1;
+  // let track;
 
   let iterationCounter = 0; // Initialize the iteration counter
+  let ensureRulesApplied = {
+    r21: false,
+    r22: false,
+    r23: false,
+    r24: false,
+  }; // Initialize flags for ensureRules
 
-  // while the total time of the playlist is less than the actual time limit
+  let lateCheckRulesApplied = false; // Initialize late check rules flag
+
   while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-    // console.log("Iteration: " + iterationCounter);
-    // console.log(
-    //   "sss we still have time because the curatedTracklistTotalTime is " +
-    //     curatedTracklistTotalTime +
-    //     " and the MAX_PLAYLIST_DURATION_SECONDS is " +
-    //     MAX_PLAYLIST_DURATION_SECONDS +
-    //     " and the last track name is " +
-    //     prevTrack1.name +
-    //     " and the last track duration is " +
-    //     prevTrack1.duration
-    // );
-
-    // Check if currIndex exceeds the length of the tracklist
+    // Check if currIndex exceeds the length of the tracklist so we can loop through the tracklist again
     if (currIndex >= tracklist.length) {
       currIndex = 0; // Reset currIndex to the beginning of the tracklist
       iterationCounter++; // Increment the iteration counter
     }
 
-    // Check if we've exceeded the maximum number of iterations
+    // Check if we've exceeded the maximum number of iterations, so we should give up on trying to find a valid song
     if (iterationCounter >= 3) {
       console.log("Emergency stop: Maximum iterations reached.");
       break; // Exit the loop
     }
-
-    const track = tracklist[currIndex]; // Get the track at the current index from the tracklist array
-
-    // Check if adding the current track would exceed the maximum duration
-    if (
-      curatedTracklistTotalTime + track.duration >
-      MAX_PLAYLIST_DURATION_SECONDS
-    ) {
-      break; // Exit the loop if adding the track exceeds the maximum duration
-    }
-
-    // Calculate the remaining time until the maximum duration is reached
-    const myRemainingTime =
-      MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
+    const track = tracklist[currIndex];
 
     // Decide which set of rules to apply based on the current remaining time
     let rulesToApply;
 
-    if (
-      curatedTracklistTotalTime >=
-        MAX_PLAYLIST_DURATION_SECONDS - TOTHEWIRE_THRESHOLD_SECONDS &&
-      curatedTracklistTotalTime <
-        MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS
-    ) {
-      console.log("fff TO THE WIRE time!");
-      rulesToApply = closingTracksRules;
-    } else if (
-      myRemainingTime <=
-      MAX_PLAYLIST_DURATION_SECONDS - ALMOST_DONE_THRESHOLD_SECONDS
-    ) {
-      console.log("fff ALMOST DONE time!");
-      rulesToApply = ensureRules;
-    } else {
-      console.log("fff we still have time!");
-      rulesToApply = finalCheckRules;
-    }
+    const ALMOSTOUTOFTIME = 900;
+    const TOTHEWIRE = 800;
 
-    // if (curatedTracklistTotalTime <= TOTHEWIRE_THRESHOLD_SECONDS) {
-    //   console.log("fff TO THE WIRE time! The tracklist time is " + curatedTracklistTotalTime +
-    //       "and the ToTheWireThresh is " + TOTHEWIRE_THRESHOLD_SECONDS +
-    //       "and the AlmostDoneThresh is " + ALMOST_DONE_THRESHOLD_SECONDS +
-    //       " and the last track name is " + prevTrack1.name +
-    //       " and the last track duration is " + prevTrack1.duration);
-    //   rulesToApply = closingTracksRules;
-    // } else if (curatedTracklistTotalTime <= ALMOST_DONE_THRESHOLD_SECONDS) {
-    //   console.log("fff ALMOST DONE time! The tracklist time is " + curatedTracklistTotalTime +
-    //       "and the ToTheWireThresh is " + TOTHEWIRE_THRESHOLD_SECONDS +
-    //       "and the AlmostDoneThresh is " + ALMOST_DONE_THRESHOLD_SECONDS +
-    //       " and the last track name is " + prevTrack1.name +
-    //       " and the last track duration is " + prevTrack1.duration);
-    //   rulesToApply = ensureRules;
-    // } else {
-    //   console.log("fff we still have time! The tracklist time is " + curatedTracklistTotalTime +
-    //       "and the ToTheWireThresh is " + TOTHEWIRE_THRESHOLD_SECONDS +
-    //       "and the AlmostDoneThresh is " + ALMOST_DONE_THRESHOLD_SECONDS +
-    //       " and the last track name is " + prevTrack1.name +
-    //       " and the last track duration is " + prevTrack1.duration);
-    //   rulesToApply = finalCheckRules;
-    // }
+    if (myRemainingTime <= TOTHEWIRE) {
+      if (!lateCheckRulesApplied) {
+        rulesToApply = lateCheckRules;
+      } else {
+        // If lateCheckRules have already been applied, skip applying them
+        rulesToApply = [];
+      }
+    } else {
+      rulesToApply = [];
+
+      // Apply ensureRules if they haven't been applied already
+      if (!ensureRulesApplied.r21) {
+        rulesToApply.push(r21);
+      }
+      if (!ensureRulesApplied.r22) {
+        rulesToApply.push(r22);
+      }
+      if (!ensureRulesApplied.r23) {
+        rulesToApply.push(r23);
+      }
+      if (!ensureRulesApplied.r24) {
+        rulesToApply.push(r24);
+      }
+    }
 
     // Initialize a flag to track if any rule fails for the current track
     let ruleFailed = false;
+    let rule; // Declare the rule variable here
 
     // Iterate through the selected set of rules (either final check or ensure rules)
-    for (const rule of rulesToApply) {
+    for (rule of rulesToApply) {
+      // Remove the "const" declaration here
+      console.log("track is " + track);
       // Check if the current track violates the rule
       if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
         console.log(`Ensure/Final rule failed for track: ${track.name}`);
         ruleFailed = true;
         break; // Exit the loop early since a rule has failed
       }
+    }
 
-      // Apply general rule functions for the track
-      for (const generalRule of generalRuleFunctions) {
-        if (
-          !generalRule(
-            track,
-            prevTrack1,
-            prevTrack2,
-            curatedTracklist,
-            currIndex
-          )
-        ) {
-          console.log(`General rule failed for track: ${track.name}`);
-          ruleFailed = true;
-          break; // Exit the loop early since a rule has failed
-        }
+    // Apply general rule functions for the track, because tracks always need to follow general rules
+    for (const generalRule of generalRuleFunctions) {
+      if (
+        !generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)
+      ) {
+        console.log(`General rule failed for track: ${track.name}`);
+        ruleFailed = true;
+        break; // Exit the loop early since a rule has failed
       }
     }
 
-    // If no rules have failed, add the track to the curated tracklist
+    // If no rules have failed and ensureRules have not been applied, update the applied flag
     if (!ruleFailed) {
+      if (!lateCheckRulesApplied) {
+        lateCheckRulesApplied = true;
+      }
+
+      // Update the flags for ensureRules that have been applied
+      if (!ensureRulesApplied.r21 && rule === r21) {
+        ensureRulesApplied.r21 = true;
+      }
+      if (!ensureRulesApplied.r22 && rule === r22) {
+        ensureRulesApplied.r22 = true;
+      }
+      if (!ensureRulesApplied.r23 && rule === r23) {
+        ensureRulesApplied.r23 = true;
+      }
+      if (!ensureRulesApplied.r24 && rule === r24) {
+        ensureRulesApplied.r24 = true;
+      }
+
       addNextValidTrack(track, curatedTracklist, tracklist);
       calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
       [prevTrack1, prevTrack2] = updatePrevTracks(
@@ -1214,65 +1218,13 @@ function followTracklistRules(tracklist) {
 
     currIndex++; // Move to the next track in the tracklist
   }
-  // console.log(
-  //   "sss out of time because the curatedTracklistTotalTime is " +
-  //     curatedTracklistTotalTime +
-  //     "and the MAX_PLAYLIST_DURATION_SECONDS is " +
-  //     MAX_PLAYLIST_DURATION_SECONDS
-  // );
-  // console.log("sss shifting to closing tracks now");
 
-  //  // Search for closing tracks that meet conditions
-  //  for (const track of tracklist) {
-  //   let ruleFailed = false;
+  // finally, move the first track to the end, where it belongs
+  if (curatedTracklist.length > 0) {
+    const firstElement = curatedTracklist.shift(); // Remove the first element
+    curatedTracklist.push(firstElement); // Add it to the end
+  }
 
-  //   // Iterate through closing track rules to check if any rule fails for the current track
-  //   for (const rule of closingTracksRules) {
-  //     if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
-  //       // If a closing track rule fails, mark the rule as failed and exit the loop
-  //       ruleFailed = true;
-  //       break; // Exit the loop since a rule has failed
-  //     }
-  //   }
-
-  //   // If no closing track rules have failed, proceed to additional checks
-  //   if (!ruleFailed) {
-  //     // Iterate through general rule functions to perform additional checks
-  //     for (const generalRule of generalRuleFunctions) {
-  //       if (
-  //         !generalRule(
-  //           track,
-  //           prevTrack1,
-  //           prevTrack2,
-  //           curatedTracklist,
-  //           currIndex
-  //         )
-  //       ) {
-  //         console.log(`General rule failed for track: ${track.name}`);
-  //         ruleFailed = true;
-  //         break; // Exit the loop since a rule has failed
-  //       }
-  //     }
-  //   }
-
-  //   // If both closing track rules and general rules have passed, add the track to curatedTracklist
-  //   if (!ruleFailed) {
-  //     addNextValidTrack(track, curatedTracklist, tracklist);
-  //     calculateOrUpdateCuratedTracklistDuration(
-  //       track,
-  //       curatedTracklist
-  //     );
-  //     [prevTrack1, prevTrack2] = updatePrevTracks(
-  //       track,
-  //       prevTrack1,
-  //       prevTrack2
-  //     );
-  //   }
-  // }
-
-  // console.log("Curated Tracklist:", curatedTracklist);
-
-  // Return the final curated tracklist
   return curatedTracklist;
 }
 
@@ -1291,6 +1243,18 @@ function shuffleTracklist(tracklist) {
   }
   console.log(tracklist);
   return tracklist;
+}
+
+function shuffleArrayOfRules(shuffledRulesArray) {
+  for (let i = shuffledRulesArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledRulesArray[i], shuffledRulesArray[j]] = [
+      shuffledRulesArray[j],
+      shuffledRulesArray[i],
+    ]; // Swap elements at i and j
+  }
+
+  return shuffledRulesArray; // Return the shuffled array
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1330,10 +1294,14 @@ async function isValidTracklist(tracklist) {
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function displayDebugText(element, text, defaultText) {
-  if (text && text !== "") {
-    element.textContent = " " + text;
+  if (element) {
+    if (text && text !== "") {
+      element.textContent = " " + text;
+    } else {
+      element.textContent = defaultText;
+    }
   } else {
-    element.textContent = defaultText;
+    console.log("no element"); // TODO - why is there no element sometimes?
   }
 }
 
@@ -1503,6 +1471,7 @@ button.addEventListener("click", (event) => {
   const checkValidityOfURLS = isValidTracklist(allSongs); //
 
   const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
+
   curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
 
   const outro1 = outroAudioSounds.map(addAudioFromUrl);
