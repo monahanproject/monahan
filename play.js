@@ -646,6 +646,8 @@ function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   logRuleApplication(61, logMessage, true);
   return true;
 }
+
+
 // Rule 62: Rule 2 (only for Track 2):The 2nd track must have the placement 'beginning'.
 function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 1 && !track.placement.includes("beginning")) {
@@ -947,16 +949,17 @@ function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
   if (curatedTracklistTotalTime === 0) {
     for (const track of curatedTracklist) {
       console.log("ttt track name is " + track.name);
-      console.log("ttt track time is " + track.duration);
-      curatedTracklistTotalTime += track.duration; // Assuming track has a property 'duration'
+      console.log("ttt track time is " + (track.duration || 0)); // Use 0 if duration is undefined or null
+      curatedTracklistTotalTime += track.duration || 0;
     }
-    return curatedTracklistTotalTime;
-  } else {
-    curatedTracklistTotalTime += track.duration; // Assuming track has a property 'duration'
+  } else if (track) {
     console.log("curatedTracklistTotalTime is " + curatedTracklistTotalTime);
-    return curatedTracklistTotalTime;
+    curatedTracklistTotalTime += track.duration || 0;
   }
+
+  return curatedTracklistTotalTime;
 }
+
 
 function addNextValidTrack(track, curatedTracklist, tracks) {
   curatedTracklist.push(track);
@@ -1367,7 +1370,7 @@ function gatherAndPrintDebugInfo(song, index) {
   if (song) {
     // get debug ids so I can fill in debug info
     const currTrackNameHTMLElement = document.getElementById("currTrackName");
-    const playerTrackNameHTMLElement =
+    // const playerTrackNameHTMLElement =
       document.getElementById("playerTrackName");
 
     const currURLHTMLElement = document.getElementById("currURL");
@@ -1391,7 +1394,7 @@ function gatherAndPrintDebugInfo(song, index) {
     // creditstack defined elsewhere
 
     displayDebugText(currTrackNameHTMLElement, currName, "no name");
-    displayDebugText(playerTrackNameHTMLElement, currName, "no name");
+    // displayDebugText(playerTrackNameHTMLElement, currName, "no name");
     displayDebugText(currURLHTMLElement, currUrl, "no url");
     displayDebugText(currTagsHTMLElement, currTags, "no tags");
     displayDebugText(currDurrHTMLElement, currDurr, "no duration");
@@ -1539,6 +1542,8 @@ button.addEventListener("click", (event) => {
 
   curatedTracklist.push(...creditsTracklist);
 
+  console.log(calculateOrUpdateCuratedTracklistDuration(finalOutroAudioSounds, curatedTracklist)/60);
+
   const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
   curatedTracklist.push(...outro2);
 
@@ -1556,6 +1561,7 @@ button.addEventListener("click", (event) => {
   // findme
 
   printEntireTracklistDebug(curatedTracklist);
+
 
   window.caches
     .open("audio-pre-cache")
