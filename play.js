@@ -1,5 +1,3 @@
-// I still don't have a track with the tag "end"
-
 var myLang = localStorage["lang"] || "defaultValue";
 var player;
 var audioContext = null;
@@ -13,7 +11,7 @@ let curatedTracklistTotalTime = 0;
 let curatedTracklist;
 let timerDuration = 0;
 
-const MAX_PLAYLIST_DURATION_SECONDS = 3140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 3300; //(19m)
 
 // const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
@@ -440,20 +438,24 @@ function gatherTheCreditSongs(curatedTracklist) {
   for (let index = 0; index < curatedTracklist.length; index++) {
     const song = curatedTracklist[index];
 
-    // console.log(song.url);
     const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
-    // console.log("song credits are " + songTitles);
 
     if (song.credit == "") {
-      // console.log("song has no credit");
-    } else if (
-      trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit)
-    ) {
-      // console.log("already got this credit " + song.credit);
+      // No credit information, do nothing
     } else {
-      addToCreditsLog(song.credit);
-      createCreditObjectAndAddToArray(song);
-      // console.log("credit being added " + song.credit);
+      const matchingCreditSong = trackExistsWithAttributes(
+        arrayOfCreditSongs,
+        "url",
+        song.credit
+      );
+
+      if (matchingCreditSong) {
+        // Matching credit song found, do nothing
+      } else {
+        addToCreditsLog(song.credit);
+        createCreditObjectAndAddToArray(song);
+        // Credit being added
+      }
     }
   }
 
@@ -780,75 +782,102 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 21. The tracklist must contain at least one track with the author ALBERT.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  let trackWithAttribute = trackExistsWithAttributes(
+    curatedTracklist,
+    "author",
+    "ALBERT"
+  );
+  if (trackWithAttribute === null) {
+    trackWithAttribute = track;
+  }
   if (track.name && curatedTracklist.length >= 9) {
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "author", "ALBERT") &&
-      track.author !== "ALBERT"
-    ) {
-      const logMessage = `❌ ${track.name}: The tracklist must contain at least one track with the author ALBERT (track's author is ${track.author})`;
+    if (!trackWithAttribute && track.author !== "ALBERT") {
+      const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the author ALBERT (track's author is ${track.author})`;
       logRuleApplication(21, logMessage, false);
       return false;
     }
   }
+  console.log(`track exists with attrib ${trackWithAttribute}`);
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱 ${track.name}: The tracklist must contain at least one track with the author ALBERT (track's author is ${track.author})`;
+  const logMessage = `🌱 ${track.name}: Ensure! The tracklist must contain at least one track with the author ALBERT (track with attribute is is ${trackWithAttribute.name})`;
   logRuleApplication(21, logMessage, true);
   return true;
 }
 
-
 // Rule 22. The tracklist must contain at least one track with the author PIERREELLIOTT.
 function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  let trackWithAttribute = trackExistsWithAttributes(
+    curatedTracklist,
+    "author",
+    "PIERREELLIOTT"
+  );
+  if (trackWithAttribute === null) {
+    trackWithAttribute = track;
+  }
+
   if (curatedTracklist.length >= 9) {
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "author", "PIERREELLIOTT") &&
-      track.author !== "PIERREELLIOTT"
-    ) {
+    if (!trackWithAttribute && track.author !== "PIERREELLIOTT") {
       {
-        const logMessage = `❌ ${track.name}: The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.author})`;
+        const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.author})`;
         logRuleApplication(22, logMessage, false);
         return false;
       }
     }
   }
+  console.log(`track exists with attrib ${trackWithAttribute}`);
+
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱 ${track.name}: The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.author})`;
+  const logMessage = `🌱 ${track.name}: Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (track with attribute is is ${trackWithAttribute.name})`;
   logRuleApplication(22, logMessage, true);
   return true;
 }
 
 // Rule 23. The tracklist must contain at least one track with the form interview.
 function r23(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  let trackWithAttribute = trackExistsWithAttributes(
+    curatedTracklist,
+    "form",
+    "interview"
+  );
+  if (trackWithAttribute === null) {
+    trackWithAttribute = track;
+  }
+
   if (curatedTracklist.length >= 9) {
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "form", "interview") &&
-      track.form !== "interview"
-    ) {
-      const logMessage = `❌ ${track.name}:  The tracklist must contain at least one track with the form interview (track's form is ${track.form})`;
+    if (!trackWithAttribute && track.form !== "interview") {
+      const logMessage = `❌ ${track.name}:  Ensure! The tracklist must contain at least one track with the form interview (track's form is ${track.form})`;
       logRuleApplication(23, logMessage, false);
       return false;
     }
   }
+  console.log(`track exists with attrib ${trackWithAttribute}`);
+
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = `🌱 ${track.name}:  The tracklist must contain at least one track with the form interview (track's form is ${track.form})`;
+  const logMessage = `🌱 ${track.name}: Ensure!  The tracklist must contain at least one track with the form interview  (track with attribute is is ${trackWithAttribute.name})`;
   logRuleApplication(23, logMessage, true);
   return true;
 }
 
 // Rule 24. The tracklist must contain at least one track with the form music.
 function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  let trackWithAttribute = trackExistsWithAttributes(
+    curatedTracklist,
+    "form",
+    "music"
+  );
+  if (trackWithAttribute === null) {
+    trackWithAttribute = track;
+  }
+
   if (curatedTracklist.length >= 9) {
-    if (
-      !trackExistsWithAttributes(curatedTracklist, "form", "music") &&
-      track.form !== "music"
-    ) {
-      const logMessage = `❌ ${track.name}: The tracklist must contain at least one track with the form music (track's form is ${track.form})`;
+    if (!trackWithAttribute && track.form !== "music") {
+      const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the form music (track's form is ${track.form})`;
       logRuleApplication(24, logMessage, false);
       return false;
     }
   }
   // If the condition is not met, return true to indicate rule followed
-  const logMessage = ` 🌱! ${track.name}: The tracklist must contain at least one track with the form music (track's form is ${track.form})`;
+  const logMessage = ` 🌱! ${track.name}: Ensure! The tracklist must contain at least one track with the form music (track with attribute is is ${trackWithAttribute.name})`;
   logRuleApplication(24, logMessage, true);
   return true;
 }
@@ -859,51 +888,53 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // if this track has the tag "geese" AND if a track with the tag "geese" is already in curatedTracklist AND if prevTrack1 does NOT have the tag geese:
 function r32(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  // Check if prevTrack1 doesn't have the "geese" tag
-  const attribute = "tags";
-  const value = "geese";
+  // let trackWithAttribute = trackExistsWithAttributes(
+  //   curatedTracklist,
+  //   "tags",
+  //   "geese"
+  // );
+  // if (trackWithAttribute === null) {
+  //   trackWithAttribute = track;
+  // }
 
-  const prevTrack1HasGeeseTag = trackExistsWithAttributes(
-    prevTrack1,
-    attribute,
-    value
-  );
-
-  // Check if curatedTracklist has at least one track with the "geese" tag
-  const hasAtLeastOneGeeseTagInCurated = trackExistsWithAttributes(
+  const trackHasGeeseTag = track.tags.includes("geese");
+  const prevTrack1HasGeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
+  const curatedTracklistAlreadyHasAGeeseTag = trackExistsWithAttributes(
     curatedTracklist,
-    attribute,
-    value
+    "tags",
+    "geese"
   );
 
-  if (!prevTrack1HasGeeseTag) {
-    if (hasAtLeastOneGeeseTagInCurated) {
-      // Add the current track to the curatedTracklist if it meets the conditions
-      curatedTracklist[trackIndex] = track;
-      const logMessage = ` 🌱! ${track.name}: If there is one geese, we need two geese`;
-      logRuleApplication(32, logMessage, true);
-      return true;
-    } else {
-      let rejectionReasons = [];
-      if (!hasAtLeastOneGeeseTagInCurated) {
-        rejectionReasons.push(
-          "no track with the 'geese' tag currently in the curated tracklist"
-        );
-      }
-      if (prevTrack1HasGeeseTag) {
-        rejectionReasons.push("prevTrack1 has the 'geese' tag, so let's wait");
-      }
-
-      const logMessage = `❌ ${
-        track.name
-      }: If there is one geese, we need two geese - reason for rejection ${rejectionReasons.join(
-        ", "
-      )}`;
-      logRuleApplication(32, logMessage, false);
-      return false;
-    }
+  if (
+    trackHasGeeseTag &&
+    !prevTrack1HasGeeseTag &&
+    curatedTracklistAlreadyHasAGeeseTag
+  ) {
+    const logMessage = ` 🌱! ${track.name}: If there is one geese, we need two geese! Track has a geese tag ${trackHasGeeseTag}; and a different has a geese tag ${curatedTracklistAlreadyHasAGeeseTag}; `;
+    logRuleApplication(32, logMessage, true);
+    return true;
   } else {
-    console.log("prevTrack1 has the 'geese' tag, rule not applied.");
+    let rejectionReasons = [];
+    if (!curatedTracklistAlreadyHasAGeeseTag) {
+      rejectionReasons.push(
+        "no need! no track with the 'geese' tag currently in the curated tracklist"
+      );
+    }
+    if (prevTrack1HasGeeseTag) {
+      rejectionReasons.push(
+        "prevTrack1 has the 'geese' tag, two geese in a row feels bad"
+      );
+    }
+    if (!trackHasGeeseTag) {
+      rejectionReasons.push("this track doesn't have a geese tag");
+    }
+
+    const logMessage = `❌ ${
+      track.name
+    }: If there is one geese, we need two geese! Reason for rejection ${rejectionReasons.join(
+      ", "
+    )}`;
+    logRuleApplication(32, logMessage, false);
     return false;
   }
 }
@@ -935,20 +966,24 @@ function addNextValidTrack(track, curatedTracklist, tracks) {
   }
 }
 
-// Helper function for isThisAValidTrack to check if a track exists with the given attribute and value in the curated tracklist
+// Helper function to check if a track exists with the given attribute and value in the curated tracklist
 function trackExistsWithAttributes(curatedTracklist, attribute, value) {
-  for (const key in curatedTracklist) {
-    if (curatedTracklist.hasOwnProperty(key)) {
-      const track = curatedTracklist[key];
+  for (const track of curatedTracklist) {
+    if (typeof track === "object" && track.hasOwnProperty(attribute)) {
       if (track[attribute] === value) {
-        return true;
+        return track; // Return the first matching track
       }
     }
   }
-  return false;
+  return null; // Return null if no matching track is found
 }
 
-function logRuleApplication(ruleNumber, description, isApplied, message = null) {
+function logRuleApplication(
+  ruleNumber,
+  description,
+  isApplied,
+  message = null
+) {
   const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
   addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
@@ -958,8 +993,6 @@ function logRuleApplication(ruleNumber, description, isApplied, message = null) 
     updateLogDisplay();
   }
 }
-
-
 
 // // Helper function for logging rules
 // function logRuleApplication(
@@ -1017,9 +1050,9 @@ function followTracklistRules(tracklist) {
 
   // Define ensure and final check rules for phase 2
   // Define ensure and final check rules for phase 2
-  const unshuffledEnsureRules = [r21, r22, r23, r24];
+  const unshuffledEnsureRules = [r21, r22, r23, r24, r32];
   // Shuffle the array
-  shuffleArrayOfRules(unshuffledEnsureRules);
+  // shuffleArrayOfRules(unshuffledEnsureRules);
 
   const lateCheckRules = [r32];
   // Define closing track rules
@@ -1110,24 +1143,36 @@ function followTracklistRules(tracklist) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Calculate the remaining time until the maximum playlist duration is reached
-  const myRemainingTime =
-    MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
 
-  // let track;
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxx   create flags for ensure rules   xxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const ensureRules = shuffleArrayOfRules(unshuffledEnsureRules);
+
+  // Flags to track successfully enforced ensure rules
+  const ensureRulesEnforced = {};
+
+  // Initialize the flags based on rule functions
+  ensureRules.forEach((rule) => {
+    // Extract the rule number dynamically from the rule function's name
+    const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
+    ensureRulesEnforced[`r${ruleNumber}`] = false;
+  });
+
+  // Flag to track whether lateCheckRules have passed
+  let lateCheckRulesPassed = false;
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxx   iteration code to make sure I loop   xxxxxxxxxxxxxx
+  // xxxxxxx   through the list multiple times but   xxxxxxxxxxxxxx
+  // xxxxxxx   not infinitely!                       xxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   let iterationCounter = 0; // Initialize the iteration counter
-  let ensureRulesApplied = {
-    r21: false,
-    r22: false,
-    r23: false,
-    r24: false,
-  }; // Initialize flags for ensureRules
-
-  let lateCheckRulesApplied = false; // Initialize late check rules flag
 
   while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-    // Check if currIndex exceeds the length of the tracklist so we can loop through the tracklist again
+    // Check if currIndex exceeds the length of the tracklist, if so, we need to loop through the tracklist again so we don't run out of tracks
     if (currIndex >= tracklist.length) {
       currIndex = 0; // Reset currIndex to the beginning of the tracklist
       iterationCounter++; // Increment the iteration counter
@@ -1138,97 +1183,97 @@ function followTracklistRules(tracklist) {
       console.log("Emergency stop: Maximum iterations reached.");
       break; // Exit the loop
     }
-    const track = tracklist[currIndex];
+
+    const track = tracklist[currIndex]; // Get the track at the current index from the tracklist array
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    // xxxxxxx   decide which rules to apply based on time   xxxxxxxxxxxxxx
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    // Calculate the remaining time until the maximum playlist duration is reached
+    const myRemainingTime =
+      MAX_PLAYLIST_DURATION_SECONDS - curatedTracklistTotalTime;
 
     // Decide which set of rules to apply based on the current remaining time
     let rulesToApply;
 
-    const ALMOSTOUTOFTIME = 900;
-    const TOTHEWIRE = 800;
+    const ALMOSTOUTOFTIME = 2200;
+    const TOTHEWIRE = 2100;
 
     if (myRemainingTime <= TOTHEWIRE) {
-      if (!lateCheckRulesApplied) {
+      if (!lateCheckRulesPassed) {
         rulesToApply = lateCheckRules;
+        console.log("checking lateCheckRules " + rulesToApply);
       } else {
         // If lateCheckRules have already been applied, skip applying them
         rulesToApply = [];
       }
     } else {
-      rulesToApply = [];
+      console.log("checking ensureRules " + rulesToApply);
 
-      // Apply ensureRules if they haven't been applied already
-      if (!ensureRulesApplied.r21) {
-        rulesToApply.push(r21);
-      }
-      if (!ensureRulesApplied.r22) {
-        rulesToApply.push(r22);
-      }
-      if (!ensureRulesApplied.r23) {
-        rulesToApply.push(r23);
-      }
-      if (!ensureRulesApplied.r24) {
-        rulesToApply.push(r24);
-      }
+      rulesToApply = ensureRules;
+      // console.log("rulesToApply " + rulesToApply)
     }
 
-    // Initialize a flag to track if any rule fails for the current track
-    let ruleFailed = false;
     let rule; // Declare the rule variable here
+    let ruleFailed = false; // Initialize the ruleFailed flag as false before the loop
 
     // Iterate through the selected set of rules (either final check or ensure rules)
     for (rule of rulesToApply) {
-      // Remove the "const" declaration here
-      console.log("track is " + track);
+      console.log("yy" + rule);
       // Check if the current track violates the rule
       if (!rule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
         console.log(`Ensure/Final rule failed for track: ${track.name}`);
-        ruleFailed = true;
+        ruleFailed = true; // Set ruleFailed to true when a rule fails
         break; // Exit the loop early since a rule has failed
+      } else {
+        console.log(
+          `Ensure/Final rule passed for track: ${track.name} and rule + ${rule}`
+        );
+
+       
+
+        console.log(rule);
+        // Extract the rule number of the passed rule
+        const passedRuleNumber = parseInt(rule.name.match(/\d+/)[0]);
+
+        // Update the flag for the passed rule
+        ensureRulesEnforced[`r${passedRuleNumber}`] = true;
+        console.log(`update flag for rule number r${passedRuleNumber}`);
+        console.log(`update flag for rule ${rule}}`);
+
+        // Only set lateCheckRulesPassed to true when lateCheckRules are successfully passed
+        if (!lateCheckRulesPassed && rulesToApply === lateCheckRules) {
+          lateCheckRulesPassed = true;
+        }
       }
     }
 
     // Apply general rule functions for the track, because tracks always need to follow general rules
-    for (const generalRule of generalRuleFunctions) {
-      if (
-        !generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)
-      ) {
-        // console.log(`General rule failed for track: ${track.name}`);
-        ruleFailed = true;
-        break; // Exit the loop early since a rule has failed
-      }
-    }
-
-    // If no rules have failed and ensureRules have not been applied, update the applied flag
     if (!ruleFailed) {
-      if (!lateCheckRulesApplied) {
-        lateCheckRulesApplied = true;
+      for (const generalRule of generalRuleFunctions) {
+        if (
+          !generalRule(
+            track,
+            prevTrack1,
+            prevTrack2,
+            curatedTracklist,
+            currIndex
+          )
+        ) {
+          console.log(`www General rule failed for track: ${track.name}`);
+          ruleFailed = true;
+          break; // Exit the loop early since a general rule has failed
+        }
       }
-
-      // Update the flags for ensureRules that have been applied
-      if (!ensureRulesApplied.r21 && rule === r21) {
-        ensureRulesApplied.r21 = true;
-      }
-      if (!ensureRulesApplied.r22 && rule === r22) {
-        ensureRulesApplied.r22 = true;
-      }
-      if (!ensureRulesApplied.r23 && rule === r23) {
-        ensureRulesApplied.r23 = true;
-      }
-      if (!ensureRulesApplied.r24 && rule === r24) {
-        ensureRulesApplied.r24 = true;
-      }
-
-      addNextValidTrack(track, curatedTracklist, tracklist);
-      calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-      [prevTrack1, prevTrack2] = updatePrevTracks(
-        track,
-        prevTrack1,
-        prevTrack2
-      );
     }
+
+    addNextValidTrack(track, curatedTracklist, tracklist);
+    calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+    [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
 
     currIndex++; // Move to the next track in the tracklist
-  }
+  } // TIME IS UP!
 
   // finally, move the first track to the end, where it belongs
   if (curatedTracklist.length > 0) {
@@ -1257,6 +1302,7 @@ function shuffleTracklist(tracklist) {
 }
 
 function shuffleArrayOfRules(shuffledRulesArray) {
+  const lastElement = shuffledRulesArray.pop(); // Remove the last element
   for (let i = shuffledRulesArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledRulesArray[i], shuffledRulesArray[j]] = [
@@ -1264,9 +1310,10 @@ function shuffleArrayOfRules(shuffledRulesArray) {
       shuffledRulesArray[i],
     ]; // Swap elements at i and j
   }
-
+  shuffledRulesArray.push(lastElement); // Add the last element back to the end
   return shuffledRulesArray; // Return the shuffled array
 }
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX CHECK THOSE TRACKS!!!! XXXXXX
