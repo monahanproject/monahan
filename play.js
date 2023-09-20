@@ -15,7 +15,7 @@ let timerDuration = 0;
 
 // const MAX_PLAYLIST_DURATION_SECONDS = 3300; //(19m)
 
-const MAX_PLAYLIST_DURATION_SECONDS = 2140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 var elapsedDurationSeconds = 0;
