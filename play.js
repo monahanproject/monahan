@@ -126,7 +126,10 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   });
 
   skipForwardButton.addEventListener("click", () => {
+    // console.log(`skip forward button - pressed`);
     if (playerPlayState === "play") {
+      // console.log(`skip forward button - playerstate is play`);
+
       let newTime = player.currentTime + 20;
       newTime = Math.min(newTime, totalDurationSeconds); //findmee
       // Directly update the timer display based on the new time
