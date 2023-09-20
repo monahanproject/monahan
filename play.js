@@ -15,7 +15,7 @@ let timerDuration = 0;
 
 // const MAX_PLAYLIST_DURATION_SECONDS = 3300; //(19m)
 
-const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 2140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 var elapsedDurationSeconds = 0;
@@ -207,13 +207,10 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
   }
   totalDurationSeconds = curatedTracklistTotalTime;
 
-  const remainingDurationSeconds =
-    totalDurationSeconds - (elapsedSeconds + previousDuration);
+  const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
 
   // Determine the timer display based on remaining time
-  const { minutes, seconds } = calculateMinutesAndSeconds(
-    remainingDurationSeconds
-  );
+  const { minutes, seconds } = calculateMinutesAndSeconds(remainingDurationSeconds);
   updateTimeDisplay(minutes, seconds);
 }
 
@@ -264,8 +261,7 @@ function displayLoadingGif() {
   let musicPlayerDiv = document.getElementById("musicPlayerDiv");
   let musicPlayerh1 = document.getElementById("musicPlayerH1");
   // need language logic here
-  musicPlayerh1.innerHTML =
-    "Generating beautiful sounds for you, this might take a minute";
+  musicPlayerh1.innerHTML = "Generating beautiful sounds for you, this might take a minute";
   document.getElementById("launchMusicPlayerForm").remove();
   // document.getElementById("textTranscript").remove();
   // temp loader content
@@ -428,11 +424,7 @@ function gatherTheCreditSongs(curatedTracklist) {
     if (song.credit == "") {
       // No credit information, do nothing
     } else {
-      const matchingCreditSong = trackExistsWithAttributes(
-        arrayOfCreditSongs,
-        "url",
-        song.credit
-      );
+      const matchingCreditSong = trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit);
 
       if (matchingCreditSong) {
         // Matching credit song found, do nothing
@@ -515,11 +507,7 @@ function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 }
 // Rule 12: Tracks with the form shorts and the language musical can never follow tracks with the form music.
 function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  if (
-    track.form === "shorts" &&
-    track.language === "musical" &&
-    prevTrack1.form === "music"
-  ) {
+  if (track.form === "shorts" && track.language === "musical" && prevTrack1.form === "music") {
     const logMessage = `❌ ${track.name}: Tracks with form 'shorts' (track's form is ${track.form}) and language 'musical' (track's language is ${track.language}) cannot follow tracks with form 'music' (last track's form is ${prevTrack1.form})`;
     logRuleApplication(12, logMessage, false);
     return false;
@@ -531,13 +519,7 @@ function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 }
 // Rule 13: Tracks with the form music can never follow tracks with both the form shorts and the language musical.
 function r13(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  if (
-    track.form === "music" &&
-    curatedTracklist.some(
-      (prevTrack) =>
-        prevTrack.form === "shorts" && prevTrack.language === "musical"
-    )
-  ) {
+  if (track.form === "music" && curatedTracklist.some((prevTrack) => prevTrack.form === "shorts" && prevTrack.language === "musical")) {
     const logMessage = `❌ ${track.name}: Tracks with form 'music' (track's form ${track.form}) cannot follow tracks with form 'shorts' and language 'musical' (last track's form was ${prevTrack1.form} and language was ${prevTrack1.language})`;
     logRuleApplication(13, logMessage, false);
     return false;
@@ -553,8 +535,7 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     prevTrack1 &&
     prevTrack1.author.trim() !== "" &&
     track.backgroundMusic.trim() !== "" &&
-    (track.backgroundMusic === prevTrack1.author ||
-      track.author === prevTrack1.backgroundMusic)
+    (track.backgroundMusic === prevTrack1.author || track.author === prevTrack1.backgroundMusic)
   ) {
     const logMessage = `❌ ${track.name}: The value for backgroundMusic (track's background Music is '${track.backgroundMusic}') should never match the author of the track before (last track's author is '${prevTrack1.author}') or the backgroundMusic of the track before (last track's backgroundMusic is ${prevTrack1.backgroundMusic})`;
     logRuleApplication(14, logMessage, false);
@@ -567,12 +548,7 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 }
 // Rule 15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  if (
-    track.tags.includes("laughter") &&
-    track &&
-    prevTrack1.sentiment === "" &&
-    prevTrack1.sentiment === "heavy"
-  ) {
+  if (track.tags.includes("laughter") && track && prevTrack1.sentiment === "" && prevTrack1.sentiment === "heavy") {
     const logMessage = `❌ ${track.name}: If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (track's tags are ${track.tags})`;
     logRuleApplication(15, logMessage, false);
     return false;
@@ -584,12 +560,7 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 }
 // Rule 16: If the previous track has length long and form music, this track must have the form interview`;
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  if (
-    prevTrack1 &&
-    prevTrack1.length === "long" &&
-    prevTrack1.form === "music" &&
-    track.form !== "interview"
-  ) {
+  if (prevTrack1 && prevTrack1.length === "long" && prevTrack1.form === "music" && track.form !== "interview") {
     const logMessage = `❌ ${track.name}: If the previous track has length 'long' (last track's length is ${prevTrack1.length}) and form 'music' (last track's form is ${prevTrack1.form}), this track must have the form 'interview' (track's form is ${track.form})`;
     logRuleApplication(16, logMessage, false);
     return false; // Return false to indicate the rule is broken.
@@ -646,10 +617,7 @@ function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 63: Rule 3 (only for Track 3): The 3rd track must have the placement beginning and a different form than the 2nd track.
 function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (
-    (trackIndex === 2 && !track.placement.includes("beginning")) ||
-    (trackIndex === 2 && track.form === prevTrack1.form)
-  ) {
+  if ((trackIndex === 2 && !track.placement.includes("beginning")) || (trackIndex === 2 && track.form === prevTrack1.form)) {
     const logMessage = `❌ (${track.name}): The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
     logRuleApplication(63, logMessage, false);
     return false;
@@ -661,10 +629,7 @@ function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 }
 // Rule 64: Rule 4 (only for Track 4): The 4th track must have the placement middle and a different form than the 3rd track.
 function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (
-    (trackIndex === 3 && !track.placement.includes("middle")) ||
-    (trackIndex === 3 && track.form === prevTrack1.form)
-  ) {
+  if ((trackIndex === 3 && !track.placement.includes("middle")) || (trackIndex === 3 && track.form === prevTrack1.form)) {
     const logMessage = `❌ (${track.name}): The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
     logRuleApplication(64, logMessage, false);
     return false;
@@ -678,11 +643,7 @@ function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 65: Rule 5 (only for Track 5): The 5th track must have the form 'short'; must have the placement 'middle'; and have a different language than the 4th track.
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 4) {
-    if (
-      track.form !== "short" ||
-      !track.placement.includes("middle") ||
-      track.language === prevTrack1.language
-    ) {
+    if (track.form !== "short" || !track.placement.includes("middle") || track.language === prevTrack1.language) {
       const logMessage = `❌ (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
       logRuleApplication(65, logMessage, false);
       return false;
@@ -717,11 +678,7 @@ function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 67: Rule 7 (only for Track 7): The 7th track must have the placement 'middle', a different form than the 6th track, and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
 function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 6) {
-    if (
-      !track.placement.includes("middle") ||
-      track.form === prevTrack1.form ||
-      (track.form !== "MUSIC" && track.language === prevTrack1.language)
-    ) {
+    if (!track.placement.includes("middle") || track.form === prevTrack1.form || (track.form !== "MUSIC" && track.language === prevTrack1.language)) {
       const logMessage = `❌ (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
       logRuleApplication(67, logMessage, false);
       return false;
@@ -746,10 +703,7 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
       logRuleApplication(68, logMessage, false);
       return false;
     }
-    if (
-      track.language === prevTrack1.language ||
-      track.language === prevTrack2.language
-    ) {
+    if (track.language === prevTrack1.language || track.language === prevTrack2.language) {
       const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
@@ -766,11 +720,7 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function c21(curatedTracklist) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "author",
-    "ALBERT"
-  );
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "author", "ALBERT");
   if (!trackWithAttribute) {
     const logMessage = `❌ Ensure! The tracklist must contain at least one track with the author ALBERT`;
     logRuleApplication(21, logMessage, false);
@@ -782,11 +732,7 @@ function c21(curatedTracklist) {
 }
 
 function c22(curatedTracklist) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "author",
-    "PIERREELLIOTT"
-  );
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "author", "PIERREELLIOTT");
   if (!trackWithAttribute) {
     const logMessage = `❌ Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT`;
     logRuleApplication(22, logMessage, false);
@@ -798,11 +744,7 @@ function c22(curatedTracklist) {
 }
 
 function c23(curatedTracklist) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "form",
-    "interview"
-  );
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "form", "interview");
   if (!trackWithAttribute) {
     const logMessage = `❌ Ensure! The tracklist must contain at least one track with the form interview`;
     logRuleApplication(23, logMessage, false);
@@ -814,11 +756,7 @@ function c23(curatedTracklist) {
 }
 
 function c24(curatedTracklist) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "form",
-    "music"
-  );
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "form", "music");
 
   if (!trackWithAttribute) {
     const logMessage = `❌ Ensure! The tracklist must contain at least one track with the form music`;
@@ -886,49 +824,50 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXXXXX Geese RULE (AT THE VERY END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// if this track has the tag "geese" AND if a track with the tag "geese" is already in curatedTracklist AND if prevTrack1 does NOT have the tag geese:
 function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  const trackHasgeeseTag = track.tags.includes("geese");
-  const prevTrack1HasgeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
-  const curatedTracklistAlreadyHasAgeeseTag = trackExistsWithAttributes(
-    curatedTracklist,
-    "tags",
-    "geese"
-  );
+  const trackHasGeeseTag = track.tags.includes("geese");
+  // const prevTrack1HasGeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
+  const curatedTracklistAlreadyHasGeeseTag = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
 
-  if (
-    trackHasgeeseTag &&
-    !prevTrack1HasgeeseTag &&
-    curatedTracklistAlreadyHasAgeeseTag
-  ) {
-    const logMessage = ` 🦆! ${track.name}: If there is one geese, we need two geese! Track has a geese tag ${trackHasgeeseTag}; and a different has a geese tag ${curatedTracklistAlreadyHasAgeeseTag}; `;
-    logRuleApplication(25, logMessage, true);
+  if (trackHasGeeseTag && curatedTracklistAlreadyHasGeeseTag) {
+    console.log(`🦆! ${track.name}: If there is one geese, we need two geese! trackHasGeeseTag: ${trackHasGeeseTag} and curatedTracklistAlreadyHasGeeseTag: ${curatedTracklistAlreadyHasGeeseTag}`);
     return true;
   } else {
-    let rejectionReasons = [];
-    if (!curatedTracklistAlreadyHasAgeeseTag) {
-      rejectionReasons.push(
-        "no need! no track with the 'geese' tag currently in the curated tracklist"
-      );
-    }
-    if (prevTrack1HasgeeseTag) {
-      rejectionReasons.push(
-        "prevTrack1 has the 'geese' tag, two geese in a row feels bad"
-      );
-    }
-    if (!trackHasgeeseTag) {
-      rejectionReasons.push("this track doesn't have a geese tag");
-    }
-
-    const logMessage = `❌ ${
-      track.name
-    }: If there is one geese, we need two geese! Reason for rejection ${rejectionReasons.join(
-      ", "
-    )}`;
-    logRuleApplication(25, logMessage, false);
+    console.log(`❌ ${track.name}: If there is one geese, we need two geese!`);
     return false;
   }
 }
+
+
+// if this track has the tag "geese" AND if a track with the tag "geese" is already in curatedTracklist AND if prevTrack1 does NOT have the tag geese:
+// function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+//   console.log(`🦆 Running geese rule`);
+
+//   const trackHasgeeseTag = track.tags.includes("geese");
+//   const prevTrack1HasgeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
+//   const curatedTracklistAlreadyHasAgeeseTag = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
+
+//   if (trackHasgeeseTag && !prevTrack1HasgeeseTag && curatedTracklistAlreadyHasAgeeseTag) {
+//     const logMessage = ` 🦆! ${track.name}: If there is one geese, we need two geese! Track has a geese tag ${trackHasgeeseTag}; and a different has a geese tag ${curatedTracklistAlreadyHasAgeeseTag}; `;
+//     logRuleApplication(25, logMessage, true);
+//     return true;
+//   } else {
+//     let rejectionReasons = [];
+//     if (!curatedTracklistAlreadyHasAgeeseTag) {
+//       rejectionReasons.push("no need! no track with the 'geese' tag currently in the curated tracklist");
+//     }
+//     if (prevTrack1HasgeeseTag) {
+//       rejectionReasons.push("prevTrack1 has the 'geese' tag, two geese in a row feels bad");
+//     }
+//     if (!trackHasgeeseTag) {
+//       rejectionReasons.push("this track doesn't have a geese tag");
+//     }
+
+//     const logMessage = `❌ ${track.name}: If there is one geese, we need two geese! Reason for rejection ${rejectionReasons.join(", ")}`;
+//     logRuleApplication(25, logMessage, false);
+//     return false;
+//   }
+// }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
@@ -976,12 +915,7 @@ function trackExistsWithAttributes(curatedTracklist, attribute, value) {
   return null; // Return null if no matching track is found
 }
 
-function logRuleApplication(
-  ruleNumber,
-  description,
-  isApplied,
-  message = null
-) {
+function logRuleApplication(ruleNumber, description, isApplied, message = null) {
   const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
   addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
@@ -1045,13 +979,7 @@ function followTracklistRules(tracklist) {
     while (!trackPassedRule && currIndex < tracklist.length) {
       const track = tracklist[currIndex];
       // Apply the specific rule to the current track
-      const isSpecificRuleApplied = ruleFunction(
-        track,
-        prevTrack1,
-        prevTrack2,
-        curatedTracklist,
-        trackIndex
-      );
+      const isSpecificRuleApplied = ruleFunction(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex);
 
       // Check if the specific rule is met
       if (!isSpecificRuleApplied) {
@@ -1064,15 +992,7 @@ function followTracklistRules(tracklist) {
       // so we don't deal with previous tracks before we have them
       if (trackIndex > 2) {
         for (const generalRule of generalRuleFunctions) {
-          if (
-            !generalRule(
-              track,
-              prevTrack1,
-              prevTrack2,
-              curatedTracklist,
-              currIndex
-            )
-          ) {
+          if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
             console.log(`General rule failed for track: ${track.name}`);
             generalRulesPassed = false;
             break; // Stop checking other general rules
@@ -1084,18 +1004,11 @@ function followTracklistRules(tracklist) {
       if (generalRulesPassed) {
         // All conditions met, add the track to curatedTracklist
         addNextValidTrack(track, curatedTracklist, tracklist);
-        curatedTracklistTotalTime = calculateOrUpdateCuratedTracklistDuration(
-          track,
-          curatedTracklist
-        );
+        curatedTracklistTotalTime = calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
         console.log(`⭐ Added Base Track! ${track.name} ⭐`);
 
         // Update the previous tracks with the added track
-        [prevTrack1, prevTrack2] = updatePrevTracks(
-          track,
-          prevTrack1,
-          prevTrack2
-        );
+        [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
 
         trackPassedRule = true; // Mark that the track has passed the current rule
         trackIndex++; // Increment trackIndex to move to the next track in curatedTracklist
@@ -1110,13 +1023,26 @@ function followTracklistRules(tracklist) {
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  let gotAGeese = false;
-  let gotASecondGeese = false;
-  let gotEnoughGeese = false;
+  // let gotAFirstGeese = false;
+  // let gotASecondGeese = false;
   let addedGeeseRuleFlag = false;
+
 
   // Flags to track successfully enforced ensure rules
   const ensureRulesEnforced = {};
+
+  // function checkAndAddGeese(track) {
+  //   if (track.tags.includes("geese")) {
+  //     if (!gotAFirstGeese) {
+  //       gotAFirstGeese = track;
+  //       console.log(`🦆 Found a firstgeese late in the game! Track with 'geese' tag is ${track.name} and tags are ${track.tags}`);
+  //     } else if (!gotASecondGeese) {
+  //       gotASecondGeese = track;
+  //       console.log(`🦆 Found a secondgeese late in the game! Track with 'geese' tag is ${track.name} and tags are ${track.tags}`);
+  //     }
+  //   }
+  // }
+  
 
   // Initialize ensure rules and set flags based on other functions
   function initializeEnsureRules() {
@@ -1141,8 +1067,10 @@ function followTracklistRules(tracklist) {
       markEnsureRuleEnforced(24);
     }
 
-    // look for a Geese (this needs to happen once at the beginning & I could manually check each new track
-    gotAGeese = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
+    // gotAFirstGeese = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
+    // if (gotAFirstGeese) {
+    //   console.log(`🦆 Found a firstgeese EARLY in the game! Track with 'geese' tag is ${gotAFirstGeese.name} and tags are ${gotAFirstGeese.tags}`);
+    // }
 
     return ensureRules; // Return the initialized ensureRules
   }
@@ -1162,7 +1090,7 @@ function followTracklistRules(tracklist) {
     ensureRulesEnforced[`r${ruleNumber}`] = true;
   }
 
-  // Ensure a single track against all ensure rules
+  // Ensure a single track against all ensure rules - is this the right way to do it?
   function ensureTrack(track, currIndex, ensureRules) {
     for (const rule of ensureRules) {
       const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
@@ -1182,94 +1110,71 @@ function followTracklistRules(tracklist) {
   // Ensure a single track against general rules
   function ensureGeneralRules(track, currIndex) {
     for (const generalRule of generalRuleFunctions) {
-      if (
-        !generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)
-      ) {
+      if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
         return false; // General rule failed
       }
     }
     return true; // All general rules passed
   }
 
-  //// Main ensure rules loop
+  // Main ensure rules loop
   function followEnsureRulesLoop(ensureRules) {
     let iterationCounter = 0;
-
-    while (
-      curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS &&
-      !checkAllEnsureRulesEnforced() &&
-      iterationCounter < 3
-    ) {
-      // reset counter and loop through tracklist again
+  
+    while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS && !checkAllEnsureRulesEnforced() && iterationCounter < 3) {
       if (currIndex >= tracklist.length) {
         currIndex = 0;
         iterationCounter++;
       }
-
-      // if I found a Geese during setup, but don't have enough geese
-      if (gotAGeese && !gotEnoughGeese) {
-        if (gotAGeese && gotASecondGeese) {
-          gotEnoughGeese = true;
-          console.log("no more geese, we're full!");
-        } else if (gotAGeese && !addedGeeseRuleFlag) {
-          const ensureRules = [...ensureRules, ...lateCheckRules];
-          addedGeeseRuleFlag = true;
-          console.log("I added the geese rule!");
-        } else {
-          // do nothing
-        }
-      }
-      console.log("no geese yet!");
-
+  
       if (!checkAllEnsureRulesEnforced()) {
         const track = tracklist[currIndex];
-        if (
-          ensureTrack(track, currIndex, ensureRules) &&
-          ensureGeneralRules(track, currIndex)
-        ) {
+        if (ensureTrack(track, currIndex, ensureRules) && ensureGeneralRules(track, currIndex)) {
           markEnsureRuleEnforced(track, currIndex);
-
-          // check if this track has a geese tag
-          if (track.tags.includes("geese") && !gotAGeese) {
-            gotAGeese = track;
-          } else if (track.tags.includes("geese") && gotAGeese) {
-            gotASecondGeese = track;
-            gotEnoughGeese = true;
-          }
-
           addNextValidTrack(track, curatedTracklist, tracklist);
-          calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-          console.log(
-            `⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins}`
-          );
           console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
+          calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+          console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
         }
-
+        checkAndAddGeese(track); // Check for geese here
+  
         currIndex++;
       }
     }
   }
 
-  // Main general rules loop
-  function followGeneralRulesLoop() {
-    while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-      if (currIndex >= tracklist.length) {
-        currIndex = 0;
-      }
-
-      const track = tracklist[currIndex];
-
-      if (ensureGeneralRules(track, currIndex)) {
-        addNextValidTrack(track, curatedTracklist, tracklist);
-        calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-        console.log(
-          `⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins} `
-        );
-        console.log(`⭐ Added General Rules Track! ${track.name} ⭐`);
-      }
-      currIndex++;
+/// Main general rules loop
+function followGeneralRulesLoop() {
+  while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
+    if (currIndex >= tracklist.length) {
+      currIndex = 0;
     }
+
+    const track = tracklist[currIndex];
+    checkAndAddGeese(track); // Check for geese at the beginning of the loop
+
+    if (ensureGeneralRules(track, currIndex)) {
+      console.log(`⭐ Added General Track! ${track.name} ⭐`);
+      addNextValidTrack(track, curatedTracklist, tracklist);
+      calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+      console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+
+      // Check if a track with the "goose" tag exists in the curatedTracklist
+      const curatedTrackWithGoose = curatedTracklist.find((t) => t.tags.includes("geese"));
+      if (curatedTrackWithGoose && !gotASecondGeese) {
+        // Add a second track with the "goose" tag (assuming one hasn't been added yet)
+        const secondGooseTrack = tracklist.find((t) => t.tags.includes("geese") && t !== curatedTrackWithGoose);
+        if (secondGooseTrack && ensureGeneralRules(secondGooseTrack, currIndex)) {
+          addNextValidTrack(secondGooseTrack, curatedTracklist, tracklist);
+          console.log(`⭐ Added Second Goose Track! ${secondGooseTrack.name} ⭐`);
+          gotASecondGeese = true; // Mark that a second "goose" track has been added
+        }
+      }
+    }
+    currIndex++;
   }
+  console.log("⏰ Out of time!");
+}
 
   // Main execution
   const ensureRules = initializeEnsureRules(); // Get the initialized ensureRules
@@ -1306,10 +1211,7 @@ function shuffleArrayOfRules(shuffledRulesArray) {
   const lastElement = shuffledRulesArray.pop(); // Remove the last element
   for (let i = shuffledRulesArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffledRulesArray[i], shuffledRulesArray[j]] = [
-      shuffledRulesArray[j],
-      shuffledRulesArray[i],
-    ]; // Swap elements at i and j
+    [shuffledRulesArray[i], shuffledRulesArray[j]] = [shuffledRulesArray[j], shuffledRulesArray[i]]; // Swap elements at i and j
   }
   shuffledRulesArray.push(lastElement); // Add the last element back to the end
   return shuffledRulesArray; // Return the shuffled array
@@ -1449,15 +1351,11 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     const tags = shuffledSongsWithOpen[i].tags;
 
     if (Array.isArray(placement) && placement.some((value) => value !== "")) {
-      itemText += `<span style="${labelStyle}">placement:</span> ${placement
-        .filter((value) => value !== "")
-        .join(", ")}, `;
+      itemText += `<span style="${labelStyle}">placement:</span> ${placement.filter((value) => value !== "").join(", ")}, `;
     }
 
     if (Array.isArray(tags) && tags.some((value) => value !== "")) {
-      itemText += `<span style="${labelStyle}">tags:</span> ${tags
-        .filter((value) => value !== "")
-        .join(", ")}, `;
+      itemText += `<span style="${labelStyle}">tags:</span> ${tags.filter((value) => value !== "").join(", ")}, `;
     }
 
     // Remove the trailing ", " if it exists
@@ -1500,9 +1398,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
   setTimeout(() => {
     const nextAudio = songs[index + 1];
     nextAudio.preload = "auto";
-    fetchAndCacheAudio(nextAudio.url, cache).then((p) =>
-      console.log(`loaded ${nextAudio.url} into cache`)
-    );
+    fetchAndCacheAudio(nextAudio.url, cache).then((p) => console.log(`loaded ${nextAudio.url} into cache`));
   }, timeoutDurationMs);
   gatherAndPrintDebugInfo(song, index); // print all the debug info to screen
 
@@ -1557,7 +1453,5 @@ button.addEventListener("click", (event) => {
 
   printEntireTracklistDebug(curatedTracklist);
 
-  window.caches
-    .open("audio-pre-cache")
-    .then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+  window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });
