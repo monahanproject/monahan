@@ -13,8 +13,6 @@ let curatedTracklistTotalTimeInMins;
 let curatedTracklist;
 let timerDuration = 0;
 
-// const MAX_PLAYLIST_DURATION_SECONDS = 3300; //(19m)
-
 const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
@@ -129,7 +127,6 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     // console.log(`skip forward button - pressed`);
     if (playerPlayState === "play") {
       // console.log(`skip forward button - playerstate is play`);
-
       let newTime = player.currentTime + 20;
       newTime = Math.min(newTime, totalDurationSeconds); //findmee
       // Directly update the timer display based on the new time
@@ -445,6 +442,80 @@ function gatherTheCreditSongs(curatedTracklist) {
   // console.log(arrayOfCreditSongs);
   return arrayOfCreditSongs;
 }
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  ~~~~~~ transcript CREATION ~~~~~~~
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+let transcript = ''; // Global variable to store the transcript
+let language = 'english'; // Global variable to set the language with English as the default
+let transcriptVisible = false; // Flag to track if transcript is visible
+
+// Function to process text segments and apply styles
+function processTextSegment(segment) {
+  let text = segment.text;
+
+  // Check if the segment should be bold
+  if (segment.bold) {
+    text = `<strong>${text}</strong>`;
+  }
+
+  // Check for other styling conditions and apply them as needed
+  // You can add more conditions here based on your requirements
+
+  return text;
+}
+
+// Function to update the transcript based on the selected language
+// Function to update the transcript based on the selected language
+function updateTranscript() {
+  const transcriptContainer = document.getElementById("transcriptContent");
+  transcriptContainer.innerHTML = ''; // Clear previous content
+  for (let index = 0; index < curatedTracklist.length; index++) {
+    const song = curatedTracklist[index];
+
+    // Check if the language is English and if "engTrans" exists and is not empty
+    if (language === 'english' && song.engTrans && song.engTrans.trim() !== "") {
+      const engTranscript = song.engTrans;
+
+      // Create a new paragraph element to hold the HTML content
+      const paragraph = document.createElement("p");
+      paragraph.innerHTML = engTranscript;
+
+      // Append the paragraph to the transcript container
+      transcriptContainer.appendChild(paragraph);
+    }
+
+    // Add logic for other languages if needed
+  }
+}
+
+
+// Function to create and toggle the transcript button
+function createAndToggleTranscriptButton() {
+  const transcriptButton = document.createElement("button");
+  transcriptButton.textContent = "Show Transcript";
+  transcriptButton.id = "transcriptButton"; // Assign an ID for styling
+  document.body.appendChild(transcriptButton);
+
+  transcriptButton.addEventListener("click", function () {
+    if (transcriptVisible) {
+      transcriptContent.style.display = "none";
+      transcriptButton.textContent = "Show Transcript";
+    } else {
+      updateTranscript();
+      transcriptContent.textContent = transcript;
+      transcriptContent.style.display = "block";
+      transcriptButton.textContent = "Hide Transcript";
+    }
+    transcriptVisible = !transcriptVisible; // Toggle the flag
+  });
+}
+
+// Create a "transcriptContent" element
+const transcriptContent = document.createElement("div");
+transcriptContent.id = "transcriptContent"; // Assign the "id" attribute
+transcriptContent.style.display = "none"; // Initially hide the transcript
+document.body.appendChild(transcriptContent);
+
 
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1482,6 +1553,8 @@ button.addEventListener("click", (event) => {
   // findme
 
   printEntireTracklistDebug(curatedTracklist);
+  createAndToggleTranscriptButton();
+
 
   window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });
