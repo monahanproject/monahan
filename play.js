@@ -8,6 +8,8 @@ let playerPlayState = "play";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
 let curatedTracklistTotalTime = 0;
+let curatedTracklistTotalTimeInMins;
+
 let curatedTracklist;
 let timerDuration = 0;
 
@@ -463,13 +465,13 @@ function gatherTheCreditSongs(curatedTracklist) {
 function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   if (prevTrack1 && track.author === prevTrack1.author) {
     // If the current track has the same author as the previous track, log a rule violation
-    const logMessage = ` ❌ ${track.name}: The current track must have a different author (${track.author}) than the previous track (${prevTrack1.author})`;
+    const logMessage = `❌ ${track.name}: The current track must have a different author (${track.author}) than the previous track (${prevTrack1.author})`;
 
     logRuleApplication(10, logMessage, false);
     return false;
   }
   // If the current track has a different author than the previous track, log successful rule application
-  const logMessage = ` 🌱 ${track.name}: The current track must have a different author (${track.author}) than the previous track (${prevTrack1.author})`;
+  const logMessage = `🌱 ${track.name}: The current track must have a different author (${track.author}) than the previous track (${prevTrack1.author})`;
   logRuleApplication(10, logMessage, true);
   return true;
 }
@@ -944,6 +946,8 @@ function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
     curatedTracklistTotalTime += track.duration || 0;
   }
 
+  curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTime / 60);
+
   return curatedTracklistTotalTime;
 }
 
@@ -1079,6 +1083,8 @@ function followTracklistRules(tracklist) {
           track,
           curatedTracklist
         );
+        console.log(`⭐ Added Base Track! ${track.name} ⭐`);
+
 
         // Update the previous tracks with the added track
         [prevTrack1, prevTrack2] = updatePrevTracks(
@@ -1197,9 +1203,9 @@ function followTracklistRules(tracklist) {
           markEnsureRuleEnforced(track, currIndex);
           addNextValidTrack(track, curatedTracklist, tracklist);
           calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-          console.log(
-            `calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime}`
-          );
+          console.log(`⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins}`);
+          console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
+
         }
 
         currIndex++;
@@ -1219,9 +1225,8 @@ function followTracklistRules(tracklist) {
       if (ensureGeneralRules(track, currIndex)) {
         addNextValidTrack(track, curatedTracklist, tracklist);
         calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-        console.log(
-          `calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime}`
-        );
+        console.log(`⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins} `);
+        console.log(`⭐ Added General Rules Track! ${track.name} ⭐`);
       }
 
       currIndex++;
@@ -1495,8 +1500,6 @@ button.addEventListener("click", (event) => {
   let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
 
   curatedTracklist.push(...creditsTracklist);
-
-  // console.log(calculateOrUpdateCuratedTracklistDuration(finalOutroAudioSounds, curatedTracklist)/60);
 
   const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
   curatedTracklist.push(...outro2);
