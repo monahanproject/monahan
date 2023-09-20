@@ -15,7 +15,7 @@ let timerDuration = 0;
 
 // const MAX_PLAYLIST_DURATION_SECONDS = 3300; //(19m)
 
-const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 2140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 var elapsedDurationSeconds = 0;
@@ -883,40 +883,40 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXX GOOSE RULE (AT THE VERY END) XXXXXXX
+//  XXXXXXXX Geese RULE (AT THE VERY END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // if this track has the tag "geese" AND if a track with the tag "geese" is already in curatedTracklist AND if prevTrack1 does NOT have the tag geese:
 function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  const trackHasGeeseTag = track.tags.includes("geese");
-  const prevTrack1HasGeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
-  const curatedTracklistAlreadyHasAGeeseTag = trackExistsWithAttributes(
+  const trackHasgeeseTag = track.tags.includes("geese");
+  const prevTrack1HasgeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
+  const curatedTracklistAlreadyHasAgeeseTag = trackExistsWithAttributes(
     curatedTracklist,
     "tags",
     "geese"
   );
 
   if (
-    trackHasGeeseTag &&
-    !prevTrack1HasGeeseTag &&
-    curatedTracklistAlreadyHasAGeeseTag
+    trackHasgeeseTag &&
+    !prevTrack1HasgeeseTag &&
+    curatedTracklistAlreadyHasAgeeseTag
   ) {
-    const logMessage = ` 🦆! ${track.name}: If there is one geese, we need two geese! Track has a geese tag ${trackHasGeeseTag}; and a different has a geese tag ${curatedTracklistAlreadyHasAGeeseTag}; `;
+    const logMessage = ` 🦆! ${track.name}: If there is one geese, we need two geese! Track has a geese tag ${trackHasgeeseTag}; and a different has a geese tag ${curatedTracklistAlreadyHasAgeeseTag}; `;
     logRuleApplication(25, logMessage, true);
     return true;
   } else {
     let rejectionReasons = [];
-    if (!curatedTracklistAlreadyHasAGeeseTag) {
+    if (!curatedTracklistAlreadyHasAgeeseTag) {
       rejectionReasons.push(
         "no need! no track with the 'geese' tag currently in the curated tracklist"
       );
     }
-    if (prevTrack1HasGeeseTag) {
+    if (prevTrack1HasgeeseTag) {
       rejectionReasons.push(
         "prevTrack1 has the 'geese' tag, two geese in a row feels bad"
       );
     }
-    if (!trackHasGeeseTag) {
+    if (!trackHasgeeseTag) {
       rejectionReasons.push("this track doesn't have a geese tag");
     }
 
@@ -959,11 +959,16 @@ function addNextValidTrack(track, curatedTracklist, tracks) {
   }
 }
 
-// Helper function to check if a track exists with the given attribute and value in the curated tracklist
 function trackExistsWithAttributes(curatedTracklist, attribute, value) {
   for (const track of curatedTracklist) {
     if (typeof track === "object" && track.hasOwnProperty(attribute)) {
-      if (track[attribute] === value) {
+      // Check if track[attribute] is an array
+      if (Array.isArray(track[attribute])) {
+        // Check if any element in track[attribute] matches any element in value
+        if (track[attribute].some((item) => value.includes(item))) {
+          return track; // Return the first matching track
+        }
+      } else if (track[attribute] === value) {
         return track; // Return the first matching track
       }
     }
@@ -1085,7 +1090,6 @@ function followTracklistRules(tracklist) {
         );
         console.log(`⭐ Added Base Track! ${track.name} ⭐`);
 
-
         // Update the previous tracks with the added track
         [prevTrack1, prevTrack2] = updatePrevTracks(
           track,
@@ -1105,6 +1109,11 @@ function followTracklistRules(tracklist) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  let gotAGeese = false;
+  let gotASecondGeese = false;
+  let gotEnoughGeese = false;
+  let addedGeeseRuleFlag = false;
 
   // Flags to track successfully enforced ensure rules
   const ensureRulesEnforced = {};
@@ -1131,6 +1140,9 @@ function followTracklistRules(tracklist) {
     if (c24(curatedTracklist)) {
       markEnsureRuleEnforced(24);
     }
+
+    // look for a Geese (this needs to happen once at the beginning & I could manually check each new track
+    gotAGeese = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
 
     return ensureRules; // Return the initialized ensureRules
   }
@@ -1188,24 +1200,49 @@ function followTracklistRules(tracklist) {
       !checkAllEnsureRulesEnforced() &&
       iterationCounter < 3
     ) {
+      // reset counter and loop through tracklist again
       if (currIndex >= tracklist.length) {
         currIndex = 0;
         iterationCounter++;
       }
 
+      // if I found a Geese during setup, but don't have enough geese
+      if (gotAGeese && !gotEnoughGeese) {
+        if (gotAGeese && gotASecondGeese) {
+          gotEnoughGeese = true;
+          console.log("no more geese, we're full!");
+        } else if (gotAGeese && !addedGeeseRuleFlag) {
+          const ensureRules = [...ensureRules, ...lateCheckRules];
+          addedGeeseRuleFlag = true;
+          console.log("I added the geese rule!");
+        } else {
+          // do nothing
+        }
+      }
+      console.log("no geese yet!");
+
       if (!checkAllEnsureRulesEnforced()) {
         const track = tracklist[currIndex];
-
         if (
           ensureTrack(track, currIndex, ensureRules) &&
           ensureGeneralRules(track, currIndex)
         ) {
           markEnsureRuleEnforced(track, currIndex);
+
+          // check if this track has a geese tag
+          if (track.tags.includes("geese") && !gotAGeese) {
+            gotAGeese = track;
+          } else if (track.tags.includes("geese") && gotAGeese) {
+            gotASecondGeese = track;
+            gotEnoughGeese = true;
+          }
+
           addNextValidTrack(track, curatedTracklist, tracklist);
           calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-          console.log(`⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins}`);
+          console.log(
+            `⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins}`
+          );
           console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
-
         }
 
         currIndex++;
@@ -1225,10 +1262,11 @@ function followTracklistRules(tracklist) {
       if (ensureGeneralRules(track, currIndex)) {
         addNextValidTrack(track, curatedTracklist, tracklist);
         calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-        console.log(`⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins} `);
+        console.log(
+          `⏰ calculateOrUpdateCuratedTracklistDuration ${curatedTracklistTotalTime} in minutes that's ${curatedTracklistTotalTimeInMins} `
+        );
         console.log(`⭐ Added General Rules Track! ${track.name} ⭐`);
       }
-
       currIndex++;
     }
   }
