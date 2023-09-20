@@ -513,7 +513,6 @@ function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 }
 // Rule 12: Tracks with the form shorts and the language musical can never follow tracks with the form music.
 function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
-  console.log(`my track is ${track.name}`);
   if (
     track.form === "shorts" &&
     track.language === "musical" &&
@@ -775,7 +774,7 @@ function c21(curatedTracklist) {
     logRuleApplication(21, logMessage, false);
     return false;
   }
-  const logMessage = `✨ Ensure! The tracklist must contain at least one track with the author ALBERT (trackWithAttribute is ${trackWithAttribute.name})`;
+  const logMessage = `✨ Ensure! The tracklist must contain at least one track with the author ALBERT (trackWithAttribute is ${trackWithAttribute.name}, author is ${trackWithAttribute.author})`;
   logRuleApplication(21, logMessage, true);
   return true;
 }
@@ -791,7 +790,7 @@ function c22(curatedTracklist) {
     logRuleApplication(22, logMessage, false);
     return false;
   }
-  const logMessage = `✨ Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (trackWithAttribute is ${trackWithAttribute.name})`;
+  const logMessage = `✨ Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (trackWithAttribute is ${trackWithAttribute.name}, author is ${trackWithAttribute.author})`;
   logRuleApplication(22, logMessage, true);
   return true;
 }
@@ -807,7 +806,7 @@ function c23(curatedTracklist) {
     logRuleApplication(23, logMessage, false);
     return false;
   }
-  const logMessage = `✨ Ensure! The tracklist must contain at least one track with the form interview  (trackWithAttribute is ${trackWithAttribute.name})`;
+  const logMessage = `✨ Ensure! The tracklist must contain at least one track with the form interview (trackWithAttribute is ${trackWithAttribute.name}, form is ${trackWithAttribute.form})`;
   logRuleApplication(23, logMessage, true);
   return true;
 }
@@ -824,7 +823,7 @@ function c24(curatedTracklist) {
     logRuleApplication(24, logMessage, false);
     return false;
   }
-  const logMessage = ` ✨! Ensure! The tracklist must contain at least one track with the form music (trackWithAttribute is ${trackWithAttribute.name})`;
+  const logMessage = ` ✨! Ensure! The tracklist must contain at least one track with the form music (trackWithAttribute is ${trackWithAttribute.name}, form is ${trackWithAttribute.form})`;
   logRuleApplication(24, logMessage, true);
   return true;
 }
@@ -835,99 +834,48 @@ function c24(curatedTracklist) {
 
 // Rule 21. The tracklist must contain at least one track with the author ALBERT.
 function r21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "author",
-    "ALBERT"
-  );
-  if (trackWithAttribute === null) {
-    trackWithAttribute = track;
+  if (track.author != "ALBERT") {
+    const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the author ALBERT (track's name is ${track.name}, track's author is ${track.author})`;
+    logRuleApplication(21, logMessage, false);
+    return false;
   }
-  if (track.name && curatedTracklist.length >= 9) {
-    if (!trackWithAttribute && track.author !== "ALBERT") {
-      const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the author ALBERT (track's author is ${track.author})`;
-      logRuleApplication(21, logMessage, false);
-      return false;
-    }
-  }
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `✨ ${track.name}: Ensure! The tracklist must contain at least one track with the author ALBERT (track with attribute is ${trackWithAttribute.name} curr track is ${track.name})`;
+  const logMessage = `✨ ${track.name}: Ensure! The tracklist must contain at least one track with the author ALBERT (track's name is ${track.name}, track's author is ${track.author})`;
   logRuleApplication(21, logMessage, true);
   return true;
 }
 
 // Rule 22. The tracklist must contain at least one track with the author PIERREELLIOTT.
 function r22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "author",
-    "PIERREELLIOTT"
-  );
-  if (trackWithAttribute === null) {
-    trackWithAttribute = track;
+  if (track.author !== "PIERREELLIOTT") {
+    const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (track's name is ${track.name}, track's author is ${track.author})`;
+    logRuleApplication(22, logMessage, false);
+    return false;
   }
-
-  if (curatedTracklist.length >= 9) {
-    if (!trackWithAttribute && track.author !== "PIERREELLIOTT") {
-      {
-        const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.author})`;
-        logRuleApplication(22, logMessage, false);
-        return false;
-      }
-    }
-  }
-  console.log(`track exists with attrib ${trackWithAttribute}`);
-
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `✨ ${track.name}: Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (track with attribute is ${trackWithAttribute.name} curr track is ${track.name})`;
+  const logMessage = `✨ ${track.name}: Ensure! The tracklist must contain at least one track with the author PIERREELLIOTT (track's author is ${track.name}, track's author is ${track.author})`;
   logRuleApplication(22, logMessage, true);
   return true;
 }
 
 // Rule 23. The tracklist must contain at least one track with the form interview.
 function r23(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "form",
-    "interview"
-  );
-  if (trackWithAttribute === null) {
-    trackWithAttribute = track;
+  if (track.form !== "interview") {
+    const logMessage = `❌ ${track.name}:  Ensure! The tracklist must contain at least one track with the form interview (track's name is ${track.name}, track's form is ${track.form})`;
+    logRuleApplication(23, logMessage, false);
+    return false;
   }
-
-  if (curatedTracklist.length >= 9) {
-    if (!trackWithAttribute && track.form !== "interview") {
-      const logMessage = `❌ ${track.name}:  Ensure! The tracklist must contain at least one track with the form interview (track's form is ${track.form})`;
-      logRuleApplication(23, logMessage, false);
-      return false;
-    }
-  }
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = `✨ ${track.name}: Ensure! The tracklist must contain at least one track with the form interview  (track with attribute is ${trackWithAttribute.name} curr track is ${track.name})`;
+  const logMessage = `✨ ${track.name}: Ensure! The tracklist must contain at least one track with the form interview (track's name is ${track.name}, track's form is ${track.form})`;
   logRuleApplication(23, logMessage, true);
   return true;
 }
 
 // Rule 24. The tracklist must contain at least one track with the form music.
 function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  let trackWithAttribute = trackExistsWithAttributes(
-    curatedTracklist,
-    "form",
-    "music"
-  );
-  if (trackWithAttribute === null) {
-    trackWithAttribute = track;
+  if (track.form !== "music") {
+    const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the form music (track's name is ${track.name}, track's form is ${track.form})`;
+    logRuleApplication(24, logMessage, false);
+    return false;
   }
-
-  if (curatedTracklist.length >= 9) {
-    if (!trackWithAttribute && track.form !== "music") {
-      const logMessage = `❌ ${track.name}: Ensure! The tracklist must contain at least one track with the form music (track's form is ${track.form})`;
-      logRuleApplication(24, logMessage, false);
-      return false;
-    }
-  }
-  // If the condition is not met, return true to indicate rule followed
-  const logMessage = ` ✨! ${track.name}: Ensure! The tracklist must contain at least one track with the form music (track with attribute is ${trackWithAttribute.name} curr track is ${track.name})`;
+  const logMessage = ` ✨! ${track.name}: Ensure! The tracklist must contain at least one track with the form music (track's name is ${track.name}, track's form is ${track.form})`;
   logRuleApplication(24, logMessage, true);
   return true;
 }
@@ -1164,20 +1112,19 @@ function followTracklistRules(tracklist) {
       ensureRulesEnforced[`r${ruleNumber}`] = false;
     });
 
-   // Mark ensure rules as enforced based on conditions
-if (c21(curatedTracklist)) {
-  markEnsureRuleEnforced(21);
-}
-if (c22(curatedTracklist)) {
-  markEnsureRuleEnforced(22);
-}
-if (c23(curatedTracklist)) {
-  markEnsureRuleEnforced(23);
-}
-if (c24(curatedTracklist)) {
-  markEnsureRuleEnforced(24);
-}
-
+    // Mark ensure rules as enforced based on conditions
+    if (c21(curatedTracklist)) {
+      markEnsureRuleEnforced(21);
+    }
+    if (c22(curatedTracklist)) {
+      markEnsureRuleEnforced(22);
+    }
+    if (c23(curatedTracklist)) {
+      markEnsureRuleEnforced(23);
+    }
+    if (c24(curatedTracklist)) {
+      markEnsureRuleEnforced(24);
+    }
 
     return ensureRules; // Return the initialized ensureRules
   }
