@@ -15,7 +15,7 @@ let timerDuration = 0;
 
 // const MAX_PLAYLIST_DURATION_SECONDS = 3300; //(19m)
 
-const MAX_PLAYLIST_DURATION_SECONDS = 2140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
 var elapsedDurationSeconds = 0;
@@ -830,14 +830,15 @@ function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   const curatedTracklistAlreadyHasGeeseTag = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
 
   if (trackHasGeeseTag && curatedTracklistAlreadyHasGeeseTag) {
-    console.log(`🦆! ${track.name}: If there is one geese, we need two geese! trackHasGeeseTag: ${trackHasGeeseTag} and curatedTracklistAlreadyHasGeeseTag: ${curatedTracklistAlreadyHasGeeseTag}`);
+    console.log(
+      `🦆! ${track.name}: Ensure! If there is one geese, we need two geese! trackHasGeeseTag: ${trackHasGeeseTag} and curatedTracklistAlreadyHasGeeseTag: ${curatedTracklistAlreadyHasGeeseTag[0]}`
+    );
     return true;
   } else {
-    console.log(`❌ ${track.name}: If there is one geese, we need two geese!`);
+    console.log(`❌ ${track.name}: Ensure! If there is one geese, we need two geese!`);
     return false;
   }
 }
-
 
 // if this track has the tag "geese" AND if a track with the tag "geese" is already in curatedTracklist AND if prevTrack1 does NOT have the tag geese:
 // function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -960,8 +961,8 @@ function followTracklistRules(tracklist) {
   let trackIndex = 0; // Used to index curatedTracklist
 
   const generalRuleFunctions = [r10, r11, r12, r13, r14, r15, r16];
-  const unshuffledEnsureRules = [r21, r22, r23, r24];
-  const lateCheckRules = [r25];
+  const unshuffledEnsureRules = [r21, r22, r23, r24, r25];
+  // const lateCheckRules = [r25];
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 1: Apply track-specific rules and general rules
@@ -1023,32 +1024,17 @@ function followTracklistRules(tracklist) {
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // let gotAFirstGeese = false;
-  // let gotASecondGeese = false;
-  let addedGeeseRuleFlag = false;
-
+  let geeseTracks;
 
   // Flags to track successfully enforced ensure rules
   const ensureRulesEnforced = {};
 
-  // function checkAndAddGeese(track) {
-  //   if (track.tags.includes("geese")) {
-  //     if (!gotAFirstGeese) {
-  //       gotAFirstGeese = track;
-  //       console.log(`🦆 Found a firstgeese late in the game! Track with 'geese' tag is ${track.name} and tags are ${track.tags}`);
-  //     } else if (!gotASecondGeese) {
-  //       gotASecondGeese = track;
-  //       console.log(`🦆 Found a secondgeese late in the game! Track with 'geese' tag is ${track.name} and tags are ${track.tags}`);
-  //     }
-  //   }
-  // }
-  
-
+  // Initialize ensure rules and set flags based on other functions
   // Initialize ensure rules and set flags based on other functions
   function initializeEnsureRules() {
-    const ensureRules = shuffleArrayOfRules(unshuffledEnsureRules);
+    const shuffledEnsureRules = shuffleArrayOfRules(unshuffledEnsureRules);
 
-    ensureRules.forEach((rule) => {
+    shuffledEnsureRules.forEach((rule) => {
       const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
       ensureRulesEnforced[`r${ruleNumber}`] = false;
     });
@@ -1067,12 +1053,33 @@ function followTracklistRules(tracklist) {
       markEnsureRuleEnforced(24);
     }
 
-    // gotAFirstGeese = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
-    // if (gotAFirstGeese) {
-    //   console.log(`🦆 Found a firstgeese EARLY in the game! Track with 'geese' tag is ${gotAFirstGeese.name} and tags are ${gotAFirstGeese.tags}`);
-    // }
+    // init geese time!
+    let isFirstTimeGeeseSeeking = true; // Introduce a flag variable
 
-    return ensureRules; // Return the initialized ensureRules
+    if (isFirstTimeGeeseSeeking) {
+      geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
+      console.log(`🦆! geeseTrackzzz! ${JSON.stringify(geeseTracks)}`);
+
+      isFirstTimeGeeseSeeking = false;
+      if (!geeseTracks) {
+        markEnsureRuleEnforced(25);
+        console.log(`🦆! Ensure rules enforced?If I have no geese, the 25 flag is true ${ensureRulesEnforced}`);
+        // If I have no geese, the 25 flag is true
+        markEnsureRuleEnforced(25);
+      } else if (geeseTracks.length === 1) {
+        // If I have 1 geese the r25 flag is false, hopefully by default
+        console.log(`🦆! Curated tracklist already has a geese`);
+        console.log(`🦆! Ensure rules enforced? If I have 1 geese the r25 flag is false, hopefully by default ${JSON.stringify(ensureRulesEnforced)}`);
+      } else if (geeseTracks.length === 2) {
+        console.log(`🦆! Curated tracklist already has 2 geese: ${curatedTracklistAlreadyHasGeeseTag[0]}, ${curatedTracklistAlreadyHasGeeseTag[1]}`);
+        // If I have no geese, the r25 flag is true
+        markEnsureRuleEnforced(25);
+        console.log(`🦆! Ensure rules enforced? If I have no geese, the r25 flag is true markEnsureRuleEnforced(25); ${ensureRulesEnforced}`);
+      }
+    }
+
+    // Return the initialized ensureRules (corrected variable name)
+    return shuffledEnsureRules;
   }
 
   // Check if all ensure rules are enforced
@@ -1090,7 +1097,7 @@ function followTracklistRules(tracklist) {
     ensureRulesEnforced[`r${ruleNumber}`] = true;
   }
 
-  // Ensure a single track against all ensure rules - is this the right way to do it?
+  // Ensure a single track against all ensure rules
   function ensureTrack(track, currIndex, ensureRules) {
     for (const rule of ensureRules) {
       const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
@@ -1120,65 +1127,85 @@ function followTracklistRules(tracklist) {
   // Main ensure rules loop
   function followEnsureRulesLoop(ensureRules) {
     let iterationCounter = 0;
-  
+
     while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS && !checkAllEnsureRulesEnforced() && iterationCounter < 3) {
       if (currIndex >= tracklist.length) {
         currIndex = 0;
         iterationCounter++;
       }
-  
+
       if (!checkAllEnsureRulesEnforced()) {
         const track = tracklist[currIndex];
         if (ensureTrack(track, currIndex, ensureRules) && ensureGeneralRules(track, currIndex)) {
-          markEnsureRuleEnforced(track, currIndex);
+          markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
+
           addNextValidTrack(track, curatedTracklist, tracklist);
+
+          // if track is a geese track
+          if (track.tags.includes("geese")) {
+            console.log(`🦆! My track is a geese ${track.tags}`);
+
+            if (geeseTracks.length === 0) {
+              // and it's the first geese track
+              ensureRulesEnforced[r25] = false;
+              console.log(`🦆! It's the first geese track ${track.tags}`);
+            } else {
+              // not the first
+              ensureRulesEnforced[r25] = true;
+              console.log(`🦆! It's not the first geese track ${track.tags}`);
+            }
+            // update geeseTracks so we have an accurate length
+            geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
+            console.log(`🦆! updated list of geese! ${JSON.stringify(geeseTracks)}`);
+
+
+          }
+
           console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
           calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
           console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
         }
-        checkAndAddGeese(track); // Check for geese here
-  
         currIndex++;
       }
     }
   }
 
-/// Main general rules loop
-function followGeneralRulesLoop() {
-  while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
-    if (currIndex >= tracklist.length) {
-      currIndex = 0;
-    }
-
-    const track = tracklist[currIndex];
-    checkAndAddGeese(track); // Check for geese at the beginning of the loop
-
-    if (ensureGeneralRules(track, currIndex)) {
-      console.log(`⭐ Added General Track! ${track.name} ⭐`);
-      addNextValidTrack(track, curatedTracklist, tracklist);
-      calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-      console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
-
-      // Check if a track with the "goose" tag exists in the curatedTracklist
-      const curatedTrackWithGoose = curatedTracklist.find((t) => t.tags.includes("geese"));
-      if (curatedTrackWithGoose && !gotASecondGeese) {
-        // Add a second track with the "goose" tag (assuming one hasn't been added yet)
-        const secondGooseTrack = tracklist.find((t) => t.tags.includes("geese") && t !== curatedTrackWithGoose);
-        if (secondGooseTrack && ensureGeneralRules(secondGooseTrack, currIndex)) {
-          addNextValidTrack(secondGooseTrack, curatedTracklist, tracklist);
-          console.log(`⭐ Added Second Goose Track! ${secondGooseTrack.name} ⭐`);
-          gotASecondGeese = true; // Mark that a second "goose" track has been added
-        }
+  // Main general rules loop
+  function followGeneralRulesLoop() {
+    while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
+      if (currIndex >= tracklist.length) {
+        currIndex = 0;
       }
+      const track = tracklist[currIndex];
+      if (ensureGeneralRules(track, currIndex)) {
+        console.log(`⭐ Added General Track! ${track.name} ⭐`);
+
+        addNextValidTrack(track, curatedTracklist, tracklist);
+
+        // if track is a geese track
+        if (track.tags.includes("geese")) {
+          if (geeseTracks.length === 0) {
+            // and it's the first geese track
+            ensureRulesEnforced[r25] = false;
+          } else {
+            // not the first
+            ensureRulesEnforced[r25] = true;
+          }
+          // update geeseTracks so we have an accurate length
+          geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
+        }
+
+        calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+        console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+      }
+      currIndex++;
     }
-    currIndex++;
+    console.log("⏰ Out of time!");
   }
-  console.log("⏰ Out of time!");
-}
 
   // Main execution
-  const ensureRules = initializeEnsureRules(); // Get the initialized ensureRules
-  followEnsureRulesLoop(ensureRules);
+  let initEnsureRules = initializeEnsureRules(); // Get the initialized ensureRules
+  followEnsureRulesLoop(initEnsureRules);
   followGeneralRulesLoop();
 
   // Finally, move the first track to the end of the curatedTracklist
