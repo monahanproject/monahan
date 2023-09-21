@@ -442,80 +442,160 @@ function gatherTheCreditSongs(curatedTracklist) {
   // console.log(arrayOfCreditSongs);
   return arrayOfCreditSongs;
 }
+
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  ~~~~~~ transcript CREATION ~~~~~~~
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-let transcript = ''; // Global variable to store the transcript
-let language = 'english'; // Global variable to set the language with English as the default
+let transcript = ""; // Global variable to store the transcript
+let language = "english"; // Global variable to set the language with English as the default
 let transcriptVisible = false; // Flag to track if transcript is visible
+let transcriptContent; // Define transcriptContent as a global variable
 
-// Function to process text segments and apply styles
-function processTextSegment(segment) {
-  let text = segment.text;
+// Function to create the transcript container
+function createTranscriptContainer() {
+  const transcriptContainer = document.createElement("div");
+  transcriptContainer.id = "transcriptContainer";
+  // transcriptContainer.style.position = "fixed";
+  transcriptContainer.style.top = "0";
+  transcriptContainer.style.left = "0";
+  transcriptContainer.style.padding = "10rem";
 
-  // Check if the segment should be bold
-  if (segment.bold) {
-    text = `<strong>${text}</strong>`;
-  }
+  transcriptContainer.style.right = "0";
+  transcriptContainer.style.zIndex = "999"; // Adjust z-index as needed
+  document.body.appendChild(transcriptContainer);
 
-  // Check for other styling conditions and apply them as needed
-  // You can add more conditions here based on your requirements
-
-  return text;
+  createTranscriptButton(transcriptContainer);
+  createTranscriptContent(transcriptContainer);
 }
 
-// Function to update the transcript based on the selected language
+function createHTMLFromText(text) {
+  const container = document.createElement("div");
+  let currentParagraph = document.createElement("p");
+  currentParagraph.style.marginTop = "3rem";
+  currentParagraph.style.marginBottom = "4rem";
+  currentParagraph.style.padding = "1rem";
+
+  currentParagraph.style.backgroundColor = "#f0ebf8";
+  currentParagraph.style.marginLeft = "0";
+  currentParagraph.style.marginRight = "0";
+
+  // Define regex patterns for all formatting rules
+  const boldTextPattern = /\^([^]+?)\^\^/g;
+  const centerTextPattern = /@([^]+?)@@/g;
+  const italicsTextPattern = /\$([^]+?)\$\$/g;
+
+  const lineBreakPattern = /%/g;
+  const doubleLineBreakPattern = /\*/g;
+
+  try {
+    // Replace bold text using regex
+    text = text.replace(boldTextPattern, '<span style="font-weight: bold;">$1</span>');
+
+    // Replace centered text using regex
+    text = text.replace(centerTextPattern, '<span style="display: block; text-align: center;">$1</span>');
+
+    // Replace italicized text using regex
+    text = text.replace(italicsTextPattern, '<span style="font-style: italic;">$1</span>');
+
+    // Replace line breaks using regex
+    text = text.replace(lineBreakPattern, "</br>");
+
+    // Replace double line breaks using regex
+    text = text.replace(doubleLineBreakPattern, "<p></br></br></p>");
+
+    // Set the HTML content of the current paragraph
+    currentParagraph.innerHTML = text;
+
+    // Append the paragraph to the container
+    container.appendChild(currentParagraph);
+  } catch (error) {
+    console.error("nnn Error while processing input text:", error);
+  }
+
+  // Log the generated HTML for debugging
+  console.log("nnn Generated HTML:", container.innerHTML);
+
+  return container;
+}
+
+
 // Function to update the transcript based on the selected language
 function updateTranscript() {
-  const transcriptContainer = document.getElementById("transcriptContent");
-  transcriptContainer.innerHTML = ''; // Clear previous content
+  console.log("qqq updateTranscript function called");
+
+  const transcriptContainer = document.getElementById("transcriptContainer");
+
+  if (!transcriptContainer) {
+    console.error("qqq transcriptContentDiv not found.");
+    return;
+  }
+  // transcript = ''; // Reset the transcript
   for (let index = 0; index < curatedTracklist.length; index++) {
     const song = curatedTracklist[index];
+    let inputString = song.engTrans;
 
     // Check if the language is English and if "engTrans" exists and is not empty
-    if (language === 'english' && song.engTrans && song.engTrans.trim() !== "") {
-      const engTranscript = song.engTrans;
+    if (language === "english" && inputString && inputString.trim() !== "") {
+      // const engTranscript = inputString.replace(/<br>/g, '\n');
 
-      // Create a new paragraph element to hold the HTML content
-      const paragraph = document.createElement("p");
-      paragraph.innerHTML = engTranscript;
+      const htmlContainer = createHTMLFromText(inputString);
+      transcriptContainer.appendChild(htmlContainer);
+      // htmlContainer.style.display = "block"; // Make it initially visible
 
-      // Append the paragraph to the transcript container
-      transcriptContainer.appendChild(paragraph);
+      // console.log("qqq Appended HTML container to transcript content." + transcriptContent.innerHTML);
+      // console.log("ccc transcriptContent element:", transcriptContent);
+      // console.log("ccc Generated HTML container:", htmlContainer);
+      console.log("ccc Generated HTML container content:", htmlContainer.innerHTML);
+      console.log("ccc transcriptContent:", transcriptContainer);
+      transcriptContainer.style.display = "block"; // Make it initially visible
+
+      // transcript += inputString + '\n';
     }
 
     // Add logic for other languages if needed
   }
+
+  const htmlContainer = createHTMLFromText("$All recordings and transcripts are copyright protected. All rights reserved.$$");
+  transcriptContainer.appendChild(htmlContainer);
 }
 
-
-// Function to create and toggle the transcript button
-function createAndToggleTranscriptButton() {
+// Function to create the transcript button
+function createTranscriptButton(container) {
   const transcriptButton = document.createElement("button");
   transcriptButton.textContent = "Show Transcript";
   transcriptButton.id = "transcriptButton"; // Assign an ID for styling
-  document.body.appendChild(transcriptButton);
-
-  transcriptButton.addEventListener("click", function () {
-    if (transcriptVisible) {
-      transcriptContent.style.display = "none";
-      transcriptButton.textContent = "Show Transcript";
-    } else {
-      updateTranscript();
-      transcriptContent.textContent = transcript;
-      transcriptContent.style.display = "block";
-      transcriptButton.textContent = "Hide Transcript";
-    }
-    transcriptVisible = !transcriptVisible; // Toggle the flag
-  });
+  transcriptButton.addEventListener("click", toggleTranscript);
+  container.appendChild(transcriptButton);
 }
 
-// Create a "transcriptContent" element
-const transcriptContent = document.createElement("div");
-transcriptContent.id = "transcriptContent"; // Assign the "id" attribute
-transcriptContent.style.display = "none"; // Initially hide the transcript
-document.body.appendChild(transcriptContent);
+// Function to create the transcript content element
+function createTranscriptContent(container) {
+  const transcriptContent = document.createElement("div");
+  transcriptContent.id = "transcriptContent";
+  transcriptContent.style.display = "block"; // Make it initially visible
 
+  container.appendChild(transcriptContent);
+}
+
+// Function to toggle the transcript visibility
+function toggleTranscript() {
+  const transcriptContent = document.getElementById("transcriptContent");
+  const transcriptButton = document.getElementById("transcriptButton");
+
+  if (transcriptVisible) {
+    transcriptContent.style.display = "none";
+    transcriptButton.textContent = "Show Transcript";
+  } else {
+    updateTranscript();
+    transcriptContent.textContent = transcript;
+    // transcriptButton.textContent = "Hide Transcript";
+    transcriptContent.style.display = "block";
+  }
+  transcriptVisible = !transcriptVisible; // Toggle the flag
+}
+
+// Call the function to create the transcript container
+// createTranscriptContainer();
 
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1143,7 +1223,9 @@ function followTracklistRules(tracklist) {
       } else if (geeseTracks.length === 1) {
         // If I have 1 geese the r25 flag is false, hopefully by default
         console.log(`🦆! Curated tracklist already has a geese`);
-        console.log(`🦆! Ensure rules enforced? If I have 1 geese the r25 flag is false, hopefully by default ${JSON.stringify(ensureRulesEnforced)}`);
+        console.log(
+          `🦆! Ensure rules enforced? If I have 1 geese the r25 flag is false, hopefully by default ${JSON.stringify(ensureRulesEnforced)}`
+        );
       } else if (geeseTracks.length === 2) {
         console.log(`🦆! Curated tracklist already has 2 geese: ${curatedTracklistAlreadyHasGeeseTag[0]}, ${curatedTracklistAlreadyHasGeeseTag[1]}`);
         // If I have no geese, the r25 flag is true
@@ -1231,8 +1313,6 @@ function followTracklistRules(tracklist) {
             // update geeseTracks so we have an accurate length
             geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
             console.log(`🦆! updated list of geese! ${JSON.stringify(geeseTracks)}`);
-
-
           }
 
           console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
@@ -1549,12 +1629,9 @@ button.addEventListener("click", (event) => {
   // timerDuration = curatedTracklistTotalTime; //new
 
   // updateProgressTimer(0, timerDuration);
-
-  // findme
+  createTranscriptContainer();
 
   printEntireTracklistDebug(curatedTracklist);
-  createAndToggleTranscriptButton();
-
 
   window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
 });

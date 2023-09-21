@@ -1204,3 +1204,7 @@ footer {
   cursor: pointer;
   color: #007BFF;
 }
+
+.transcriptP{
+  margin: 1rem, 0;
+}
