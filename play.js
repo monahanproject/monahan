@@ -15,11 +15,11 @@ let timerDuration = 0;
 
 const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
-var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS;
-var elapsedDurationSeconds = 0;
-var remainingDurationSeconds = totalDurationSeconds;
-let currentTimeElement;
-let timerInterval; // Declare timerInterval
+var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; // Total duration of the playlist in seconds
+var elapsedDurationSeconds = 0; // Elapsed duration of the current track in seconds
+var remainingDurationSeconds = totalDurationSeconds; // Remaining duration of the playlist in seconds
+let currentTimeElement; // Element to display current time
+let timerInterval; // Declare timerInterval to store the interval ID
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
@@ -38,47 +38,123 @@ function change_vol(event) {
 
 // https://css-tricks.com/lets-create-a-custom-audio-player/
 function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
-  // wrapper div
-  let wrapperDiv = document.createElement("div");
-  wrapperDiv.id = "wrapper";
-  musicPlayerDiv.append(wrapperDiv);
+  // Create wrapper div
+  const wrapperDiv = createDiv("wrapper");
+  const audioPlayerContainer = createDiv("audio-player-container");
+  const musicPlayer = createAudioElement("music_player");
+  const currTime = createCurrentTimeElement();
+  const buttonContainer = createDiv("button-container");
+  const playIconContainer = createPlayIconContainer();
+  const skipBackwardButton = createSkipButton("<<20");
+  const skipForwardButton = createSkipButton("20>>");
+  const volumeSlider = createVolumeSlider();
+  const trackNameContainer = createDiv("playerTrackNameContainer");
+  const trackNameElement = createTrackNameElement();
+  const exitBtn = createExitButton();
 
-  // player div
-  let audioPlayerContainer = document.createElement("div");
-  audioPlayerContainer.id = "audio-player-container";
-  wrapperDiv.append(audioPlayerContainer);
+  appendElements(musicPlayerDiv, [
+    wrapperDiv,
+    audioPlayerContainer,
+    exitBtn,
+  ]);
 
-  // music player audio element
-  let musicPlayer = document.createElement("audio");
-  musicPlayer.id = "music_player";
-  audioPlayerContainer.append(musicPlayer);
+  appendElements(wrapperDiv, [
+    audioPlayerContainer,
+    exitBtn,
+  ]);
 
-  // inputs
-  let currTime = document.createElement("span");
-  currTime.classList.add("time");
-  currTime.id = "current-time";
-  currTime.innerHTML = "0:00";
-  audioPlayerContainer.append(currTime);
+  appendElements(audioPlayerContainer, [
+    musicPlayer,
+    currTime,
+    buttonContainer,
+    volumeSlider,
+    trackNameContainer,
+  ]);
 
-  // Create a container div for the buttons
-  let buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("button-container");
-  audioPlayerContainer.appendChild(buttonContainer);
+  appendElements(buttonContainer, [
+    skipBackwardButton,
+    playIconContainer,
+    skipForwardButton,
+  ]);
 
-  // Create skip backward button
-  let skipBackwardButton = document.createElement("button");
-  skipBackwardButton.classList.add("skip-button");
-  skipBackwardButton.innerHTML = "<<20";
-  buttonContainer.appendChild(skipBackwardButton);
+  appendElements(trackNameContainer, [trackNameElement]);
 
-  // Create play button and append it to the button container
-  let playIconContainer = document.createElement("button");
-  playIconContainer.id = "play-icon";
-  playIconContainer.classList.add("play-icon");
-  playIconContainer.classList.add("paused");
-  buttonContainer.appendChild(playIconContainer); // Append to the button container
+  playIconContainer.addEventListener("click", handlePlayPauseClick);
+  skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
+  skipForwardButton.addEventListener("click", handleSkipForwardClick);
+  volumeSlider.addEventListener("change", handleVolumeChange);
+  exitBtn.addEventListener("click", handleExitClick);
 
-  playIconContainer.addEventListener("click", () => {
+  let timerInterval;
+
+  function createDiv(id) {
+    const div = document.createElement("div");
+    div.id = id;
+    return div;
+  }
+
+  function createAudioElement(id) {
+    const audio = document.createElement("audio");
+    audio.id = id;
+    return audio;
+  }
+
+  function createCurrentTimeElement() {
+    const currentTime = document.createElement("span");
+    currentTime.classList.add("time");
+    currentTime.id = "current-time";
+    currentTime.innerHTML = "0:00";
+    return currentTime;
+  }
+
+  function createPlayIconContainer() {
+    const playIconContainer = document.createElement("button");
+    playIconContainer.id = "play-icon";
+    playIconContainer.classList.add("play-icon", "paused");
+    return playIconContainer;
+  }
+
+  function createSkipButton(label) {
+    const skipButton = document.createElement("button");
+    skipButton.classList.add("skip-button");
+    skipButton.innerHTML = label;
+    return skipButton;
+  }
+
+  function createVolumeSlider() {
+    const volumeSlider = document.createElement("input");
+    volumeSlider.type = "range";
+    volumeSlider.id = "volume-slider";
+    volumeSlider.max = "100";
+    volumeSlider.min = "0";
+    volumeSlider.value = "100";
+    return volumeSlider;
+  }
+
+  function createTrackNameElement() {
+    const trackNameElement = document.createElement("p");
+    trackNameElement.id = "playerTrackName";
+    trackNameElement.innerText = ""; // Replace with the actual track name
+    return trackNameElement;
+  }
+
+  function createExitButton() {
+    const exitBtn = document.createElement("button");
+    exitBtn.innerHTML = "exit";
+    exitBtn.name = "exitBtn";
+    exitBtn.id = "exitBtn";
+    exitBtn.classList.add("btn");
+    return exitBtn;
+  }
+
+  function appendElements(parent, elements) {
+    elements.forEach((element) => {
+      parent.appendChild(element);
+    });
+  }
+
+  function handlePlayPauseClick() {
+    const playIconContainer = document.getElementById("play-icon");
     if (playerPlayState === "play") {
       // Pause the audio and store the current time
       playIconContainer.classList.remove("paused");
@@ -87,6 +163,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       playerPlayState = "pause";
       audioContext.suspend();
       clearInterval(timerInterval);
+      console.log("rrr Paused audio and cleared timerInterval");
     } else {
       // Check if we have a stored timerDuration (indicating a paused state)
       if (timerDuration > 0) {
@@ -96,110 +173,86 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
         // This is a new play, start from the beginning
         player.currentTime = 0;
       }
-
+  
       // Play the audio and update the UI
       player.play();
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
       audioContext.resume();
-      timerInterval = createTimerLoopAndUpdateProgressTimer(timerDuration);
+  
+      // Start a new timer interval and store its ID in timerInterval
+      timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
+      console.log("rrr Started playback and created a new timerInterval");
+  
+      // Note: The interval will now update the timer every second while the audio is playing.
     }
-  });
-
-  let currentTrackIndex = 0;
-
-  // Create skip forward button
-  let skipForwardButton = document.createElement("button");
-  skipForwardButton.classList.add("skip-button");
-  skipForwardButton.innerHTML = "20>>";
-  buttonContainer.appendChild(skipForwardButton);
-
-  skipBackwardButton.addEventListener("click", () => {
+  }
+  
+  function handleSkipBackwardClick() {
     if (playerPlayState === "play") {
       let newTime = player.currentTime - 20;
       player.currentTime = Math.max(newTime, 0);
       // Directly update the timer display based on the new time
       updateProgressTimer(Math.floor(newTime), timerDuration);
+      console.log("rrr Skip Backward clicked. New time: " + newTime);
     }
-  });
-
-  skipForwardButton.addEventListener("click", () => {
-    // console.log(`skip forward button - pressed`);
+  }
+  
+  function handleSkipForwardClick() {
     if (playerPlayState === "play") {
-      // console.log(`skip forward button - playerstate is play`);
       let newTime = player.currentTime + 20;
       newTime = Math.min(newTime, totalDurationSeconds); //findmee
       // Directly update the timer display based on the new time
       updateProgressTimer(Math.floor(newTime), timerDuration);
       player.currentTime = newTime;
+      console.log("rrr Skip Forward clicked. New time: " + newTime);
     }
-  });
-
-  let volumeSlider = document.createElement("input");
-  volumeSlider.type = "range";
-  volumeSlider.id = "volume-slider";
-  volumeSlider.max = "100";
-  volumeSlider.min = "0";
-  volumeSlider.value = "100";
-  audioPlayerContainer.append(volumeSlider);
-  volumeSlider.addEventListener("change", (event) => {
-    volumeNode.gain.value = getCurrentSliderVolume();
-  });
-
-  function getCurrentSliderVolume() {
-    let value = volumeSlider.value;
-    return parseFloat(value) / 100;
   }
-
-  // Create a div for the currently playing track name
-  let trackNameContainer = document.createElement("div");
-  trackNameContainer.id = "playerTrackNameContainer";
-  audioPlayerContainer.appendChild(trackNameContainer);
-
-  // Create an element (e.g., a <p> element) to display the track name
-  let trackNameElement = document.createElement("p");
-  trackNameElement.id = "playerTrackName";
-  trackNameElement.innerText = ""; // Replace with the actual track name
-  trackNameContainer.appendChild(trackNameElement);
-
-  let exitBtn = document.createElement("button");
-  exitBtn.innerHTML = "exit";
-  // exitBtn.type = "submit";
-  exitBtn.name = "exitBtn";
-  exitBtn.id = "exitBtn";
-  exitBtn.classList.add("btn");
-  musicPlayerDiv.appendChild(exitBtn);
-
-  exitBtn.addEventListener("click", (event) => {
+  
+  function handleVolumeChange(event) {
+    // Get the current volume value from the volume slider
+    const newVolume = parseFloat(event.target.value) / 100;
+    // Apply the new volume to the audio
+    volumeNode.gain.value = newVolume;
+    console.log("rrr Volume changed to: " + newVolume);
+  }
+  
+  function handleExitClick() {
+    // Suspend audio context and clear the timer interval
     audioContext.suspend();
     clearInterval(timerInterval);
-
+  
+    // Remove player elements and exit button
     musicPlayerh1.innerHTML = "";
     document.getElementById("wrapper").remove();
     document.getElementById("exitBtn").remove();
-
-    let beginAgainBtn = document.createElement("button");
+  
+    // Add a "Begin Again" button with its click handler
+    const beginAgainBtn = document.createElement("button");
     beginAgainBtn.innerHTML = "Begin again";
     beginAgainBtn.name = "beginAgainBtn";
     beginAgainBtn.classList.add("beginAgainBtn");
     musicPlayerDiv.appendChild(beginAgainBtn);
-
+  
     beginAgainBtn.addEventListener("click", (event) => {
+      // Redirect to a new page (replace with your desired URL)
       window.location.href = "monahan.html";
     });
-  });
+  
+    console.log("rrr Exited the player and added 'Begin Again' button");
+  }
+  
+  // Rest of your code
+  
 
-  startplayer();
-  let timerDuration = 0; // Declare timerDuration as a local variable
-  // timerInterval = createTimerLoopAndUpdateProgressTimer(timerDuration);
-
-  timerInterval = createTimerLoopAndUpdateProgressTimer(0);
+  // Rest of your code
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+// Update the progress timer display
 function updateProgressTimer(elapsedSeconds, previousDuration) {
   currentTimeElement = document.getElementById("current-time");
   if (!currentTimeElement) {
@@ -207,6 +260,7 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
   }
   totalDurationSeconds = curatedTracklistTotalTime;
 
+  // Calculate remaining duration based on elapsed time and previous duration
   const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
 
   // Determine the timer display based on remaining time
@@ -214,10 +268,12 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
   updateTimeDisplay(minutes, seconds);
 }
 
+// Handle timer completion
 function handleTimerCompletion() {
   currentTimeElement.innerHTML = "Done";
 }
 
+// Calculate minutes and seconds from total seconds
 function calculateMinutesAndSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = (seconds % 60).toLocaleString("en-US", {
@@ -236,7 +292,7 @@ function calculateRemainingTime(elapsedSeconds) {
   return totalDurationSeconds - elapsedSeconds;
 }
 
-function createTimerLoopAndUpdateProgressTimer() {
+function createTimerLoopAndUpdateProgressTimer(startingTime) {
   var start = Date.now(); // Record the start time of the loop
 
   // Set up an interval to run the loop every 200 milliseconds
@@ -245,13 +301,18 @@ function createTimerLoopAndUpdateProgressTimer() {
     let delta = Date.now() - start; // Calculate elapsed milliseconds
     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
 
-    // Directly update the timer display based on the audio player's current time
-    updateProgressTimer(Math.floor(player.currentTime), timerDuration);
+    // Check if the player is in a playing state
+    if (playerPlayState === "play") {
+      // Directly update the timer display based on the audio player's current time
+      updateProgressTimer(Math.floor(player.currentTime), timerDuration);
+    }
 
     // Calculate remaining time using the calculateRemainingTime function
     remainingTime = calculateRemainingTime(deltaSeconds);
   }, 200); // Run the loop every 200 milliseconds
 }
+
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX LOADING GIF  XXXXXXXXXX
@@ -435,11 +496,6 @@ function gatherTheCreditSongs(curatedTracklist) {
       }
     }
   }
-
-  // const currCreditStackHTMLElement = document.getElementById("creditStackHTML");
-  // currCreditStackHTMLElement.innerHTML = creditsLog;
-
-  // console.log(arrayOfCreditSongs);
   return arrayOfCreditSongs;
 }
 
@@ -456,12 +512,12 @@ function createTranscriptContainer() {
   const transcriptContainer = document.createElement("div");
   transcriptContainer.id = "transcriptContainer";
   // transcriptContainer.style.position = "fixed";
-  transcriptContainer.style.top = "0";
-  transcriptContainer.style.left = "0";
-  transcriptContainer.style.padding = "10rem";
+  // transcriptContainer.style.top = "0";
+  // transcriptContainer.style.left = "0";
+  transcriptContainer.style.paddingBottom = "5rem";
 
-  transcriptContainer.style.right = "0";
-  transcriptContainer.style.zIndex = "999"; // Adjust z-index as needed
+  // transcriptContainer.style.right = "0";
+  // transcriptContainer.style.zIndex = "999"; // Adjust z-index as needed
   document.body.appendChild(transcriptContainer);
 
   createTranscriptButton(transcriptContainer);
@@ -518,7 +574,6 @@ function createHTMLFromText(text) {
   return container;
 }
 
-
 // Function to update the transcript based on the selected language
 function updateTranscript() {
   console.log("qqq updateTranscript function called");
@@ -529,33 +584,31 @@ function updateTranscript() {
     console.error("qqq transcriptContentDiv not found.");
     return;
   }
-  // transcript = ''; // Reset the transcript
+  transcript = ""; // Reset the transcript
   for (let index = 0; index < curatedTracklist.length; index++) {
     const song = curatedTracklist[index];
-    let inputString = song.engTrans;
 
-    // Check if the language is English and if "engTrans" exists and is not empty
-    if (language === "english" && inputString && inputString.trim() !== "") {
-      // const engTranscript = inputString.replace(/<br>/g, '\n');
-
-      const htmlContainer = createHTMLFromText(inputString);
-      transcriptContainer.appendChild(htmlContainer);
-      // htmlContainer.style.display = "block"; // Make it initially visible
-
-      // console.log("qqq Appended HTML container to transcript content." + transcriptContent.innerHTML);
-      // console.log("ccc transcriptContent element:", transcriptContent);
-      // console.log("ccc Generated HTML container:", htmlContainer);
-      console.log("ccc Generated HTML container content:", htmlContainer.innerHTML);
-      console.log("ccc transcriptContent:", transcriptContainer);
-      transcriptContainer.style.display = "block"; // Make it initially visible
-
-      // transcript += inputString + '\n';
+    let inputString;
+    if (language === "english") {
+      inputString = song.engTrans;
+    } else {
+      inputString = song.frTrans;
     }
 
-    // Add logic for other languages if needed
+    if (inputString && inputString.trim() !== "") {
+      const htmlContainer = createHTMLFromText(inputString);
+      transcriptContainer.appendChild(htmlContainer);
+      transcriptContainer.style.display = "block"; // Make it initially visible
+    }
   }
 
-  const htmlContainer = createHTMLFromText("$All recordings and transcripts are copyright protected. All rights reserved.$$");
+  if (language === "english") {
+    copyRight = "$All recordings and transcripts are copyright protected. All rights reserved.$$";
+  } else {
+    copyRight = "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
+  }
+
+  const htmlContainer = createHTMLFromText(copyRight);
   transcriptContainer.appendChild(htmlContainer);
 }
 
@@ -1407,27 +1460,36 @@ async function isValidTracklist(tracklist) {
 
   for (let i = 0; i < tracklist.length; i++) {
     const track = tracklist[i];
-    try {
-      const response = await fetch(track.url);
-      if (response.status !== 200) {
-        // The URL is not valid
-        invalidTracks.push(track.url); // Add the invalid URL to the array
-      }
-    } catch (error) {
-      // There was an error fetching the URL
-      invalidTracks.push(track.url); // Add the invalid URL to the array
+
+    // Check track URL
+    if (!(await isValidUrl(track.url))) {
+      invalidTracks.push({ type: "Track", url: track.url });
+    }
+
+    // Check credit URL
+    if (track.credit && !(await isValidUrl(track.credit))) {
+      invalidTracks.push({ type: "Credit", url: track.credit });
     }
   }
 
   if (invalidTracks.length > 0) {
-    console.log("Invalid track URLs:");
+    console.log("Invalid URLs:");
     console.log(invalidTracks);
   } else {
-    console.log("All track URLs are valid.");
+    console.log("All URLs are valid.");
   }
 
   // Return true if there are no invalid tracks
   return invalidTracks.length === 0;
+}
+
+async function isValidUrl(url) {
+  try {
+    const response = await fetch(url);
+    return response.status === 200;
+  } catch (error) {
+    return false;
+  }
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1583,7 +1645,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
   }, timeoutDurationMs);
   gatherAndPrintDebugInfo(song, index); // print all the debug info to screen
 
-  // timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
+  timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
   // updateProgressTimer(Math.floor(player.currentTime), curatedTracklistTotalTime);
 
   audio.play();
