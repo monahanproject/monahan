@@ -52,30 +52,13 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   const trackNameElement = createTrackNameElement();
   const exitBtn = createExitButton();
 
-  appendElements(musicPlayerDiv, [
-    wrapperDiv,
-    audioPlayerContainer,
-    exitBtn,
-  ]);
+  appendElements(musicPlayerDiv, [wrapperDiv, audioPlayerContainer, exitBtn]);
 
-  appendElements(wrapperDiv, [
-    audioPlayerContainer,
-    exitBtn,
-  ]);
+  appendElements(wrapperDiv, [audioPlayerContainer, exitBtn]);
 
-  appendElements(audioPlayerContainer, [
-    musicPlayer,
-    currTime,
-    buttonContainer,
-    volumeSlider,
-    trackNameContainer,
-  ]);
+  appendElements(audioPlayerContainer, [musicPlayer, currTime, buttonContainer, volumeSlider, trackNameContainer]);
 
-  appendElements(buttonContainer, [
-    skipBackwardButton,
-    playIconContainer,
-    skipForwardButton,
-  ]);
+  appendElements(buttonContainer, [skipBackwardButton, playIconContainer, skipForwardButton]);
 
   appendElements(trackNameContainer, [trackNameElement]);
 
@@ -173,21 +156,21 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
         // This is a new play, start from the beginning
         player.currentTime = 0;
       }
-  
+
       // Play the audio and update the UI
       player.play();
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
       audioContext.resume();
-  
+
       // Start a new timer interval and store its ID in timerInterval
       timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
       console.log("rrr Started playback and created a new timerInterval");
-  
+
       // Note: The interval will now update the timer every second while the audio is playing.
     }
   }
-  
+
   function handleSkipBackwardClick() {
     if (playerPlayState === "play") {
       let newTime = player.currentTime - 20;
@@ -197,7 +180,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       console.log("rrr Skip Backward clicked. New time: " + newTime);
     }
   }
-  
+
   function handleSkipForwardClick() {
     if (playerPlayState === "play") {
       let newTime = player.currentTime + 20;
@@ -208,7 +191,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       console.log("rrr Skip Forward clicked. New time: " + newTime);
     }
   }
-  
+
   function handleVolumeChange(event) {
     // Get the current volume value from the volume slider
     const newVolume = parseFloat(event.target.value) / 100;
@@ -216,34 +199,33 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     volumeNode.gain.value = newVolume;
     console.log("rrr Volume changed to: " + newVolume);
   }
-  
+
   function handleExitClick() {
     // Suspend audio context and clear the timer interval
     audioContext.suspend();
     clearInterval(timerInterval);
-  
+
     // Remove player elements and exit button
     musicPlayerh1.innerHTML = "";
     document.getElementById("wrapper").remove();
     document.getElementById("exitBtn").remove();
-  
+
     // Add a "Begin Again" button with its click handler
     const beginAgainBtn = document.createElement("button");
     beginAgainBtn.innerHTML = "Begin again";
     beginAgainBtn.name = "beginAgainBtn";
     beginAgainBtn.classList.add("beginAgainBtn");
     musicPlayerDiv.appendChild(beginAgainBtn);
-  
+
     beginAgainBtn.addEventListener("click", (event) => {
       // Redirect to a new page (replace with your desired URL)
       window.location.href = "monahan.html";
     });
-  
+
     console.log("rrr Exited the player and added 'Begin Again' button");
   }
-  
+
   // Rest of your code
-  
 
   // Rest of your code
 }
@@ -311,8 +293,6 @@ function createTimerLoopAndUpdateProgressTimer(startingTime) {
     remainingTime = calculateRemainingTime(deltaSeconds);
   }, 200); // Run the loop every 200 milliseconds
 }
-
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX LOADING GIF  XXXXXXXXXX
@@ -1345,32 +1325,35 @@ function followTracklistRules(tracklist) {
 
       if (!checkAllEnsureRulesEnforced()) {
         const track = tracklist[currIndex];
-        if (ensureTrack(track, currIndex, ensureRules) && ensureGeneralRules(track, currIndex)) {
-          markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
+        if (ensureTrack(track, currIndex, ensureRules)) {
+          // i have time for this track
+          if (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTime + track.duration)) {
+            markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
 
-          addNextValidTrack(track, curatedTracklist, tracklist);
+            addNextValidTrack(track, curatedTracklist, tracklist);
 
-          // if track is a geese track
-          if (track.tags.includes("geese")) {
-            console.log(`🦆! My track is a geese ${track.tags}`);
+            // if track is a geese track
+            if (track.tags.includes("geese")) {
+              console.log(`🦆! My track is a geese ${track.tags}`);
 
-            if (geeseTracks.length === 0) {
-              // and it's the first geese track
-              ensureRulesEnforced[r25] = false;
-              console.log(`🦆! It's the first geese track ${track.tags}`);
-            } else {
-              // not the first
-              ensureRulesEnforced[r25] = true;
-              console.log(`🦆! It's not the first geese track ${track.tags}`);
+              if (geeseTracks.length === 0) {
+                // and it's the first geese track
+                ensureRulesEnforced[r25] = false;
+                console.log(`🦆! It's the first geese track ${track.tags}`);
+              } else {
+                // not the first
+                ensureRulesEnforced[r25] = true;
+                console.log(`🦆! It's not the first geese track ${track.tags}`);
+              }
+              // update geeseTracks so we have an accurate length
+              geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
+              console.log(`🦆! updated list of geese! ${JSON.stringify(geeseTracks)}`);
             }
-            // update geeseTracks so we have an accurate length
-            geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
-            console.log(`🦆! updated list of geese! ${JSON.stringify(geeseTracks)}`);
-          }
 
-          console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
-          calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-          console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+            console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
+            calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+            console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+          }
         }
         currIndex++;
       }
@@ -1385,6 +1368,9 @@ function followTracklistRules(tracklist) {
       }
       const track = tracklist[currIndex];
       if (ensureGeneralRules(track, currIndex)) {
+        //         // i have time for this track
+        // if (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTime + track.duration)) {
+
         console.log(`⭐ Added General Track! ${track.name} ⭐`);
 
         addNextValidTrack(track, curatedTracklist, tracklist);
