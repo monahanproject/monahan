@@ -13,6 +13,11 @@ let curatedTracklistTotalTimeInMins;
 let curatedTracklist;
 let timerDuration = 0;
 
+let elapsedPlaylistTime;
+let newDisplayTime;
+
+let currentRuntime;
+
 const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; // Total duration of the playlist in seconds
@@ -154,7 +159,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       playerPlayState = "play";
       audioContext.resume();
 
-      timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
+      timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
       console.log("eee Started playback and created a new timerInterval");
     }
     // If the audio state is neither play nor pause, do nothing
@@ -164,31 +169,30 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     }
   }
 
-  // Define a debounce function
-  function debounce(func, delay) {
-    let timerId;
-    return function () {
-      clearTimeout(timerId);
-      timerId = setTimeout(func, delay);
-    };
-  }
+
+
 
   let isUpdatingTime = false; // Flag to prevent rapid updates
+
+
+
+
+
 
   function handleSkipForwardClick() {
     console.log("rrr player.currentTime " + player.currentTime);
     console.log(player);
 
     if (playerPlayState === "play") {
-      // Calculate the new time by adding 10 seconds to the current time
-      let newTime = player.currentTime + 10;
+      let newPlayerTime = player.currentTime + 10;
+      newDisplayTime = totalDurationSeconds - 10;
 
+      // is the answer currentRuntime?
+      // let newTime = elapsedPlaylistTime += 10; // Update elapsed time accordingly
       // console.log("rrr player.currentTime " + player.currentTime);
 
       // Ensure that the new time does not exceed the total duration of the playlist
-      newTime = Math.min(newTime, totalDurationSeconds);
-
-      // console.log("rrr player.currentTime " + player.currentTime);
+      newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
 
       if (!isUpdatingTime) {
         isUpdatingTime = true; // Set a flag to prevent rapid updates
@@ -199,16 +203,21 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
         // Delay the update of the current time to synchronize with audio playback
         setTimeout(() => {
           // Update the audio player's current time to the new time
-          player.currentTime = newTime;
+          player.currentTime = newPlayerTime;
 
           // Directly update the timer display based on the new time
-          updateProgressTimer(Math.floor(newTime), timerDuration);
+          updateProgressTimer(newDisplayTime, timerDuration);
+
+          
+          // updateProgressTimer(Math.floor(newDisplayTime), timerDuration);
 
           // Log the skip forward action with the new time
-          console.log("rrr Skip Forward clicked. New time: " + newTime);
+          console.log("rrr Skip Forward clicked. New time: " + newPlayerTime);
 
           // Recreate the timer interval based on the new time
-          timerInterval = createTimerLoopAndUpdateProgressTimer(newTime);
+          timerInterval = createTimerLoopAndUpdateProgressTimer(newPlayerTime);
+
+          // timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
 
           // Reset the flag to allow further updates
           isUpdatingTime = false;
@@ -216,6 +225,15 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       }
     }
   }
+
+
+
+
+
+
+
+
+
 
   function handleSkipBackwardClick() {
     if (playerPlayState === "play") {
@@ -355,6 +373,9 @@ function createTimerLoopAndUpdateProgressTimer(startingTime) {
 
     // Check if the player is in a playing state
     if (playerPlayState === "play") {
+      // timerDuration -= 1; // Subtract 1 second
+      elapsedPlaylistTime += 1; // Accumulate elapsed time across the playlist
+
       // Directly update the timer display based on the audio player's current time
       updateProgressTimer(Math.floor(player.currentTime), timerDuration);
     }
@@ -1723,10 +1744,14 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
       // Log the end of the current song
       console.log(`Song ended: ${song.name}, Duration: ${duration}`);
 
+      // timerDuration = curatedTracklistTotalTime; //new
+
       // Queue up the next song (songs, index, currentRuntime, cache) {
       console.log("Queueing next track with the following values:");
       console.log(`Queueing- Index: ${index + 1}`);
       console.log(`Queueing- Current Runtime: ${currentRuntime + duration}`);
+      console.log(`Queueing- Current duration: ${duration}`);
+      console.log(`Queueing- Current Runtime + duration: ${currentRuntime + duration}`);
       console.log(`Queueing- Cache: ${cache}`);
       queueNextTrack(songs, index + 1, currentRuntime + duration, cache);
     });
