@@ -1267,7 +1267,7 @@ function trackExistsWithAttributes(curatedTracklist, attribute, value) {
 function logRuleApplication(ruleNumber, description, isApplied, message = null) {
   const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
   console.log(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
-  addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`);
+  // addToLogDisplay(`Rule ${ruleNumber} ${ruleStatus}: ${description}`); // commented out to stop log
 
   if (message !== null) {
     displayConsoleLog += `→ Track ${ruleNumber} Rules ${ruleStatus}: ${description}<br>`;
