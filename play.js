@@ -940,7 +940,7 @@ function r60(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 61: Rule 1 (only for Track 1): The 1st track must have the tag 'intro'.
 function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 1 && !track.tags.includes("intro")) {
-    const logMessage = `❌ (${track.name}): The 1st track must have the tag intro (track's tags are ${track.tags})`;
+    const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 1st track must have the tag intro (track's tags are ${track.tags})`;
     logRuleApplication(61, logMessage, false);
     return false;
   }
@@ -953,12 +953,12 @@ function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 62: Rule 2 (only for Track 2):The 2nd track must have the placement 'beginning'.
 function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 2 && !track.placement.includes("beginning")) {
-    const logMessage = `❌ (${track.name}): The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
+    const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
     logRuleApplication(62, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
+  const logMessage = `  ✅! (${track.name}): The track's index is ${trackIndex}. The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
   logRuleApplication(62, logMessage, true);
   return true;
 }
@@ -966,24 +966,24 @@ function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 // Rule 63: Rule 3 (only for Track 3): The 3rd track must have the placement beginning and a different form than the 2nd track.
 function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if ((trackIndex === 3 && !track.placement.includes("beginning")) || (trackIndex === 2 && track.form === prevTrack1.form)) {
-    const logMessage = `❌ (${track.name}): The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
+    const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
     logRuleApplication(63, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
+  const logMessage = `  ✅! (${track.name}): The track's index is ${trackIndex}. The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
   logRuleApplication(63, logMessage, true);
   return true;
 }
 // Rule 64: Rule 4 (only for Track 4): The 4th track must have the placement middle and a different form than the 3rd track.
 function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if ((trackIndex === 4 && !track.placement.includes("middle")) || (trackIndex === 3 && track.form === prevTrack1.form)) {
-    const logMessage = `❌ (${track.name}): The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
+    const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
     logRuleApplication(64, logMessage, false);
     return false;
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
+  const logMessage = `  ✅! (${track.name}): The track's index is ${trackIndex}. The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
   logRuleApplication(64, logMessage, true);
   return true;
 }
@@ -992,7 +992,7 @@ function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 5) {
     if (track.form !== "short" || !track.placement.includes("middle") || track.language === prevTrack1.language) {
-      const logMessage = `❌ (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
       logRuleApplication(65, logMessage, false);
       return false;
     }
@@ -1007,18 +1007,18 @@ function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 6) {
     if (!track.placement.includes("middle")) {
-      const logMessage = `❌ (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
       logRuleApplication(66, logMessage, false);
       return false;
     }
     if (track.form === prevTrack1.form) {
-      const logMessage = `❌ (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
       logRuleApplication(66, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `✅! (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
+  const logMessage = `✅! (${track.name}): The track's index is ${trackIndex}. The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
   logRuleApplication(66, logMessage, true);
   return true;
 }
@@ -1027,13 +1027,13 @@ function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 7) {
     if (!track.placement.includes("middle") || track.form === prevTrack1.form || (track.form !== "MUSIC" && track.language === prevTrack1.language)) {
-      const logMessage = `❌ (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
       logRuleApplication(67, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = ` ✅! (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
+  const logMessage = ` ✅! (${track.name}): The track's index is ${trackIndex}. The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
   logRuleApplication(67, logMessage, true);
   return true;
 }
@@ -1042,23 +1042,23 @@ function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (trackIndex === 7) {
     if (!track.placement.includes("middle")) {
-      const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
     }
     if (track.form === prevTrack1.form || track.form === prevTrack2.form) {
-      const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
     }
     if (track.language === prevTrack1.language || track.language === prevTrack2.language) {
-      const logMessage = `❌ (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+      const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
       logRuleApplication(68, logMessage, false);
       return false;
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `✅! (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+  const logMessage = `✅! (${track.name}): The track's index is ${trackIndex}. The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
   logRuleApplication(68, logMessage, true);
   return true;
 }
