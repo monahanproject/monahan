@@ -24,6 +24,28 @@ var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; // Total duration of t
 var elapsedDurationSeconds = 0; // Elapsed duration of the current track in seconds
 var remainingDurationSeconds = totalDurationSeconds; // Remaining duration of the playlist in seconds
 let currentTimeElement; // Element to display current time
+
+
+
+/* I nitialization: When I start playing music or load a track, the timerInterval is initially set up using the 
+createTimerLoopAndUpdateProgressTimer function, which is called with the initial elapsed time as an argument.
+ For example:
+Interval Execution: The timerInterval is an ID that represents the interval timer. It triggers a function (the 
+  callback) at a specified interval. In this case, the callback function updates the timer display and checks 
+  if the player is playing. If the player is playing, it calculates the remaining time based on the elapsed time and 
+  the total duration of the playlist. This allows the timer to continuously count down while the music is playing.
+Updating Timer Display: The callback function updates the timer display with the remaining time, and you see this
+ updated display on your webpage.
+
+Pausing and Resuming Timer: When you pause the music, the timerInterval is cleared using clearInterval(timerInterval).
+ This stops the timer from updating while the music is paused. When you resume the music, a new timerInterval is created 
+ with the updated elapsed time, and the timer resumes counting down.
+
+So, in summary, the timerInterval is essential for keeping the timer display updated in real-time while the music is 
+playing. It continuously calculates and displays the remaining time in the playlist, and it's paused and resumed as
+ needed when you play or pause the music.
+*/
+
 let timerInterval; // Declare timerInterval to store the interval ID
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
@@ -180,12 +202,12 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 
 
   function handleSkipForwardClick() {
-    console.log("rrr player.currentTime " + player.currentTime);
+    // console.log("rrr player.currentTime " + player.currentTime);
     console.log(player);
 
     if (playerPlayState === "play") {
       let newPlayerTime = player.currentTime + 10;
-      newDisplayTime = totalDurationSeconds - 10;
+      // newDisplayTime = totalDurationSeconds - 10;
 
       // is the answer currentRuntime?
       // let newTime = elapsedPlaylistTime += 10; // Update elapsed time accordingly
@@ -200,24 +222,45 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
         // Clear the existing timer interval to avoid conflicts
         clearInterval(timerInterval);
 
+// Calculate the new time based on the remaining duration and add 10 seconds
+elapsedPlaylistTime += 10; // Add 10 seconds to the elapsed playlist time
+
+// Ensure the new time does not exceed the total duration of the playlist
+elapsedPlaylistTime = Math.min(elapsedPlaylistTime, curatedTracklistTotalTime);
+
+// Log the skip forward action with the new time
+console.log("rrr Skip Forward clicked. New time: " + elapsedPlaylistTime);
+
+// Recreate the timer interval based on the new time
+timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
+
+
+
         // Delay the update of the current time to synchronize with audio playback
         setTimeout(() => {
           // Update the audio player's current time to the new time
           player.currentTime = newPlayerTime;
 
           // Directly update the timer display based on the new time
-          updateProgressTimer(newDisplayTime, timerDuration);
+          // updateProgressTimer(newDisplayTime, timerDuration);  // this did the same thing as ---> timerInterval = createTimerLoopAndUpdateProgressTimer(newPlayerTime);
+
 
           
           // updateProgressTimer(Math.floor(newDisplayTime), timerDuration);
 
           // Log the skip forward action with the new time
-          console.log("rrr Skip Forward clicked. New time: " + newPlayerTime);
+          // console.log("rrr Skip Forward clicked. New time: " + newPlayerTime);
 
           // Recreate the timer interval based on the new time
-          timerInterval = createTimerLoopAndUpdateProgressTimer(newPlayerTime);
+          // timerInterval = createTimerLoopAndUpdateProgressTimer(newPlayerTime);
 
-          // timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
+          
+
+          // timerInterval = updateProgressTimer(currentRuntime, timerDuration);
+          // these are cludes for the line above tthis one, which doesn't work
+          // function updateProgressTimer(elapsedSeconds, previousDuration) {
+            // updateProgressTimer(Math.floor(player.currentTime), timerDuration);
+          
 
           // Reset the flag to allow further updates
           isUpdatingTime = false;
@@ -253,7 +296,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
           console.log("rrr Skip Backward clicked. New time: " + newTime);
 
           // Recreate the timer interval
-          timerInterval = createTimerLoopAndUpdateProgressTimer(newTime);
+          timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
           isUpdatingTime = false; // Reset the flag
         }, 100); // Adjust the delay as needed
       }
@@ -303,6 +346,9 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // Update the progress timer display
+// updateProgressTimer(Math.floor(player.currentTime), timerDuration);
+
+
 function updateProgressTimer(elapsedSeconds, previousDuration) {
   currentTimeElement = document.getElementById("current-time");
 
@@ -893,7 +939,7 @@ function r60(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 61: Rule 1 (only for Track 1): The 1st track must have the tag 'intro'.
 function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex === 0 && !track.tags.includes("intro")) {
+  if (trackIndex === 1 && !track.tags.includes("intro")) {
     const logMessage = `❌ (${track.name}): The 1st track must have the tag intro (track's tags are ${track.tags})`;
     logRuleApplication(61, logMessage, false);
     return false;
@@ -906,7 +952,7 @@ function r61(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 62: Rule 2 (only for Track 2):The 2nd track must have the placement 'beginning'.
 function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex === 1 && !track.placement.includes("beginning")) {
+  if (trackIndex === 2 && !track.placement.includes("beginning")) {
     const logMessage = `❌ (${track.name}): The 2nd track must have the placement beginning (track's placement is ${track.placement})`;
     logRuleApplication(62, logMessage, false);
     return false;
@@ -919,7 +965,7 @@ function r62(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 63: Rule 3 (only for Track 3): The 3rd track must have the placement beginning and a different form than the 2nd track.
 function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if ((trackIndex === 2 && !track.placement.includes("beginning")) || (trackIndex === 2 && track.form === prevTrack1.form)) {
+  if ((trackIndex === 3 && !track.placement.includes("beginning")) || (trackIndex === 2 && track.form === prevTrack1.form)) {
     const logMessage = `❌ (${track.name}): The 3rd track must have the placement beginning (track's placement is ${track.placement}) and a different form (track's form is ${track.form}) than the 2nd track (the 2nd track's form is ${prevTrack1.form})`;
     logRuleApplication(63, logMessage, false);
     return false;
@@ -931,7 +977,7 @@ function r63(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 }
 // Rule 64: Rule 4 (only for Track 4): The 4th track must have the placement middle and a different form than the 3rd track.
 function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if ((trackIndex === 3 && !track.placement.includes("middle")) || (trackIndex === 3 && track.form === prevTrack1.form)) {
+  if ((trackIndex === 4 && !track.placement.includes("middle")) || (trackIndex === 3 && track.form === prevTrack1.form)) {
     const logMessage = `❌ (${track.name}): The 4th track must have the placement middle (track's placement is ${track.placement}); and a different form (track's form is ${track.form}); than the 3rd track (the 3rd track's form is ${prevTrack1.form})`;
     logRuleApplication(64, logMessage, false);
     return false;
@@ -944,7 +990,7 @@ function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 
 // Rule 65: Rule 5 (only for Track 5): The 5th track must have the form 'short'; must have the placement 'middle'; and have a different language than the 4th track.
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex === 4) {
+  if (trackIndex === 5) {
     if (track.form !== "short" || !track.placement.includes("middle") || track.language === prevTrack1.language) {
       const logMessage = `❌ (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
       logRuleApplication(65, logMessage, false);
@@ -952,14 +998,14 @@ function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
+  const logMessage = `✅! (${track.name}): The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
   logRuleApplication(65, logMessage, true);
   return true;
 }
 
 // Rule 66: Rule 6 (only for Track 6): The 6th track must have the placement 'middle' and a different form than the 5th track.
 function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex === 5) {
+  if (trackIndex === 6) {
     if (!track.placement.includes("middle")) {
       const logMessage = `❌ (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th's track's form is ${prevTrack1.form})`;
       logRuleApplication(66, logMessage, false);
@@ -972,14 +1018,14 @@ function r66(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
+  const logMessage = `✅! (${track.name}): The 6th track has the placement MIDDLE (track's placement is ${track.placement}); and has a different form (track's form is ${track.form}) vs the 5th track (the 5th track's form is ${prevTrack1.form})`;
   logRuleApplication(66, logMessage, true);
   return true;
 }
 
 // Rule 67: Rule 7 (only for Track 7): The 7th track must have the placement 'middle', a different form than the 6th track, and unless the form of the 7th track is 'MUSIC', it must also have a different language from the 6th track.
 function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  if (trackIndex === 6) {
+  if (trackIndex === 7) {
     if (!track.placement.includes("middle") || track.form === prevTrack1.form || (track.form !== "MUSIC" && track.language === prevTrack1.language)) {
       const logMessage = `❌ (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
       logRuleApplication(67, logMessage, false);
@@ -987,7 +1033,7 @@ function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
+  const logMessage = ` ✅! (${track.name}): The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
   logRuleApplication(67, logMessage, true);
   return true;
 }
@@ -1012,7 +1058,7 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     }
   }
   // If the conditions are met, return true to indicate rule followed
-  const logMessage = `  ✅! (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
+  const logMessage = `✅! (${track.name}): The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}) and has a different language (track's language ${track.language}) vs the 7th track (the 7th track's language ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
   logRuleApplication(68, logMessage, true);
   return true;
 }
@@ -1741,19 +1787,25 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
 
+
+      elapsedPlaylistTime += duration;
+
       // Log the end of the current song
       console.log(`Song ended: ${song.name}, Duration: ${duration}`);
+
+      // Update currentRuntime with the cumulative duration
+      currentRuntime += duration;
 
       // timerDuration = curatedTracklistTotalTime; //new
 
       // Queue up the next song (songs, index, currentRuntime, cache) {
       console.log("Queueing next track with the following values:");
       console.log(`Queueing- Index: ${index + 1}`);
-      console.log(`Queueing- Current Runtime: ${currentRuntime + duration}`);
+      console.log(`Queueing- Current Runtime: ${currentRuntime}`);
       console.log(`Queueing- Current duration: ${duration}`);
       console.log(`Queueing- Current Runtime + duration: ${currentRuntime + duration}`);
       console.log(`Queueing- Cache: ${cache}`);
-      queueNextTrack(songs, index + 1, currentRuntime + duration, cache);
+      queueNextTrack(songs, index + 1, currentRuntime, cache);
     });
 
     // Set a timer to preload the next file
@@ -1777,6 +1829,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     console.error("An error occurred in queueNextTrack:", error);
   }
 }
+
 
 let isFirstPlay = true; // Add a flag variable to track the first play
 
