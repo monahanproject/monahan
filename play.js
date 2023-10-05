@@ -4,7 +4,6 @@ var audioContext = null;
 var volumeNode = null;
 // var previousVolume = "100";
 let playerPlayState = "play";
-// let muteState = "unmute";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
 let curatedTracklistTotalTime = 0;
@@ -14,39 +13,17 @@ let curatedTracklist;
 let timerDuration = 0;
 
 let elapsedPlaylistTime;
-let newDisplayTime;
 
 let currentRuntime;
 
 const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
-var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; // Total duration of the playlist in seconds
-var elapsedDurationSeconds = 0; // Elapsed duration of the current track in seconds
+var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; 
 var remainingDurationSeconds = totalDurationSeconds; // Remaining duration of the playlist in seconds
 let currentTimeElement; // Element to display current time
-
-
-
-/* I nitialization: When I start playing music or load a track, the timerInterval is initially set up using the 
-createTimerLoopAndUpdateProgressTimer function, which is called with the initial elapsed time as an argument.
- For example:
-Interval Execution: The timerInterval is an ID that represents the interval timer. It triggers a function (the 
-  callback) at a specified interval. In this case, the callback function updates the timer display and checks 
-  if the player is playing. If the player is playing, it calculates the remaining time based on the elapsed time and 
-  the total duration of the playlist. This allows the timer to continuously count down while the music is playing.
-Updating Timer Display: The callback function updates the timer display with the remaining time, and you see this
- updated display on your webpage.
-
-Pausing and Resuming Timer: When you pause the music, the timerInterval is cleared using clearInterval(timerInterval).
- This stops the timer from updating while the music is paused. When you resume the music, a new timerInterval is created 
- with the updated elapsed time, and the timer resumes counting down.
-
-So, in summary, the timerInterval is essential for keeping the timer display updated in real-time while the music is 
-playing. It continuously calculates and displays the remaining time in the playlist, and it's paused and resumed as
- needed when you play or pause the music.
-*/
-
 let timerInterval; // Declare timerInterval to store the interval ID
+
+let someTimerThing;
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
@@ -65,11 +42,10 @@ function change_vol(event) {
 
 // https://css-tricks.com/lets-create-a-custom-audio-player/
 function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
-  // Create wrapper div
   const wrapperDiv = createDiv("wrapper");
   const audioPlayerContainer = createDiv("audio-player-container");
   const musicPlayer = createAudioElement("music_player");
-  const currTime = createCurrentTimeElement();
+  const currTime = createTimerCountdownElement();
   const buttonContainer = createDiv("button-container");
   const playIconContainer = createPlayIconContainer();
   const skipBackwardButton = createSkipButton("<<20");
@@ -106,7 +82,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     return audio;
   }
 
-  function createCurrentTimeElement() {
+  function createTimerCountdownElement() {
     const currentTime = document.createElement("span");
     currentTime.classList.add("time");
     currentTime.id = "current-time";
@@ -175,7 +151,6 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     }
     // Check if the audio is currently paused
     else if (playerPlayState === "pause") {
-      // Play the audio and update the UI
       player.play();
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
@@ -183,119 +158,53 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 
       timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
       console.log("eee Started playback and created a new timerInterval");
-    }
-    // If the audio state is neither play nor pause, do nothing
-    else {
-      // This case is typically not reached, but it's included for completeness
+    } else {
+      // If the audio state is neither play nor pause, do nothing
       console.log("eee Unknown audio state. Doing nothing.");
     }
   }
 
-
-
-
   let isUpdatingTime = false; // Flag to prevent rapid updates
 
-
-
-
-
-
   function handleSkipForwardClick() {
-    // console.log("rrr player.currentTime " + player.currentTime);
-    console.log(player);
-
     if (playerPlayState === "play") {
       let newPlayerTime = player.currentTime + 10;
-      // newDisplayTime = totalDurationSeconds - 10;
 
-      // is the answer currentRuntime?
-      // let newTime = elapsedPlaylistTime += 10; // Update elapsed time accordingly
-      // console.log("rrr player.currentTime " + player.currentTime);
 
-      // Ensure that the new time does not exceed the total duration of the playlist
+      someTimerThing = someTimerThing += 10;
+      console.log(`uuu someTimerThing ${someTimerThing}`);
+
       newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
-
       if (!isUpdatingTime) {
         isUpdatingTime = true; // Set a flag to prevent rapid updates
-
-        // Clear the existing timer interval to avoid conflicts
         clearInterval(timerInterval);
-
-// Calculate the new time based on the remaining duration and add 10 seconds
-elapsedPlaylistTime += 10; // Add 10 seconds to the elapsed playlist time
-
-// Ensure the new time does not exceed the total duration of the playlist
-elapsedPlaylistTime = Math.min(elapsedPlaylistTime, curatedTracklistTotalTime);
-
-// Log the skip forward action with the new time
-console.log("rrr Skip Forward clicked. New time: " + elapsedPlaylistTime);
-
-// Recreate the timer interval based on the new time
-timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
-
-
-
-        // Delay the update of the current time to synchronize with audio playback
+        elapsedPlaylistTime += 10; // Add 10 seconds to the elapsed playlist time
+        elapsedPlaylistTime = Math.min(elapsedPlaylistTime, curatedTracklistTotalTime);
+        timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
         setTimeout(() => {
-          // Update the audio player's current time to the new time
           player.currentTime = newPlayerTime;
-
-          // Directly update the timer display based on the new time
-          // updateProgressTimer(newDisplayTime, timerDuration);  // this did the same thing as ---> timerInterval = createTimerLoopAndUpdateProgressTimer(newPlayerTime);
-
-
-          
-          // updateProgressTimer(Math.floor(newDisplayTime), timerDuration);
-
-          // Log the skip forward action with the new time
-          // console.log("rrr Skip Forward clicked. New time: " + newPlayerTime);
-
-          // Recreate the timer interval based on the new time
-          // timerInterval = createTimerLoopAndUpdateProgressTimer(newPlayerTime);
-
-          
-
-          // timerInterval = updateProgressTimer(currentRuntime, timerDuration);
-          // these are cludes for the line above tthis one, which doesn't work
-          // function updateProgressTimer(elapsedSeconds, previousDuration) {
-            // updateProgressTimer(Math.floor(player.currentTime), timerDuration);
-          
-
-          // Reset the flag to allow further updates
           isUpdatingTime = false;
         }, 100); // Adjust the delay as needed (100 milliseconds in this case)
       }
     }
   }
 
-
-
-
-
-
-
-
-
-
   function handleSkipBackwardClick() {
     if (playerPlayState === "play") {
       let newTime = player.currentTime - 10;
 
+
+      someTimerThing = someTimerThing -= 10;
+      console.log(`uuu someTimerThing ${someTimerThing}`);
+
       if (!isUpdatingTime) {
         isUpdatingTime = true;
-
-        // Clear the existing timer interval
         clearInterval(timerInterval);
-
-        // Delay the update of currentTime
         setTimeout(() => {
           player.currentTime = Math.max(newTime, 0);
-          // Directly update the timer display based on the new time
           updateProgressTimer(Math.floor(newTime), timerDuration);
           console.log("rrr Skip Backward clicked. New time: " + newTime);
 
-          // Recreate the timer interval
           timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
           isUpdatingTime = false; // Reset the flag
         }, 100); // Adjust the delay as needed
@@ -335,21 +244,14 @@ timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
 
     console.log("rrr Exited the player and added 'Begin Again' button");
   }
-
-  // Rest of your code
-
-  // Rest of your code
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Update the progress timer display
-// updateProgressTimer(Math.floor(player.currentTime), timerDuration);
-
-
 function updateProgressTimer(elapsedSeconds, previousDuration) {
+  console.log(`uuu updateProgressTimer getting called, elapsedSeconds is ${elapsedSeconds} and previousDuration is ${previousDuration}`);
   currentTimeElement = document.getElementById("current-time");
 
   if (!currentTimeElement) {
@@ -358,18 +260,15 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
     return; // Exit the function to prevent further errors
   }
 
-  // Calculate the total duration in seconds
   totalDurationSeconds = curatedTracklistTotalTime;
-
-  // Calculate remaining duration based on elapsed time and previous duration
   const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
-
-  // Determine the timer display based on remaining time
   const { minutes, seconds } = calculateMinutesAndSeconds(remainingDurationSeconds);
   updateTimeDisplay(minutes, seconds);
-}
 
-// Handle timer completion
+  someTimerThing = elapsedSeconds;
+  console.log(`uuu someTimerThing ${someTimerThing}`);
+  
+}
 function handleTimerCompletion() {
   currentTimeElement = document.getElementById("current-time");
 
@@ -382,7 +281,6 @@ function handleTimerCompletion() {
   currentTimeElement.innerHTML = "Done";
 }
 
-// Calculate minutes and seconds from total seconds
 function calculateMinutesAndSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = (seconds % 60).toLocaleString("en-US", {
@@ -396,7 +294,6 @@ function updateTimeDisplay(minutes, seconds) {
   currentTimeElement = document.getElementById("current-time");
 
   if (!currentTimeElement) {
-    // Handle the case where the "current-time" element is missing
     console.error("Error: Missing element 'current-time'");
     return; // Exit the function to prevent further errors
   }
@@ -409,24 +306,27 @@ function calculateRemainingTime(elapsedSeconds) {
 }
 
 function createTimerLoopAndUpdateProgressTimer(startingTime) {
-  var start = Date.now(); // Record the start time of the loop
+  // console.log(`uuu createTimerLoopAndUpdateProgressTimer running. Starting time is ${startingTime}`);
 
-  // Set up an interval to run the loop every 200 milliseconds
-  // In the callback function, calculate the elapsed time in milliseconds since the start of the loop.
+  var start = Date.now(); // Record the start time of the loop
   return setInterval(() => {
     let delta = Date.now() - start; // Calculate elapsed milliseconds
     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-
-    // Check if the player is in a playing state
     if (playerPlayState === "play") {
-      // timerDuration -= 1; // Subtract 1 second
       elapsedPlaylistTime += 1; // Accumulate elapsed time across the playlist
+      // console.log(`uuu startingTime is ${startingTime }`);
+      // this is where my problem is. rather than player.currenttime I need a different value findmeeee
+      // updateProgressTimer(Math.floor(player.currentTime), timerDuration);
 
-      // Directly update the timer display based on the audio player's current time
+      console.log(`uuu ssssomeTimerThing ${someTimerThing}`);
+      console.log(`uuu player.currentTime ${player.currentTime}`);
+
+
+      // updateProgressTimer(Math.floor(player.currentTime), timerDuration);
       updateProgressTimer(Math.floor(player.currentTime), timerDuration);
-    }
 
-    // Calculate remaining time using the calculateRemainingTime function
+
+    }
     remainingTime = calculateRemainingTime(deltaSeconds);
   }, 200); // Run the loop every 200 milliseconds
 }
@@ -439,15 +339,9 @@ function displayLoadingGifAndGeneratePlayer() {
   const musicPlayerDiv = document.getElementById("musicPlayerDiv");
   const musicPlayerh1 = document.getElementById("musicPlayerH1");
 
-  // Show a loading message
   updateTheStatusMessage(musicPlayerh1, "Generating beautiful sounds for you, this might take a minute");
-
-  // Remove unnecessary elements
   removeAnElementByID("launchMusicPlayerForm");
-  // Remove other unnecessary elements if needed
-  // removeElement("textTranscript");
 
-  // Create and display a loader
   const loaderDiv = createALoaderDiv();
   musicPlayerDiv.appendChild(loaderDiv);
 
@@ -1787,7 +1681,6 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
 
-
       elapsedPlaylistTime += duration;
 
       // Log the end of the current song
@@ -1820,7 +1713,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     gatherAndPrintDebugInfo(song, index);
 
     // Update the progress timer
-    timerInterval = createTimerLoopAndUpdateProgressTimer(curatedTracklistTotalTime);
+    timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
 
     // Play the audio
     audio.play();
@@ -1829,7 +1722,6 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     console.error("An error occurred in queueNextTrack:", error);
   }
 }
-
 
 let isFirstPlay = true; // Add a flag variable to track the first play
 
