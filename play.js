@@ -6,24 +6,20 @@ var volumeNode = null;
 let playerPlayState = "play";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
-let curatedTracklistTotalTime = 0;
+let curatedTracklistTotalTimeInSecs = 0;
 let curatedTracklistTotalTimeInMins;
 
 let curatedTracklist;
 let timerDuration = 0;
 
-let elapsedPlaylistTime;
-
-let currentRuntime;
+let randomValueToTrackElapsedPlaylistTime;
 
 const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
-var totalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; 
-var remainingDurationSeconds = totalDurationSeconds; // Remaining duration of the playlist in seconds
+var randomValueToTrackTotalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; 
+var randomValueToTrackRemainingDurationSeconds = randomValueToTrackTotalDurationSeconds; // Remaining duration of the playlist in seconds
 let currentTimeElement; // Element to display current time
-let timerInterval; // Declare timerInterval to store the interval ID
-
-let someTimerThing;
+let randomValueSomeTimerThing;
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
@@ -146,7 +142,6 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       player.pause();
       playerPlayState = "pause";
       audioContext.suspend();
-      clearInterval(timerInterval);
       console.log("eee Paused audio and cleared timerInterval");
     }
     // Check if the audio is currently paused
@@ -156,7 +151,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       playerPlayState = "play";
       audioContext.resume();
 
-      timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
+      createTimerLoopAndUpdateProgressTimer();
       console.log("eee Started playback and created a new timerInterval");
     } else {
       // If the audio state is neither play nor pause, do nothing
@@ -171,16 +166,15 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       let newPlayerTime = player.currentTime + 10;
 
 
-      someTimerThing = someTimerThing += 10;
-      console.log(`uuu someTimerThing ${someTimerThing}`);
+      randomValueSomeTimerThing = randomValueSomeTimerThing += 10;
+      console.log(`uuu someTimerThing ${randomValueSomeTimerThing}`);
 
-      newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
+      newPlayerTime = Math.min(newPlayerTime, randomValueToTrackTotalDurationSeconds);
       if (!isUpdatingTime) {
         isUpdatingTime = true; // Set a flag to prevent rapid updates
-        clearInterval(timerInterval);
-        elapsedPlaylistTime += 10; // Add 10 seconds to the elapsed playlist time
-        elapsedPlaylistTime = Math.min(elapsedPlaylistTime, curatedTracklistTotalTime);
-        timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
+        randomValueToTrackElapsedPlaylistTime += 10; // Add 10 seconds to the elapsed playlist time
+        randomValueToTrackElapsedPlaylistTime = Math.min(randomValueToTrackElapsedPlaylistTime, curatedTracklistTotalTimeInSecs);
+        createTimerLoopAndUpdateProgressTimer(randomValueToTrackElapsedPlaylistTime);
         setTimeout(() => {
           player.currentTime = newPlayerTime;
           isUpdatingTime = false;
@@ -194,18 +188,17 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       let newTime = player.currentTime - 10;
 
 
-      someTimerThing = someTimerThing -= 10;
-      console.log(`uuu someTimerThing ${someTimerThing}`);
+      randomValueSomeTimerThing = randomValueSomeTimerThing -= 10;
+      console.log(`uuu someTimerThing ${randomValueSomeTimerThing}`);
 
       if (!isUpdatingTime) {
         isUpdatingTime = true;
-        clearInterval(timerInterval);
         setTimeout(() => {
           player.currentTime = Math.max(newTime, 0);
           updateProgressTimer(Math.floor(newTime), timerDuration);
           console.log("rrr Skip Backward clicked. New time: " + newTime);
 
-          timerInterval = createTimerLoopAndUpdateProgressTimer(elapsedPlaylistTime);
+          createTimerLoopAndUpdateProgressTimer(randomValueToTrackElapsedPlaylistTime);
           isUpdatingTime = false; // Reset the flag
         }, 100); // Adjust the delay as needed
       }
@@ -223,8 +216,6 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   function handleExitClick() {
     // Suspend audio context and clear the timer interval
     audioContext.suspend();
-    clearInterval(timerInterval);
-
     // Remove player elements and exit button
     musicPlayerh1.innerHTML = "";
     document.getElementById("wrapper").remove();
@@ -260,13 +251,13 @@ function updateProgressTimer(elapsedSeconds, previousDuration) {
     return; // Exit the function to prevent further errors
   }
 
-  totalDurationSeconds = curatedTracklistTotalTime;
-  const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
+  randomValueToTrackTotalDurationSeconds = curatedTracklistTotalTimeInSecs;
+  const remainingDurationSeconds = randomValueToTrackTotalDurationSeconds - (elapsedSeconds + previousDuration);
   const { minutes, seconds } = calculateMinutesAndSeconds(remainingDurationSeconds);
   updateTimeDisplay(minutes, seconds);
 
-  someTimerThing = elapsedSeconds;
-  console.log(`uuu someTimerThing ${someTimerThing}`);
+  randomValueSomeTimerThing = elapsedSeconds;
+  console.log(`uuu someTimerThing ${randomValueSomeTimerThing}`);
   
 }
 function handleTimerCompletion() {
@@ -302,7 +293,7 @@ function updateTimeDisplay(minutes, seconds) {
 }
 
 function calculateRemainingTime(elapsedSeconds) {
-  return totalDurationSeconds - elapsedSeconds;
+  return randomValueToTrackTotalDurationSeconds - elapsedSeconds;
 }
 
 function createTimerLoopAndUpdateProgressTimer(startingTime) {
@@ -313,19 +304,13 @@ function createTimerLoopAndUpdateProgressTimer(startingTime) {
     let delta = Date.now() - start; // Calculate elapsed milliseconds
     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
     if (playerPlayState === "play") {
-      elapsedPlaylistTime += 1; // Accumulate elapsed time across the playlist
+      randomValueToTrackElapsedPlaylistTime += 1; // Accumulate elapsed time across the playlist
       // console.log(`uuu startingTime is ${startingTime }`);
       // this is where my problem is. rather than player.currenttime I need a different value findmeeee
-      // updateProgressTimer(Math.floor(player.currentTime), timerDuration);
-
-      console.log(`uuu ssssomeTimerThing ${someTimerThing}`);
+      console.log(`uuu ssssomeTimerThing ${randomValueSomeTimerThing}`);
       console.log(`uuu player.currentTime ${player.currentTime}`);
 
-
-      // updateProgressTimer(Math.floor(player.currentTime), timerDuration);
       updateProgressTimer(Math.floor(player.currentTime), timerDuration);
-
-
     }
     remainingTime = calculateRemainingTime(deltaSeconds);
   }, 200); // Run the loop every 200 milliseconds
@@ -1117,20 +1102,20 @@ function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
-  if (curatedTracklistTotalTime === 0) {
+  if (curatedTracklistTotalTimeInSecs === 0) {
     for (const track of curatedTracklist) {
       console.log("ttt track name is " + track.name);
       console.log("ttt track time is " + (track.duration || 0)); // Use 0 if duration is undefined or null
-      curatedTracklistTotalTime += track.duration || 0;
+      curatedTracklistTotalTimeInSecs += track.duration || 0;
     }
   } else if (track) {
     // console.log("curatedTracklistTotalTime is " + curatedTracklistTotalTime);
-    curatedTracklistTotalTime += track.duration || 0;
+    curatedTracklistTotalTimeInSecs += track.duration || 0;
   }
 
-  curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTime / 60);
+  curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
 
-  return curatedTracklistTotalTime;
+  return curatedTracklistTotalTimeInSecs;
 }
 
 function addNextValidTrack(track, curatedTracklist, tracks) {
@@ -1247,7 +1232,7 @@ function followTracklistRules(tracklist) {
       if (generalRulesPassed) {
         // All conditions met, add the track to curatedTracklist
         addNextValidTrack(track, curatedTracklist, tracklist);
-        curatedTracklistTotalTime = calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+        curatedTracklistTotalTimeInSecs = calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
         console.log(`⭐ Added Base Track! ${track.name} ⭐`);
 
         // Update the previous tracks with the added track
@@ -1372,7 +1357,7 @@ function followTracklistRules(tracklist) {
   function followEnsureRulesLoop(ensureRules) {
     let iterationCounter = 0;
 
-    while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS && !checkAllEnsureRulesEnforced() && iterationCounter < 3) {
+    while (curatedTracklistTotalTimeInSecs <= MAX_PLAYLIST_DURATION_SECONDS && !checkAllEnsureRulesEnforced() && iterationCounter < 3) {
       if (currIndex >= tracklist.length) {
         currIndex = 0;
         iterationCounter++;
@@ -1382,7 +1367,7 @@ function followTracklistRules(tracklist) {
         const track = tracklist[currIndex];
         if (ensureTrack(track, currIndex, ensureRules)) {
           // i have time for this track
-          if (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTime + track.duration)) {
+          if (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTimeInSecs + track.duration)) {
             markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
 
             addNextValidTrack(track, curatedTracklist, tracklist);
@@ -1407,7 +1392,7 @@ function followTracklistRules(tracklist) {
 
             console.log(`⭐ Added Ensure Track! ${track.name} ⭐`);
             calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-            console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+            console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
           }
         }
         currIndex++;
@@ -1417,7 +1402,7 @@ function followTracklistRules(tracklist) {
 
   // Main general rules loop
   function followGeneralRulesLoop() {
-    while (curatedTracklistTotalTime <= MAX_PLAYLIST_DURATION_SECONDS) {
+    while (curatedTracklistTotalTimeInSecs <= MAX_PLAYLIST_DURATION_SECONDS) {
       if (currIndex >= tracklist.length) {
         currIndex = 0;
       }
@@ -1444,7 +1429,7 @@ function followTracklistRules(tracklist) {
         }
 
         calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-        console.log(`⏰ Playlist duration: ${curatedTracklistTotalTime} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+        console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
       }
       currIndex++;
     }
@@ -1570,7 +1555,7 @@ function gatherAndPrintDebugInfo(song, index) {
     const currTags = song.tags;
     const currUrl = song.url;
     const currDurr = song.duration;
-    const totalDurr = Math.floor(curatedTracklistTotalTime / 60);
+    const totalDurr = Math.floor(curatedTracklistTotalTimeInSecs / 60);
     const currName = song.name;
     const currCredit = song.credit;
     const ohcurrIndex = index;
@@ -1669,7 +1654,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     // Log current song information
     console.log(`Queueing song: ${song.name}, Index: ${index}, Current Runtime: ${currentRuntime}`);
 
-    // Hopefully tell the browser to start downloading audio
+    // Tell the browser to start downloading audio
     if (audio) {
       audio.preload = "auto";
     }
@@ -1681,7 +1666,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
 
-      elapsedPlaylistTime += duration;
+      randomValueToTrackElapsedPlaylistTime += duration;
 
       // Log the end of the current song
       console.log(`Song ended: ${song.name}, Duration: ${duration}`);
@@ -1713,7 +1698,8 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     gatherAndPrintDebugInfo(song, index);
 
     // Update the progress timer
-    timerInterval = createTimerLoopAndUpdateProgressTimer(currentRuntime);
+    console.log("yooooo");
+    createTimerLoopAndUpdateProgressTimer(currentRuntime);
 
     // Play the audio
     audio.play();
