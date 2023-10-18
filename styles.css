@@ -666,7 +666,7 @@ main {
 }
 
 /* Style for the skip buttons container */
-.button-container {
+#button-container {
   display: flex; /* Use flexbox to align items horizontally */
   align-items: center; /* Center items vertically */
   justify-content: space-between; /* Space evenly between items */
