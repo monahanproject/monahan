@@ -263,7 +263,7 @@ btn .btn {
   border: none;
 }
 
-#play {
+#generate-playlist-btn {
   font-size: 1.11rem;
   background-color: var(--lightGrey);
   text-decoration: none;
@@ -273,7 +273,7 @@ btn .btn {
   border-width: 0px;
 }
 .btn:hover,
-#play:hover,
+#generate-playlist-btn:hover,
 .btn:focus,
 btn:focus,
 #beginBtn:hover,

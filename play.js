@@ -12,14 +12,11 @@ let curatedTracklistTotalTimeInMins;
 let curatedTracklist;
 let timerDuration = 0;
 
-let randomValueToTrackElapsedPlaylistTime;
-
 const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
-var randomValueToTrackTotalDurationSeconds = MAX_PLAYLIST_DURATION_SECONDS; 
-var randomValueToTrackRemainingDurationSeconds = randomValueToTrackTotalDurationSeconds; // Remaining duration of the playlist in seconds
+var totalDurationSeconds = 1140; //(19m)
 let currentTimeElement; // Element to display current time
-let randomValueSomeTimerThing;
+// let randomValueSomeTimerThing;
 
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
@@ -142,7 +139,6 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       player.pause();
       playerPlayState = "pause";
       audioContext.suspend();
-      console.log("eee Paused audio and cleared timerInterval");
     }
     // Check if the audio is currently paused
     else if (playerPlayState === "pause") {
@@ -150,12 +146,8 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
       audioContext.resume();
-
       createTimerLoopAndUpdateProgressTimer();
-      console.log("eee Started playback and created a new timerInterval");
     } else {
-      // If the audio state is neither play nor pause, do nothing
-      console.log("eee Unknown audio state. Doing nothing.");
     }
   }
 
@@ -165,16 +157,10 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
     if (playerPlayState === "play") {
       let newPlayerTime = player.currentTime + 10;
 
-
-      randomValueSomeTimerThing = randomValueSomeTimerThing += 10;
-      console.log(`uuu someTimerThing ${randomValueSomeTimerThing}`);
-
-      newPlayerTime = Math.min(newPlayerTime, randomValueToTrackTotalDurationSeconds);
+      newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
       if (!isUpdatingTime) {
         isUpdatingTime = true; // Set a flag to prevent rapid updates
-        randomValueToTrackElapsedPlaylistTime += 10; // Add 10 seconds to the elapsed playlist time
-        randomValueToTrackElapsedPlaylistTime = Math.min(randomValueToTrackElapsedPlaylistTime, curatedTracklistTotalTimeInSecs);
-        createTimerLoopAndUpdateProgressTimer(randomValueToTrackElapsedPlaylistTime);
+        createTimerLoopAndUpdateProgressTimer();
         setTimeout(() => {
           player.currentTime = newPlayerTime;
           isUpdatingTime = false;
@@ -186,19 +172,12 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   function handleSkipBackwardClick() {
     if (playerPlayState === "play") {
       let newTime = player.currentTime - 10;
-
-
-      randomValueSomeTimerThing = randomValueSomeTimerThing -= 10;
-      console.log(`uuu someTimerThing ${randomValueSomeTimerThing}`);
-
       if (!isUpdatingTime) {
         isUpdatingTime = true;
         setTimeout(() => {
           player.currentTime = Math.max(newTime, 0);
-          updateProgressTimer(Math.floor(newTime), timerDuration);
-          console.log("rrr Skip Backward clicked. New time: " + newTime);
-
-          createTimerLoopAndUpdateProgressTimer(randomValueToTrackElapsedPlaylistTime);
+          updateProgressTimerr(Math.floor(newTime), timerDuration);
+          createTimerLoopAndUpdateProgressTimer();
           isUpdatingTime = false; // Reset the flag
         }, 100); // Adjust the delay as needed
       }
@@ -241,24 +220,17 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-function updateProgressTimer(elapsedSeconds, previousDuration) {
-  console.log(`uuu updateProgressTimer getting called, elapsedSeconds is ${elapsedSeconds} and previousDuration is ${previousDuration}`);
+function updateProgressTimerr(elapsedSeconds, previousDuration) {
   currentTimeElement = document.getElementById("current-time");
-
   if (!currentTimeElement) {
-    // Handle the case where the "current-time" element is missing
     console.error("Error: Missing element 'current-time'");
-    return; // Exit the function to prevent further errors
+    return;
   }
 
-  randomValueToTrackTotalDurationSeconds = curatedTracklistTotalTimeInSecs;
-  const remainingDurationSeconds = randomValueToTrackTotalDurationSeconds - (elapsedSeconds + previousDuration);
+  totalDurationSeconds = curatedTracklistTotalTimeInSecs;
+  const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
   const { minutes, seconds } = calculateMinutesAndSeconds(remainingDurationSeconds);
   updateTimeDisplay(minutes, seconds);
-
-  randomValueSomeTimerThing = elapsedSeconds;
-  console.log(`uuu someTimerThing ${randomValueSomeTimerThing}`);
-  
 }
 function handleTimerCompletion() {
   currentTimeElement = document.getElementById("current-time");
@@ -293,27 +265,18 @@ function updateTimeDisplay(minutes, seconds) {
 }
 
 function calculateRemainingTime(elapsedSeconds) {
-  return randomValueToTrackTotalDurationSeconds - elapsedSeconds;
+  return totalDurationSeconds - elapsedSeconds;
 }
 
-function createTimerLoopAndUpdateProgressTimer(startingTime) {
-  // console.log(`uuu createTimerLoopAndUpdateProgressTimer running. Starting time is ${startingTime}`);
-
+function createTimerLoopAndUpdateProgressTimer() {
   var start = Date.now(); // Record the start time of the loop
   return setInterval(() => {
     let delta = Date.now() - start; // Calculate elapsed milliseconds
     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-    if (playerPlayState === "play") {
-      randomValueToTrackElapsedPlaylistTime += 1; // Accumulate elapsed time across the playlist
-      // console.log(`uuu startingTime is ${startingTime }`);
-      // this is where my problem is. rather than player.currenttime I need a different value findmeeee
-      console.log(`uuu ssssomeTimerThing ${randomValueSomeTimerThing}`);
-      console.log(`uuu player.currentTime ${player.currentTime}`);
-
-      updateProgressTimer(Math.floor(player.currentTime), timerDuration);
-    }
+    // findmeeee
+    updateProgressTimerr(Math.floor(player.currentTime), timerDuration);
     remainingTime = calculateRemainingTime(deltaSeconds);
-  }, 200); // Run the loop every 200 milliseconds
+  }, 1000); // Run the loop every x milliseconds
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1653,6 +1616,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
 
     // Log current song information
     console.log(`Queueing song: ${song.name}, Index: ${index}, Current Runtime: ${currentRuntime}`);
+    // currentRuntime = randomValueSomeTimerThing;
 
     // Tell the browser to start downloading audio
     if (audio) {
@@ -1665,24 +1629,16 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     // When the song has ended, queue up the next one
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
-
-      randomValueToTrackElapsedPlaylistTime += duration;
-
-      // Log the end of the current song
-      console.log(`Song ended: ${song.name}, Duration: ${duration}`);
-
-      // Update currentRuntime with the cumulative duration
-      currentRuntime += duration;
-
-      // timerDuration = curatedTracklistTotalTime; //new
+      // console.log(`Song ended: ${song.name}, Duration: ${duration}`);
+      currentRuntime += duration; // Update currentRuntime with the cumulative duration
 
       // Queue up the next song (songs, index, currentRuntime, cache) {
       console.log("Queueing next track with the following values:");
       console.log(`Queueing- Index: ${index + 1}`);
       console.log(`Queueing- Current Runtime: ${currentRuntime}`);
-      console.log(`Queueing- Current duration: ${duration}`);
-      console.log(`Queueing- Current Runtime + duration: ${currentRuntime + duration}`);
-      console.log(`Queueing- Cache: ${cache}`);
+      // console.log(`Queueing- Current duration: ${duration}`);
+      // console.log(`Queueing- Current Runtime + duration: ${currentRuntime + duration}`);
+      // console.log(`Queueing- Cache: ${cache}`);
       queueNextTrack(songs, index + 1, currentRuntime, cache);
     });
 
@@ -1697,69 +1653,51 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     // Log the debug information
     gatherAndPrintDebugInfo(song, index);
 
-    // Update the progress timer
-    console.log("yooooo");
-    createTimerLoopAndUpdateProgressTimer(currentRuntime);
-
     // Play the audio
     audio.play();
+
+    // Update the progress timer for the first time
+    // createTimerLoopAndUpdateProgressTimer();
   } catch (error) {
     // Log any errors that occur
     console.error("An error occurred in queueNextTrack:", error);
   }
 }
 
-let isFirstPlay = true; // Add a flag variable to track the first play
-
-const button = document.getElementById("play");
+const button = document.getElementById("generate-playlist-btn");
 button.addEventListener("click", (event) => {
-  if (isFirstPlay) {
-    displayLoadingGifAndGeneratePlayer();
+  displayLoadingGifAndGeneratePlayer();
 
-    if (audioContext == null) {
-      // for browser compatibility, redefine AudioContext
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioContext = new AudioContext();
-      volumeNode = audioContext.createGain();
-      volumeNode.connect(audioContext.destination);
-    }
-
-    const allSongs = [...songs]; // first we copy the array of songs
-    // const checkValidityOfURLS = isValidTracklist(allSongs); //
-
-    const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
-
-    curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
-
-    const outro1 = outroAudioSounds.map(addAudioFromUrl);
-    curatedTracklist.push(...outro1);
-
-    let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
-
-    curatedTracklist.push(...creditsTracklist);
-
-    const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
-    curatedTracklist.push(...outro2);
-
-    // timerDuration = curatedTracklistTotalTime; //new
-
-    // updateProgressTimer(0, timerDuration);
-    createTranscriptContainer();
-
-    printEntireTracklistDebug(curatedTracklist);
-
-    console.log("Queueing next track with the following values:");
-    // console.log(`Queueing- Index: ${index + 1}`);
-    // console.log(`Queueing- Current Runtime: ${currentRuntime + duration}`);
-    // console.log(`Queueing- Cache: ${cache}`);
-    window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-    // player.play();
-
-    isFirstPlay = false; // Set the flag to false after the first play
-  } else {
-    // For subsequent plays, simply play the audio
-    console.log("Queueing next track with the following values:");
-    window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-    // player.play();
+  if (audioContext == null) {
+    // for browser compatibility, redefine AudioContext
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioContext();
+    volumeNode = audioContext.createGain();
+    volumeNode.connect(audioContext.destination);
   }
+
+  const allSongs = [...songs]; // first we copy the array of songs
+  // const checkValidityOfURLS = isValidTracklist(allSongs); //
+
+  const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
+
+  curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
+
+  const outro1 = outroAudioSounds.map(addAudioFromUrl);
+  curatedTracklist.push(...outro1);
+
+  let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
+
+  curatedTracklist.push(...creditsTracklist);
+
+  const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
+  curatedTracklist.push(...outro2);
+
+  createTranscriptContainer();
+
+  printEntireTracklistDebug(curatedTracklist);
+
+  console.log("Queueing next track with the following values:");
+  window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+  createTimerLoopAndUpdateProgressTimer();
 });
