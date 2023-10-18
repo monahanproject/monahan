@@ -1,3 +1,5 @@
+// need to add the credit durations to the duration
+
 var myLang = localStorage["lang"] || "defaultValue";
 var player;
 var audioContext = null;
@@ -470,6 +472,10 @@ function gatherTheCreditSongs(curatedTracklist) {
         // Credit being added
       }
     }
+
+    // curatedTracklistTotalTimeInSecs = calculateOrUpdateCuratedTracklistDuration(song, curatedTracklist);
+    // console.log(`adding credit, gopefully song is ${song}, hopefully song duration is ${song.duration}`);
+
   }
   return arrayOfCreditSongs;
 }
@@ -828,7 +834,7 @@ function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   if (
     (trackIndex === 5 && track.form !== "short") ||
     (trackIndex === 5 && !track.placement.includes("middle"))
-    // ||  (trackIndex === 5 && track.language === prevTrack1.language)
+    ||  (trackIndex === 5 && track.language === prevTrack1.language)
   ) {
     const logMessage = `❌ (${track.name}): The track's index is ${trackIndex}. The 5th track must have the form short (track's form is ${track.form}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
     logRuleApplication(65, logMessage, false);
@@ -1075,6 +1081,24 @@ function calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist) {
   return curatedTracklistTotalTimeInSecs;
 }
 
+function getFinalCuratedTracklistDuration(tracklist) {
+  let curatedTracklistTotalTimeInSecs = 0;
+
+  for (const track of curatedTracklist) {
+    console.log("Track name is " + track.name);
+    const duration = track.duration || 0; // Use 0 if duration is undefined or null
+    console.log("Track duration is " + duration);
+
+    curatedTracklistTotalTimeInSecs += duration;
+  }
+
+  curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
+
+  return curatedTracklistTotalTimeInSecs;
+}
+
+
+
 function addNextValidTrack(track, curatedTracklist, tracks) {
   curatedTracklist.push(track);
   const trackIndex = tracks.findIndex((t) => t === track);
@@ -1221,7 +1245,7 @@ function followTracklistRules(tracklist) {
     }
 
     // Log the count of tracks tried for the current rule
-    console.log(`Egads! I tried ${tracksTried}/${tracklist.length} tracks for Rule ${i + 60} `);
+    console.log(`I tried ${tracksTried}/${tracklist.length} tracks for Rule ${i + 60} `);
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1928,6 +1952,12 @@ button.addEventListener("click", (event) => {
 
   const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
   curatedTracklist.push(...outro2);
+
+  // findme
+  // let goop = getFinalCuratedTracklistDuration(curatedTracklist);
+  // console.log("goop " + goop);
+  // console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+
 
   createTranscriptContainer();
 
