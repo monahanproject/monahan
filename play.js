@@ -2,7 +2,6 @@ var myLang = localStorage["lang"] || "defaultValue";
 var player;
 var audioContext = null;
 var volumeNode = null;
-// var previousVolume = "100";
 let playerPlayState = "play";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
@@ -16,8 +15,6 @@ const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 var totalDurationSeconds = 1140; //(19m)
 let currentTimeElement; // Element to display current time
-// let randomValueSomeTimerThing;
-
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -185,9 +182,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
   }
 
   function handleVolumeChange(event) {
-    // Get the current volume value from the volume slider
     const newVolume = parseFloat(event.target.value) / 100;
-    // Apply the new volume to the audio
     volumeNode.gain.value = newVolume;
     console.log("rrr Volume changed to: " + newVolume);
   }
@@ -1263,7 +1258,7 @@ function followTracklistRules(tracklist) {
           `🦆! Ensure rules enforced? If I have 1 geese the r25 flag is false, hopefully by default ${JSON.stringify(ensureRulesEnforced)}`
         );
       } else if (geeseTracks.length === 2) {
-        console.log(`🦆! Curated tracklist already has 2 geese: ${curatedTracklistAlreadyHasGeeseTag[0]}, ${curatedTracklistAlreadyHasGeeseTag[1]}`);
+        // console.log(`🦆! Curated tracklist already has 2 geese: ${curatedTracklistAlreadyHasGeeseTag[0]}, ${curatedTracklistAlreadyHasGeeseTag[1]}`);
         // If I have no geese, the r25 flag is true
         markEnsureRuleEnforced(25);
         console.log(`🦆! Ensure rules enforced? If I have no geese, the r25 flag is true markEnsureRuleEnforced(25); ${ensureRulesEnforced}`);
