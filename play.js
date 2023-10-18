@@ -146,7 +146,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       playIconContainer.classList.add("paused");
       playerPlayState = "play";
       audioContext.resume();
-      createTimerLoopAndUpdateProgressTimer();
+      // createTimerLoopAndUpdateProgressTimer();
     } else {
     }
   }
@@ -160,7 +160,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
       newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
       if (!isUpdatingTime) {
         isUpdatingTime = true; // Set a flag to prevent rapid updates
-        createTimerLoopAndUpdateProgressTimer();
+        // createTimerLoopAndUpdateProgressTimer();
         setTimeout(() => {
           player.currentTime = newPlayerTime;
           isUpdatingTime = false;
@@ -177,7 +177,7 @@ function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
         setTimeout(() => {
           player.currentTime = Math.max(newTime, 0);
           updateProgressTimerr(Math.floor(newTime), timerDuration);
-          createTimerLoopAndUpdateProgressTimer();
+          // createTimerLoopAndUpdateProgressTimer();
           isUpdatingTime = false; // Reset the flag
         }, 100); // Adjust the delay as needed
       }
@@ -1630,8 +1630,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
     audio.addEventListener("ended", (e) => {
       const duration = audio.duration;
       // console.log(`Song ended: ${song.name}, Duration: ${duration}`);
-      currentRuntime += duration; // Update currentRuntime with the cumulative duration
-
+      timerDuration += Math.floor(duration); // Update currentRuntime with the cumulative duration
       // Queue up the next song (songs, index, currentRuntime, cache) {
       console.log("Queueing next track with the following values:");
       console.log(`Queueing- Index: ${index + 1}`);
