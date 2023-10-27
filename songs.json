@@ -33,7 +33,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Home",
+            "home",
             "wellness",
             "nature"
         ],
@@ -78,7 +78,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Home"
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_CHARLOTTE.mp3",
@@ -143,7 +143,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Home",
+            "home",
             "nature"
         ],
         "backgroundMusic": "",
@@ -166,7 +166,7 @@
         "sentiment": "moderate",
         "tags": [
             "wellness",
-            "Home",
+            "home",
             "nature"
         ],
         "backgroundMusic": "",
@@ -526,7 +526,7 @@
         "sentiment": "moderate",
         "tags": [
             "sound",
-            "Home",
+            "home",
             "nature"
         ],
         "backgroundMusic": "",
@@ -547,8 +547,8 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
-            "Home",
+            "nature",
+            "home",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -591,8 +591,8 @@
         "sentiment": "light",
         "tags": [
             "sound",
-            "Nature",
-            "Home"
+            "nature",
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3",
@@ -654,8 +654,8 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
-            "Home"
+            "nature",
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -675,9 +675,9 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
-            "Home"
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -701,7 +701,7 @@
         "tags": [
             "wellness",
             "Wound",
-            "Home"
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -722,8 +722,8 @@
         "sentiment": "heavy",
         "tags": [
             "wellness",
-            "Home",
-            "Nature",
+            "home",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -744,8 +744,8 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
-            "Home"
+            "nature",
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -766,7 +766,7 @@
         "sentiment": "heavy",
         "tags": [
             "sound",
-            "Home",
+            "home",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -787,8 +787,8 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
-            "Home",
+            "nature",
+            "home",
             "wellness",
             "sound"
         ],
@@ -810,7 +810,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -832,7 +832,7 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -853,7 +853,7 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Home",
+            "home",
             "sound"
         ],
         "backgroundMusic": "",
@@ -875,7 +875,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Home",
+            "home",
             "sound",
             "wellness"
         ],
@@ -898,7 +898,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Home"
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -918,7 +918,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -939,8 +939,8 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
-            "Home"
+            "nature",
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -1005,8 +1005,8 @@
         "language": "verbal",
         "sentiment": "light, Moderate",
         "tags": [
-            "Nature",
-            "Home",
+            "nature",
+            "home",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1028,9 +1028,9 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
-            "Home"
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_ALBERT.mp3",
@@ -1070,8 +1070,8 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
-            "Home",
+            "nature",
+            "home",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1092,7 +1092,7 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -1113,9 +1113,9 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
+            "nature",
             "Trees",
-            "Home"
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_NAMITHA.mp3",
@@ -1136,7 +1136,7 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Home",
+            "home",
             "nature",
             "geese"
         ],
@@ -1158,7 +1158,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
             "sound"
         ],
@@ -1223,7 +1223,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Home",
+            "home",
             "sound",
             "informative"
         ],
@@ -1290,7 +1290,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound",
             "informative"
         ],
@@ -1312,7 +1312,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "informative"
         ],
         "backgroundMusic": "DEMETRI",
@@ -1333,7 +1333,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound",
             "informative"
         ],
@@ -1357,7 +1357,7 @@
         "sentiment": "heavy",
         "tags": [
             "sound",
-            "Nature",
+            "nature",
             "wellness",
             "informative"
         ],
@@ -1465,8 +1465,8 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
-            "Home",
+            "nature",
+            "home",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -1488,7 +1488,7 @@
         "sentiment": "moderate",
         "tags": [
             "wellness",
-            "Nature",
+            "nature",
             "informative"
         ],
         "backgroundMusic": "",
@@ -1509,7 +1509,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "informative"
         ],
         "backgroundMusic": "",
@@ -1522,15 +1522,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_01.mp3",
         "duration": 96,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1543,15 +1543,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_02.mp3",
         "duration": 84,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1564,15 +1564,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_03.mp3",
         "duration": 71,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1585,15 +1585,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_04.mp3",
         "duration": 60,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1606,15 +1606,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_05.mp3",
         "duration": 66,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1627,15 +1627,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_06.mp3",
         "duration": 88,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1648,15 +1648,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_07.mp3",
         "duration": 92,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1669,15 +1669,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_08.mp3",
         "duration": 57,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1690,15 +1690,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_09.mp3",
         "duration": 46,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1711,15 +1711,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_10.mp3",
         "duration": 65,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1732,15 +1732,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_11.mp3",
         "duration": 41,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1753,15 +1753,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_12.mp3",
         "duration": 31,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1774,15 +1774,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_13.mp3",
         "duration": 56,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1795,15 +1795,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_14.mp3",
         "duration": 73,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1816,15 +1816,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_15.mp3",
         "duration": 35,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1837,15 +1837,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_16.mp3",
         "duration": 32,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1858,15 +1858,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_17.mp3",
         "duration": 64,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -1879,15 +1879,15 @@
         "url": "./sounds/SHORTS/S_BIRDS_18.mp3",
         "duration": 63,
         "author": "PIERREELLIOTT",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
         "length": "short",
-        "language": "NonHuman",
+        "language": "nonHuman",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound",
             "geese"
         ],
@@ -1901,7 +1901,7 @@
         "url": "./sounds/SHORTS/S_CHARLOTTE_01.mp3",
         "duration": 74,
         "author": "CHARLOTTE",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "end"
         ],
@@ -1909,7 +1909,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
             "sound"
         ],
@@ -1923,7 +1923,7 @@
         "url": "./sounds/SHORTS/S_CHARLOTTE_02.mp3",
         "duration": 25,
         "author": "CHARLOTTE",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "beginning",
             "middle"
@@ -1945,7 +1945,7 @@
         "url": "./sounds/SHORTS/S_CHARLOTTE_03.mp3",
         "duration": 31,
         "author": "CHARLOTTE",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -1965,7 +1965,7 @@
         "url": "./sounds/SHORTS/S_CHARLOTTE_07.mp3",
         "duration": 41,
         "author": "CHARLOTTE",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -1985,7 +1985,7 @@
         "url": "./sounds/SHORTS/S_CHARLOTTE_09.mp3",
         "duration": 22,
         "author": "CHARLOTTE",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2005,7 +2005,7 @@
         "url": "./sounds/SHORTS/S_DEMI_14.mp3",
         "duration": 14,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2027,7 +2027,7 @@
         "url": "./sounds/SHORTS/S_DEMI_15.mp3",
         "duration": 10,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2049,7 +2049,7 @@
         "url": "./sounds/SHORTS/S_DEMI_16.mp3",
         "duration": 22,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2071,7 +2071,7 @@
         "url": "./sounds/SHORTS/S_DEMI_17.mp3",
         "duration": 11,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2093,7 +2093,7 @@
         "url": "./sounds/SHORTS/S_DEMI_18.mp3",
         "duration": 21,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2115,7 +2115,7 @@
         "url": "./sounds/SHORTS/S_DEMI_19.mp3",
         "duration": 15,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2137,7 +2137,7 @@
         "url": "./sounds/SHORTS/S_DEMI_20.mp3",
         "duration": 22,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2159,7 +2159,7 @@
         "url": "./sounds/SHORTS/S_DEMI_21.mp3",
         "duration": 10,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2181,7 +2181,7 @@
         "url": "./sounds/SHORTS/S_DEMI_22.mp3",
         "duration": 22,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2203,7 +2203,7 @@
         "url": "./sounds/SHORTS/S_DEMI_23.mp3",
         "duration": 21,
         "author": "DEMETRI",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle",
             "end"
@@ -2225,7 +2225,7 @@
         "url": "./sounds/SHORTS/S_KIKO_B_04.mp3",
         "duration": 21,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2246,7 +2246,7 @@
         "url": "./sounds/SHORTS/S_KIKO_C_01.mp3",
         "duration": 54,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2267,7 +2267,7 @@
         "url": "./sounds/SHORTS/S_KIKO_C_02.mp3",
         "duration": 37,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2288,7 +2288,7 @@
         "url": "./sounds/SHORTS/S_KIKO_C_09.mp3",
         "duration": 41,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2309,7 +2309,7 @@
         "url": "./sounds/SHORTS/S_KIKO_S_02.mp3",
         "duration": 28,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2330,7 +2330,7 @@
         "url": "./sounds/SHORTS/S_KIKO_S_03.mp3",
         "duration": 36,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2351,7 +2351,7 @@
         "url": "./sounds/SHORTS/S_KIKO_S_04.mp3",
         "duration": 36,
         "author": "KIKO",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2372,7 +2372,7 @@
         "url": "./sounds/SHORTS/S_LAUGHING_01.mp3",
         "duration": 15,
         "author": "BABIES",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2393,7 +2393,7 @@
         "url": "./sounds/SHORTS/S_LAUGHING_02.mp3",
         "duration": 28,
         "author": "BABIES",
-        "form": "Short",
+        "form": "short",
         "placement": [
             "middle"
         ],
@@ -2424,8 +2424,8 @@
         "sentiment": "light",
         "tags": [
             "sound",
-            "Nature",
-            "Home"
+            "nature",
+            "home"
         ],
         "backgroundMusic": "",
         "credit": "./sounds/XX_OUTRO/NAMES/NAMES_TURKWAZ.mp3",
@@ -2740,7 +2740,7 @@
         "sentiment": "moderate",
         "tags": [
             "sound",
-            "Home",
+            "home",
             "wellness",
             "informative"
         ],
@@ -2762,7 +2762,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
             "informative"
         ],
@@ -2784,7 +2784,7 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Home",
+            "home",
             "wellness",
             "nature"
         ],
@@ -2806,7 +2806,7 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "",
@@ -2893,9 +2893,9 @@
         "language": "verbal",
         "sentiment": "heavy",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
-            "Home",
+            "home",
             "sound"
         ],
         "backgroundMusic": "",
@@ -3073,7 +3073,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -3094,7 +3094,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "sound"
         ],
         "backgroundMusic": "",
@@ -3218,7 +3218,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "informative"
         ],
         "backgroundMusic": "",
@@ -3239,7 +3239,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound",
             "informative"
         ],
@@ -3262,7 +3262,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound",
             "informative"
         ],
@@ -3284,7 +3284,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "sound",
             "informative"
         ],
@@ -3475,7 +3475,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "JESSE",
@@ -3497,7 +3497,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "JESSE",
@@ -3518,7 +3518,7 @@
         "language": "verbal",
         "sentiment": "light",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "JESSE",
@@ -3539,7 +3539,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness"
         ],
         "backgroundMusic": "KIKO",
@@ -3560,7 +3560,7 @@
         "language": "verbal",
         "sentiment": "moderate",
         "tags": [
-            "Nature",
+            "nature",
             "wellness",
             "sound"
         ],
