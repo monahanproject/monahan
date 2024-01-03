@@ -166,6 +166,16 @@ body {
   height: 100vh;
 }
 
+@media screen and (min-width: 900px) {
+  body {
+    font-family: 'Zilla Slab', serif;
+    font-weight: 300;
+    font-size: 4rem;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
 .page {
   display: flex;
   height: 100vh;
@@ -255,7 +265,17 @@ p {
 #curiousEarsTxt {
   text-align: center;
   font-family: 'Zilla Slab', serif;
-  font-size: 12.3vw;
+  font-size: 10rem;
+}
+
+@media screen and (min-width: 900px) {
+  #curiousEarsTxt {
+    font-family: 'Zilla Slab', serif;
+    font-weight: 300;
+    font-size: 4rem;
+    width: 100vw;
+    height: 100vh;
+  }
 }
 
 #arrow {
@@ -380,7 +400,20 @@ main {
 @media screen and (min-width: 900px) {
   #playerPageMain {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    top: 20rem;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  #playerPage {
+    width: 100vw;;
+    display: flex;
+    flex-direction: column;
     align-content: center;
     justify-content: space-around;
     align-items: center;
