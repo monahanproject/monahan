@@ -23,191 +23,117 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-function startplayer() {
-  player = document.getElementById("music_player");
-  player.controls = false;
+player = document.getElementById("music_player");
+player.controls = false;
+
+const playButton = document.getElementById("play-button");
+const playIcon = document.getElementById("play-icon");
+const pauseIcon = document.getElementById("pause-icon");
+const skipBackwardButton = document.getElementById("skipBackwardButton");
+const skipForwardButton = document.getElementById("skipForwardButton");
+const trackNameContainer = document.getElementById("playerTrackNameContainer");
+
+
+function createVolumeSlider() {
+  const volumeSlider = document.getElementById("volume-slider");
+  volumeSlider.type = "range";
+  volumeSlider.id = "volume-slider";
+  volumeSlider.max = "100";
+  volumeSlider.min = "0";
+  volumeSlider.value = "100";
+  return volumeSlider;
+}
+const volumeSlider = createVolumeSlider();
+
+
+function createAudioElement(id) {
+  const audio = document.createElement("audio");
+  audio.id = id;
+  return audio;
+}
+
+function createTimerCountdownElement() {
+  const currentTime = document.createElement("span");
+  currentTime.classList.add("time");
+  currentTime.id = "current-time";
+  // currentTime.innerHTML = "0:00";
+  return currentTime;
 }
 
 function change_vol(event) {
   volumeNode.gain.value = parseFloat(event.target.value);
 }
 
+
+let isUpdatingTime = false; // Flag to prevent rapid updates
+
+function handleSkipForwardClick() {
+  // if (playerPlayState === "play") {
+  let newPlayerTime = player.currentTime + 20;
+  newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
+  if (!isUpdatingTime) {
+    isUpdatingTime = true; // Set a flag to prevent rapid updates
+    setTimeout(() => {
+      player.currentTime = newPlayerTime;
+      isUpdatingTime = false;
+    }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+  }
+  // }
+}
+
+function handleSkipBackwardClick() {
+  // if (playerPlayState === "play") {
+  let newPlayerTime = player.currentTime - 20;
+  newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
+  if (!isUpdatingTime) {
+    isUpdatingTime = true; // Set a flag to prevent rapid updates
+    setTimeout(() => {
+      player.currentTime = newPlayerTime;
+      isUpdatingTime = false;
+    }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+  }
+  // }
+}
+
+function handleVolumeChange(event) {
+  const newVolume = parseFloat(event.target.value) / 100;
+  volumeNode.gain.value = newVolume;
+  console.log("rrr Volume changed to: " + newVolume);
+}
+
+function handleExitClick() {
+  // Suspend audio context and clear the timer interval
+  audioContext.suspend();
+  // Remove player elements and exit button
+  document.getElementById("wrapper").remove();
+  document.getElementById("exitBtn").remove();
+
+  // Add a "Begin Again" button with its click handler
+  const beginAgainBtn = document.createElement("button");
+  beginAgainBtn.innerHTML = "Begin again";
+  beginAgainBtn.name = "beginAgainBtn";
+  beginAgainBtn.classList.add("beginAgainBtn");
+
+  beginAgainBtn.addEventListener("click", (event) => {
+    // Redirect to a new page (replace with your desired URL)
+    window.location.href = "monahan.html";
+  });
+
+  console.log("rrr Exited the player and added 'Begin Again' button");
+}
+
+
+// const trackNameElement = createTrackNameElement();
+playButton.addEventListener("click", handlePlayPauseClick);
+skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
+skipForwardButton.addEventListener("click", handleSkipForwardClick);
+volumeSlider.addEventListener("change", handleVolumeChange);
+
 // https://css-tricks.com/lets-create-a-custom-audio-player/
-function createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1) {
-  const wrapperDiv = createDiv("wrapper");
-  const audioPlayerContainer = createDiv("audio-player-container");
-  const musicPlayer = createAudioElement("music_player");
-  const currTime = createTimerCountdownElement();
-  const buttonContainer = createDiv("button-container");
-  const playIconContainer = createPlayIconContainer();
-  const skipBackwardButton = createSkipButton("<<20");
-  const skipForwardButton = createSkipButton("20>>");
-  const volumeSlider = createVolumeSlider();
-  const trackNameContainer = createDiv("playerTrackNameContainer");
-  const trackNameElement = createTrackNameElement();
-  const exitBtn = createExitButton();
+function createHTMLMusicPlayer() {
 
-  skipBackwardButton.setAttribute("id", "skipBackwardButton");
-  skipForwardButton.setAttribute("id", "skipForwardButton");
 
-  appendElements(musicPlayerDiv, [wrapperDiv, audioPlayerContainer, exitBtn]);
-  appendElements(wrapperDiv, [audioPlayerContainer, exitBtn]);
-  appendElements(audioPlayerContainer, [musicPlayer, currTime, buttonContainer, volumeSlider, trackNameContainer]);
-  appendElements(buttonContainer, [skipBackwardButton, playIconContainer, skipForwardButton]);
-  appendElements(trackNameContainer, [trackNameElement]);
-
-  playIconContainer.addEventListener("click", handlePlayPauseClick);
-  skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
-  skipForwardButton.addEventListener("click", handleSkipForwardClick);
-  volumeSlider.addEventListener("change", handleVolumeChange);
-  exitBtn.addEventListener("click", handleExitClick);
-
-  function createDiv(id) {
-    const div = document.createElement("div");
-    div.id = id;
-    return div;
-  }
-
-  function createAudioElement(id) {
-    const audio = document.createElement("audio");
-    audio.id = id;
-    return audio;
-  }
-
-  function createTimerCountdownElement() {
-    const currentTime = document.createElement("span");
-    currentTime.classList.add("time");
-    currentTime.id = "current-time";
-    // currentTime.innerHTML = "0:00";
-    return currentTime;
-  }
-
-  function createPlayIconContainer() {
-    const playIconContainer = document.createElement("button");
-    playIconContainer.id = "play-icon";
-    playIconContainer.classList.add("play-icon", "paused");
-    return playIconContainer;
-  }
-
-  function createSkipButton(label) {
-    const skipButton = document.createElement("button");
-    skipButton.classList.add("skip-button");
-    skipButton.innerHTML = label;
-    return skipButton;
-  }
-
-  function createVolumeSlider() {
-    const volumeSlider = document.createElement("input");
-    volumeSlider.type = "range";
-    volumeSlider.id = "volume-slider";
-    volumeSlider.max = "100";
-    volumeSlider.min = "0";
-    volumeSlider.value = "100";
-    return volumeSlider;
-  }
-
-  function createTrackNameElement() {
-    const trackNameElement = document.createElement("p");
-    trackNameElement.id = "playerTrackName";
-    trackNameElement.innerText = ""; // Replace with the actual track name
-    return trackNameElement;
-  }
-
-  function createExitButton() {
-    const exitBtn = document.createElement("button");
-    exitBtn.innerHTML = "exit";
-    exitBtn.name = "exitBtn";
-    exitBtn.id = "exitBtn";
-    exitBtn.classList.add("btn");
-    return exitBtn;
-  }
-
-  function appendElements(parent, elements) {
-    elements.forEach((element) => {
-      parent.appendChild(element);
-    });
-  }
-
-  function handlePlayPauseClick() {
-    const playIconContainer = document.getElementById("play-icon");
-
-    // Check if the audio is currently playing
-    if (playerPlayState === "play") {
-      // Pause the audio
-      playIconContainer.classList.remove("paused");
-      player.pause();
-      playerPlayState = "pause";
-      audioContext.suspend();
-    }
-    // Check if the audio is currently paused
-    else if (playerPlayState === "pause") {
-      player.play();
-      playIconContainer.classList.add("paused");
-      playerPlayState = "play";
-      audioContext.resume();
-      // createTimerLoopAndUpdateProgressTimer();
-    } else {
-    }
-  }
-
-  let isUpdatingTime = false; // Flag to prevent rapid updates
-
-  function handleSkipForwardClick() {
-    // if (playerPlayState === "play") {
-    let newPlayerTime = player.currentTime + 20;
-    newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
-    if (!isUpdatingTime) {
-      isUpdatingTime = true; // Set a flag to prevent rapid updates
-      setTimeout(() => {
-        player.currentTime = newPlayerTime;
-        isUpdatingTime = false;
-      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
-    }
-    // }
-  }
-
-  function handleSkipBackwardClick() {
-    // if (playerPlayState === "play") {
-    let newPlayerTime = player.currentTime - 20;
-    newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
-    if (!isUpdatingTime) {
-      isUpdatingTime = true; // Set a flag to prevent rapid updates
-      setTimeout(() => {
-        player.currentTime = newPlayerTime;
-        isUpdatingTime = false;
-      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
-    }
-    // }
-  }
-
-  function handleVolumeChange(event) {
-    const newVolume = parseFloat(event.target.value) / 100;
-    volumeNode.gain.value = newVolume;
-    console.log("rrr Volume changed to: " + newVolume);
-  }
-
-  function handleExitClick() {
-    // Suspend audio context and clear the timer interval
-    audioContext.suspend();
-    // Remove player elements and exit button
-    musicPlayerh1.innerHTML = "";
-    document.getElementById("wrapper").remove();
-    document.getElementById("exitBtn").remove();
-
-    // Add a "Begin Again" button with its click handler
-    const beginAgainBtn = document.createElement("button");
-    beginAgainBtn.innerHTML = "Begin again";
-    beginAgainBtn.name = "beginAgainBtn";
-    beginAgainBtn.classList.add("beginAgainBtn");
-    musicPlayerDiv.appendChild(beginAgainBtn);
-
-    beginAgainBtn.addEventListener("click", (event) => {
-      // Redirect to a new page (replace with your desired URL)
-      window.location.href = "monahan.html";
-    });
-
-    console.log("rrr Exited the player and added 'Begin Again' button");
-  }
+  
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -277,26 +203,7 @@ function createTimerLoopAndUpdateProgressTimer() {
 //  XXXXXXXXX LOADING GIF  XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-function displayLoadingGifAndGeneratePlayer() {
-  const musicPlayerDiv = document.getElementById("musicPlayerDiv");
-  const musicPlayerh1 = document.getElementById("musicPlayerH1");
-
-  updateTheStatusMessage(musicPlayerh1, "Generating beautiful sounds for you, this might take a minute");
-  removeAnElementByID("launchMusicPlayerForm");
-
-  const loaderDiv = createALoaderDiv();
-  musicPlayerDiv.appendChild(loaderDiv);
-
-  // Simulate loading for a brief period (50 milliseconds in this case)
-  setTimeout(() => {
-    // Remove the loader and clear the message
-    loaderDiv.remove();
-    updateTheStatusMessage(musicPlayerh1, "");
-
-    // Create the HTML music player
-    createHTMLMusicPlayer(musicPlayerDiv, musicPlayerh1);
-  }, 50);
-}
+function displayLoadingGifAndGeneratePlayer() {}
 
 // Function to create an audio element
 function createAudioElement(url) {
@@ -873,7 +780,7 @@ function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     logRuleApplication(67, logMessage, false, ruleType);
     return false;
   }
-  if ((trackIndex === 7 && track.form === prevTrack1.form)) {
+  if (trackIndex === 7 && track.form === prevTrack1.form) {
     logRuleApplication(67, logMessage, false, ruleType);
     return false;
   }
@@ -891,7 +798,7 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
     logRuleApplication(68, logMessage, false, ruleType);
     return false;
   }
-  if ((trackIndex === 8 && track.form === prevTrack1.form)) {
+  if (trackIndex === 8 && track.form === prevTrack1.form) {
     logRuleApplication(68, logMessage, false, ruleType);
     return false;
   }
@@ -1252,7 +1159,6 @@ function followTracklistRules(tracklist) {
   // Flags to track successfully enforced ensure rules
   const ensureRulesEnforced = {};
 
-
   // Initialize ensure rules and set flags based on other functions
   // Initialize ensure rules and set flags based on other functions
   function initializeEnsureRules() {
@@ -1277,7 +1183,6 @@ function followTracklistRules(tracklist) {
     // if (c24(curatedTracklist)) {
     //   markEnsureRuleEnforced(24);
     // }
-
 
     // init geese time!
     let isFirstTimeGeeseSeeking = true; // Introduce a flag variable
@@ -1718,9 +1623,8 @@ function checkPlaylistRules(playlist) {
         track
       );
       console.log(`The 0th track must have the tag 'intro' r61 good ${i} ${track.name}`);
-
     }
- 
+
     // CHECK R62: The 1st track must have the placement 'beginning'
     if (i === 1 && !track.placement.includes("beginning")) {
       console.log(
@@ -1728,7 +1632,6 @@ function checkPlaylistRules(playlist) {
         track
       );
       console.log(`r62 good ${i} ${track.name}`);
-
     }
 
     // CHECK R63: The 2nd track must have placement 'beginning' and a different form than the 1st track
@@ -1763,7 +1666,6 @@ function checkPlaylistRules(playlist) {
         );
       }
       console.log(`r64 good ${i} ${track.name}`);
-
     }
 
     // CHECK R65: The 4th track must have length 'short', placement 'middle', and a different language than the 3rd track
@@ -1783,7 +1685,6 @@ function checkPlaylistRules(playlist) {
         );
       }
       console.log(`r65 good ${i} ${track.name}`);
-
     }
 
     // CHECK R66: The 5th track must have placement 'middle' and a different form than the 4th track
@@ -1837,9 +1738,7 @@ function checkPlaylistRules(playlist) {
       console.log(`r68 good ${i} ${track.name}`);
     }
 
-
-
-// CHECK R10
+    // CHECK R10
     // R10: The current track must have a different author than the last track
     if (prevTrack && track.author === prevTrack.author) {
       console.log(`R10 violated at track ${i}: Same author as the previous track.`);
@@ -1889,7 +1788,6 @@ function checkPlaylistRules(playlist) {
       console.log(`R00 violated at track ${i}: Last track does not have placement 'end'. Track details:`, track);
     }
 
-
     prevTrack = track;
   }
 
@@ -1911,51 +1809,126 @@ function checkPlaylistRules(playlist) {
   }
 }
 
-const button = document.getElementById("generate-playlist-btn");
-button.addEventListener("click", (event) => {
-  displayLoadingGifAndGeneratePlayer();
 
-  if (audioContext == null) {
-    // for browser compatibility, redefine AudioContext
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContext = new AudioContext();
-    volumeNode = audioContext.createGain();
-    volumeNode.connect(audioContext.destination);
+let firstPlay = true;
+function handlePlayPauseClick() {
+  if (firstPlay === true) {
+    // generate the playlist
+    displayLoadingGifAndGeneratePlayer();  
+    if (audioContext == null) {
+      // for browser compatibility, redefine AudioContext
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioContext = new AudioContext();
+      volumeNode = audioContext.createGain();
+      volumeNode.connect(audioContext.destination);
+    }
+
+    const allSongs = [...songs]; // first we copy the array of songs
+    // const checkValidityOfURLS = isValidTracklist(allSongs); //
+
+    const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
+
+    curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
+
+    checkPlaylistRules(curatedTracklist);
+
+    const outro1 = outroAudioSounds.map(addAudioFromUrl);
+    curatedTracklist.push(...outro1);
+
+    let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
+
+    curatedTracklist.push(...creditsTracklist);
+
+    const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
+    curatedTracklist.push(...outro2);
+    createTranscriptContainer();
+
+    printEntireTracklistDebug(curatedTracklist);
+
+    console.log("Queueing next track with the following values:");
+    window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+    createTimerLoopAndUpdateProgressTimer();
+    firstPlay = false;
+  } else {
+    // todo do regular player stuff like play/pause
+    const svg1 = `<svg
+    id="play-icon"
+    class="svg-icon"
+    role="img"
+    width="279"
+    height="319"
+    viewBox="0 0 279 319"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M272.64 151.621C278.64 155.085 278.64 163.745 272.64 167.209L14.6396 316.166C8.63964 319.63 1.13965 315.3 1.13965 308.371L1.13966 10.4587C1.13966 3.53053 8.63966 -0.79959 14.6397 2.66451L272.64 151.621Z"
+      fill="#224E43"
+      stroke="#224E43"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round" />
+  </svg>`; // 
+    const svg2 = `<svg
+    id="play-icon"
+    class="svg-icon"
+    role="img"
+    width="282" height="282" viewBox="0 0 282 282" fill="none" 
+    aria-hidden="true"
+    focusable="false"
+    xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
+  </svg>`; 
+
+    if (playButton.classList.contains('playing')) {
+      console.log("I'm playing, gonna pause");
+      playButton.classList.remove('playing');
+      playButton.classList.add('paused');
+      playButton.textContent = 'Pause'; // Change the text as needed
+      playButton.innerHTML = svg1;
+      player.pause();
+      playerPlayState = "pause";
+      audioContext.suspend();
+    } else {
+      console.log("I'm paused, gonna play");
+      playButton.classList.remove('paused');
+      playButton.classList.add('playing');
+      playButton.textContent = 'Play'; // Change the text as needed
+      player.play();
+      playButton.innerHTML = svg2;
+      playerPlayState = "play";
+      audioContext.resume();
+    }
   }
 
-  const allSongs = [...songs]; // first we copy the array of songs
-  // const checkValidityOfURLS = isValidTracklist(allSongs); //
 
-  const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
 
-  curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
 
-  console.log("XXXXXXXXXXXXXXXXX");
-  console.log("XXXXXXXXXXXXXXXXX");
-  console.log("XXXXXXXXXXXXXXXXX");
 
-  checkPlaylistRules(curatedTracklist);
+  // // Check if the audio is currently playing
+  // if (playerPlayState === "play" && audioContext != null) {
+  //   // Pause the audio
+  //   playIconContainer.classList.remove("paused");
+  //   player.pause();
+  //   playerPlayState = "pause";
+  //   audioContext.suspend();
+  // }
+  // // Check if the audio is currently paused
+  // else if (playerPlayState === "pause") {
+  //   player.play();
+  //   playIconContainer.classList.add("paused");
+  //   playerPlayState = "play";
+  //   audioContext.resume();
+  //   // createTimerLoopAndUpdateProgressTimer();
+  // } else {
+  // }
+}
 
-  const outro1 = outroAudioSounds.map(addAudioFromUrl);
-  curatedTracklist.push(...outro1);
 
-  let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
 
-  curatedTracklist.push(...creditsTracklist);
 
-  const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
-  curatedTracklist.push(...outro2);
 
-  // findme
-  // let goop = getFinalCuratedTracklistDuration(curatedTracklist);
-  // console.log("goop " + goop);
-  // console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
 
-  createTranscriptContainer();
 
-  printEntireTracklistDebug(curatedTracklist);
 
-  console.log("Queueing next track with the following values:");
-  window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-  createTimerLoopAndUpdateProgressTimer();
-});

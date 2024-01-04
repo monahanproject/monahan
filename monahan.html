@@ -71,26 +71,63 @@
 
       <section id="playerPage" class="page">
         <div class="pageContent">
-
           <div id="musicPlayerDiv" class="container">
             <h1 id="musicPlayerH1"></h1>
-            <form id="launchMusicPlayerForm">
-              <ul>
-                <button type="button" class="btn" id="generate-playlist-btn">Create Playlist</button>
-              </ul>
-            </form>
-          </div>
 
-          <!-- <img src="images/icons/play.png" alt="" class="decorativeImage" />
-          <div class="skipForAndBackRow"></div>
-          <div class="playerSoundBar"></div>
-          <div class="playerSoundBar"></div>
-          <div class="playerNumbers"></div>
-          <div class="volSlider"></div> -->
+            <div id="wrapper">
+              <div id="audio-player-container">
+                <audio id="music_player"></audio><span class="time" id="current-time">18:44</span>
+                <div id="button-container">
+                  <button class="skip-button" id="skipBackwardButton">&lt;&lt;20</button>
+
+                  <!-- style="display: none;" -->
+
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" id="play-icon">
+                    <use xlink:href="images/icons/playButton.svg"></use>
+                  </svg> -->
+
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" id="play-icon">
+                    <use href="images/icons/pauseButton.svg"></use>
+                  </svg> -->
+
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" id="pause-icon">
+                    <use href="images/icons/playButton.svg"></use>
+                  </svg> -->
+
+                  <button type="button" id="play-button" class="play-icon playing">
+
+                  <svg
+                    id="play-icon"
+                    class="svg-icon"
+                    role="img"
+                    width="279"
+                    height="319"
+                    viewBox="0 0 279 319"
+                    fill="none"
+                    aria-hidden="true"
+                    focusable="false"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M272.64 151.621C278.64 155.085 278.64 163.745 272.64 167.209L14.6396 316.166C8.63964 319.63 1.13965 315.3 1.13965 308.371L1.13966 10.4587C1.13966 3.53053 8.63966 -0.79959 14.6397 2.66451L272.64 151.621Z"
+                      fill="#224E43"
+                      stroke="#224E43"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </button>
+
+
+                  <button class="skip-button" id="skipForwardButton">20&gt;&gt;</button>
+                </div>
+                <input type="range" id="volume-slider" max="100" min="0" />
+                <div id="playerTrackNameContainer"><p id="playerTrackName"></p></div>
+              </div>
+              <button name="exitBtn" id="exitBtn" class="btn">exit</button>
+            </div>
+          </div>
           <button type="button" class="btn" id="transBtn">Transcript</button>
         </div>
-
-        
 
         <div id="debugdiv">
           <div id="debug">
@@ -264,8 +301,8 @@
           <p>©2023 All Rights Reserved</p>
           <p>City of Ottawa Art Collection Collection de la ville d’art d’Ottawa</p>
           <div id="logoBox">
-            <img src="images/icons/cityOfOttawaLogo.png" alt="" class="decorativeImage" />
-            <img src="images/icons/otherLogo.png" alt="" class="decorativeImage" />
+            <img src="images/icons/cityOfOttawaLogo.svg" alt="" class="decorativeImage" />
+            <!-- <img src="images/icons/otherLogo.png" alt="" class="decorativeImage" /> -->
           </div>
           <p>Thank you for visiting MONAHAN.  We hope you will return for a different experience!</p>
         </div>
@@ -282,9 +319,9 @@
 
     <script src="songs.json"></script>
     <script src="play.js"></script>
-    <script src="audio.js"></script>
+    <!-- <script src="audio.js"></script> -->
     <!-- <script src="songs.js"></script> -->
-    <script src="player.js"></script>
+    <!-- <script src="player.js"></script> -->
     <script src="translate.js"></script>
     <script src="test_micro_framework.js"></script>
 

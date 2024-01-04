@@ -409,6 +409,12 @@ main {
   }
 }
 
+#audio-player-container {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 @media screen and (min-width: 900px) {
   #playerPage {
     width: 100vw;;
@@ -420,4 +426,83 @@ main {
     top: 20rem;
     align-items: flex-start;
   }
+}
+
+#play-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#play-icon, #pause-icon {
+  width: 100px;
+  height: 100px;
+  fill: #ffffff; /* Change the color as needed */
+}
+
+
+#play-icon {
+  font-size: 1.25em;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  position: relative;
+  border: .1875em solid;
+  padding: 1em;
+  color: rebeccapurple;
+  background: transparent;
+  border-radius: .125em;
+  transition: background .3s;
+  
+  &:hover,
+  &:focus {
+      color: white;
+      background: rgb(212, 180, 245);
+      border-color: rgb(187, 141, 232);
+  }
+  
+  &:active {
+      top: .08em;
+  }
+}
+
+.svg-icon {
+  /* Place the icon on the text baseline. */
+  position: relative;
+  top: .125em;
+
+  /* Prevent the icon from shrinking inside a flex container. */
+  flex-shrink: 0;
+
+  /* Scale the icon to match the font-size of the parent element. */
+  height: 1em;
+  width: 1em;
+
+  /* Let the icon take whatever color the parent has. */
+  fill: currentColor;
+
+  /*
+   * If the icon is used on a link, which has a color transition,
+   * we can also use a transition on the fill value.
+  */
+ transition: fill .3s;
+}
+
+/* Helper Class to hide text visually but keep it accessible for screen reader or other assistive software. */
+.visually-hidden {
+  /* // Move the text out of the flow of the container. */
+  position: absolute;
+  
+  /* // Reduce its height and width to just one pixel. */
+  height: 1px;
+  width: 1px;
+  
+  /* // Hide any overflowing elements or text. */
+  overflow: hidden;
+  
+  /* // Clip the box to zero pixels. */
+  clip: rect(0, 0, 0, 0);
+  
+  /* // Text won't wrap to a second line. */
+  white-space: nowrap;
 }
