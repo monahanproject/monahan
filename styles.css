@@ -506,3 +506,22 @@ main {
   /* // Text won't wrap to a second line. */
   white-space: nowrap;
 }
+
+#play-button {
+  position: relative; /* This enables absolute positioning for child elements */
+  /* border: none; Removes the default button border */
+  /* background: none; Removes the default button background */
+}
+
+#play-button-svg-container {
+  display: inline-block; /* Allows the SVG to be inline with text and other elements */
+}
+
+#play-button-text-container {
+  position: absolute; /* Positions the text absolutely within the button */
+  top: 50%;  /* Centers vertically */
+  left: 50%; /* Centers horizontally */
+  transform: translate(-50%, -50%); /* Ensures precise centering */
+  color: white; /* White text */
+  pointer-events: none; /* Allows clicks to go through the text to the button below */
+}

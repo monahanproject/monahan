@@ -27,6 +27,8 @@ player = document.getElementById("music_player");
 player.controls = false;
 
 const playButton = document.getElementById("play-button");
+var svgContainer = document.getElementById('play-button-svg-container');
+var textContainer = document.getElementById('play-button-text-container');
 const playIcon = document.getElementById("play-icon");
 const pauseIcon = document.getElementById("pause-icon");
 const skipBackwardButton = document.getElementById("skipBackwardButton");
@@ -1812,7 +1814,45 @@ function checkPlaylistRules(playlist) {
 
 let firstPlay = true;
 function handlePlayPauseClick() {
+
+  const playingSVG = `<svg
+    id="play-icon"
+    class="svg-icon"
+    role="img"
+    width="279"
+    height="319"
+    viewBox="0 0 279 319"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M272.64 151.621C278.64 155.085 278.64 163.745 272.64 167.209L14.6396 316.166C8.63964 319.63 1.13965 315.3 1.13965 308.371L1.13966 10.4587C1.13966 3.53053 8.63966 -0.79959 14.6397 2.66451L272.64 151.621Z"
+      fill="#224E43"
+      stroke="#224E43"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round" />
+  </svg>`; // 
+    const pausedSVG = `<svg
+    id="play-icon"
+    class="svg-icon"
+    role="img"
+    width="282" height="282" viewBox="0 0 282 282" fill="none" 
+    aria-hidden="true"
+    focusable="false"
+    xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
+  </svg>`; 
+
+  let playingText = 'PLAY';
+  let pausedText = 'PAUSE';
+
+
   if (firstPlay === true) {
+    svgContainer.innerHTML = pausedSVG; // Update the SVG.
+      textContainer.textContent = pausedText; // Update the text.
+      playButton.classList.add('playing')
     // generate the playlist
     displayLoadingGifAndGeneratePlayer();  
     if (audioContext == null) {
@@ -1851,52 +1891,31 @@ function handlePlayPauseClick() {
     firstPlay = false;
   } else {
     // todo do regular player stuff like play/pause
-    const svg1 = `<svg
-    id="play-icon"
-    class="svg-icon"
-    role="img"
-    width="279"
-    height="319"
-    viewBox="0 0 279 319"
-    fill="none"
-    aria-hidden="true"
-    focusable="false"
-    xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M272.64 151.621C278.64 155.085 278.64 163.745 272.64 167.209L14.6396 316.166C8.63964 319.63 1.13965 315.3 1.13965 308.371L1.13966 10.4587C1.13966 3.53053 8.63966 -0.79959 14.6397 2.66451L272.64 151.621Z"
-      fill="#224E43"
-      stroke="#224E43"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round" />
-  </svg>`; // 
-    const svg2 = `<svg
-    id="play-icon"
-    class="svg-icon"
-    role="img"
-    width="282" height="282" viewBox="0 0 282 282" fill="none" 
-    aria-hidden="true"
-    focusable="false"
-    xmlns="http://www.w3.org/2000/svg">
-    <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
-  </svg>`; 
+
+  
+
+    
 
     if (playButton.classList.contains('playing')) {
       console.log("I'm playing, gonna pause");
+      svgContainer.innerHTML = playingSVG; // Update the SVG.
+      textContainer.textContent = playingText; // Update the text.
       playButton.classList.remove('playing');
       playButton.classList.add('paused');
-      playButton.textContent = 'Pause'; // Change the text as needed
-      playButton.innerHTML = svg1;
+      // playButton.textContent = 'Pause'; // Change the text as needed
+      // playButton.innerHTML = playingSVG;
       player.pause();
       playerPlayState = "pause";
       audioContext.suspend();
     } else {
       console.log("I'm paused, gonna play");
+      svgContainer.innerHTML = pausedSVG; // Update the SVG.
+      textContainer.textContent = pausedText; // Update the text.
       playButton.classList.remove('paused');
       playButton.classList.add('playing');
-      playButton.textContent = 'Play'; // Change the text as needed
+      // playButton.textContent = 'Play'; // Change the text as needed
       player.play();
-      playButton.innerHTML = svg2;
+      // playButton.innerHTML = pausedSVG;
       playerPlayState = "play";
       audioContext.resume();
     }
