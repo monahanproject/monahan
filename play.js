@@ -1834,6 +1834,10 @@ function handlePlayPauseClick() {
 
   if (firstPlay === true) {
     svgContainer.innerHTML = pausedSVG; // Update the SVG.
+    if(playButtonTextContainer) {
+      playButtonTextContainer.style.left = '50%';
+      console.log("yoooooooo");
+    }
     textContainer.textContent = pausedText; // Update the text.
     playButton.classList.add("playing");
     // generate the playlist
@@ -1873,9 +1877,15 @@ function handlePlayPauseClick() {
     createTimerLoopAndUpdateProgressTimer();
     firstPlay = false;
   } else {
+    var playButtonTextContainer = document.getElementById('play-button-text-container');
+
     // regular play/pause functionality
     if (playButton.classList.contains("playing")) {
       console.log("I'm playing, gonna pause");
+      if(playButtonTextContainer) {
+        playButtonTextContainer.style.left = '35%';
+        console.log("yoooooooo");
+      }
       svgContainer.innerHTML = playingSVG;
       textContainer.textContent = playingText;
       playButton.classList.remove("playing");
@@ -1885,6 +1895,10 @@ function handlePlayPauseClick() {
       audioContext.suspend();
     } else {
       console.log("I'm paused, gonna play");
+      if(playButtonTextContainer) {
+        playButtonTextContainer.style.left = '50%';
+        console.log("yoooooooo");
+      }
       svgContainer.innerHTML = pausedSVG;
       textContainer.textContent = pausedText;
       playButton.classList.remove("paused");

@@ -239,9 +239,19 @@ nav {
 }
 
 p {
-  padding: 1.2rem;
+  padding: 1rem;
   line-height: 1.35;
-  color: var(—black);
+  font-size: 1.3rem;
+  font-family: 'Zilla Slab', serif;
+  font-weight: 300;
+}
+
+.DMSans {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ZillaSlab {
+
 }
 
 #debug, #debug p{
@@ -307,13 +317,14 @@ a:hover {
 /******  BUTTONS  ******/
 /***********************/
 
+
 .btn {
   background-color: #214e42;
   color: #bfffc2;
   outline: none;
   border: none;
-  padding: 5px;
-  width: 6vw;
+  padding: 10px;
+  /* width: 10rem; */
   border-radius: 6px;
 }
 
@@ -533,11 +544,14 @@ main {
 #play-button-text-container {
   position: absolute;
   top: 50%;
-  left: 50%;
+  /* left: 50%; */
+  left: 35%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: #bfffc2;
   pointer-events: none; /* Allows clicks to pass through the text */
-  font-size: 6vw; /* Adjusted for larger button size */
+  font-family: 'Zilla Slab', sans-serif;
+  font-size: 6.5vw; /* Adjusted for larger button size */
+  
 }
 
 @media screen and (min-width: 900px) {
