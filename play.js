@@ -1819,8 +1819,6 @@ function handlePlayPauseClick() {
     id="play-icon"
     class="svg-icon"
     role="img"
-    width="279"
-    height="319"
     viewBox="0 0 279 319"
     fill="none"
     aria-hidden="true"
@@ -1838,7 +1836,7 @@ function handlePlayPauseClick() {
     id="play-icon"
     class="svg-icon"
     role="img"
-    width="282" height="282" viewBox="0 0 282 282" fill="none" 
+    viewBox="0 0 282 282" fill="none" 
     aria-hidden="true"
     focusable="false"
     xmlns="http://www.w3.org/2000/svg">
@@ -1890,58 +1888,28 @@ function handlePlayPauseClick() {
     createTimerLoopAndUpdateProgressTimer();
     firstPlay = false;
   } else {
-    // todo do regular player stuff like play/pause
-
-  
-
-    
-
+    // regular play/pause functionality
     if (playButton.classList.contains('playing')) {
       console.log("I'm playing, gonna pause");
-      svgContainer.innerHTML = playingSVG; // Update the SVG.
-      textContainer.textContent = playingText; // Update the text.
+      svgContainer.innerHTML = playingSVG; 
+      textContainer.textContent = playingText;
       playButton.classList.remove('playing');
       playButton.classList.add('paused');
-      // playButton.textContent = 'Pause'; // Change the text as needed
-      // playButton.innerHTML = playingSVG;
       player.pause();
       playerPlayState = "pause";
       audioContext.suspend();
     } else {
       console.log("I'm paused, gonna play");
-      svgContainer.innerHTML = pausedSVG; // Update the SVG.
-      textContainer.textContent = pausedText; // Update the text.
+      svgContainer.innerHTML = pausedSVG; 
+      textContainer.textContent = pausedText; 
       playButton.classList.remove('paused');
       playButton.classList.add('playing');
-      // playButton.textContent = 'Play'; // Change the text as needed
       player.play();
-      // playButton.innerHTML = pausedSVG;
       playerPlayState = "play";
       audioContext.resume();
     }
   }
 
-
-
-
-
-  // // Check if the audio is currently playing
-  // if (playerPlayState === "play" && audioContext != null) {
-  //   // Pause the audio
-  //   playIconContainer.classList.remove("paused");
-  //   player.pause();
-  //   playerPlayState = "pause";
-  //   audioContext.suspend();
-  // }
-  // // Check if the audio is currently paused
-  // else if (playerPlayState === "pause") {
-  //   player.play();
-  //   playIconContainer.classList.add("paused");
-  //   playerPlayState = "play";
-  //   audioContext.resume();
-  //   // createTimerLoopAndUpdateProgressTimer();
-  // } else {
-  // }
 }
 
 
