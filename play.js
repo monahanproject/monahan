@@ -387,19 +387,22 @@ let transcriptContent; // Define transcriptContent as a global variable
 
 // Function to create the transcript container
 function createTranscriptContainer() {
-  const transcriptContainer = document.createElement("div");
-  transcriptContainer.id = "transcriptContainer";
-  // transcriptContainer.style.position = "fixed";
-  // transcriptContainer.style.top = "0";
-  // transcriptContainer.style.left = "0";
-  transcriptContainer.style.paddingBottom = "5rem";
+  const transcriptContainer = document.getElementById("transcriptContainer");
 
-  // transcriptContainer.style.right = "0";
-  // transcriptContainer.style.zIndex = "999"; // Adjust z-index as needed
-  document.body.appendChild(transcriptContainer);
+  // Create the transcript button element
+  const transcriptButton = document.createElement("button");
+  transcriptButton.type = "button";
+  transcriptButton.className = "btn";
+  transcriptButton.id = "transcriptButton";
+  transcriptButton.textContent = "TRANSCRIPT";
+  let volCont = document.getElementById('transButtonContainer');
+  volCont.appendChild(transcriptButton);
 
-  createTranscriptButton(transcriptContainer);
-  createTranscriptContent(transcriptContainer);
+
+  transcriptButton.addEventListener("click", toggleTranscript);
+  const transcriptContent = document.createElement("div");
+  transcriptContent.id = "transcriptContent";
+  transcriptContent.style.display = "block"; // Make it initially visible
 }
 
 function createHTMLFromText(text) {
@@ -490,23 +493,19 @@ function updateTranscript() {
   transcriptContainer.appendChild(htmlContainer);
 }
 
-// Function to create the transcript button
-function createTranscriptButton(container) {
-  const transcriptButton = document.createElement("button");
-  transcriptButton.textContent = "Show Transcript";
-  transcriptButton.id = "transcriptButton"; // Assign an ID for styling
-  transcriptButton.addEventListener("click", toggleTranscript);
-  container.appendChild(transcriptButton);
-}
+// Function to get the transcript button
+// function createTranscriptButton(container) {
+  
+// }
 
 // Function to create the transcript content element
-function createTranscriptContent(container) {
-  const transcriptContent = document.createElement("div");
-  transcriptContent.id = "transcriptContent";
-  transcriptContent.style.display = "block"; // Make it initially visible
+// function createTranscriptContent(container) {
+//   const transcriptContent = document.createElement("div");
+//   transcriptContent.id = "transcriptContent";
+//   transcriptContent.style.display = "block"; // Make it initially visible
 
-  container.appendChild(transcriptContent);
-}
+//   container.appendChild(transcriptContent);
+// }
 
 // Function to toggle the transcript visibility
 function toggleTranscript() {

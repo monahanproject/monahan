@@ -317,7 +317,7 @@ a:hover {
   border-radius: 6px;
 }
 
-#transBtn {
+#transcriptButton {
   background-color: #214e42;
   color: #bfffc2;
   outline: none;
@@ -696,5 +696,18 @@ input[type="range"] {
 
 
 #debugdiv{
+  display: block;
+  max-height: 500px; /* Adjust as needed */
+  overflow: auto;
+  padding: 10px 5px;
+  margin: 10px 2px;
+
+  border: 2px solid orange;
+}
+
+#transcriptContainer{
+  background-color: lightslategray;
+  max-height: 150px; /* Adjust as needed */
+  overflow: auto;
   margin: 20px 5px;
 }
