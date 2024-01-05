@@ -1169,7 +1169,7 @@
     },
     {
         "name": "I_ELLEN_01",
-        "url": "./sounds/CONTENT/I_ELLEN_01_TempMusic.mp3",
+        "url": "./sounds/CONTENT/I_ELLEN_01.mp3",
         "duration": 172,
         "author": "ELLEN",
         "form": "interview",
@@ -1192,7 +1192,7 @@
     },
     {
         "name": "I_ELLEN_02",
-        "url": "./sounds/CONTENT/I_ELLEN_02_TempMusic.mp3",
+        "url": "./sounds/CONTENT/I_ELLEN_02.mp3",
         "duration": 133,
         "author": "ELLEN",
         "form": "interview",

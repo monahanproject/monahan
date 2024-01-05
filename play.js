@@ -36,7 +36,8 @@ const trackNameContainer = document.getElementById("playerTrackNameContainer");
 
 function createVolumeSlider() {
   const volumeSlider = document.getElementById("volume-slider");
-  if (volumeSlider) { // Check if the element exists
+  if (volumeSlider) {
+    // Check if the element exists
     volumeSlider.type = "range";
     volumeSlider.max = "100";
     volumeSlider.min = "0";
@@ -55,14 +56,14 @@ function handleVolumeChange(event) {
   if (volumeNode !== undefined) {
     const newVolume = parseFloat(event.target.value) / 100;
     volumeNode.gain.value = newVolume;
-  }   
+  }
 }
 
 if (volumeSlider) {
-  volumeSlider.addEventListener('change', handleVolumeChange);
+  volumeSlider.addEventListener("change", handleVolumeChange);
 
   // Initialize the volume to the slider's starting value when the page loads
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     handleVolumeChange({ target: { value: volumeSlider.value } });
   });
 }
@@ -364,7 +365,7 @@ const transcriptContainer = document.getElementById("transcriptContainer"); // M
 // Helper function to create elements with attributes
 function createElement(type, attributes) {
   const element = document.createElement(type);
-  Object.keys(attributes).forEach(attr => element[attr] = attributes[attr]);
+  Object.keys(attributes).forEach((attr) => (element[attr] = attributes[attr]));
   return element;
 }
 
@@ -378,10 +379,10 @@ function createTranscriptContainer() {
     type: "button",
     className: "btn",
     id: "transcriptButton",
-    textContent: "TRANSCRIPT"
+    textContent: "TRANSCRIPT",
   });
 
-  const transBtnContainer = document.getElementById('transButtonContainer');
+  const transBtnContainer = document.getElementById("transButtonContainer");
   transBtnContainer.appendChild(transcriptButton);
   transcriptButton.addEventListener("click", toggleTranscript);
   // Initialize transcriptContent here to avoid re-declaration later
@@ -396,20 +397,21 @@ function formatText(text) {
     center: /@([^]+?)@@/g,
     italics: /\$([^]+?)\$\$/g,
     lineBreak: /%/g,
-    doubleLineBreak: /\*/g
+    doubleLineBreak: /\*/g,
   };
 
-  return text.replace(formatPatterns.bold, '<span style="font-weight: bold;">$1</span>')
-             .replace(formatPatterns.center, '<span style="display: block; text-align: center;">$1</span>')
-             .replace(formatPatterns.italics, '<span style="font-style: italic;">$1</span>')
-             .replace(formatPatterns.lineBreak, "</br>")
-             .replace(formatPatterns.doubleLineBreak, "<p></br></br></p>");
+  return text
+    .replace(formatPatterns.bold, '<span style="font-weight: bold;">$1</span>')
+    .replace(formatPatterns.center, '<span style="display: block; text-align: center;">$1</span>')
+    .replace(formatPatterns.italics, '<span style="font-style: italic;">$1</span>')
+    .replace(formatPatterns.lineBreak, "</br>")
+    .replace(formatPatterns.doubleLineBreak, "<p></br></br></p>");
 }
 
 function createHTMLFromText(text) {
   const container = createElement("div", {});
   const currentParagraph = createElement("p", {
-    style: "margin-top: 3rem; margin-bottom: 4rem; padding: 1rem; background-color: #f0ebf8; margin-left: 0; margin-right: 0;"
+    style: "margin-top: 3rem; margin-bottom: 4rem; padding: 1rem; background-color: #f0ebf8; margin-left: 0; margin-right: 0;",
   });
 
   try {
@@ -432,11 +434,12 @@ function updateTranscript() {
   transcriptContainer.innerHTML = ""; // Clear previous content
 
   const langKey = language === "english" ? "engTrans" : "frTrans";
-  const copyRightText = language === "english"
-    ? "$All recordings and transcripts are copyright protected. All rights reserved.$$"
-    : "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
+  const copyRightText =
+    language === "english"
+      ? "$All recordings and transcripts are copyright protected. All rights reserved.$$"
+      : "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
 
-  curatedTracklist.forEach(song => {
+  curatedTracklist.forEach((song) => {
     const inputString = song[langKey];
     if (inputString && inputString.trim() !== "") {
       transcriptContainer.appendChild(createHTMLFromText(inputString));
@@ -863,22 +866,25 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXXXXX Geese RULE (AT THE VERY END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+let gooseFound = false;
+let twoOrMoreGeeseFound = false;
+
 function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  const trackName = track.name;
   const ruleType = `👀 Ensure rule:`;
+  let geeseTracks = curatedTracklist.filter((t) => t.tags && t.tags.includes("geese"));
 
-  let trackHasGeeseTag = track.tags.includes("geese");
-  // const prevTrack1HasGeeseTag = prevTrack1 && prevTrack1.tags.includes("geese");
-  let curatedTracklistAlreadyHasGeeseTag = trackExistsWithAttributes(curatedTracklist, "tags", "geese");
-
-  if (trackHasGeeseTag && curatedTracklistAlreadyHasGeeseTag) {
-    console.log(
-      `🦆! ${track.name}: Ensure track rule: If there is one geese, we need two geese! trackHasGeeseTag: ${trackHasGeeseTag} and curatedTracklistAlreadyHasGeeseTag: ${curatedTracklistAlreadyHasGeeseTag[0]}`
-    );
+  if (geeseTracks.length === 0) {
+    console.log(`${ruleType} No tracks with the tag 'geese' found.`);
+    return false;
+  } else if (geeseTracks.length === 1) {
+    gooseFound = true;
+    console.log(`${ruleType} One geese track found: ${geeseTracks[0].name}`);
     return true;
   } else {
-    console.log(`${track.name}: Ensure track rule: If there is one geese, we need two geese!`);
-    return false;
+    twoOrMoreGeeseFound = true;
+    console.log(`${ruleType} Two or more geese tracks found. Count: ${geeseTracks.length}`);
+    geeseTracks.forEach((track) => console.log(`🦆 Track: ${track.name}`));
+    return true;
   }
 }
 
@@ -999,7 +1005,6 @@ function followTracklistRules(tracklist) {
 
   const generalRuleFunctions = [r10, r11, r12, r13, r14, r15, r16];
   const unshuffledEnsureRules = [r21, r22, r23, r24, r25];
-  // const lateCheckRules = [r25];
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 1: Apply track-specific rules and general rules
@@ -1060,7 +1065,7 @@ function followTracklistRules(tracklist) {
         trackIndex++; // Increment trackIndex to move to the next track in curatedTracklist
       } else {
         // The general rules were not met for this track, so the current rule cannot be met
-        console.log(`Egads Cannot meet Rule ${i + 60} for track: ${track.name}`);
+        console.log(`Cannot meet Rule ${i + 60} for track: ${track.name}`);
         currIndex++; // Move to the next track in the tracklist
       }
     }
@@ -1079,12 +1084,9 @@ function followTracklistRules(tracklist) {
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  let geeseTracks;
-
   // Flags to track successfully enforced ensure rules
   const ensureRulesEnforced = {};
 
-  // Initialize ensure rules and set flags based on other functions
   // Initialize ensure rules and set flags based on other functions
   function initializeEnsureRules() {
     const shuffledEnsureRules = shuffleArrayOfRules(unshuffledEnsureRules);
@@ -1094,49 +1096,6 @@ function followTracklistRules(tracklist) {
       ensureRulesEnforced[`r${ruleNumber}`] = false;
     });
 
-    // Mark ensure rules as enforced based on conditions
-    // if (c21(curatedTracklist)) {
-    //   markEnsureRuleEnforced(21);
-    // }
-
-    // if (c22(curatedTracklist)) {
-    //   markEnsureRuleEnforced(22);
-    // }
-    // if (c23(curatedTracklist)) {
-    //   markEnsureRuleEnforced(23);
-    // }
-    // if (c24(curatedTracklist)) {
-    //   markEnsureRuleEnforced(24);
-    // }
-
-    // init geese time!
-    let isFirstTimeGeeseSeeking = true; // Introduce a flag variable
-
-    if (isFirstTimeGeeseSeeking) {
-      geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
-      console.log(`🦆! geeseTrackzzz! ${JSON.stringify(geeseTracks)}`);
-
-      isFirstTimeGeeseSeeking = false;
-      if (!geeseTracks) {
-        markEnsureRuleEnforced(25);
-        console.log(`🦆! Ensure rules enforced?If I have no geese, the 25 flag is true ${ensureRulesEnforced}`);
-        // If I have no geese, the 25 flag is true
-        markEnsureRuleEnforced(25);
-      } else if (geeseTracks.length === 1) {
-        // If I have 1 geese the r25 flag is false, hopefully by default
-        console.log(`🦆! Curated tracklist already has a geese`);
-        console.log(
-          `🦆! Ensure rules enforced? If I have 1 geese the r25 flag is false, hopefully by default ${JSON.stringify(ensureRulesEnforced)}`
-        );
-      } else if (geeseTracks.length === 2) {
-        // console.log(`🦆! Curated tracklist already has 2 geese: ${curatedTracklistAlreadyHasGeeseTag[0]}, ${curatedTracklistAlreadyHasGeeseTag[1]}`);
-        // If I have no geese, the r25 flag is true
-        markEnsureRuleEnforced(25);
-        console.log(`🦆! Ensure rules enforced? If I have no geese, the r25 flag is true markEnsureRuleEnforced(25); ${ensureRulesEnforced}`);
-      }
-    }
-
-    // Return the initialized ensureRules (corrected variable name)
     return shuffledEnsureRules;
   }
 
@@ -1197,31 +1156,20 @@ function followTracklistRules(tracklist) {
         if (ensureTrack(track, currIndex, ensureRules)) {
           // i have time for this track
           if (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTimeInSecs + track.duration)) {
-            markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
-
-            addNextValidTrack(track, curatedTracklist, tracklist);
-
-            // if track is a geese track
-            if (track.tags.includes("geese")) {
-              console.log(`🦆! My track is a geese ${track.tags}`);
-
-              if (geeseTracks.length === 0) {
-                // and it's the first geese track
-                ensureRulesEnforced[r25] = false;
-                console.log(`🦆! It's the first geese track ${track.tags}`);
+            // check that the track passes the general rules (this is a bit redundant )
+            for (const generalRule of generalRuleFunctions) {
+              if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
+                console.log(`llllll General rule failed for track: ${track.name} ${generalRule}`);
+                break; // Stop checking other general rules
               } else {
-                // not the first
-                ensureRulesEnforced[r25] = true;
-                console.log(`🦆! It's not the first geese track ${track.tags}`);
+                console.log("llllll passed the general rules");
+                markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
+                addNextValidTrack(track, curatedTracklist, tracklist);
+                console.log(`✅ Added Ensure Track! ${track.name}`);
+                calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
+                console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
               }
-              // update geeseTracks so we have an accurate length
-              geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
-              console.log(`🦆! updated list of geese! ${JSON.stringify(geeseTracks)}`);
             }
-
-            console.log(`✅ Added Ensure Track! ${track.name}`);
-            calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-            console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
           }
         }
         currIndex++;
@@ -1243,20 +1191,6 @@ function followTracklistRules(tracklist) {
         console.log(`✅ Added General Track! ${track.name}`);
 
         addNextValidTrack(track, curatedTracklist, tracklist);
-
-        // if track is a geese track
-        if (track.tags.includes("geese")) {
-          if (geeseTracks.length === 0) {
-            // and it's the first geese track
-            ensureRulesEnforced[r25] = false;
-          } else {
-            // not the first
-            ensureRulesEnforced[r25] = true;
-          }
-          // update geeseTracks so we have an accurate length
-          geeseTracks = curatedTracklist.filter((t) => t.tags.includes("geese"));
-        }
-
         calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
         console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
       }
@@ -1275,24 +1209,19 @@ function followTracklistRules(tracklist) {
     const firstElement = curatedTracklist.shift(); // Remove the first element
     curatedTracklist.push(firstElement); // Add it to the end
   }
-
   return curatedTracklist;
 }
-
-/* 9. shuffleTracklist takes a tracklist array as input, shuffles its elements
-randomly, and returns the shuffled and modified tracklist. */
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX BEFORE THE RULES, WE SHUFFLE OUR TRACKLIST XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function shuffleTracklist(tracklist) {
-  // Skip the first track and shuffle the rest of the tracks
+  // Skip the first track (intro) and shuffle the rest of the tracks
   for (let i = tracklist.length - 1; i > 1; i--) {
     const j = Math.floor(Math.random() * (i - 1)) + 1; // Ensure j is at least 1
     [tracklist[i], tracklist[j]] = [tracklist[j], tracklist[i]];
   }
-  // console.log(tracklist);
   return tracklist;
 }
 
@@ -1306,9 +1235,9 @@ function shuffleArrayOfRules(shuffledRulesArray) {
   return shuffledRulesArray; // Return the shuffled array
 }
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX CHECK THOSE TRACKS!!!! XXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 async function isValidTracklist(tracklist) {
   const invalidTracks = [];
@@ -1544,7 +1473,7 @@ function checkPlaylistRules(playlist) {
     // CHECK R61: The 0th track must have the tag 'intro'
     if (i === 0 && !track.tags.includes("intro")) {
       console.log(
-        `❌ R61 (The 0th track must have the tag 'intro') violated at track ${i}: Track 1 (${track.name}) does not have the tag 'intro'.`,
+        `❌❌❌ R61 (The 0th track must have the tag 'intro') violated at track ${i}: Track 1 (${track.name}) does not have the tag 'intro'.`,
         track
       );
       console.log(`The 0th track must have the tag 'intro' r61 good ${i} ${track.name}`);
@@ -1553,7 +1482,7 @@ function checkPlaylistRules(playlist) {
     // CHECK R62: The 1st track must have the placement 'beginning'
     if (i === 1 && !track.placement.includes("beginning")) {
       console.log(
-        `❌ R62 (The 1st track must have the placement 'beginning') violated at track ${i}: Track 2 (${track.name}) does not have placement 'beginning'.`,
+        `❌❌❌ R62 (The 1st track must have the placement 'beginning') violated at track ${i}: Track 2 (${track.name}) does not have placement 'beginning'.`,
         track
       );
       console.log(`r62 good ${i} ${track.name}`);
@@ -1563,13 +1492,13 @@ function checkPlaylistRules(playlist) {
     if (i === 2) {
       if (!track.placement.includes("beginning")) {
         console.log(
-          `❌ R63 violated (The 2nd track must have placement 'beginning' and a different form than the 1st track) at track ${i}: Track 3 (${track.name}) does not have placement 'beginning'. (${track.placement}) `,
+          `❌❌❌ R63 violated (The 2nd track must have placement 'beginning' and a different form than the 1st track) at track ${i}: Track 3 (${track.name}) does not have placement 'beginning'. (${track.placement}) `,
           track
         );
       }
       if (track.form === playlist[i - 1].form) {
         console.log(
-          `❌ R63 violated (The 2nd track must have placement 'beginning' and a different form than the 1st track) at track ${i}: Track 4 (${track.name}) has the same form as the previous track.`,
+          `❌❌❌ R63 violated (The 2nd track must have placement 'beginning' and a different form than the 1st track) at track ${i}: Track 4 (${track.name}) has the same form as the previous track.`,
           track
         );
       }
@@ -1580,13 +1509,13 @@ function checkPlaylistRules(playlist) {
     if (i === 3) {
       if (!track.placement.includes("middle")) {
         console.log(
-          `❌ R64 violated (The 3rd track must have placement 'middle' and a different form than the 2nd track) at track ${i}: Track 4 (${track.name}) does not have placement 'middle'.`,
+          `❌❌❌ R64 violated (The 3rd track must have placement 'middle' and a different form than the 2nd track) at track ${i}: Track 4 (${track.name}) does not have placement 'middle'.`,
           track
         );
       }
       if (track.form === playlist[i - 1].form) {
         console.log(
-          `❌ R64 violated (The 3rd track must have placement 'middle' and a different form than the 2nd track) at track ${i}: Track 4 (${track.name}) has the same form as the previous track.`,
+          `❌❌❌ R64 violated (The 3rd track must have placement 'middle' and a different form than the 2nd track) at track ${i}: Track 4 (${track.name}) has the same form as the previous track.`,
           track
         );
       }
@@ -1597,7 +1526,7 @@ function checkPlaylistRules(playlist) {
     if (i === 4) {
       if (track.length !== "short" || !track.placement.includes("middle")) {
         console.log(
-          `❌ R65 violated (The 4th track must have length 'short', placement 'middle', and a different language than the 3rd track) at track ${i}: Track 5 (${
+          `❌❌❌ R65 violated (The 4th track must have length 'short', placement 'middle', and a different language than the 3rd track) at track ${i}: Track 5 (${
             track.name
           }) does not meet the criteria - Form: ${track.length}, Placement: ${track.placement.join(", ")}`,
           track
@@ -1605,7 +1534,7 @@ function checkPlaylistRules(playlist) {
       }
       if (track.language === playlist[i - 1].language) {
         console.log(
-          `❌ R65 violated (The 4th track must have form 'short', placement 'middle', and a different language than the 3rd track) at track ${i}: Track 5 (${track.name}) has the same language as the previous track (${track.language}).`,
+          `❌❌❌ R65 violated (The 4th track must have form 'short', placement 'middle', and a different language than the 3rd track) at track ${i}: Track 5 (${track.name}) has the same language as the previous track (${track.language}).`,
           track
         );
       }
@@ -1616,13 +1545,13 @@ function checkPlaylistRules(playlist) {
     if (i === 5) {
       if (!track.placement.includes("middle")) {
         console.log(
-          `❌ R66 violated (The 5th track must have placement 'middle' and a different form than the 4th track) at track ${i}: Track 6 (${track.name}) does not have placement 'middle'.`,
+          `❌❌❌ R66 violated (The 5th track must have placement 'middle' and a different form than the 4th track) at track ${i}: Track 6 (${track.name}) does not have placement 'middle'.`,
           track
         );
       }
       if (track.form === playlist[i - 1].form) {
         console.log(
-          `❌ R66 violated (The 5th track must have placement 'middle' and a different form than the 4th track) at track ${i}: Track 6 (${track.name}) has the same form as the previous track.`,
+          `❌❌❌ R66 violated (The 5th track must have placement 'middle' and a different form than the 4th track) at track ${i}: Track 6 (${track.name}) has the same form as the previous track.`,
           track
         );
       }
@@ -1633,13 +1562,13 @@ function checkPlaylistRules(playlist) {
     if (i === 6) {
       if (!track.placement.includes("middle")) {
         console.log(
-          `❌ R67 violated (The 5th track must have placement 'middle' at track ${i}: Track 7 (${track.name}) does not have placement 'middle'.`,
+          `❌❌❌ R67 violated (The 5th track must have placement 'middle' at track ${i}: Track 7 (${track.name}) does not have placement 'middle'.`,
           track
         );
       }
       if (track.form === playlist[i - 1].form) {
         console.log(
-          `❌ R67 violated (The 5th track must have placement 'middle' and a different form than previous track ${i}: Track 7 (${track.name}) has the same form as the previous track.`,
+          `❌❌❌ R67 violated (The 5th track must have placement 'middle' and a different form than previous track ${i}: Track 7 (${track.name}) has the same form as the previous track.`,
           track
         );
       }
@@ -1650,13 +1579,13 @@ function checkPlaylistRules(playlist) {
     if (i === 7) {
       if (!track.placement.includes("middle")) {
         console.log(
-          `❌ R68 violated (The 7th track must have placement 'middle' at track ${i}: Track 8 (${track.name}) does not have placement 'middle'.`,
+          `❌❌❌ R68 violated (The 7th track must have placement 'middle' at track ${i}: Track 8 (${track.name}) does not have placement 'middle'.`,
           track
         );
       }
       if (track.form === playlist[i - 1].form) {
         console.log(
-          `❌ R68 violated (The 7th track must have a different form than the 6th track at track ${i}: Track 8 (${track.name}) has the same form as a previous track.`,
+          `❌❌❌ R68 violated (The 7th track must have a different form than the 6th track at track ${i}: Track 8 (${track.name}) has the same form as a previous track.`,
           track
         );
       }
@@ -1666,7 +1595,7 @@ function checkPlaylistRules(playlist) {
     // CHECK R10
     // R10: The current track must have a different author than the last track
     if (prevTrack && track.author === prevTrack.author) {
-      console.log(`R10 violated at track ${i}: Same author as the previous track.`);
+      console.log(`❌❌❌ R10 violated at track ${i}: Same author as the previous track.`);
     }
 
     // Increment the count for the author
@@ -1675,42 +1604,42 @@ function checkPlaylistRules(playlist) {
     // CHECK R11
     // R11: No more than two tracks from the same author in a tracklist
     if (authorCounts[track.author] > 2) {
-      console.log(`R11 violated at track ${i}: ${track.author} has more than two tracks.`);
+      console.log(`❌❌❌ R11 violated at track ${i}: ${track.author} has more than two tracks.`);
     }
 
     // CHECK R12
     // R12: Tracks with the form short and the language musical can never follow tracks with the form music.
     if (track.form === "short" && track.language === "musical" && prevTrack && prevTrack.form === "music") {
-      console.log(`R12 violated at track ${i}: short (musical) followed by music.`, track);
+      console.log(`❌❌❌ R12 violated at track ${i}: short (musical) followed by music.`, track);
     }
 
     // CHECK R13
     // R13: Tracks with the form music can never follow tracks with both the form short and the language musical.
     if (track.form === "music" && prevTrack && prevTrack.form === "short" && prevTrack.language === "musical") {
-      console.log(`R13 violated at track ${i}: Music followed by short (musical).`, track);
+      console.log(`❌❌❌ R13 violated at track ${i}: Music followed by short (musical).`, track);
     }
 
     // CHECK R14
     // R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
     if (prevTrack && (track.backgroundMusic === prevTrack.author || track.author === prevTrack.backgroundMusic)) {
-      console.log(`R14 violated at track ${i}: Author matches backgroundMusic.`, track);
+      console.log(`❌❌❌ R14 violated at track ${i}: Author matches backgroundMusic.`, track);
     }
 
     // CHECK R15
     // R15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
     if (prevTrack && prevTrack.tags.includes("laughter") && track.tags.includes("heavy")) {
-      console.log(`R15 violated at track ${i}: Laughter followed by heavy sentiment.`, track);
+      console.log(`❌❌❌ R15 violated at track ${i}: Laughter followed by heavy sentiment.`, track);
     }
 
     // CHECK R16
     // R16: If the previous track has length long and form music, this track must have the form interview`;
     if (track.length === "long" && track.form === "music" && prevTrack && prevTrack.form !== "interview") {
-      console.log(`R16 violated at track ${i}: Long music track not followed by an interview.`, track);
+      console.log(`❌❌❌ R16 violated at track ${i}: Long music track not followed by an interview.`, track);
     }
 
     // CHECK R00: Last track must have the placement 'end'
     if (i === playlist.length - 1 && !track.placement.includes("end")) {
-      console.log(`R00 violated at track ${i}: Last track does not have placement 'end'. Track details:`, track);
+      console.log(`❌❌❌ R00 violated at track ${i}: Last track does not have placement 'end'. Track details:`, track);
     }
 
     prevTrack = track;
@@ -1735,9 +1664,9 @@ function checkPlaylistRules(playlist) {
 }
 
 let firstPlay = true;
-var playButtonTextContainer = document.getElementById('play-button-text-container');
+var playButtonTextContainer = document.getElementById("play-button-text-container");
 
-  const playingSVG = `<svg
+const playingSVG = `<svg
     id="play-icon"
     class="svg-icon"
     role="img"
@@ -1754,7 +1683,7 @@ var playButtonTextContainer = document.getElementById('play-button-text-containe
       stroke-linecap="round"
       stroke-linejoin="round" />
   </svg>`; //
-  const pausedSVG = `<svg
+const pausedSVG = `<svg
     id="play-icon"
     class="svg-icon"
     role="img"
@@ -1765,17 +1694,17 @@ var playButtonTextContainer = document.getElementById('play-button-text-containe
     <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
   </svg>`;
 
- // Text Constants
+// Text Constants
 const playingText = "PLAY";
 const pausedText = "PAUSE";
 
 function toggleButtonVisuals(isPlaying) {
   // Set the left position of the button text container
-  playButtonTextContainer.style.left = isPlaying ? '50%' : '35%';
+  playButtonTextContainer.style.left = isPlaying ? "50%" : "35%";
   // Set the inner HTML of the SVG container based on whether it's playing or paused
   svgContainer.innerHTML = isPlaying ? pausedSVG : playingSVG;
   // Set the text content of the text container based on whether it's playing or paused
-  textContainer.textContent = isPlaying ? 'PAUSE' : 'PLAY';
+  textContainer.textContent = isPlaying ? "PAUSE" : "PLAY";
   // Toggle the playButton class to "playing" or "paused" based on the isPlaying state
   playButton.classList.toggle("playing", isPlaying);
   playButton.classList.toggle("paused", !isPlaying);
