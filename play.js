@@ -27,14 +27,13 @@ player = document.getElementById("music_player");
 player.controls = false;
 
 const playButton = document.getElementById("play-button");
-var svgContainer = document.getElementById('play-button-svg-container');
-var textContainer = document.getElementById('play-button-text-container');
+var svgContainer = document.getElementById("play-button-svg-container");
+var textContainer = document.getElementById("play-button-text-container");
 const playIcon = document.getElementById("play-icon");
 const pauseIcon = document.getElementById("pause-icon");
 const skipBackwardButton = document.getElementById("skipBackwardButton");
 const skipForwardButton = document.getElementById("skipForwardButton");
 const trackNameContainer = document.getElementById("playerTrackNameContainer");
-
 
 function createVolumeSlider() {
   const volumeSlider = document.getElementById("volume-slider");
@@ -47,25 +46,15 @@ function createVolumeSlider() {
 }
 const volumeSlider = createVolumeSlider();
 
-
 function createAudioElement(id) {
   const audio = document.createElement("audio");
   audio.id = id;
   return audio;
 }
 
-function createTimerCountdownElement() {
-  const currentTime = document.createElement("span");
-  currentTime.classList.add("time");
-  currentTime.id = "current-time";
-  // currentTime.innerHTML = "0:00";
-  return currentTime;
-}
-
 function change_vol(event) {
   volumeNode.gain.value = parseFloat(event.target.value);
 }
-
 
 let isUpdatingTime = false; // Flag to prevent rapid updates
 
@@ -124,7 +113,6 @@ function handleExitClick() {
   console.log("rrr Exited the player and added 'Begin Again' button");
 }
 
-
 // const trackNameElement = createTrackNameElement();
 playButton.addEventListener("click", handlePlayPauseClick);
 skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
@@ -132,38 +120,50 @@ skipForwardButton.addEventListener("click", handleSkipForwardClick);
 volumeSlider.addEventListener("change", handleVolumeChange);
 
 // https://css-tricks.com/lets-create-a-custom-audio-player/
-function createHTMLMusicPlayer() {
-
-
-  
-}
+function createHTMLMusicPlayer() {}
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 function updateProgressTimerr(elapsedSeconds, previousDuration) {
-  currentTimeElement = document.getElementById("current-time");
-  if (!currentTimeElement) {
-    console.error("Error: Missing element 'current-time'");
+  const progressBar = document.getElementById("progress-bar");
+  const progressDot = document.getElementById("progress-dot");
+  const timePlayedElement = document.getElementById("time-played");
+  const timeRemainingElement = document.getElementById("time-remaining");
+
+  if (!timePlayedElement || !timeRemainingElement || !progressBar || !progressDot) {
+    console.error("Error: Missing elements");
     return;
   }
 
   totalDurationSeconds = curatedTracklistTotalTimeInSecs;
   const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
-  const { minutes, seconds } = calculateMinutesAndSeconds(remainingDurationSeconds);
-  updateTimeDisplay(minutes, seconds);
-}
-function handleTimerCompletion() {
-  currentTimeElement = document.getElementById("current-time");
 
-  if (!currentTimeElement) {
-    // Handle the case where the "current-time" element is missing
-    console.error("Error: Missing element 'current-time'");
+  // Calculate the percentage of the track that's been played
+  const playedPercentage = ((elapsedSeconds + previousDuration) / totalDurationSeconds) * 100;
+
+  // Update the progress bar and dot
+  progressBar.style.width = `${playedPercentage}%`;
+  progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
+
+  // Update the time labels
+  const playedTime = calculateMinutesAndSeconds(elapsedSeconds + previousDuration);
+  const remainingTime = calculateMinutesAndSeconds(remainingDurationSeconds);
+
+  timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+  timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
+}
+
+function handleTimerCompletion() {
+  const timeRemainingElement = document.getElementById("time-remaining");
+
+  if (!timeRemainingElement) {
+    console.error("Error: Missing element 'time-remaining'");
     return; // Exit the function to prevent further errors
   }
 
-  currentTimeElement.innerHTML = "Done";
+  timeRemainingElement.innerHTML = "Done";
 }
 
 function calculateMinutesAndSeconds(seconds) {
@@ -173,17 +173,6 @@ function calculateMinutesAndSeconds(seconds) {
     useGrouping: false,
   });
   return { minutes, seconds: remainingSeconds };
-}
-
-function updateTimeDisplay(minutes, seconds) {
-  currentTimeElement = document.getElementById("current-time");
-
-  if (!currentTimeElement) {
-    console.error("Error: Missing element 'current-time'");
-    return; // Exit the function to prevent further errors
-  }
-
-  currentTimeElement.innerHTML = `${minutes}:${seconds}`;
 }
 
 function calculateRemainingTime(elapsedSeconds) {
@@ -1811,10 +1800,8 @@ function checkPlaylistRules(playlist) {
   }
 }
 
-
 let firstPlay = true;
 function handlePlayPauseClick() {
-
   const playingSVG = `<svg
     id="play-icon"
     class="svg-icon"
@@ -1831,8 +1818,8 @@ function handlePlayPauseClick() {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round" />
-  </svg>`; // 
-    const pausedSVG = `<svg
+  </svg>`; //
+  const pausedSVG = `<svg
     id="play-icon"
     class="svg-icon"
     role="img"
@@ -1841,18 +1828,17 @@ function handlePlayPauseClick() {
     focusable="false"
     xmlns="http://www.w3.org/2000/svg">
     <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
-  </svg>`; 
+  </svg>`;
 
-  let playingText = 'PLAY';
-  let pausedText = 'PAUSE';
-
+  let playingText = "PLAY";
+  let pausedText = "PAUSE";
 
   if (firstPlay === true) {
     svgContainer.innerHTML = pausedSVG; // Update the SVG.
-      textContainer.textContent = pausedText; // Update the text.
-      playButton.classList.add('playing')
+    textContainer.textContent = pausedText; // Update the text.
+    playButton.classList.add("playing");
     // generate the playlist
-    displayLoadingGifAndGeneratePlayer();  
+    displayLoadingGifAndGeneratePlayer();
     if (audioContext == null) {
       // for browser compatibility, redefine AudioContext
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1889,33 +1875,24 @@ function handlePlayPauseClick() {
     firstPlay = false;
   } else {
     // regular play/pause functionality
-    if (playButton.classList.contains('playing')) {
+    if (playButton.classList.contains("playing")) {
       console.log("I'm playing, gonna pause");
-      svgContainer.innerHTML = playingSVG; 
+      svgContainer.innerHTML = playingSVG;
       textContainer.textContent = playingText;
-      playButton.classList.remove('playing');
-      playButton.classList.add('paused');
+      playButton.classList.remove("playing");
+      playButton.classList.add("paused");
       player.pause();
       playerPlayState = "pause";
       audioContext.suspend();
     } else {
       console.log("I'm paused, gonna play");
-      svgContainer.innerHTML = pausedSVG; 
-      textContainer.textContent = pausedText; 
-      playButton.classList.remove('paused');
-      playButton.classList.add('playing');
+      svgContainer.innerHTML = pausedSVG;
+      textContainer.textContent = pausedText;
+      playButton.classList.remove("paused");
+      playButton.classList.add("playing");
       player.play();
       playerPlayState = "play";
       audioContext.resume();
     }
   }
-
 }
-
-
-
-
-
-
-
-

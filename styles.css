@@ -265,7 +265,7 @@ p {
 #curiousEarsTxt {
   text-align: center;
   font-family: 'Zilla Slab', serif;
-  font-size: 10rem;
+  font-size: 10vw;
 }
 
 @media screen and (min-width: 900px) {
@@ -307,6 +307,16 @@ a:hover {
 /***********************/
 /******  BUTTONS  ******/
 /***********************/
+
+.btn {
+  background-color: #214e42;
+  color: #bfffc2;
+  outline: none;
+  border: none;
+  padding: 10px;
+  width: 10rem;
+  border-radius: 6px;
+}
 
 #langToggle {
   /* display: inline-block; */
@@ -416,9 +426,24 @@ main {
     align-items: center;
 }
 
+#playerPage {
+  width: 100vw;
+  height: 200vh;
+  padding: 0;
+  margin: 0;
+  /* display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  align-items: center;
+  top: 20rem; */
+  /* align-items: flex-start; */
+}
+
 @media screen and (min-width: 900px) {
   #playerPage {
-    width: 100vw;;
+    width: 100vw;
+    /* height: 200vh; */
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -429,17 +454,18 @@ main {
   }
 }
 
-##button-container {
-  display: flex; /* Aligns buttons in a row */
-  justify-content: center; /* Centers buttons in the container */
-  align-items: center; /* Aligns buttons vertically */
+#button-container {
+  display: flex;
+  justify-content: space-between; /* Pushes buttons to the edges */
+  align-items: center;
+  width: 100%; /* Ensure the container spans the full width */
 }
 
 .skip-button {
   border: none;
   background: none;
   position: relative;
-  margin: 0 10px; /* Adjust spacing between buttons */
+  margin: 0 5vw; /* Adjusts space from the edges on mobile */
 }
 
 .skip-button span {
@@ -458,17 +484,25 @@ main {
 }
 
 @media screen and (min-width: 900px) {
+  #button-container {
+    justify-content: center; /* Brings buttons closer together on desktop */
+  }
+  
+  .skip-button {
+    margin: 0 2vw; /* Reduces space from the edges on desktop */
+  }
+
   .skip-button span {
     width: 10vw; /* Larger width for desktop */
-    padding-top: calc((60 / 50) * 10vw); /* Adjusted aspect ratio for desktop */
+    padding-top: calc(1.2 * 10vw); /* Adjusted aspect ratio for desktop */
   }
 }
-
 
 
 #play-button {
   position: relative; /* Enables absolute positioning for child elements */
   background: transparent;
+  border:none;
 }
 
 #play-button-svg-container {
@@ -504,5 +538,132 @@ main {
 
   #play-button-text-container {
     font-size: 1.8vw; /* Adjusted for larger button size on desktop */
+  }
+}
+
+/* PROGRESS BAR  */
+
+#progress-container {
+  position: relative;
+  width: 90%; /* Reduced from 100% to 90% */
+  height: 2px;
+  background-color: grey; /* Unplayed part is now grey */
+  margin: 0 auto; /* Center the progress bar */
+}
+
+#progress-bar {
+  position: absolute;
+  width: 0; /* Initial width */
+  height: 100%;
+  background-color: black; /* Played part is now black */
+}
+
+#progress-dot {
+  position: absolute;
+  top: -3px; /* Half the dot's size above the bar to center it */
+  left: 0;
+  width: 8px; /* Width of the dot */
+  height: 8px; /* Height of the dot */
+  background-color: black; /* Color of the dot */
+  border-radius: 50%; /* Make it round */
+}
+
+.time-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 90%; /* Match the progress bar width */
+  margin: 5px auto 0; /* Align with the progress bar and add some space */
+  font-size: 1rem;
+}
+
+.time-label {
+  color: black; /* Or any color you prefer */
+}
+
+@media screen and (min-width: 900px) {
+  #progress-container {
+    position: relative;
+    width: 70%; /* Reduced from 100% to 90% */
+    height: 2px;
+    background-color: grey; /* Unplayed part is now grey */
+    margin: 0 auto; /* Center the progress bar */
+  }
+
+  .time-labels {
+    /* position: absolute; */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80%;
+    margin: 0;
+    justify-content: space-between;
+    padding: 20px; /* Add padding to ensure labels don't overlap the progress bar ends */
+  }
+
+  #time-played {
+    left: 0;
+  }
+
+  #time-remaining {
+    right: 0;
+  }
+}
+
+/* VOLUME SLIDER  */
+
+#volume-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Full width to center the child elements */
+  padding: 10px 0; /* Some padding around the slider */
+}
+
+.volume-icon {
+  display: flex; /* Center the SVG icon */
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px; /* Space between the icons and the slider */
+}
+
+#volume-slider {
+  -webkit-appearance: none; /* Override default look */
+  width: 30vw; /* Width for mobile */
+  height: 3px;
+  background: grey;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px; /* Size of the handle */
+  height: 15px;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 900px) {
+  #volume-slider {
+    width: 40vw; /* Width for desktop */
+  }
+
+  #volume-container {
+    /* justify-content: start; Align to the start of the container */
+  }
+
+  .volume-icon {
+    margin: 0 10px; /* Adjust space as needed */
   }
 }
