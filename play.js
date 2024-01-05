@@ -3,13 +3,12 @@
 var myLang = localStorage["lang"] || "defaultValue";
 var player;
 var audioContext = null;
-var volumeNode = null;
+var volumeNode;
 let playerPlayState = "play";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
 let curatedTracklistTotalTimeInSecs = 0;
 let curatedTracklistTotalTimeInMins;
-
 let curatedTracklist;
 let timerDuration = 0;
 
@@ -37,29 +36,40 @@ const trackNameContainer = document.getElementById("playerTrackNameContainer");
 
 function createVolumeSlider() {
   const volumeSlider = document.getElementById("volume-slider");
-  volumeSlider.type = "range";
-  volumeSlider.id = "volume-slider";
-  volumeSlider.max = "100";
-  volumeSlider.min = "0";
-  volumeSlider.value = "100";
+  if (volumeSlider) { // Check if the element exists
+    volumeSlider.type = "range";
+    volumeSlider.max = "100";
+    volumeSlider.min = "0";
+    volumeSlider.value = "75"; // Set this to your preferred starting value, e.g., 75 for 75%
+  }
   return volumeSlider;
 }
 const volumeSlider = createVolumeSlider();
-
 function createAudioElement(id) {
   const audio = document.createElement("audio");
   audio.id = id;
   return audio;
 }
 
-function change_vol(event) {
-  volumeNode.gain.value = parseFloat(event.target.value);
+function handleVolumeChange(event) {
+  if (volumeNode !== undefined) {
+    const newVolume = parseFloat(event.target.value) / 100;
+    volumeNode.gain.value = newVolume;
+  }   
+}
+
+if (volumeSlider) {
+  volumeSlider.addEventListener('change', handleVolumeChange);
+
+  // Initialize the volume to the slider's starting value when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    handleVolumeChange({ target: { value: volumeSlider.value } });
+  });
 }
 
 let isUpdatingTime = false; // Flag to prevent rapid updates
 
 function handleSkipForwardClick() {
-  // if (playerPlayState === "play") {
   let newPlayerTime = player.currentTime + 20;
   newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
   if (!isUpdatingTime) {
@@ -69,11 +79,9 @@ function handleSkipForwardClick() {
       isUpdatingTime = false;
     }, 20); // Adjust the delay as needed (100 milliseconds in this case)
   }
-  // }
 }
 
 function handleSkipBackwardClick() {
-  // if (playerPlayState === "play") {
   let newPlayerTime = player.currentTime - 20;
   newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
   if (!isUpdatingTime) {
@@ -83,34 +91,6 @@ function handleSkipBackwardClick() {
       isUpdatingTime = false;
     }, 20); // Adjust the delay as needed (100 milliseconds in this case)
   }
-  // }
-}
-
-function handleVolumeChange(event) {
-  const newVolume = parseFloat(event.target.value) / 100;
-  volumeNode.gain.value = newVolume;
-  console.log("rrr Volume changed to: " + newVolume);
-}
-
-function handleExitClick() {
-  // Suspend audio context and clear the timer interval
-  audioContext.suspend();
-  // Remove player elements and exit button
-  document.getElementById("wrapper").remove();
-  document.getElementById("exitBtn").remove();
-
-  // Add a "Begin Again" button with its click handler
-  const beginAgainBtn = document.createElement("button");
-  beginAgainBtn.innerHTML = "Begin again";
-  beginAgainBtn.name = "beginAgainBtn";
-  beginAgainBtn.classList.add("beginAgainBtn");
-
-  beginAgainBtn.addEventListener("click", (event) => {
-    // Redirect to a new page (replace with your desired URL)
-    window.location.href = "monahan.html";
-  });
-
-  console.log("rrr Exited the player and added 'Begin Again' button");
 }
 
 // const trackNameElement = createTrackNameElement();
@@ -162,7 +142,6 @@ function handleTimerCompletion() {
     console.error("Error: Missing element 'time-remaining'");
     return; // Exit the function to prevent further errors
   }
-
   timeRemainingElement.innerHTML = "Done";
 }
 
@@ -191,10 +170,10 @@ function createTimerLoopAndUpdateProgressTimer() {
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXXX LOADING GIF  XXXXXXXXXX
+//  XXXXXXXXX generate player  XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-function displayLoadingGifAndGeneratePlayer() {}
+function generatePlayer() {}
 
 // Function to create an audio element
 function createAudioElement(url) {
@@ -214,12 +193,6 @@ function removeAnElementByID(elementId) {
   if (element) {
     element.remove();
   }
-}
-
-function createALoaderDiv() {
-  const loaderDiv = document.createElement("div");
-  loaderDiv.classList.add("loader");
-  return loaderDiv;
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -377,155 +350,117 @@ function gatherTheCreditSongs(curatedTracklist) {
   return arrayOfCreditSongs;
 }
 
-//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  ~~~~~~ transcript CREATION ~~~~~~~
-//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-let transcript = ""; // Global variable to store the transcript
-let language = "english"; // Global variable to set the language with English as the default
-let transcriptVisible = false; // Flag to track if transcript is visible
+//////////////////////////////////////
+////////// TRANSCRIPT STUFF //////////
+/////////////////////////////////////
+
+// Global variables
+let transcript = ""; // Store the transcript
+let language = "english"; // Default language
+let transcriptVisible = false; // Track visibility of transcript
 let transcriptContent; // Define transcriptContent as a global variable
+const transcriptContainer = document.getElementById("transcriptContainer"); // Moved to global scope
 
-// Function to create the transcript container
+// Helper function to create elements with attributes
+function createElement(type, attributes) {
+  const element = document.createElement(type);
+  Object.keys(attributes).forEach(attr => element[attr] = attributes[attr]);
+  return element;
+}
+
+// Function to create the transcript container and button
 function createTranscriptContainer() {
-  const transcriptContainer = document.getElementById("transcriptContainer");
+  if (!transcriptContainer) {
+    console.error("Transcript container not found.");
+    return;
+  }
+  const transcriptButton = createElement("button", {
+    type: "button",
+    className: "btn",
+    id: "transcriptButton",
+    textContent: "TRANSCRIPT"
+  });
 
-  // Create the transcript button element
-  const transcriptButton = document.createElement("button");
-  transcriptButton.type = "button";
-  transcriptButton.className = "btn";
-  transcriptButton.id = "transcriptButton";
-  transcriptButton.textContent = "TRANSCRIPT";
-  let volCont = document.getElementById('transButtonContainer');
-  volCont.appendChild(transcriptButton);
-
-
+  const transBtnContainer = document.getElementById('transButtonContainer');
+  transBtnContainer.appendChild(transcriptButton);
   transcriptButton.addEventListener("click", toggleTranscript);
-  const transcriptContent = document.createElement("div");
-  transcriptContent.id = "transcriptContent";
-  transcriptContent.style.display = "block"; // Make it initially visible
+  // Initialize transcriptContent here to avoid re-declaration later
+  transcriptContent = createElement("div", { id: "transcriptContent", style: "display: none" });
+  transcriptContainer.appendChild(transcriptContent); // Append to the container
+}
+
+// Function to apply formatting to text
+function formatText(text) {
+  const formatPatterns = {
+    bold: /\^([^]+?)\^\^/g,
+    center: /@([^]+?)@@/g,
+    italics: /\$([^]+?)\$\$/g,
+    lineBreak: /%/g,
+    doubleLineBreak: /\*/g
+  };
+
+  return text.replace(formatPatterns.bold, '<span style="font-weight: bold;">$1</span>')
+             .replace(formatPatterns.center, '<span style="display: block; text-align: center;">$1</span>')
+             .replace(formatPatterns.italics, '<span style="font-style: italic;">$1</span>')
+             .replace(formatPatterns.lineBreak, "</br>")
+             .replace(formatPatterns.doubleLineBreak, "<p></br></br></p>");
 }
 
 function createHTMLFromText(text) {
-  const container = document.createElement("div");
-  let currentParagraph = document.createElement("p");
-  currentParagraph.style.marginTop = "3rem";
-  currentParagraph.style.marginBottom = "4rem";
-  currentParagraph.style.padding = "1rem";
-
-  currentParagraph.style.backgroundColor = "#f0ebf8";
-  currentParagraph.style.marginLeft = "0";
-  currentParagraph.style.marginRight = "0";
-
-  // Define regex patterns for all formatting rules
-  const boldTextPattern = /\^([^]+?)\^\^/g;
-  const centerTextPattern = /@([^]+?)@@/g;
-  const italicsTextPattern = /\$([^]+?)\$\$/g;
-
-  const lineBreakPattern = /%/g;
-  const doubleLineBreakPattern = /\*/g;
+  const container = createElement("div", {});
+  const currentParagraph = createElement("p", {
+    style: "margin-top: 3rem; margin-bottom: 4rem; padding: 1rem; background-color: #f0ebf8; margin-left: 0; margin-right: 0;"
+  });
 
   try {
-    // Replace bold text using regex
-    text = text.replace(boldTextPattern, '<span style="font-weight: bold;">$1</span>');
-
-    // Replace centered text using regex
-    text = text.replace(centerTextPattern, '<span style="display: block; text-align: center;">$1</span>');
-
-    // Replace italicized text using regex
-    text = text.replace(italicsTextPattern, '<span style="font-style: italic;">$1</span>');
-
-    // Replace line breaks using regex
-    text = text.replace(lineBreakPattern, "</br>");
-
-    // Replace double line breaks using regex
-    text = text.replace(doubleLineBreakPattern, "<p></br></br></p>");
-
-    // Set the HTML content of the current paragraph
-    currentParagraph.innerHTML = text;
-
-    // Append the paragraph to the container
+    currentParagraph.innerHTML = formatText(text); // Refactored to formatText function
     container.appendChild(currentParagraph);
   } catch (error) {
-    console.error("nnn Error while processing input text:", error);
+    console.error("Error while processing input text:", error);
   }
-
-  // Log the generated HTML for debugging
-  console.log("nnn Generated HTML:", container.innerHTML);
 
   return container;
 }
 
 // Function to update the transcript based on the selected language
 function updateTranscript() {
-  console.log("qqq updateTranscript function called");
-
-  const transcriptContainer = document.getElementById("transcriptContainer");
-
   if (!transcriptContainer) {
-    console.error("qqq transcriptContentDiv not found.");
+    console.error("Transcript container not found.");
     return;
   }
-  transcript = ""; // Reset the transcript
-  for (let index = 0; index < curatedTracklist.length; index++) {
-    const song = curatedTracklist[index];
 
-    let inputString;
-    if (language === "english") {
-      inputString = song.engTrans;
-    } else {
-      inputString = song.frTrans;
-    }
+  transcriptContainer.innerHTML = ""; // Clear previous content
 
+  const langKey = language === "english" ? "engTrans" : "frTrans";
+  const copyRightText = language === "english"
+    ? "$All recordings and transcripts are copyright protected. All rights reserved.$$"
+    : "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
+
+  curatedTracklist.forEach(song => {
+    const inputString = song[langKey];
     if (inputString && inputString.trim() !== "") {
-      const htmlContainer = createHTMLFromText(inputString);
-      transcriptContainer.appendChild(htmlContainer);
-      transcriptContainer.style.display = "block"; // Make it initially visible
+      transcriptContainer.appendChild(createHTMLFromText(inputString));
     }
-  }
+  });
 
-  if (language === "english") {
-    copyRight = "$All recordings and transcripts are copyright protected. All rights reserved.$$";
-  } else {
-    copyRight = "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
-  }
-
-  const htmlContainer = createHTMLFromText(copyRight);
-  transcriptContainer.appendChild(htmlContainer);
+  transcriptContainer.appendChild(createHTMLFromText(copyRightText));
+  transcriptContainer.style.display = "block";
 }
-
-// Function to get the transcript button
-// function createTranscriptButton(container) {
-  
-// }
-
-// Function to create the transcript content element
-// function createTranscriptContent(container) {
-//   const transcriptContent = document.createElement("div");
-//   transcriptContent.id = "transcriptContent";
-//   transcriptContent.style.display = "block"; // Make it initially visible
-
-//   container.appendChild(transcriptContent);
-// }
 
 // Function to toggle the transcript visibility
 function toggleTranscript() {
-  const transcriptContent = document.getElementById("transcriptContent");
   const transcriptButton = document.getElementById("transcriptButton");
 
+  transcriptVisible = !transcriptVisible; // Toggle the flag first for more predictable logic
   if (transcriptVisible) {
-    transcriptContent.style.display = "none";
-    transcriptButton.textContent = "Show Transcript";
+    updateTranscript(); // Update before showing
+    transcriptContainer.style.display = "block";
+    transcriptButton.textContent = "Hide Transcript";
   } else {
-    updateTranscript();
-    transcriptContent.textContent = transcript;
-    // transcriptButton.textContent = "Hide Transcript";
-    transcriptContent.style.display = "block";
+    transcriptContainer.style.display = "none";
+    transcriptButton.textContent = "Show Transcript";
   }
-  transcriptVisible = !transcriptVisible; // Toggle the flag
 }
-
-// Call the function to create the transcript container
-// createTranscriptContainer();
 
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1800,7 +1735,8 @@ function checkPlaylistRules(playlist) {
 }
 
 let firstPlay = true;
-function handlePlayPauseClick() {
+var playButtonTextContainer = document.getElementById('play-button-text-container');
+
   const playingSVG = `<svg
     id="play-icon"
     class="svg-icon"
@@ -1829,80 +1765,74 @@ function handlePlayPauseClick() {
     <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
   </svg>`;
 
-  let playingText = "PLAY";
-  let pausedText = "PAUSE";
+ // Text Constants
+const playingText = "PLAY";
+const pausedText = "PAUSE";
 
-  if (firstPlay === true) {
-    svgContainer.innerHTML = pausedSVG; // Update the SVG.
-    if(playButtonTextContainer) {
-      playButtonTextContainer.style.left = '50%';
-      console.log("yoooooooo");
-    }
-    textContainer.textContent = pausedText; // Update the text.
-    playButton.classList.add("playing");
-    // generate the playlist
-    displayLoadingGifAndGeneratePlayer();
-    if (audioContext == null) {
-      // for browser compatibility, redefine AudioContext
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioContext = new AudioContext();
-      volumeNode = audioContext.createGain();
-      volumeNode.connect(audioContext.destination);
-    }
+function toggleButtonVisuals(isPlaying) {
+  // Set the left position of the button text container
+  playButtonTextContainer.style.left = isPlaying ? '50%' : '35%';
+  // Set the inner HTML of the SVG container based on whether it's playing or paused
+  svgContainer.innerHTML = isPlaying ? pausedSVG : playingSVG;
+  // Set the text content of the text container based on whether it's playing or paused
+  textContainer.textContent = isPlaying ? 'PAUSE' : 'PLAY';
+  // Toggle the playButton class to "playing" or "paused" based on the isPlaying state
+  playButton.classList.toggle("playing", isPlaying);
+  playButton.classList.toggle("paused", !isPlaying);
+}
 
-    const allSongs = [...songs]; // first we copy the array of songs
-    // const checkValidityOfURLS = isValidTracklist(allSongs); //
+function prepareAudioContext() {
+  if (audioContext == null) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioContext();
+    volumeNode = audioContext.createGain();
+    volumeNode.connect(audioContext.destination);
+  }
+}
 
-    const shuffledSongs = shuffleTracklist(allSongs); // next we shuffle it
+function prepareAndQueueTracks() {
+  const allSongs = [...songs];
+  const shuffledSongs = shuffleTracklist(allSongs);
+  curatedTracklist = followTracklistRules(shuffledSongs);
+  checkPlaylistRules(curatedTracklist);
 
-    curatedTracklist = followTracklistRules(shuffledSongs); // next we apply the rules and get our new curated tracklist
+  addOutrosAndCreditsToTracklist();
+  createTranscriptContainer();
+  printEntireTracklistDebug(curatedTracklist);
 
-    checkPlaylistRules(curatedTracklist);
+  window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+  createTimerLoopAndUpdateProgressTimer();
+}
 
-    const outro1 = outroAudioSounds.map(addAudioFromUrl);
-    curatedTracklist.push(...outro1);
+function addOutrosAndCreditsToTracklist() {
+  curatedTracklist.push(...outroAudioSounds.map(addAudioFromUrl));
+  curatedTracklist.push(...gatherTheCreditSongs(curatedTracklist));
+  curatedTracklist.push(...finalOutroAudioSounds.map(addAudioFromUrl));
+}
 
-    let creditsTracklist = gatherTheCreditSongs(curatedTracklist);
-
-    curatedTracklist.push(...creditsTracklist);
-
-    const outro2 = finalOutroAudioSounds.map(addAudioFromUrl);
-    curatedTracklist.push(...outro2);
-    createTranscriptContainer();
-
-    printEntireTracklistDebug(curatedTracklist);
-
-    console.log("Queueing next track with the following values:");
-    window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-    createTimerLoopAndUpdateProgressTimer();
-    firstPlay = false;
+function handlePlayPauseClick() {
+  if (firstPlay) {
+    // Handle the first play
+    console.log("First play");
+    toggleButtonVisuals(true); // Assume playing state on first play
+    generatePlayer();
+    prepareAudioContext();
+    prepareAndQueueTracks();
+    player.play();
+    playerPlayState = "play";
+    audioContext.resume();
+    firstPlay = false; // Set firstPlay to false after handling the first play
   } else {
-    var playButtonTextContainer = document.getElementById('play-button-text-container');
-
-    // regular play/pause functionality
+    // Handle subsequent toggles between play and pause
     if (playButton.classList.contains("playing")) {
-      console.log("I'm playing, gonna pause");
-      if(playButtonTextContainer) {
-        playButtonTextContainer.style.left = '35%';
-        console.log("yoooooooo");
-      }
-      svgContainer.innerHTML = playingSVG;
-      textContainer.textContent = playingText;
-      playButton.classList.remove("playing");
-      playButton.classList.add("paused");
+      console.log("Pausing");
+      toggleButtonVisuals(false); // Update visuals to reflect pause state
       player.pause();
       playerPlayState = "pause";
       audioContext.suspend();
     } else {
-      console.log("I'm paused, gonna play");
-      if(playButtonTextContainer) {
-        playButtonTextContainer.style.left = '50%';
-        console.log("yoooooooo");
-      }
-      svgContainer.innerHTML = pausedSVG;
-      textContainer.textContent = pausedText;
-      playButton.classList.remove("paused");
-      playButton.classList.add("playing");
+      console.log("Playing");
+      toggleButtonVisuals(true); // Update visuals to reflect play state
       player.play();
       playerPlayState = "play";
       audioContext.resume();
