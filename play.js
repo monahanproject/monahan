@@ -1050,7 +1050,9 @@ function followTracklistRules(tracklist) {
     // Loop through the tracklist until a track passes the specific rule or all tracks are exhausted
     while (!ruleMet && currIndex < tracklist.length) {
       const track = tracklist[currIndex];
-      console.log(`🤞🤞🤞 Trying ${track.name} for ${ruleJustForLogging}. Tracklist length is ${tracklist.length}`);
+      console.log(`MY TRACK IS ${track.name}`);
+      console.log(`MY RULE IS ${ruleJustForLogging}`);
+      console.log(`🤞🤞🤞 Trying ${track.name} against ${ruleJustForLogging}`);
 
       // Apply the specific rule to the current track
       const isSpecificRuleApplied = ruleFunction(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex);
@@ -1061,9 +1063,8 @@ function followTracklistRules(tracklist) {
       // Check if the specific rule is met
       if (!isSpecificRuleApplied) {
         // Move to the next track in the tracklist
-        console.log(`${ruleJustForLogging} WAS NOT MET, ITERATING INDEX - AM I STARTING AGAIN?`);
-
         currIndex++;
+        console.log(`INCREMENTING INDEX, ABOUT TO "SKIP THE REST OF THE LOOP`);
         continue; // Skip the rest of the loop and move to the next iteration
       }
 
@@ -1159,7 +1160,11 @@ function followTracklistRules(tracklist) {
 
   // Ensure a single track against all ensure rules
   function ensureTrack(track, currIndex, ensureRules) {
+
     for (const rule of ensureRules) {
+      // find me: I have no idea, am I even testing tracks here? where do they actually pass and get added????
+      console.log(`🤞🤞🤞🤞🤞 Trying ${track.name} against ${rule}`);
+
       const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
 
       while (!isEnsureRuleEnforced(ruleNumber)) {
@@ -1610,7 +1615,7 @@ function checkPlaylistRules(playlist) {
 
     // CHECK R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
     if (prevTrack && (track.backgroundMusic === prevTrack.author || track.author === prevTrack.backgroundMusic)) {
-      console.log(`❌❌❌ R14 violated! (${track.name}): Author matches backgroundMusic. does not meet the criteria of ${r14rule}`);
+      console.log(`❌❌❌ R14 violated! (${track.name}): Author (${track.author}) matches backgroundMusic. does not meet the criteria of ${r14rule}`);
     }
 
     // CHECK R15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
