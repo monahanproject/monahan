@@ -12,7 +12,7 @@ let curatedTracklistTotalTimeInMins;
 let curatedTracklist;
 let timerDuration = 0;
 
-const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 3140; //(19m)
 
 var totalDurationSeconds = 1140; //(19m)
 let currentTimeElement; // Element to display current time
@@ -241,7 +241,7 @@ const addAudioFromUrl = (song) => {
 const outroAudioSounds = [
   {
     name: "OUTRO2PT1SOLO",
-    url: "./sounds/XX_OUTRO/OUTRO_2.1.mp3",
+    url: "./sounds/INTRO_OUTRO_NAMES/OUTRO_2.1.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -260,7 +260,7 @@ const outroAudioSounds = [
 const finalOutroAudioSounds = [
   {
     name: "OUTRO2PT2withMUSIC",
-    url: "./sounds/XX_OUTRO/OUTRO_2.2_MUSIC.mp3",
+    url: "./sounds/INTRO_OUTRO_NAMES/OUTRO_2.2_MUSIC.mp3",
     duration: 6,
     author: "",
     form: "",
@@ -475,6 +475,33 @@ function toggleTranscript() {
 //  XXXXXXXX ✉️ GENERAL RULES XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+let r10rule = "The current track must have a different author than the last track";
+let r11rule = "No more than two tracks from the same author in a tracklist";
+let r12rule = "Tracks with the form short and the language musical can never follow tracks with the form music";
+let r13rule = "Tracks with the form music can never follow tracks with both the form short and the language musical";
+let r14rule = "The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it";
+let r15rule = "If the previous track has the sentiment heavy, this track cannot have the the laughter tag";
+let r16rule = "If the previous track has length long and form music, this track must have the form interview";
+
+let r60rule = "The 0th track must have the placement end (we'll be moving this to the end)";
+let r61rule = "The 1st track must have the tag 'intro'";
+let r62rule = "The 2nd track must have the placement 'beginning'";
+let r63rule = "The 3rd track must have the placement beginning and a different form than the 2nd track";
+let r64rule = "The 4th track must have the placement middle and a different form than the 3rd track";
+let r65rule = "The 5th track must have the length 'short'; must have the placement 'middle'; and have a different language than the 4th track";
+let r66rule = "The 6th track must have the placement 'middle' and a different form than the 5th track";
+let r67rule = "The 7th track must have the placement 'middle' and a different form than the 6th track";
+let r68rule = "The 8th track must have the placement 'middle', a different form than previous track";
+
+let r21rule = "The tracklist must contain at least one track with the author ALBERT";
+let r22rule = "The tracklist must contain at least one track with the author PIERREELLIOTT";
+let r23rule = "The tracklist must contain at least one track with the form interview";
+let r24rule = "The tracklist must contain at least one track with the form music";
+
+let r25rule = "The tracklist must contain at least one track with the tag 'geese'";
+
+
+
 // R10: The current track must have a different author than the last track
 function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   const trackName = track.name;
@@ -490,13 +517,14 @@ function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 // R11: No more than two tracks from the same author in a tracklist
 function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   const trackName = track.name;
-  const ruleType = `✉️ General rule:`; // Count the number of tracks by the same author
-  const authorCount = curatedTracklist
-    .filter((t) => t.author.trim() !== "") // Filter out tracks with no author
-    .filter((t) => t.author === track.author).length;
+  const ruleType = `✉️ General rule:`; 
 
-  if (authorCount >= 2) {
-    // If there are already 2 or more tracks from the same author, log a rule violation
+  // Adjust the count based on whether the track is being added for the first time
+  const isNewAddition = !curatedTracklist.some(t => t.name === track.name);
+  const authorCount = curatedTracklist.filter(t => t.author.trim() === track.author.trim()).length + (isNewAddition ? 1 : 0);
+
+  // If there are already 2 or more tracks from the same author before this track, log a rule violation
+  if (authorCount > 2) {
     const violatingTracks = curatedTracklist
       .filter((t) => t.author === track.author)
       .map((t) => t.name)
@@ -510,6 +538,8 @@ function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(11, logMessage, true, ruleType);
   return true;
 }
+
+
 
 // R12: Tracks with the form short and the language musical can never follow tracks with the form music.
 function r12(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
@@ -563,7 +593,7 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   const trackName = track.name;
   const ruleType = `✉️ General rule:`;
   const logMessage = `If the previous track has the sentiment heavy (previous track's sentiment is ${prevTrack1.sentiment}), this track cannot have the laughter tag (track's tags are ${track.tags})`;
-  if (track.tags.includes("laughter") && track && prevTrack1.sentiment === "" && prevTrack1.sentiment === "heavy") {
+  if (track.tags.includes("laughter") && prevTrack1.sentiment === "heavy") {
     logRuleApplication(15, logMessage, false, ruleType);
     return false;
   }
@@ -704,7 +734,7 @@ function r67(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   const ruleType = `📙 Base track rule:`;
   const logMessage = `${track.name} The track's index is ${trackIndex}. The 7th track must have the placement MIDDLE (track's placement is ${track.placement}) and has a different form (track's form is ${track.form}) vs the 6th track (the 6th track's form is ${prevTrack1.form}); AND unless the form of the 7th track is MUSIC (the 7th track's form is ${track.form}), the 7th track also has a different language (the 7th track's language is ${track.language}) from the 6th track (the 6th track's language is ${prevTrack1.language})`;
 
-  if (trackIndex === 7 && !track.placement.includes("middle")) {
+  if (trackIndex === 7 && (!track.placement.includes("middle") || (track.form === prevTrack1.form && track.form !== "music"))) {
     logRuleApplication(67, logMessage, false, ruleType);
     return false;
   }
@@ -722,7 +752,7 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   const ruleType = `📙 Base track rule:`;
   const logMessage = `${track.name} The track's index is ${trackIndex}. The 8th track must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) vs the 7th track (the 7th track's form is ${prevTrack1.form}) or 6th track (the 6th track's form is ${prevTrack2.form}); and has a different language (track's language is ${track.language}) vs the 7th track (the 7th track's language is ${prevTrack1.language}) or the 6th track (the 6th track's language is ${prevTrack2.language})`;
 
-  if (trackIndex === 8 && !track.placement.includes("middle")) {
+  if (trackIndex === 8 && (!track.placement.includes("middle") || (track.form === prevTrack1.form && track.form !== "music"))) {
     logRuleApplication(68, logMessage, false, ruleType);
     return false;
   }
@@ -733,74 +763,6 @@ function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   logRuleApplication(68, logMessage, true, ruleType);
   return true;
 }
-
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXX 👀 ENSURE CHECKS (NEAR THE END) XXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-// Rule C21 The tracklist must contain at least one track with the author ALBERT
-// function c21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-//   const trackName = track.name;
-//   const ruleType = `👀 Ensure rule:`;
-
-//   let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "author", "ALBERT");
-//   if (!trackWithAttribute) {
-//     const logMessage = `The tracklist must contain at least one track with the author ALBERT `;
-//     logRuleApplication(21, logMessage, false, ruleType);
-//     return false;
-//   }
-//   const logMessage = `The tracklist must contain at least one track with the author ALBERT (trackWithAttribute is ${trackWithAttribute.name}, author is ${trackWithAttribute.author})`;
-//   logRuleApplication(21, logMessage, true, ruleType);
-//   return true;
-// }
-
-// Rule C22 The tracklist must contain at least one track with the author PIERREELLIOTT
-// function c22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-//   const trackName = track.name;
-//   const ruleType = `👀 Ensure rule:`;
-//   const logMessage = `✨ Ensure track rule: The tracklist must contain at least one track with the author PIERREELLIOTT (trackWithAttribute is ${trackWithAttribute.name}, author is ${trackWithAttribute.author})`;
-
-//   let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "author", "PIERREELLIOTT");
-//   if (!trackWithAttribute) {
-//     logRuleApplication(22, logMessage, false, ruleType);
-//     return false;
-//   }
-//   logRuleApplication(22, logMessage, true, ruleType);
-//   return true;
-// }
-
-// Rule C23 The tracklist must contain at least one track with the form interview
-// function c23(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-//   const trackName = track.name;
-//   const ruleType = `👀 Ensure rule:`;
-
-//   let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "form", "interview");
-//   if (!trackWithAttribute) {
-//     const logMessage = `Ensure track rule: The tracklist must contain at least one track with the form interview`;
-//     logRuleApplication(23, logMessage, false, ruleType);
-//     return false;
-//   }
-//   const logMessage = `✨ Ensure track rule: The tracklist must contain at least one track with the form interview (trackWithAttribute is ${trackWithAttribute.name}, form is ${trackWithAttribute.form})`;
-//   logRuleApplication(23, logMessage, true, ruleType);
-//   return true;
-// }
-
-// Rule C24 The tracklist must contain at least one track with the form music
-// function c24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-//   const trackName = track.name;
-//   const ruleType = `👀 Ensure rule:`;
-
-//   let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "form", "music");
-
-//   if (!trackWithAttribute) {
-//     const logMessage = `Ensure track rule: The tracklist must contain at least one track with the form music`;
-//     logRuleApplication(24, logMessage, false, ruleType);
-//     return false;
-//   }
-//   const logMessage = ` ✨! Ensure track rule: The tracklist must contain at least one track with the form music (trackWithAttribute is ${trackWithAttribute.name}, form is ${trackWithAttribute.form})`;
-//   logRuleApplication(24, logMessage, true, ruleType);
-//   return true;
-// }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXX ENSURE RULES (NEAR THE END) XXXXXXX
@@ -866,26 +828,90 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 //  XXXXXXXX Geese RULE (AT THE VERY END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-let gooseFound = false;
-let twoOrMoreGeeseFound = false;
-
 function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   const ruleType = `👀 Ensure rule:`;
   let geeseTracks = curatedTracklist.filter((t) => t.tags && t.tags.includes("geese"));
 
-  if (geeseTracks.length === 0) {
-    console.log(`${ruleType} No tracks with the tag 'geese' found.`);
-    return false;
-  } else if (geeseTracks.length === 1) {
-    gooseFound = true;
-    console.log(`${ruleType} One geese track found: ${geeseTracks[0].name}`);
-    return true;
-  } else {
-    twoOrMoreGeeseFound = true;
-    console.log(`${ruleType} Two or more geese tracks found. Count: ${geeseTracks.length}`);
-    geeseTracks.forEach((track) => console.log(`🦆 Track: ${track.name}`));
-    return true;
+  // Print a message at the end of processing all tracks
+  if (trackIndex === curatedTracklist.length - 1) {
+    if (geeseTracks.length === 1) {
+      console.log(`${ruleType} Rule c25 violated: Exactly one track with the tag 'geese' found, which is not acceptable.`);
+      return false;  // Rule is violated if exactly one 'geese' track is found
+    } else if (geeseTracks.length === 0 || geeseTracks.length > 1) {
+      console.log(`${ruleType} Acceptable number of 'geese' tracks found. Count: ${geeseTracks.length}`);
+      return true;  // Rule is followed if 0 or more than 1 'geese' tracks are found
+    }
   }
+  return true;  // Default return true for tracks before the last one
+}
+
+
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXXXX 👀 ENSURE CHECKS (NEAR THE END) XXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+// Rule C21 The tracklist must contain at least one track with the author ALBERT
+function c21(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  const trackName = track.name;
+  const ruleType = `👀 Ensure rule:`;
+
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "author", "ALBERT");
+  if (!trackWithAttribute) {
+    const logMessage = `The tracklist must contain at least one track with the author ALBERT `;
+    logRuleApplication(21, logMessage, false, ruleType);
+    return false;
+  }
+  const logMessage = `The tracklist must contain at least one track with the author ALBERT (trackWithAttribute is ${trackWithAttribute.name}, author is ${trackWithAttribute.author})`;
+  logRuleApplication(21, logMessage, true, ruleType);
+  return true;
+}
+
+// Rule C22 The tracklist must contain at least one track with the author PIERREELLIOTT
+function c22(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  const trackName = track.name;
+  const ruleType = `👀 Ensure rule:`;
+  const logMessage = `✨ Ensure track rule: The tracklist must contain at least one track with the author PIERREELLIOTT (trackWithAttribute is ${trackWithAttribute.name}, author is ${trackWithAttribute.author})`;
+
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "author", "PIERREELLIOTT");
+  if (!trackWithAttribute) {
+    logRuleApplication(22, logMessage, false, ruleType);
+    return false;
+  }
+  logRuleApplication(22, logMessage, true, ruleType);
+  return true;
+}
+
+// Rule C23 The tracklist must contain at least one track with the form interview
+function c23(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  const trackName = track.name;
+  const ruleType = `👀 Ensure rule:`;
+
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "form", "interview");
+  if (!trackWithAttribute) {
+    const logMessage = `Ensure track rule: The tracklist must contain at least one track with the form interview`;
+    logRuleApplication(23, logMessage, false, ruleType);
+    return false;
+  }
+  const logMessage = `✨ Ensure track rule: The tracklist must contain at least one track with the form interview (trackWithAttribute is ${trackWithAttribute.name}, form is ${trackWithAttribute.form})`;
+  logRuleApplication(23, logMessage, true, ruleType);
+  return true;
+}
+
+// Rule C24 The tracklist must contain at least one track with the form music
+function c24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  const trackName = track.name;
+  const ruleType = `👀 Ensure rule:`;
+
+  let trackWithAttribute = trackExistsWithAttributes(curatedTracklist, "form", "music");
+
+  if (!trackWithAttribute) {
+    const logMessage = `Ensure track rule: The tracklist must contain at least one track with the form music`;
+    logRuleApplication(24, logMessage, false, ruleType);
+    return false;
+  }
+  const logMessage = ` ✨! Ensure track rule: The tracklist must contain at least one track with the form music (trackWithAttribute is ${trackWithAttribute.name}, form is ${trackWithAttribute.form})`;
+  logRuleApplication(24, logMessage, true, ruleType);
+  return true;
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1009,6 +1035,7 @@ function followTracklistRules(tracklist) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 1: Apply track-specific rules and general rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  console.log("PHASE 1 Apply track-specific rules and general rules");
   for (let i = 0; i < 8; i++) {
     // Get the specific rule function based on index
     const ruleFunction = window["r" + (i + 60)];
@@ -1023,7 +1050,7 @@ function followTracklistRules(tracklist) {
     // Loop through the tracklist until a track passes the specific rule or all tracks are exhausted
     while (!ruleMet && currIndex < tracklist.length) {
       const track = tracklist[currIndex];
-      console.log(`🤞 Trying ${track.name} for ${ruleJustForLogging}. Tracklist length is ${tracklist.length}`);
+      console.log(`🤞🤞🤞 Trying ${track.name} for ${ruleJustForLogging}. Tracklist length is ${tracklist.length}`);
 
       // Apply the specific rule to the current track
       const isSpecificRuleApplied = ruleFunction(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex);
@@ -1034,6 +1061,8 @@ function followTracklistRules(tracklist) {
       // Check if the specific rule is met
       if (!isSpecificRuleApplied) {
         // Move to the next track in the tracklist
+        console.log(`${ruleJustForLogging} WAS NOT MET, ITERATING INDEX - AM I STARTING AGAIN?`);
+
         currIndex++;
         continue; // Skip the rest of the loop and move to the next iteration
       }
@@ -1043,16 +1072,20 @@ function followTracklistRules(tracklist) {
       // Make sure you don't deal with previous tracks before you have them
       if (trackIndex > 2) {
         for (const generalRule of generalRuleFunctions) {
+          console.log(`TRYING A RULE`);
           if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
-            console.log(`Egads General rule failed for track: ${track.name}`);
+            console.log(`General rule failed for track: ${track.name}`);
             generalRulesPassed = false;
             break; // Stop checking other general rules
+            console.log("I WONDER WHAT HAPPENS HERE?");
           }
         }
       }
 
       // Check if general rules are passed
       if (generalRulesPassed) {
+        console.log(`ALL CONDITIONS HAVE BEEN MET (generalRulesPassed), WE'RE ADDING IT`);
+
         // All conditions met, add the track to curatedTracklist
         addNextValidTrack(track, curatedTracklist, tracklist);
         curatedTracklistTotalTimeInSecs = calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
@@ -1070,6 +1103,9 @@ function followTracklistRules(tracklist) {
       }
     }
 
+
+    // findme: I think I'm not actually checking r65 (for example)
+
     if (!ruleMet) {
       // Log an error message if the current rule cannot be met for any track
       console.log(`EgadsEgads!!! ❌ Rule ${i + 60} cannot be met for any track.`);
@@ -1083,6 +1119,13 @@ function followTracklistRules(tracklist) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Phase 2: Ensure rules and final check rules
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  console.log("PHASE 2 Ensure rules and final check rules");
+  console.log("PHASE 2 Ensure rules and final check rules");
+  console.log("PHASE 2 Ensure rules and final check rules");
+  console.log("PHASE 2 Ensure rules and final check rules");
+  console.log("PHASE 2 Ensure rules and final check rules");
+  console.log("PHASE 2 Ensure rules and final check rules");
 
   // Flags to track successfully enforced ensure rules
   const ensureRulesEnforced = {};
@@ -1146,36 +1189,50 @@ function followTracklistRules(tracklist) {
     let iterationCounter = 0;
 
     while (curatedTracklistTotalTimeInSecs <= MAX_PLAYLIST_DURATION_SECONDS && !checkAllEnsureRulesEnforced() && iterationCounter < 3) {
-      if (currIndex >= tracklist.length) {
-        currIndex = 0;
-        iterationCounter++;
-      }
-
-      if (!checkAllEnsureRulesEnforced()) {
-        const track = tracklist[currIndex];
-        if (ensureTrack(track, currIndex, ensureRules)) {
-          // i have time for this track
-          if (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTimeInSecs + track.duration)) {
-            // check that the track passes the general rules (this is a bit redundant )
-            for (const generalRule of generalRuleFunctions) {
-              if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
-                console.log(`llllll General rule failed for track: ${track.name} ${generalRule}`);
-                break; // Stop checking other general rules
-              } else {
-                console.log("llllll passed the general rules");
-                markEnsureRuleEnforced(track, currIndex); // this might be weird on the goose track
-                addNextValidTrack(track, curatedTracklist, tracklist);
-                console.log(`✅ Added Ensure Track! ${track.name}`);
-                calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist);
-                console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
-              }
-            }
-          }
+        // Check if we've gone through the whole tracklist
+        if (currIndex >= tracklist.length) {
+            currIndex = 0;
+            iterationCounter++;
         }
-        currIndex++;
-      }
+
+        // If not all ensure rules are enforced, try to apply them
+        if (!checkAllEnsureRulesEnforced()) {
+            const track = tracklist[currIndex];
+            
+            // Check if the track meets ensure rules and there's enough time left to add it
+            if (ensureTrack(track, currIndex, ensureRules) && (MAX_PLAYLIST_DURATION_SECONDS - (curatedTracklistTotalTimeInSecs + track.duration) > 0)) {
+                let allGeneralRulesPassed = true;
+
+                // Check if the track passes all general rules
+                for (const generalRule of generalRuleFunctions) {
+                    if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, currIndex)) {
+                        allGeneralRulesPassed = false;
+                        break; // Stop checking other general rules
+                    }
+                }
+
+                // If all general rules are passed, add the track
+                if (allGeneralRulesPassed) {
+                    markEnsureRuleEnforced(track, currIndex); // Mark the ensure rule as enforced
+                    addNextValidTrack(track, curatedTracklist, tracklist); // Add the track to the playlist
+                    calculateOrUpdateCuratedTracklistDuration(track, curatedTracklist); // Update the total duration
+                    console.log(`✅ Added Ensure Track! ${track.name}`);
+                    console.log(`⏰ Playlist duration: ${curatedTracklistTotalTimeInSecs} seconds (${curatedTracklistTotalTimeInMins} minutes)`);
+                    break; // Important to break here to avoid adding the same track repeatedly
+                }
+            }
+        }
+
+        currIndex++; // Move to the next track in the tracklist
     }
-  }
+}
+
+console.log("PHASE 3 Main general rules loop");
+console.log("PHASE 3 Main general rules loop");
+console.log("PHASE 3 Main general rules loop");
+console.log("PHASE 3 Main general rules loop");
+console.log("PHASE 3 Main general rules loop");
+console.log("PHASE 3 Main general rules loop");
 
   // Main general rules loop
   function followGeneralRulesLoop() {
@@ -1465,201 +1522,133 @@ function checkPlaylistRules(playlist) {
   let hasPierreElliott = false;
   let hasInterview = false;
   let hasMusic = false;
-  let hasGeese = false;
+  let geeseTracksCount = 0;  // Count of tracks with 'geese' tag
+
 
   for (let i = 0; i < playlist.length; i++) {
     const track = playlist[i];
 
-    // CHECK R61: The 0th track must have the tag 'intro'
-    if (i === 0 && !track.tags.includes("intro")) {
-      console.log(
-        `❌❌❌ R61 (The 0th track must have the tag 'intro') violated at track ${i}: Track 1 (${track.name}) does not have the tag 'intro'.`,
-        track
-      );
-      console.log(`The 0th track must have the tag 'intro' r61 good ${i} ${track.name}`);
+    // Update flags when conditions are met
+    if (track.author === "ALBERT") {
+      hasAlbert = true;
     }
-
-    // CHECK R62: The 1st track must have the placement 'beginning'
-    if (i === 1 && !track.placement.includes("beginning")) {
-      console.log(
-        `❌❌❌ R62 (The 1st track must have the placement 'beginning') violated at track ${i}: Track 2 (${track.name}) does not have placement 'beginning'.`,
-        track
-      );
-      console.log(`r62 good ${i} ${track.name}`);
+    if (track.author === "PIERREELLIOTT") {
+      hasPierreElliott = true;
     }
-
-    // CHECK R63: The 2nd track must have placement 'beginning' and a different form than the 1st track
-    if (i === 2) {
-      if (!track.placement.includes("beginning")) {
-        console.log(
-          `❌❌❌ R63 violated (The 2nd track must have placement 'beginning' and a different form than the 1st track) at track ${i}: Track 3 (${track.name}) does not have placement 'beginning'. (${track.placement}) `,
-          track
-        );
-      }
-      if (track.form === playlist[i - 1].form) {
-        console.log(
-          `❌❌❌ R63 violated (The 2nd track must have placement 'beginning' and a different form than the 1st track) at track ${i}: Track 4 (${track.name}) has the same form as the previous track.`,
-          track
-        );
-      }
-      console.log(`r63 good ${i} ${track.name}`);
+    if (track.form === "interview") {
+      hasInterview = true;
     }
-
-    // CHECK R64: The 3rd track must have the placement beginning and a different form than the 2nd track.
-    if (i === 3) {
-      if (!track.placement.includes("middle")) {
-        console.log(
-          `❌❌❌ R64 violated (The 3rd track must have placement 'middle' and a different form than the 2nd track) at track ${i}: Track 4 (${track.name}) does not have placement 'middle'.`,
-          track
-        );
-      }
-      if (track.form === playlist[i - 1].form) {
-        console.log(
-          `❌❌❌ R64 violated (The 3rd track must have placement 'middle' and a different form than the 2nd track) at track ${i}: Track 4 (${track.name}) has the same form as the previous track.`,
-          track
-        );
-      }
-      console.log(`r64 good ${i} ${track.name}`);
+    if (track.form === "music") {
+      hasMusic = true;
     }
-
-    // CHECK R65: The 4th track must have length 'short', placement 'middle', and a different language than the 3rd track
-    if (i === 4) {
-      if (track.length !== "short" || !track.placement.includes("middle")) {
-        console.log(
-          `❌❌❌ R65 violated (The 4th track must have length 'short', placement 'middle', and a different language than the 3rd track) at track ${i}: Track 5 (${
-            track.name
-          }) does not meet the criteria - Form: ${track.length}, Placement: ${track.placement.join(", ")}`,
-          track
-        );
-      }
-      if (track.language === playlist[i - 1].language) {
-        console.log(
-          `❌❌❌ R65 violated (The 4th track must have form 'short', placement 'middle', and a different language than the 3rd track) at track ${i}: Track 5 (${track.name}) has the same language as the previous track (${track.language}).`,
-          track
-        );
-      }
-      console.log(`r65 good ${i} ${track.name}`);
-    }
-
-    // CHECK R66: The 5th track must have placement 'middle' and a different form than the 4th track
-    if (i === 5) {
-      if (!track.placement.includes("middle")) {
-        console.log(
-          `❌❌❌ R66 violated (The 5th track must have placement 'middle' and a different form than the 4th track) at track ${i}: Track 6 (${track.name}) does not have placement 'middle'.`,
-          track
-        );
-      }
-      if (track.form === playlist[i - 1].form) {
-        console.log(
-          `❌❌❌ R66 violated (The 5th track must have placement 'middle' and a different form than the 4th track) at track ${i}: Track 6 (${track.name}) has the same form as the previous track.`,
-          track
-        );
-      }
-      console.log(`r66 good ${i} ${track.name}`);
-    }
-
-    // CHECK R67: The 6th track must have placement 'middle' and a different form than previous track
-    if (i === 6) {
-      if (!track.placement.includes("middle")) {
-        console.log(
-          `❌❌❌ R67 violated (The 5th track must have placement 'middle' at track ${i}: Track 7 (${track.name}) does not have placement 'middle'.`,
-          track
-        );
-      }
-      if (track.form === playlist[i - 1].form) {
-        console.log(
-          `❌❌❌ R67 violated (The 5th track must have placement 'middle' and a different form than previous track ${i}: Track 7 (${track.name}) has the same form as the previous track.`,
-          track
-        );
-      }
-      console.log(`r67 good ${i} ${track.name}`);
-    }
-
-    // CHECK R68: The 7th track must have placement 'middle' and a different form than previous track
-    if (i === 7) {
-      if (!track.placement.includes("middle")) {
-        console.log(
-          `❌❌❌ R68 violated (The 7th track must have placement 'middle' at track ${i}: Track 8 (${track.name}) does not have placement 'middle'.`,
-          track
-        );
-      }
-      if (track.form === playlist[i - 1].form) {
-        console.log(
-          `❌❌❌ R68 violated (The 7th track must have a different form than the 6th track at track ${i}: Track 8 (${track.name}) has the same form as a previous track.`,
-          track
-        );
-      }
-      console.log(`r68 good ${i} ${track.name}`);
-    }
-
-    // CHECK R10
-    // R10: The current track must have a different author than the last track
-    if (prevTrack && track.author === prevTrack.author) {
-      console.log(`❌❌❌ R10 violated at track ${i}: Same author as the previous track.`);
+    if (track.tags && track.tags.includes("geese")) {
+      geeseTracksCount++;
     }
 
     // Increment the count for the author
     authorCounts[track.author] = (authorCounts[track.author] || 0) + 1;
 
-    // CHECK R11
-    // R11: No more than two tracks from the same author in a tracklist
+    // CHECK R61: The 0th track must have the tag 'intro'
+    if (i === 0 && !track.tags.includes("intro")) {
+      console.log(`❌❌❌ R61 violated at Track 1 (${track.name}) does not have the tag 'intro'. ${r61rule}`);
+    }
+
+    // CHECK R62: The 1st track must have the placement 'beginning'
+    if (i === 1 && !track.placement.includes("beginning")) {
+      console.log(`❌❌❌ R62 violated at Track 2 (${track.name}) does not have placement 'beginning'. ${r62rule}`);
+    }
+
+    // CHECK R63: The 2nd track must have placement 'beginning' and a different form than the 1st track
+    if (i === 2 && (!track.placement.includes("beginning") || track.form === playlist[i - 1].form)) {
+      console.log(`❌❌❌ R63 violated at Track 3 (${track.name}) does not meet the criteria of ${r63rule}`);
+    }
+
+    // CHECK R64: The 3rd track must have the placement 'middle' and a different form than the 2nd track
+    if (i === 3 && (!track.placement.includes("middle") || track.form === playlist[i - 1].form)) {
+      console.log(`❌❌❌ R64 violated at Track 4 (${track.name}) does not meet the criteria of ${r64rule}`);
+    }
+
+    // CHECK R65: The 4th track must have length 'short', placement 'middle', and a different language than the 3rd track
+    if (i === 4 && (track.length !== "short" || !track.placement.includes("middle") || track.language === playlist[i - 1].language)) {
+      console.log(`❌❌❌ R65 violated at Track 5 (${track.name}) does not meet the criteria of ${r65rule}`);
+    }
+
+    // CHECK R66: The 5th track must have placement 'middle' and a different form than the 4th track
+    if (i === 5 && (!track.placement.includes("middle") || track.form === playlist[i - 1].form)) {
+      console.log(`❌❌❌ R66 violated at Track 6 (${track.name}) does not meet the criteria of ${r66rule}`);
+    }
+
+    // CHECK R67: The 6th track must have placement 'middle' and a different form than the 5th track
+    if (i === 6 && (!track.placement.includes("middle") || track.form === playlist[i - 1].form)) {
+      console.log(`❌❌❌ R67 violated at Track 7 (${track.name}) does not meet the criteria of ${r67rule}`);
+    }
+
+    // CHECK R68: The 7th track must have placement 'middle' and a different form than the 6th track
+    if (i === 7 && (!track.placement.includes("middle") || track.form === playlist[i - 1].form)) {
+      console.log(`❌❌❌ R68 violated at Track 8 (${track.name}) does not meet the criteria of ${r68rule}`);
+    }
+
+    // CHECK R10: The current track must have a different author than the last track
+    if (prevTrack && track.author === prevTrack.author) {
+      console.log(`❌❌❌ R10 R11 violated! ${track.name} Same author as the previous track. does not meet the criteria of ${r10rule}`);
+    }
+
+    // CHECK R11: No more than two tracks from the same author in a tracklist
     if (authorCounts[track.author] > 2) {
-      console.log(`❌❌❌ R11 violated at track ${i}: ${track.author} has more than two tracks.`);
+      console.log(`❌❌❌ R11 violated! ${track.name} has more than two tracks, does not meet the criteria of ${r11rule}`);
     }
 
-    // CHECK R12
-    // R12: Tracks with the form short and the language musical can never follow tracks with the form music.
+    // CHECK R12: Tracks with the form short and the language musical can never follow tracks with the form music.
     if (track.form === "short" && track.language === "musical" && prevTrack && prevTrack.form === "music") {
-      console.log(`❌❌❌ R12 violated at track ${i}: short (musical) followed by music.`, track);
+      console.log(`❌❌❌ R12 violated! (${track.name}): short (musical) followed by music, does not meet the criteria of ${r12rule}`);
     }
 
-    // CHECK R13
-    // R13: Tracks with the form music can never follow tracks with both the form short and the language musical.
+    // CHECK R13: Tracks with the form music can never follow tracks with both the form short and the language musical.
     if (track.form === "music" && prevTrack && prevTrack.form === "short" && prevTrack.language === "musical") {
-      console.log(`❌❌❌ R13 violated at track ${i}: Music followed by short (musical).`, track);
+      console.log(`❌❌❌ R13 violated! (${track.name}): Music followed by short (musical), does not meet the criteria of ${r13rule}`);
     }
 
-    // CHECK R14
-    // R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
+    // CHECK R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
     if (prevTrack && (track.backgroundMusic === prevTrack.author || track.author === prevTrack.backgroundMusic)) {
-      console.log(`❌❌❌ R14 violated at track ${i}: Author matches backgroundMusic.`, track);
+      console.log(`❌❌❌ R14 violated! (${track.name}): Author matches backgroundMusic. does not meet the criteria of ${r14rule}`);
     }
 
-    // CHECK R15
-    // R15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
+    // CHECK R15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
     if (prevTrack && prevTrack.tags.includes("laughter") && track.tags.includes("heavy")) {
-      console.log(`❌❌❌ R15 violated at track ${i}: Laughter followed by heavy sentiment.`, track);
+      console.log(`❌❌❌ R15 violated! (${track.name}): Laughter followed by heavy sentiment. does not meet the criteria of ${r15rule}`);
     }
 
-    // CHECK R16
-    // R16: If the previous track has length long and form music, this track must have the form interview`;
+    // CHECK R16: If the previous track has length long and form music, this track must have the form interview`;
     if (track.length === "long" && track.form === "music" && prevTrack && prevTrack.form !== "interview") {
-      console.log(`❌❌❌ R16 violated at track ${i}: Long music track not followed by an interview.`, track);
+      console.log(`❌❌❌ R16 violated! (${track.name}): Long music track not followed by an interview, does not meet the criteria of ${r16rule}`);
     }
 
     // CHECK R00: Last track must have the placement 'end'
     if (i === playlist.length - 1 && !track.placement.includes("end")) {
-      console.log(`❌❌❌ R00 violated at track ${i}: Last track does not have placement 'end'. Track details:`, track);
+      console.log(`❌❌❌ R00 violated! (${track.name}): Last track does not have placement 'end', does not meet the criteria of ${r00rule}`);
     }
 
-    prevTrack = track;
+    prevTrack = track; // Set the current track as the previous track for the next iteration
   }
 
-  // Check for c21, c22, c23, c24, c25
+  // Check for c21, c22, c23, c24, c25 after iterating through the playlist
   if (!hasAlbert) {
-    console.log("Rule c21 violated: Playlist does not contain a track with the author ALBERT.");
+    console.log("❌❌❌ Rule c21 violated: Playlist does not contain a track with the author ALBERT. does not meet the criteria");
   }
   if (!hasPierreElliott) {
-    console.log("Rule c22 violated: Playlist does not contain a track with the author PIERREELLIOTT.");
+    console.log("❌❌❌ Rule c22 violated: Playlist does not contain a track with the author PIERREELLIOTT. does not meet the criteria");
   }
   if (!hasInterview) {
-    console.log("Rule c23 violated: Playlist does not contain a track with the form interview.");
+    console.log("❌❌❌ Rule c23 violated: Playlist does not contain a track with the form interview. does not meet the criteria");
   }
   if (!hasMusic) {
-    console.log("Rule c24 violated: Playlist does not contain a track with the form music.");
+    console.log("❌❌❌ Rule c24 violated: Playlist does not contain a track with the form music. does not meet the criteria");
   }
-  if (hasGeese && !playlist.some((track) => track.tags.includes("geese"))) {
-    console.log("Rule c25 violated: Playlist has one tag with geese, but no track with the tag geese.");
+  // Check for geese after iterating through the playlist
+  if (geeseTracksCount === 1) {
+    console.log("❌❌❌ Rule c25 violated: Playlist contains exactly one track with the tag geese, which is not allowed.");
+  } else if (geeseTracksCount === 0 || geeseTracksCount > 1) {
+    console.log(`✅ Acceptable number of 'geese' tracks found: ${geeseTracksCount}.`);
   }
 }
 
@@ -1750,6 +1739,8 @@ function handlePlayPauseClick() {
     player.play();
     playerPlayState = "play";
     audioContext.resume();
+    isValidTracklist(curatedTracklist);
+
     firstPlay = false; // Set firstPlay to false after handling the first play
   } else {
     // Handle subsequent toggles between play and pause
