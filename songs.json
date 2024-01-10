@@ -2111,28 +2111,6 @@
         "frTrans": "[Demetri joue d’un instrument à cordes. Il pince et gratte les cordes. La mélodie semble provenir d’un endroit étranger, mais reste néanmoins familière.]"
     },
     {
-        "name": "S_DEMI_19",
-        "url": "./sounds/CONTENT/S_DEMI_19.mp3",
-        "duration": 15,
-        "author": "DEMETRI",
-        "form": "short",
-        "placement": [
-            "middle",
-            "end"
-        ],
-        "length": "short",
-        "language": "musical",
-        "sentiment": "light",
-        "tags": [
-            "sound",
-            "home"
-        ],
-        "backgroundMusic": "",
-        "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_DEMETRI.mp3",
-        "engTrans": "[A string instrument is being played by Demetri. Plucked and strummed. It sounds as if it is coming from a different place but is nevertheless close by.]",
-        "frTrans": "[Demetri joue d’un instrument à cordes. Il pince et gratte les cordes. La mélodie semble provenir d’un endroit étranger, mais reste néanmoins familière.]"
-    },
-    {
         "name": "S_DEMI_20",
         "url": "./sounds/CONTENT/S_DEMI_20.mp3",
         "duration": 22,
@@ -2384,7 +2362,7 @@
             "wellness"
         ],
         "backgroundMusic": "",
-        "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_BABIES.mp3",
+        "credit": "",
         "engTrans": "[Babies giggling and laughing.]",
         "frTrans": "[Des bébés gloussent et rigolent.]"
     },
@@ -2405,7 +2383,7 @@
             "wellness"
         ],
         "backgroundMusic": "",
-        "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_BABIES.mp3",
+        "credit": "",
         "engTrans": "[Babies giggling and laughing.]",
         "frTrans": "[Des bébés gloussent et rigolent.]"
     },
