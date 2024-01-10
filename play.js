@@ -520,14 +520,14 @@ let r13rule = "Tracks with the form music can never follow tracks with both the 
 let r14rule =
   "The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it";
 let r15rule = "If the previous track has the sentiment heavy, this track cannot have the the laughter tag";
-let r16rule = "If the previous track has length long and form music, this track must have the form interview";
+let r16rule = "If the previous track has length long and form music, this track must have the form interview or poetry";
 
 // let r60rule = "the 0th track must have the placement end (we'll be moving this to the end)";
 let r61rule = "the 1st track must have the tag 'intro'";
 let r62rule = "the 2nd track must have the placement 'beginning'";
 let r63rule = "the 3rd track must have the placement beginning and a different form than the 2nd track";
 let r64rule = "the 4th track must have the placement middle and a different form than the 3rd track";
-let r65rule = "the 5th track must have the length 'short'; must have the placement 'middle'; and have a different language than the 4th track";
+let r65rule = "the 5th track must have the length 'short'; must have the placement 'middle'; and have a different form than the 4th track";
 let r66rule = "the 6th track must have the placement 'middle' and a different form than the 5th track";
 let r67rule = "the 7th track must have the placement 'middle' and a different form than the 6th track";
 let r68rule = "the 8th track must have the placement 'middle', a different form than previous track";
@@ -646,14 +646,15 @@ function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(15, logMessage, true, ruleType);
   return true;
 }
-// R16: If the previous track has length long and form music, this track must have the form interview`;
+// R16: If the previous track has length long and form music, this track must have the form interview or poetry`;
 function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   const trackName = track.name;
   const ruleType = `✉️ General rule:`;
-  const logMessage = `If the previous track has length 'long' and form 'music' (previous track's length is ${prevTrack1.length} and form is ${prevTrack1.form}), this track must have the form 'interview' (current track's form is ${track.form})`;
+  const logMessage = `If the previous track has length 'long' and form 'music' (previous track's length is ${prevTrack1.length} and form is ${prevTrack1.form}), this track must have the form 'interview' or 'poetry' (current track's form is ${track.form})`;
 
   if (prevTrack1 && prevTrack1.length === "long" && prevTrack1.form === "music") {
-    if (track.form !== "interview") {
+    // findme
+    if (track.form !== "interview" && track.form !== "poetry") {
       logRuleApplication(16, track.name, logMessage, false, ruleType);
       return false; // Rule is broken if the current track is not an interview.
     }
@@ -767,16 +768,16 @@ function r64(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-// R65: Rule 5 (only for Track 5): The 5th track must have the length 'short'; must have the placement 'middle'; and have a different language than the 4th track.
+// R65: Rule 5 (only for Track 5): The 5th track must have the length 'short'; must have the placement 'middle'; and have a different form than the 4th track.
 function r65(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   const trackName = track.name;
   const ruleType = `📙 Base track rule:`;
-  const logMessage = `${track.name} The track's index is ${trackIndex}. The 5th track must have the length short (track's length is ${track.length}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different language (track's language is ${track.language}) from the 4th track (the 4th track's language is ${prevTrack1.language})`;
+  const logMessage = `${track.name} The track's index is ${trackIndex}. The 5th track must have the length short (track's length is ${track.length}); must have the placement MIDDLE (track's placement is ${track.placement}); and a different form (track's form is ${track.form}) from the 4th track (the 4th track's form is ${prevTrack1.form})`;
 
   if (
     (trackIndex === 5 && track.length !== "short") ||
     (trackIndex === 5 && !track.placement.includes("middle")) ||
-    (trackIndex === 5 && track.language === prevTrack1.language)
+    (trackIndex === 5 && track.form === prevTrack1.form)
   ) {
     logRuleApplication(65, track.name, logMessage, false, ruleType);
     return false;
@@ -1260,8 +1261,6 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
   let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
-
-  
   for (let rule of shuffledEnsureRules) {
     let ruleNumber = rule.name.replace("r", "");
     let ruleDescVarName = `r${ruleNumber}rule`;
@@ -1306,30 +1305,40 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     }
   }
 
- // Check the 'geese' tag rule
-if (geeseTrackCounter === 1) {
-  const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
-  let geeseTrackAdded = false;
+  // Check the 'geese' tag rule
+  if (geeseTrackCounter === 1) {
+    const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
+    let geeseTrackAdded = false;
 
-  for (const geeseTrack of geeseTracks) {
+    for (const geeseTrack of geeseTracks) {
       console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
       // Check if the geese track passes the general rules
-      if (ensureGeneralRules(generalRuleFunctions, geeseTrack, null, null, curatedTracklist, curatedTracklist.length)) {
-          addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
-          geeseTrackCounter++;
-          console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
-          geeseTrackAdded = true;
-          break; // Stop the loop as we have added a valid geese track
+
+      if (
+        true
+        // ensureGeneralRules(
+        //   generalRuleFunctions,
+        //   geeseTrack,
+        //   curatedTracklist[curatedTracklist.length - 1],
+        //   curatedTracklist[curatedTracklist.length - 2],
+        //   curatedTracklist,
+        //   curatedTracklist.length
+        // )
+      ) {
+        addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
+        geeseTrackCounter++;
+        console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
+        geeseTrackAdded = true;
+        break; // Stop the loop as we have added a valid geese track
       } else {
-          console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
+        console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
       }
-  }
+    }
 
-  if (!geeseTrackAdded) {
+    if (!geeseTrackAdded) {
       console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
+    }
   }
-}
-
 }
 
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
@@ -1366,30 +1375,40 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
       // console.log(`🫧 General Rules Failed for ${track.name}`);
     }
 
-   // Check the 'geese' tag rule
-if (geeseTrackCounter === 1) {
-  const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
-  let geeseTrackAdded = false;
+    // Check the 'geese' tag rule
+    if (geeseTrackCounter === 1) {
+      const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
+      let geeseTrackAdded = false;
 
-  for (const geeseTrack of geeseTracks) {
-      console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
-      // Check if the geese track passes the general rules
-      if (ensureGeneralRules(generalRuleFunctions, geeseTrack, null, null, curatedTracklist, curatedTracklist.length)) {
+      for (const geeseTrack of geeseTracks) {
+        console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
+        // Check if the geese track passes the general rules
+
+        if (
+          true
+          // ensureGeneralRules(
+          //   generalRuleFunctions,
+          //   geeseTrack,
+          //   curatedTracklist[curatedTracklist.length - 1],
+          //   curatedTracklist[curatedTracklist.length - 2],
+          //   curatedTracklist,
+          //   curatedTracklist.length
+          // )
+        ) {
           addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
           geeseTrackCounter++;
           console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
           geeseTrackAdded = true;
           break; // Stop the loop as we have added a valid geese track
-      } else {
+        } else {
           console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
+        }
       }
-  }
 
-  if (!geeseTrackAdded) {
-      console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
-  }
-}
-
+      if (!geeseTrackAdded) {
+        console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
+      }
+    }
   }
 
   // Log the completion of Phase 3 with the final duration
@@ -1633,23 +1652,23 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
   }
 }
 
-function checkPlaylistRules(playlist) {
-  let prevTrack = null;
-  const authorCounts = {};
-  let hasAlbert = false;
-  let hasPierreElliott = false;
-  let hasInterview = false;
-  let hasMusic = false;
-  let geeseTracksCount = 0;
+  function checkPlaylistRules(playlist) {
+    let prevTrack = null;
+    const authorCounts = {};
+    let hasAlbert = false;
+    let hasPierreElliott = false;
+    let hasInterview = false;
+    let hasMusic = false;
+    let geeseTracksCount = 0;
 
-  for (let i = 0; i < playlist.length; i++) {
-    const track = playlist[i];
+    for (let i = 0; i < playlist.length; i++) {
+      const track = playlist[i];
 
-    // Update flags when conditions are met
-    if (track.author === "ALBERT") {
-      hasAlbert = true;
-    }
-    if (track.author === "PIERREELLIOTT") {
+      // Update flags when conditions are met
+      if (track.author === "ALBERT") {
+        hasAlbert = true;
+      }
+      if (track.author === "PIERREELLIOTT") {
       hasPierreElliott = true;
     }
     if (track.form === "interview") {
@@ -1685,7 +1704,7 @@ function checkPlaylistRules(playlist) {
       console.log(`❌❌❌ R64 violated at Track 4 (${track.name}) does not meet the criteria of ${r64rule}`);
     }
 
-    // CHECK R65: The 4th track must have the length 'short', the placement 'middle', and a different language than the 3rd track
+    // CHECK R65: The 4th track must have the length 'short', the placement 'middle', and a different form than the 3rd track
     if (i === 4) {
       let ruleViolations = [];
 
@@ -1697,8 +1716,8 @@ function checkPlaylistRules(playlist) {
         ruleViolations.push("Track placement is not 'middle': " + track.placement);
       }
 
-      if (track.language === playlist[i - 1].language) {
-        ruleViolations.push(`Track language is the same as the 3rd track (${track.language})`);
+      if (track.form === playlist[i - 1].form) {
+        ruleViolations.push(`Track form is the same as the 3rd track (${track.form})`);
       }
 
       if (ruleViolations.length > 0) {
@@ -1785,10 +1804,10 @@ function checkPlaylistRules(playlist) {
         console.log(`❌❌❌ R15 violated! (${track.name}): Laughter followed by heavy sentiment. does not meet the criteria of ${r15rule}`);
       }
 
-      // CHECK R16: If the previous track has length long and form music, this track must have the form interview`;
+      // CHECK R16: If the previous track has length long and form music, this track must have the form interview or poetry`;
       if (prevTrack && prevTrack.length === "long" && prevTrack.form === "music") {
-        if (track.form !== "interview") {
-          console.log(`❌❌❌ R16 violated! (${track.name}): Long music track not followed by an interview.`);
+        if (track.form !== "interview" && track.form !== "poetry") {
+          console.log(`❌❌❌ R16 violated! (${track.name}): Long music track not followed by an interview or poetry.`);
         }
       }
     }
