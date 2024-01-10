@@ -18,6 +18,47 @@ var totalDurationSeconds = 2140; //(19m)
 let currentTimeElement; // Element to display current time
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
+
+//  XXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXXX WAKELOCK  XXXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXX
+
+let wakeLock = null;
+
+const requestWakeLock = async () => {
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log('Screen Wake Lock is active');
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+};
+
+const releaseWakeLock = () => {
+  if (wakeLock != null) {
+      wakeLock.release().then(() => {
+          wakeLock = null;
+          console.log('Screen Wake Lock was released');
+      });
+  }
+};
+
+window.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+      releaseWakeLock();
+  }
+});
+
+const handleVisibilityChange = async () => {
+  if (wakeLock !== null && document.visibilityState === 'visible') {
+    await requestWakeLock();
+  }
+};
+
+document.addEventListener('visibilitychange', handleVisibilityChange);
+
+
+
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -567,14 +608,13 @@ function r13(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 
-
 // R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
 function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   // Safe checks for undefined properties
-  const trackBackgroundMusic = track.backgroundMusic || '';
-  const trackAuthor = track.author || '';
-  const prevTrackAuthor = prevTrack1 && prevTrack1.author ? prevTrack1.author.trim() : '';
-  const prevTrackBackgroundMusic = prevTrack1 && prevTrack1.backgroundMusic ? prevTrack1.backgroundMusic.trim() : '';
+  const trackBackgroundMusic = track.backgroundMusic || "";
+  const trackAuthor = track.author || "";
+  const prevTrackAuthor = prevTrack1 && prevTrack1.author ? prevTrack1.author.trim() : "";
+  const prevTrackBackgroundMusic = prevTrack1 && prevTrack1.backgroundMusic ? prevTrack1.backgroundMusic.trim() : "";
 
   // Log message setup
   const trackName = track.name;
@@ -583,7 +623,7 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
 
   // Check if the backgroundMusic of the current track matches the author of the previous track
   const backgroundMusicViolation = trackBackgroundMusic !== "" && trackBackgroundMusic === prevTrackAuthor;
-  
+
   // Check if the author of the current track matches the backgroundMusic of the previous track
   const authorViolation = trackAuthor !== "" && trackAuthor === prevTrackBackgroundMusic;
 
@@ -595,7 +635,6 @@ function r14(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   logRuleApplication(14, trackName, logMessage, true, ruleType); // Log rule followed
   return true; // Rule followed
 }
-
 
 // R15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
 function r15(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
@@ -627,18 +666,20 @@ function r16(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   return true;
 }
 
-let geeseTracks;
+let geeseTrackCounter = 0;
 function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   const ruleType = `👀 Ensure rule:`;
   geeseTracks = curatedTracklist.filter((t) => t.tags && t.tags.includes("geese"));
+  geeseTrackCounter = geeseTracks.length;
 
   // Create a log message for the current state
-  let logMessage = `Checking 'geese' tag rule at track index ${trackIndex}. Number of tracks with 'geese': ${geeseTracks.length}.`;
+  let logMessage = `Checking 'geese' tag rule at track index ${trackIndex}. Number of tracks with 'geese': ${geeseTrackCounter.length}.`;
 
   // If exactly one 'geese' track is found, check the condition based on the current track
-  if (geeseTracks.length === 1) {
+  if (geeseTrackCounter.length === 1) {
     if (track.tags && track.tags.includes("geese")) {
-      console.log(`${ruleType} Acceptable number of 'geese' tracks found. Count: ${geeseTracks.length}`);
+      geeseTrackCounter += 1;
+      console.log(`${ruleType} Acceptable number of 'geese' tracks found. Count: ${geeseTrackCounteeer.length}`);
       logRuleApplication(25, track.name, true, ruleType, logMessage);
       return true; // Rule is passed if the current track has 'geese' tag
     } else {
@@ -652,7 +693,6 @@ function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   logRuleApplication(25, track.name, true, ruleType, logMessage);
   return true; // Default return true
 }
-
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -863,7 +903,6 @@ function r24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true;
 }
 
-
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXX 👀 ENSURE CHECKS (NEAR THE END) XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -974,7 +1013,6 @@ function getFinalcuratedTracklistDuration(curatedTracklist) {
   return curatedTracklistTotalTimeInSecs;
 }
 
-
 function addNextValidTrack(track, curatedTracklist, tracks) {
   curatedTracklist.push(track);
   const trackIndex = tracks.findIndex((t) => t === track);
@@ -1041,12 +1079,16 @@ function initializeGeneralRules() {
   return [r10, r11, r12, r13, r14, r15, r16];
 }
 
-function initializeEnsureRules(unshuffledEnsureRules) {
-  const shuffledEnsureRules = shuffleArrayOfRules(unshuffledEnsureRules);
+function initializeEnsureRules(rules, fixedRules = []) {
+  // Separate the rules that should not be shuffled
+  const rulesToShuffle = rules.filter((rule) => !fixedRules.includes(rule));
+  const shuffledEnsureRules = shuffleArrayOfRules(rulesToShuffle).concat(fixedRules);
+
   const ensureRulesEnforced = {};
   shuffledEnsureRules.forEach((rule) => {
     ensureRulesEnforced[`r${parseInt(rule.name.match(/\d+/)[0])}`] = false;
   });
+
   return { shuffledEnsureRules, ensureRulesEnforced };
 }
 
@@ -1058,13 +1100,12 @@ function ensureGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2,
 
     // Now pass the safePrevTrack1 and safePrevTrack2 to the rule function
     if (!generalRule(track, safePrevTrack1, safePrevTrack2, curatedTracklist, currIndex)) {
-      console.log(`🫧 General rule failed for ${track.name} by rule ${generalRule.name}`);
+      // console.log(`🫧 General rule failed for ${track.name} by rule ${generalRule.name}`);
       return false; // General rule failed
     }
   }
   return true; // All general rules passed
 }
-
 
 // ~~~ Utility Functions ~~~
 function applySpecificRule(ruleFunction, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -1137,7 +1178,7 @@ function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) 
 function finalizeTracklist(tracklist, curatedTracklist, generalRuleFunctions) {
   if (curatedTracklist.length > 0) {
     let possibleLastTracks = preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions);
-    
+
     let lastTrack = findSuitableLastTrack(possibleLastTracks, curatedTracklist, generalRuleFunctions);
 
     if (lastTrack) {
@@ -1151,7 +1192,17 @@ function finalizeTracklist(tracklist, curatedTracklist, generalRuleFunctions) {
 
 function findSuitableLastTrack(possibleLastTracks, curatedTracklist, generalRuleFunctions) {
   for (let track of possibleLastTracks) {
-    if (!trackAlreadyInList(track, curatedTracklist) && ensureGeneralRules(generalRuleFunctions, track, curatedTracklist[curatedTracklist.length - 1], curatedTracklist[curatedTracklist.length - 2], curatedTracklist, curatedTracklist.length)) {
+    if (
+      !trackAlreadyInList(track, curatedTracklist) &&
+      ensureGeneralRules(
+        generalRuleFunctions,
+        track,
+        curatedTracklist[curatedTracklist.length - 1],
+        curatedTracklist[curatedTracklist.length - 2],
+        curatedTracklist,
+        curatedTracklist.length
+      )
+    ) {
       return track;
     }
   }
@@ -1159,7 +1210,7 @@ function findSuitableLastTrack(possibleLastTracks, curatedTracklist, generalRule
 }
 
 function trackAlreadyInList(track, curatedTracklist) {
-  return curatedTracklist.some(curatedTrack => curatedTrack.name === track.name);
+  return curatedTracklist.some((curatedTrack) => curatedTrack.name === track.name);
 }
 
 // ~~~ Phase Functions ~~~
@@ -1167,48 +1218,47 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
   console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 1: Apply specific rules and general rules");
 
   const specificRuleFunctions = [r61, r62, r63, r64, r65, r66, r67, r68];
+  let ruleFailureCounts = specificRuleFunctions.map(() => 0); // Initialize failure counts for each rule
   let prevTrack1 = null;
   let prevTrack2 = null;
   let trackIndex = 0;
 
   for (let i = 0; i < specificRuleFunctions.length; i++) {
     let ruleMet = false;
-    let currIndex = 0;
+    let tracksTried = 0; // Counter for the number of tracks tried
     let specificRuleDescription = eval(`r${61 + i}rule`); // Assumes rule descriptions are like r60rule, r61rule, etc.
 
+    while (!ruleMet && tracksTried < tracklist.length) {
+      let track = tracklist[tracksTried];
 
-    // console.log(`🔍 Applying Specific Rule: ${specificRuleDescription}`);
-
-    while (!ruleMet && currIndex < tracklist.length) {
-      let track = tracklist[currIndex];
-      // console.log(`${curatedTracklist.length}: 🔍 Applying Specific Rule for ${track.name}: ${specificRuleDescription}`);
-      // Apply specific rule to the track
-      if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) { // Pass trackIndex + 1 if rules expect 1-based index
-        // console.log(`${curatedTracklist.length}:🎉 Specific Rule Passed for ${track.name}: ${specificRuleDescription}`);
-
-        if (i < 3 || applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)) {
-          addNextValidTrack(track, curatedTracklist, tracklist); // Replace this line
+      if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
+        if (i < 2 || applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)) {
+          addNextValidTrack(track, curatedTracklist, tracklist);
           console.log(`${curatedTracklist.length}:✅ Added ${track.name} to the curated tracklist`);
           [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
           trackIndex++;
           ruleMet = true;
         } else {
-          console.log(`🫧 General Rules Failed for ${track.name}`);
-          currIndex++;
+          // console.log(`🫧 General Rules Failed for ${track.name}`);
+          tracksTried++;
         }
       } else {
         // console.log(`🫧 Specific Rule Failed for ${track.name}: ${specificRuleDescription}`);
-        currIndex++;
+        ruleFailureCounts[i]++; // Increment failure count for the specific rule
+        tracksTried++;
       }
     }
 
     if (!ruleMet) {
+      const mostFrequentRuleIndex = ruleFailureCounts.indexOf(Math.max(...ruleFailureCounts));
+      const mostFrequentRuleDescription = eval(`r${61 + mostFrequentRuleIndex}rule`);
       console.log(`OHHHHH NOOOOOO No suitable track found for specific rule: ${specificRuleDescription}.`);
+      console.log(`Total tracks tried: ${tracksTried}. Most frequently broken rule: ${mostFrequentRuleDescription}`);
     }
   }
 }
 
-function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced, gooseRule) {
+function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced) {
   console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 2: Ensure rules and final check rules");
 
   for (let rule of shuffledEnsureRules) {
@@ -1231,7 +1281,6 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     // If rule not met in curatedTracklist, find a track in tracklist to satisfy the rule
     if (!ruleMet) {
       console.log(`🔍 "${ruleDescription}" wasn't met, gotta go fishing!`);
-
       for (let track of tracklist) {
         console.log(`🔍 Checking if "${track.name}" meets "${ruleDescription}"`);
         if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
@@ -1247,7 +1296,6 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
         }
       }
     }
-    
 
     if (!ruleMet) {
       console.log(`Oh nooooooooooo ❌ Could not find a suitable track to satisfy the rule: ${ruleDescription}`);
@@ -1258,42 +1306,62 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 }
 
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
+  // Log the start of Phase 3
   console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 3: Main general rules loop");
 
+  // Calculate the total duration of the curated tracklist
   let curatedTracklistTotalTimeInSecs = getFinalcuratedTracklistDuration(curatedTracklist);
+
+  // Get the last two tracks added to the curated list for rule comparisons
   let prevTrack1 = curatedTracklist[curatedTracklist.length - 1];
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
+  // Iterate through each track in the provided tracklist
   for (const track of tracklist) {
+    // Check if adding the current track exceeds the maximum playlist duration
     if (curatedTracklistTotalTimeInSecs + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
-      break;
+      break; // Stop processing if the maximum duration is exceeded
     }
 
+    // Apply general rules to the track
     if (applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length)) {
+      // Add the track to the curated list if it passes all checks
       curatedTracklist.push(track);
+      // Update the total duration of the curated tracklist
       curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
-      [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
 
-      // Apply r25 rule after adding each track
-      if (!r25(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length - 1)) {
-        console.log(`🫧 Rule c25 failed for ${track.name}`);
-        curatedTracklist.pop(); // Remove the last added track if r25 fails
-        break; // Optional: stop adding more tracks if r25 fails
-      }
+      // Update the last two tracks for the next iteration
+      [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
     } else {
-      console.log(`🫧 General Rules Failed for ${track.name}`);
+      // Log if a track fails the general rules
+      // console.log(`🫧 General Rules Failed for ${track.name}`);
+    }
+
+    // Check the 'geese' tag rule after trying to enforce all other rules
+    if (geeseTrackCounter === 1) {
+      const additionalGeeseTrack = tracklist.find((track) => track.tags.includes("geese"));
+      if (additionalGeeseTrack) {
+        addNextValidTrack(additionalGeeseTrack, curatedTracklist, tracklist);
+        geeseTrackCounter++;
+        console.log(`✅ Additional 'geese' track added: ${additionalGeeseTrack.name}`);
+      } else {
+        console.log(`🚫 No additional 'geese' track available to add.`);
+      }
     }
   }
-  console.log(`✅ Phase 3 completed with curated tracklist duration: ${curatedTracklistTotalTimeInSecs} seconds and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+
+  // Log the completion of Phase 3 with the final duration
+  console.log(
+    `✅ Phase 3 completed with curated tracklist duration: ${curatedTracklistTotalTimeInSecs} seconds and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
+  );
 }
-
-
 
 function followTracklistRules(tracklist) {
   console.log("🚀 Starting to follow tracklist rules");
   let curatedTracklist = initializecuratedTracklist();
   const generalRuleFunctions = initializeGeneralRules();
-  const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24, r25]);
+
+  const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24, r25], [r25]);
 
   executePhase1(tracklist, curatedTracklist, generalRuleFunctions);
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);
@@ -1439,7 +1507,7 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
   const currTrackNameElement = document.getElementById("fullList");
 
   // Clear existing content
-  currTrackNameElement.innerHTML = '';
+  currTrackNameElement.innerHTML = "";
 
   // Loop through shuffled songs and add each track with formatted details
   shuffledSongsWithOpen.forEach((song, index) => {
@@ -1447,13 +1515,13 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     // Make Track number bold and a different color
     let trackDetails = `<strong style="color: orange; font-style: bold;">Track ${index + 1}:</strong> <br/>`;
 
-    Object.keys(song).forEach(key => {
+    Object.keys(song).forEach((key) => {
       // Skip unwanted keys
-      if (['engTrans', 'frTrans', 'url', 'credit', 'audio'].includes(key)) return;
+      if (["engTrans", "frTrans", "url", "credit", "audio"].includes(key)) return;
 
       const value = Array.isArray(song[key]) ? song[key].join(", ") : song[key];
       // Keys in teal and bold, values in normal text
-      trackDetails += `<strong style="color: teal;">${key}:</strong> ${value || 'none'} <br/>`;
+      trackDetails += `<strong style="color: teal;">${key}:</strong> ${value || "none"} <br/>`;
     });
 
     trackDiv.innerHTML = trackDetails;
@@ -1466,9 +1534,6 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
     console.log("No items to display.");
   }
 }
-
-
-
 
 // first time is queueNextTrack(curatedTracklist, 0, 0, cache));
 function queueNextTrack(songs, index, currentRuntime, cache) {
@@ -1579,60 +1644,59 @@ function checkPlaylistRules(playlist) {
     }
 
     // CHECK R65: The 4th track must have the length 'short', the placement 'middle', and a different language than the 3rd track
-if (i === 4) {
-  let ruleViolations = [];
-  
-  if (track.length !== "short") {
-      ruleViolations.push("Track length is not 'short': " + track.length);
-  }
-  
-  if (!track.placement.includes("middle")) {
-      ruleViolations.push("Track placement is not 'middle': " + track.placement);
-  }
+    if (i === 4) {
+      let ruleViolations = [];
 
-  if (track.language === playlist[i - 1].language) {
-      ruleViolations.push(`Track language is the same as the 3rd track (${track.language})`);
-  }
+      if (track.length !== "short") {
+        ruleViolations.push("Track length is not 'short': " + track.length);
+      }
 
-  if (ruleViolations.length > 0) {
-      console.log(`❌❌❌ R65 violated at Track 5 (${track.name}). Reasons: ${ruleViolations.join(", ")}. Rule description: ${r65rule}`);
-  }
-}
+      if (!track.placement.includes("middle")) {
+        ruleViolations.push("Track placement is not 'middle': " + track.placement);
+      }
 
-// CHECK R66: The 5th track must have placement 'middle' and a different form than the 4th track
-if (i === 5) {
-  let ruleViolationsR66 = [];
-  
-  if (!track.placement.includes("middle")) {
-      ruleViolationsR66.push("Track placement is not 'middle'");
-  }
+      if (track.language === playlist[i - 1].language) {
+        ruleViolations.push(`Track language is the same as the 3rd track (${track.language})`);
+      }
 
-  if (track.form === playlist[i - 1].form) {
-      ruleViolationsR66.push(`Track form is the same as the 4th track (${track.form})`);
-  }
+      if (ruleViolations.length > 0) {
+        console.log(`❌❌❌ R65 violated at Track 5 (${track.name}). Reasons: ${ruleViolations.join(", ")}. Rule description: ${r65rule}`);
+      }
+    }
 
-  if (ruleViolationsR66.length > 0) {
-      console.log(`❌❌❌ R66 violated at Track 6 (${track.name}). Reasons: ${ruleViolationsR66.join(", ")}. Rule description: ${r66rule}`);
-  }
-}
+    // CHECK R66: The 5th track must have placement 'middle' and a different form than the 4th track
+    if (i === 5) {
+      let ruleViolationsR66 = [];
 
-// CHECK R67: The 6th track must have placement 'middle' and a different form than the 5th track
-if (i === 6) {
-  let ruleViolationsR67 = [];
-  
-  if (!track.placement.includes("middle")) {
-      ruleViolationsR67.push("Track placement is not 'middle'");
-  }
+      if (!track.placement.includes("middle")) {
+        ruleViolationsR66.push("Track placement is not 'middle'");
+      }
 
-  if (track.form === playlist[i - 1].form) {
-      ruleViolationsR67.push(`Track form is the same as the 5th track (${track.form})`);
-  }
+      if (track.form === playlist[i - 1].form) {
+        ruleViolationsR66.push(`Track form is the same as the 4th track (${track.form})`);
+      }
 
-  if (ruleViolationsR67.length > 0) {
-      console.log(`❌❌❌ R67 violated at Track 7 (${track.name}). Reasons: ${ruleViolationsR67.join(", ")}. Rule description: ${r67rule}`);
-  }
-}
+      if (ruleViolationsR66.length > 0) {
+        console.log(`❌❌❌ R66 violated at Track 6 (${track.name}). Reasons: ${ruleViolationsR66.join(", ")}. Rule description: ${r66rule}`);
+      }
+    }
 
+    // CHECK R67: The 6th track must have placement 'middle' and a different form than the 5th track
+    if (i === 6) {
+      let ruleViolationsR67 = [];
+
+      if (!track.placement.includes("middle")) {
+        ruleViolationsR67.push("Track placement is not 'middle'");
+      }
+
+      if (track.form === playlist[i - 1].form) {
+        ruleViolationsR67.push(`Track form is the same as the 5th track (${track.form})`);
+      }
+
+      if (ruleViolationsR67.length > 0) {
+        console.log(`❌❌❌ R67 violated at Track 7 (${track.name}). Reasons: ${ruleViolationsR67.join(", ")}. Rule description: ${r67rule}`);
+      }
+    }
 
     // CHECK R68: The 7th track must have placement 'middle' and a different form than the 6th track
     if (i === 7 && (!track.placement.includes("middle") || track.form === playlist[i - 1].form)) {
@@ -1661,15 +1725,18 @@ if (i === 6) {
         console.log(`❌❌❌ R13 violated! (${track.name}): Music followed by short (musical), does not meet the criteria of ${r13rule}`);
       }
 
-// CHECK R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
-if (prevTrack && (track.backgroundMusic === prevTrack.author || track.author === prevTrack.backgroundMusic)) {
-  console.log(
-    `❌❌❌ R14 violated! Current Track: '${track.name}' - Author: '${track.author}', Background Music: '${track.backgroundMusic}'. ` +
-    `Previous Track: '${prevTrack.name}' - Author: '${prevTrack.author}', Background Music: '${prevTrack.backgroundMusic}'. ` +
-    `Violation: ${track.backgroundMusic === prevTrack.author ? "Current track's background music matches previous track's author." : "Current track's author matches previous track's background music."}`
-  );
-}
-
+      // CHECK R14: The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it.
+      if (prevTrack && (track.backgroundMusic === prevTrack.author || track.author === prevTrack.backgroundMusic)) {
+        console.log(
+          `❌❌❌ R14 violated! Current Track: '${track.name}' - Author: '${track.author}', Background Music: '${track.backgroundMusic}'. ` +
+            `Previous Track: '${prevTrack.name}' - Author: '${prevTrack.author}', Background Music: '${prevTrack.backgroundMusic}'. ` +
+            `Violation: ${
+              track.backgroundMusic === prevTrack.author
+                ? "Current track's background music matches previous track's author."
+                : "Current track's author matches previous track's background music."
+            }`
+        );
+      }
 
       // CHECK R15: If the previous track has the sentiment heavy, this track cannot have the the laughter tag.
       if (prevTrack && prevTrack.tags.includes("laughter") && track.tags.includes("heavy")) {
@@ -1682,7 +1749,6 @@ if (prevTrack && (track.backgroundMusic === prevTrack.author || track.author ===
           console.log(`❌❌❌ R16 violated! (${track.name}): Long music track not followed by an interview.`);
         }
       }
-      
     }
 
     // CHECK R00: Last track must have the placement 'end'
@@ -1794,6 +1860,10 @@ function handlePlayPauseClick() {
   if (firstPlay) {
     // Handle the first play
     console.log("First play");
+    if ('wakeLock' in navigator) {
+      console.log("wakeLock");
+      requestWakeLock();
+    }
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
     prepareAudioContext();
