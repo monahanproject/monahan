@@ -18,7 +18,6 @@ var totalDurationSeconds = 2140; //(19m)
 let currentTimeElement; // Element to display current time
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
-
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
@@ -26,38 +25,36 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 let wakeLock = null;
 
 const requestWakeLock = async () => {
-    try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        console.log('Screen Wake Lock is active');
-    } catch (err) {
-        console.error(`${err.name}, ${err.message}`);
-    }
+  try {
+    wakeLock = await navigator.wakeLock.request("screen");
+    console.log("Screen Wake Lock is active");
+  } catch (err) {
+    console.error(`${err.name}, ${err.message}`);
+  }
 };
 
 const releaseWakeLock = () => {
   if (wakeLock != null) {
-      wakeLock.release().then(() => {
-          wakeLock = null;
-          console.log('Screen Wake Lock was released');
-      });
+    wakeLock.release().then(() => {
+      wakeLock = null;
+      console.log("Screen Wake Lock was released");
+    });
   }
 };
 
-window.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
-      releaseWakeLock();
+window.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    releaseWakeLock();
   }
 });
 
 const handleVisibilityChange = async () => {
-  if (wakeLock !== null && document.visibilityState === 'visible') {
+  if (wakeLock !== null && document.visibilityState === "visible") {
     await requestWakeLock();
   }
 };
 
-document.addEventListener('visibilitychange', handleVisibilityChange);
-
-
+document.addEventListener("visibilitychange", handleVisibilityChange);
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -694,7 +691,6 @@ function r25(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return true; // Default return true
 }
 
-
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXX 📙 Specific track rules (TRACKS 1-8) XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1261,6 +1257,11 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
 function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced) {
   console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 2: Ensure rules and final check rules");
 
+  let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
+  let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
+
+
+  
   for (let rule of shuffledEnsureRules) {
     let ruleNumber = rule.name.replace("r", "");
     let ruleDescVarName = `r${ruleNumber}rule`;
@@ -1285,8 +1286,9 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
         console.log(`🔍 Checking if "${track.name}" meets "${ruleDescription}"`);
         if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
           if (ensureGeneralRules(generalRuleFunctions, track, null, null, curatedTracklist, curatedTracklist.length)) {
-            addNextValidTrack(track, curatedTracklist, tracklist); // Add track to curatedTracklist
-            // console.log(`✅ Added "${track.name}" to curatedTracklist to meet "${ruleDescription}"`);
+            addNextValidTrack(track, curatedTracklist, tracklist);
+            [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
+            console.log(`✅ Added "${track.name}" to curatedTracklist to meet "${ruleDescription}"`);
             markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber); // Mark the rule as enforced
             ruleMet = true;
             break; // Suitable track found, stop searching
@@ -1303,6 +1305,31 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
       // This might involve breaking out of the loop, logging an error, etc.
     }
   }
+
+ // Check the 'geese' tag rule
+if (geeseTrackCounter === 1) {
+  const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
+  let geeseTrackAdded = false;
+
+  for (const geeseTrack of geeseTracks) {
+      console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
+      // Check if the geese track passes the general rules
+      if (ensureGeneralRules(generalRuleFunctions, geeseTrack, null, null, curatedTracklist, curatedTracklist.length)) {
+          addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
+          geeseTrackCounter++;
+          console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
+          geeseTrackAdded = true;
+          break; // Stop the loop as we have added a valid geese track
+      } else {
+          console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
+      }
+  }
+
+  if (!geeseTrackAdded) {
+      console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
+  }
+}
+
 }
 
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
@@ -1327,6 +1354,8 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
     if (applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length)) {
       // Add the track to the curated list if it passes all checks
       curatedTracklist.push(track);
+      [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
+
       // Update the total duration of the curated tracklist
       curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
 
@@ -1337,17 +1366,30 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
       // console.log(`🫧 General Rules Failed for ${track.name}`);
     }
 
-    // Check the 'geese' tag rule after trying to enforce all other rules
-    if (geeseTrackCounter === 1) {
-      const additionalGeeseTrack = tracklist.find((track) => track.tags.includes("geese"));
-      if (additionalGeeseTrack) {
-        addNextValidTrack(additionalGeeseTrack, curatedTracklist, tracklist);
-        geeseTrackCounter++;
-        console.log(`✅ Additional 'geese' track added: ${additionalGeeseTrack.name}`);
+   // Check the 'geese' tag rule
+if (geeseTrackCounter === 1) {
+  const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
+  let geeseTrackAdded = false;
+
+  for (const geeseTrack of geeseTracks) {
+      console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
+      // Check if the geese track passes the general rules
+      if (ensureGeneralRules(generalRuleFunctions, geeseTrack, null, null, curatedTracklist, curatedTracklist.length)) {
+          addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
+          geeseTrackCounter++;
+          console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
+          geeseTrackAdded = true;
+          break; // Stop the loop as we have added a valid geese track
       } else {
-        console.log(`🚫 No additional 'geese' track available to add.`);
+          console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
       }
-    }
+  }
+
+  if (!geeseTrackAdded) {
+      console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
+  }
+}
+
   }
 
   // Log the completion of Phase 3 with the final duration
@@ -1365,7 +1407,7 @@ function followTracklistRules(tracklist) {
 
   executePhase1(tracklist, curatedTracklist, generalRuleFunctions);
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);
-  executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
+  // executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
 
   if (curatedTracklistTotalTimeInSecs > MAX_PLAYLIST_DURATION_SECONDS) {
     console.log("⏰ Ran out of time before completing the tracklist curation!");
@@ -1860,7 +1902,7 @@ function handlePlayPauseClick() {
   if (firstPlay) {
     // Handle the first play
     console.log("First play");
-    if ('wakeLock' in navigator) {
+    if ("wakeLock" in navigator) {
       console.log("wakeLock");
       requestWakeLock();
     }

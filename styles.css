@@ -1,5 +1,3 @@
-
-
 /***********************/
 /*****  CSS RESET  *****/
 /***********************/
@@ -138,20 +136,16 @@ table {
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@100&display=swap");
 
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=VT323&family=Zilla+Slab:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=VT323&family=Zilla+Slab:wght@300;400&display=swap");
 
 /* @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700'); */
 /* font-family: 'Source Sans Pro', sans-serif;
   font-style: italic;
 	font-weight: 400; */
 
-
-
 :root {
-
---lightgreen: rgb(191 255 194);
---darkgreen: rgb(35 78 68);
+  --lightgreen: rgb(191 255 194);
+  --darkgreen: rgb(35 78 68);
 }
 
 /***********************/
@@ -159,7 +153,7 @@ table {
 /***********************/
 
 body {
-  font-family: 'Zilla Slab', serif;
+  font-family: "Zilla Slab", serif;
   font-weight: 300;
   font-size: 6.9vw;
   width: 100vw;
@@ -168,7 +162,7 @@ body {
 
 @media screen and (min-width: 900px) {
   body {
-    font-family: 'Zilla Slab', serif;
+    font-family: "Zilla Slab", serif;
     font-weight: 300;
     font-size: 4rem;
     width: 100vw;
@@ -194,7 +188,6 @@ body {
 #curiousEarsPage {
   display: flex;
   justify-content: space-between;
-
 }
 
 .pageContent {
@@ -203,6 +196,24 @@ body {
   align-content: center;
   justify-content: center;
   align-items: center;
+}
+
+.headerDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#aboutPage .pageContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute space between children */
+  align-items: center; /* Center items horizontally */
+  height: 100%; /* Ensure it fills the height of its container */
+}
+
+#aboutPage .pageContent > :first-child {
+ margin-top: 2rem;
 }
 
 .centerCluster {
@@ -215,12 +226,12 @@ body {
 
 .page:nth-of-type(odd) {
   background-color: var(--lightgreen);
-  color:var(--darkgreen);
+  color: var(--darkgreen);
 }
 
 .page:nth-of-type(even) {
   background-color: var(--darkgreen);
-  color:var(--lightgreen);
+  color: var(--lightgreen);
 }
 
 nav {
@@ -242,25 +253,25 @@ p {
   padding: 1rem;
   line-height: 1.35;
   font-size: 1.3rem;
-  font-family: 'Zilla Slab', serif;
+  font-family: "Zilla Slab", serif;
   font-weight: 300;
 }
 
 .DMSans {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .ZillaSlab {
-
 }
 
-#debug, #debug p{
-  font-size: .9rem;
-  line-height: .8rem;
+#debug,
+#debug p {
+  font-size: 0.9rem;
+  line-height: 0.8rem;
   padding: 0;
 }
 
-#titleText{
+#titleText {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -268,19 +279,19 @@ p {
 
 #siteName {
   font-size: 7.8vw;
-  font-family: 'DM Sans', sans-serif;
-  color:var(--lightgreen);
+  font-family: "DM Sans", sans-serif;
+  color: var(--lightgreen);
 }
 
 #curiousEarsTxt {
   text-align: center;
-  font-family: 'Zilla Slab', serif;
+  font-family: "Zilla Slab", serif;
   font-size: 10vw;
 }
 
 @media screen and (min-width: 900px) {
   #curiousEarsTxt {
-    font-family: 'Zilla Slab', serif;
+    font-family: "Zilla Slab", serif;
     font-weight: 300;
     font-size: 4rem;
     width: 100vw;
@@ -290,7 +301,7 @@ p {
 
 #arrow {
   width: 2.5rem;
-  padding: 0 0 15px 0;  /* margin-top: 8rem; */
+  padding: 0 0 15px 0; /* margin-top: 8rem; */
 }
 
 @media screen and (min-width: 900px) {
@@ -317,7 +328,6 @@ a:hover {
 /******  BUTTONS  ******/
 /***********************/
 
-
 .btn {
   background-color: #214e42;
   color: #bfffc2;
@@ -341,7 +351,7 @@ a:hover {
 #langToggle {
   /* display: inline-block; */
   background-color: var(--darkgreen);
-  font-family: 'DM Mono', sans-serif;
+  font-family: "DM Mono", sans-serif;
   font-size: 5.2vw;
 
   color: var(--lightgreen);
@@ -378,13 +388,24 @@ img {
 /***********************/
 
 h1 {
-  font-family: 'Merriweather', serif;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "Merriweather", serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 16.9vw;
   margin-top: -5rem;
   font-weight: 700;
 }
 
+#howToListenH2 {
+  font-size: 1.2rem;
+}
+
+#aboutH2 {
+  font-size: 1.2rem;
+}
+
+#monH2 {
+  font-size: 2rem;
+}
 
 @media screen and (min-width: 900px) {
   h1 {
@@ -393,7 +414,7 @@ h1 {
 }
 
 h2 {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 10.8vw;
   font-weight: 400;
   /* margin: 1em 0em 0.75em 0em; */
@@ -442,8 +463,8 @@ main {
 #audio-player-container {
   width: 100vw;
   display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #playerPage {
@@ -507,7 +528,7 @@ main {
   #button-container {
     justify-content: center; /* Brings buttons closer together on desktop */
   }
-  
+
   .skip-button {
     margin: 0 2vw; /* Reduces space from the edges on desktop */
   }
@@ -518,11 +539,10 @@ main {
   }
 }
 
-
 #play-button {
   position: relative; /* Enables absolute positioning for child elements */
   background: transparent;
-  border:none;
+  border: none;
   margin: 80px 0;
 }
 
@@ -549,10 +569,19 @@ main {
   transform: translate(-50%, -50%);
   color: #bfffc2;
   pointer-events: none; /* Allows clicks to pass through the text */
-  font-family: 'Zilla Slab', sans-serif;
+  font-family: "Zilla Slab", sans-serif;
   font-size: 6.5vw; /* Adjusted for larger button size */
-  
 }
+
+.svg-container {
+  background-image: url("images/svg/patternRow3.svg");
+  background-repeat: repeat-x; /* Repeat only horizontally */
+  background-size: auto 110px; /* Adjust the height as needed, width is automatic */
+  height: 110px; /* This should be at least as tall as the background-size height */
+  width: 100vw;
+}
+
+
 
 @media screen and (min-width: 900px) {
   #play-button-svg-container {
@@ -597,8 +626,8 @@ main {
   justify-content: space-between;
   width: 90%; /* Match the progress bar width */
   margin: 5px auto 0; /* Align with the progress bar and add some space */
-  font-size: .8rem;
-  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-family: "DM Sans", sans-serif;
   font-weight: 500;
   margin-top: 13px;
 }
@@ -693,7 +722,6 @@ input[type="range"] {
 /***** Thumb Styles *****/
 /***** Chrome, Safari, Opera, and Edge Chromium *****/
 
-
 @media screen and (min-width: 900px) {
   #volume-slider {
     width: 40vw; /* Width for desktop */
@@ -708,8 +736,7 @@ input[type="range"] {
   }
 }
 
-
-#debugdiv{
+#debugdiv {
   display: block;
   max-height: 500px; /* Adjust as needed */
   overflow: auto;
@@ -719,7 +746,7 @@ input[type="range"] {
   border: 2px solid orange;
 }
 
-#transcriptContainer{
+#transcriptContainer {
   background-color: lightslategray;
   max-height: 150px; /* Adjust as needed */
   overflow: auto;
