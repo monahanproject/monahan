@@ -1402,7 +1402,7 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
       }
 
       if (!geeseTrackAdded) {
-        console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
+        console.log(`🚫 Couldn't find an additional 'geese' track that meets general rules.`);
       }
     }
   }
