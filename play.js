@@ -22,16 +22,16 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
-let wakeLock = null;
+// let wakeLock = null;
 
-const requestWakeLock = async () => {
-  try {
-    wakeLock = await navigator.wakeLock.request("screen");
-    console.log("Screen Wake Lock is active");
-  } catch (err) {
-    console.error(`${err.name}, ${err.message}`);
-  }
-};
+// const requestWakeLock = async () => {
+//   try {
+//     wakeLock = await navigator.wakeLock.request("screen");
+//     console.log("Screen Wake Lock is active");
+//   } catch (err) {
+//     console.error(`${err.name}, ${err.message}`);
+//   }
+// };
 
 // const releaseWakeLock = () => {
 //   if (wakeLock != null) {
