@@ -969,25 +969,27 @@ function c24(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
+//  XXXXX HELPER FUNCTIONS (DURATION) XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+function addTrackDurationToTotal(totalTimeInSecs, track) {
+  return totalTimeInSecs + (track.duration || 0);
+}
 
 function calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist) {
   if (curatedTracklistTotalTimeInSecs === 0) {
     for (const track of curatedTracklist) {
-      // console.log("ttt track name is " + track.name);
-      // console.log("ttt track time is " + (track.duration || 0)); // Use 0 if duration is undefined or null
-      curatedTracklistTotalTimeInSecs += track.duration || 0;
+      curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
     }
   } else if (track) {
-    // console.log("curatedTracklistTotalTime is " + curatedTracklistTotalTime);
-    curatedTracklistTotalTimeInSecs += track.duration || 0;
+    curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
   }
 
   curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
 
   return curatedTracklistTotalTimeInSecs;
 }
+
 
 function getFinalcuratedTracklistDuration(curatedTracklist) {
   let curatedTracklistTotalTimeInSecs = 0;
@@ -999,16 +1001,26 @@ function getFinalcuratedTracklistDuration(curatedTracklist) {
 
   for (const track of curatedTracklist) {
     console.log("Track name is " + track.name);
-    const duration = track.duration || 0; // Use 0 if duration is undefined or null
-    console.log("Track duration is " + duration);
-
-    curatedTracklistTotalTimeInSecs += duration;
+    curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
+    console.log("Track duration is " + (track.duration || 0));
   }
 
   curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
 
   return curatedTracklistTotalTimeInSecs;
 }
+
+
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+function isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, index, generalRuleFunctions) {
+  return generalRuleFunctions.every((rule) => 
+    rule(track, prevTrack1, prevTrack2, curatedTracklist, index)
+  );
+}
+
 
 function addNextValidTrack(track, curatedTracklist, tracks) {
   curatedTracklist.push(track);
@@ -1110,20 +1122,24 @@ function applySpecificRule(ruleFunction, track, prevTrack1, prevTrack2, curatedT
 }
 
 function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-  for (const generalRule of generalRuleFunctions) {
-    let ruleNumber = generalRule.name.match(/\d+/)[0]; // Extract the rule number from the function name
-    let ruleDescriptionVarName = `r${ruleNumber}rule`; // Construct the variable name for the rule description
-    let ruleDescription = eval(ruleDescriptionVarName); // Get the rule description using eval
-
-    if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)) {
-      console.log(`🫧 General rule failed for ${track.name} by rule ${generalRule.name}: ${ruleDescription}`);
-      return false; // General rule failed
-    } else {
-      console.log(`🎉 Rule ${ruleNumber} Passed for Curated Track ${trackIndex + 1} (${track.name}): ${ruleDescription}`);
-    }
-  }
-  return true; // All general rules passed
+  return isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions);
 }
+
+// function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+//   for (const generalRule of generalRuleFunctions) {
+//     let ruleNumber = generalRule.name.match(/\d+/)[0]; // Extract the rule number from the function name
+//     let ruleDescriptionVarName = `r${ruleNumber}rule`; // Construct the variable name for the rule description
+//     let ruleDescription = eval(ruleDescriptionVarName); // Get the rule description using eval
+
+//     if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)) {
+//       console.log(`🫧 General rule failed for ${track.name} by rule ${generalRule.name}: ${ruleDescription}`);
+//       return false; // General rule failed
+//     } else {
+//       // console.log(`🎉 Rule ${ruleNumber} Passed for Curated Track ${trackIndex + 1} (${track.name}): ${ruleDescription}`);
+//     }
+//   }
+//   return true; // All general rules passed
+// }
 
 function updateTracklistState(track, curatedTracklist) {
   addNextValidTrack(track, curatedTracklist, tracklist);
@@ -1229,7 +1245,7 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
       let track = tracklist[tracksTried];
 
       if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
-        if (i < 2 || applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)) {
+        if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
           addNextValidTrack(track, curatedTracklist, tracklist);
           console.log(`${curatedTracklist.length}:✅ Added ${track.name} to the curated tracklist`);
           [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
@@ -1284,7 +1300,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
       for (let track of tracklist) {
         console.log(`🔍 Checking if "${track.name}" meets "${ruleDescription}"`);
         if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
-          if (ensureGeneralRules(generalRuleFunctions, track, null, null, curatedTracklist, curatedTracklist.length)) {
+          if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
             addNextValidTrack(track, curatedTracklist, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             console.log(`✅ Added "${track.name}" to curatedTracklist to meet "${ruleDescription}"`);
@@ -1316,14 +1332,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 
       if (
         true
-        // ensureGeneralRules(
-        //   generalRuleFunctions,
-        //   geeseTrack,
-        //   curatedTracklist[curatedTracklist.length - 1],
-        //   curatedTracklist[curatedTracklist.length - 2],
-        //   curatedTracklist,
-        //   curatedTracklist.length
-        // )
+        // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
       ) {
         addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
         geeseTrackCounter++;
@@ -1342,11 +1351,9 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 }
 
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
-  // Log the start of Phase 3
   console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 3: Main general rules loop");
 
-  // Calculate the total duration of the curated tracklist
-  let curatedTracklistTotalTimeInSecs = getFinalcuratedTracklistDuration(curatedTracklist);
+  
 
   // Get the last two tracks added to the curated list for rule comparisons
   let prevTrack1 = curatedTracklist[curatedTracklist.length - 1];
@@ -1360,7 +1367,7 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
     }
 
     // Apply general rules to the track
-    if (applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length)) {
+    if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
       // Add the track to the curated list if it passes all checks
       curatedTracklist.push(track);
       [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
@@ -1371,7 +1378,6 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
       // Update the last two tracks for the next iteration
       [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
     } else {
-      // Log if a track fails the general rules
       // console.log(`🫧 General Rules Failed for ${track.name}`);
     }
 
@@ -1386,14 +1392,7 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
 
         if (
           true
-          // ensureGeneralRules(
-          //   generalRuleFunctions,
-          //   geeseTrack,
-          //   curatedTracklist[curatedTracklist.length - 1],
-          //   curatedTracklist[curatedTracklist.length - 2],
-          //   curatedTracklist,
-          //   curatedTracklist.length
-          // )
+          // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
         ) {
           addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
           geeseTrackCounter++;
@@ -1426,7 +1425,12 @@ function followTracklistRules(tracklist) {
 
   executePhase1(tracklist, curatedTracklist, generalRuleFunctions);
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);
-  // executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
+  executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
+
+// Calculate the total duration of the curated tracklist
+let curatedTracklistTotalTimeInSecs = getFinalcuratedTracklistDuration(curatedTracklist);
+console.log("curatedTracklistTotalTimeInSecs is " + curatedTracklistTotalTimeInSecs);
+
 
   if (curatedTracklistTotalTimeInSecs > MAX_PLAYLIST_DURATION_SECONDS) {
     console.log("⏰ Ran out of time before completing the tracklist curation!");
@@ -1485,7 +1489,7 @@ async function isValidTracklist(tracklist) {
     console.log("Invalid URLs:");
     console.log(invalidTracks);
   } else {
-    console.log("All URLs are valid.");
+    // console.log("All URLs are valid.");
   }
 
   // Return true if there are no invalid tracks
@@ -1844,46 +1848,17 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
 let firstPlay = true;
 var playButtonTextContainer = document.getElementById("play-button-text-container");
 
-const playingSVG = `<svg
-    id="play-icon"
-    class="svg-icon"
-    role="img"
-    viewBox="0 0 279 319"
-    fill="none"
-    aria-hidden="true"
-    focusable="false"
-    xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M272.64 151.621C278.64 155.085 278.64 163.745 272.64 167.209L14.6396 316.166C8.63964 319.63 1.13965 315.3 1.13965 308.371L1.13966 10.4587C1.13966 3.53053 8.63966 -0.79959 14.6397 2.66451L272.64 151.621Z"
-      fill="#224E43"
-      stroke="#224E43"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round" />
-  </svg>`; //
-const pausedSVG = `<svg
-    id="play-icon"
-    class="svg-icon"
-    role="img"
-    viewBox="0 0 282 282" fill="none" 
-    aria-hidden="true"
-    focusable="false"
-    xmlns="http://www.w3.org/2000/svg">
-    <rect x="0.416992" y="0.485352" width="281.424" height="281.424" rx="9" fill="#224E43"/>
-  </svg>`;
+const playingSVG = `<img id="play-icon" class="svg-icon" src="images/icons/playButton.svg" alt="Play Icon">`;
+const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/icons/PauseButton.svg" alt="Pause Icon">`;
 
 // Text Constants
 const playingText = "PLAY";
-const pausedText = "PAUSE";
+const pausedText = "STOP";
 
 function toggleButtonVisuals(isPlaying) {
-  // Set the left position of the button text container
   playButtonTextContainer.style.left = isPlaying ? "50%" : "35%";
-  // Set the inner HTML of the SVG container based on whether it's playing or paused
   svgContainer.innerHTML = isPlaying ? pausedSVG : playingSVG;
-  // Set the text content of the text container based on whether it's playing or paused
-  textContainer.textContent = isPlaying ? "PAUSE" : "PLAY";
-  // Toggle the playButton class to "playing" or "paused" based on the isPlaying state
+  textContainer.textContent = isPlaying ? "STOP" : "PLAY";
   playButton.classList.toggle("playing", isPlaying);
   playButton.classList.toggle("paused", !isPlaying);
 }
@@ -1919,8 +1894,6 @@ function addOutrosAndCreditsToTracklist() {
 
 function handlePlayPauseClick() {
   if (firstPlay) {
-    // Handle the first play
-    console.log("First play");
     if ("wakeLock" in navigator) {
       console.log("wakeLock");
       requestWakeLock();
