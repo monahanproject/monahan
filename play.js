@@ -1845,7 +1845,7 @@ let firstPlay = true;
 var playButtonTextContainer = document.getElementById("play-button-text-container");
 
 const playingSVG = `<img id="play-icon" class="svg-icon" src="images/icons/playButton.svg" alt="Play Icon">`;
-const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/icons/PauseButton.svg" alt="Pause Icon">`;
+const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/icons/pauseButton.svg" alt="Pause Icon">`;
 
 // Text Constants
 const playingText = "PLAY";
