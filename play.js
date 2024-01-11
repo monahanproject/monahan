@@ -1889,10 +1889,10 @@ function addOutrosAndCreditsToTracklist() {
 
 function handlePlayPauseClick() {
   if (firstPlay) {
-    if ("wakeLock" in navigator) {
-      console.log("wakeLock");
-      requestWakeLock();
-    }
+    // if ("wakeLock" in navigator) {
+    //   console.log("wakeLock");
+    //   requestWakeLock();
+    // }
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
     prepareAudioContext();
