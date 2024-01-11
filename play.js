@@ -1384,7 +1384,6 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
 
       for (const geeseTrack of geeseTracks) {
         console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
-        // Check if the geese track passes the general rules
 
         if (
           true
