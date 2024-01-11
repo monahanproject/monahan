@@ -12,7 +12,7 @@ let curatedTracklistTotalTimeInMins;
 let curatedTracklist;
 let timerDuration = 0;
 
-const MAX_PLAYLIST_DURATION_SECONDS = 3140; //(19m)
+const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 // 1140
 var totalDurationSeconds = 2140; //(19m)
 let currentTimeElement; // Element to display current time
@@ -33,28 +33,28 @@ const requestWakeLock = async () => {
   }
 };
 
-const releaseWakeLock = () => {
-  if (wakeLock != null) {
-    wakeLock.release().then(() => {
-      wakeLock = null;
-      console.log("Screen Wake Lock was released");
-    });
-  }
-};
+// const releaseWakeLock = () => {
+//   if (wakeLock != null) {
+//     wakeLock.release().then(() => {
+//       wakeLock = null;
+//       console.log("Screen Wake Lock was released");
+//     });
+//   }
+// };
 
-window.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") {
-    releaseWakeLock();
-  }
-});
+// window.addEventListener("visibilitychange", () => {
+//   if (document.visibilityState === "hidden") {
+//     releaseWakeLock();
+//   }
+// });
 
-const handleVisibilityChange = async () => {
-  if (wakeLock !== null && document.visibilityState === "visible") {
-    await requestWakeLock();
-  }
-};
+// const handleVisibilityChange = async () => {
+//   if (wakeLock !== null && document.visibilityState === "visible") {
+//     await requestWakeLock();
+//   }
+// };
 
-document.addEventListener("visibilitychange", handleVisibilityChange);
+// document.addEventListener("visibilitychange", handleVisibilityChange);
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -1291,6 +1291,12 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
         console.log(`🔍 Checking if "${track.name}" meets "${ruleDescription}"`);
         if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
           if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
+
+            if (curatedTracklistTotalTimeInSecs + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
+              console.log(`NICE! OUT OF TIME while trying to add a track that meets ensure rules! curatedTracklistTotalTimeInSecs is ${curatedTracklistTotalTimeInSecs} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+              break; // Stop processing if the maximum duration is exceeded
+            }
+
             addNextValidTrack(track, curatedTracklist, tracklist);
             curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
@@ -1322,6 +1328,12 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
         true
         // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
       ) {
+
+        if (curatedTracklistTotalTimeInSecs + (geeseTrack.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
+          console.log(`NICE! OUT OF TIME while trying to add a goose track that meets ensure rules! curatedTracklistTotalTimeInSecs is ${curatedTracklistTotalTimeInSecs} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+          break; // Stop processing if the maximum duration is exceeded
+        }
+
         addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
         curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(geeseTrack, curatedTracklist);
         geeseTrackCounter++;
@@ -1349,7 +1361,9 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
   // Iterate through each track in the provided tracklist
   for (const track of tracklist) {
     // Check if adding the current track exceeds the maximum playlist duration
+  
     if (curatedTracklistTotalTimeInSecs + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
+      console.log(`NICE! OUT OF TIME in phase 3! curatedTracklistTotalTimeInSecs is ${curatedTracklistTotalTimeInSecs} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`);
       break; // Stop processing if the maximum duration is exceeded
     }
 
@@ -1411,10 +1425,8 @@ function followTracklistRules(tracklist) {
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);
   executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
 
-// Calculate the total duration of the curated tracklist
 let curatedTracklistTotalTimeInSecs = getFinalcuratedTracklistDuration(curatedTracklist);
 console.log("curatedTracklistTotalTimeInSecs is " + curatedTracklistTotalTimeInSecs);
-
 
   if (curatedTracklistTotalTimeInSecs > MAX_PLAYLIST_DURATION_SECONDS) {
     console.log("⏰ Ran out of time before completing the tracklist curation!");
