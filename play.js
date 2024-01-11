@@ -1,5 +1,7 @@
 // need to add the credit durations to the duration
 
+console.log("hi");
+
 var myLang = localStorage["lang"] || "defaultValue";
 var player;
 var audioContext = null;
