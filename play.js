@@ -1053,12 +1053,6 @@ function logRuleApplication(ruleNumber, trackName, logMessage, isApplied, ruleTy
   console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage} `); //findme
 }
 
-// Helper function to update the log display on the webpage
-function addToLogDisplay(logMessage) {
-  const logElement = document.getElementById("displayConsoleLog");
-  logElement.innerHTML += logMessage + "<br>";
-}
-
 // Helper function to manage prevTrack1 and prevTrack2
 function updatePrevTracks(track, prevTrack1, prevTrack2) {
   if (prevTrack1 === null) {
@@ -1140,11 +1134,6 @@ function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, 
 //   }
 //   return true; // All general rules passed
 // }
-
-function updateTracklistState(track, curatedTracklist) {
-  addNextValidTrack(track, curatedTracklist, tracklist);
-  return calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
-}
 
 function ensureTrack(track, currIndex, ensureRules, ensureRulesEnforced, curatedTracklist) {
   for (const rule of ensureRules) {
@@ -1247,8 +1236,9 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
       if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
         if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
           addNextValidTrack(track, curatedTracklist, tracklist);
-          console.log(`${curatedTracklist.length}:✅ Added ${track.name} to the curated tracklist`);
+          curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
           [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
+          console.log(`${curatedTracklist.length}:✅ Added ${track.name} to the curated tracklist`);
           trackIndex++;
           ruleMet = true;
         } else {
@@ -1302,6 +1292,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
         if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
           if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
             addNextValidTrack(track, curatedTracklist, tracklist);
+            curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             console.log(`✅ Added "${track.name}" to curatedTracklist to meet "${ruleDescription}"`);
             markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber); // Mark the rule as enforced
@@ -1317,7 +1308,6 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     if (!ruleMet) {
       console.log(`Oh nooooooooooo ❌ Could not find a suitable track to satisfy the rule: ${ruleDescription}`);
       // Handle the situation where no track can satisfy the rule
-      // This might involve breaking out of the loop, logging an error, etc.
     }
   }
 
@@ -1328,15 +1318,13 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 
     for (const geeseTrack of geeseTracks) {
       console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
-      // Check if the geese track passes the general rules
-
       if (
         true
         // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
       ) {
         addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
+        curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(geeseTrack, curatedTracklist);
         geeseTrackCounter++;
-        console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
         geeseTrackAdded = true;
         break; // Stop the loop as we have added a valid geese track
       } else {
@@ -1353,10 +1341,9 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
   console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 3: Main general rules loop");
 
-  
 
   // Get the last two tracks added to the curated list for rule comparisons
-  let prevTrack1 = curatedTracklist[curatedTracklist.length - 1];
+  let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
   // Iterate through each track in the provided tracklist
@@ -1369,13 +1356,8 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
     // Apply general rules to the track
     if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
       // Add the track to the curated list if it passes all checks
-      curatedTracklist.push(track);
-      [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
-
-      // Update the total duration of the curated tracklist
+      addNextValidTrack(track, curatedTracklist, tracklist);
       curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
-
-      // Update the last two tracks for the next iteration
       [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
     } else {
       // console.log(`🫧 General Rules Failed for ${track.name}`);
@@ -1395,6 +1377,8 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
           // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
         ) {
           addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
+          curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
+          [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
           geeseTrackCounter++;
           console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
           geeseTrackAdded = true;
