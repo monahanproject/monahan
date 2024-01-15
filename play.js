@@ -1329,8 +1329,8 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     for (const geeseTrack of geeseTracks) {
       console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
       if (
-        true
-        // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
+        // true
+        isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
       ) {
         if (curatedTracklistTotalTimeInSecs + (geeseTrack.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
           console.log(
@@ -1392,8 +1392,8 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
         console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
 
         if (
-          true
-          // isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
+          // true
+          isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
         ) {
           addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
           curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
@@ -1895,11 +1895,9 @@ function addOutrosAndCreditsToTracklist() {
 
 function handlePlayPauseClick() {
   if (firstPlay) {
-    if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
+    if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
       requestWakeLock();
     }
-
-
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
