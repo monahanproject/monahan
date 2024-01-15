@@ -3,6 +3,9 @@ const statusDiv = document.querySelector('#statusDiv');
 const reaquireCheckbox = document.querySelector('#reacquireCheckbox');
 const fullScreenButton = document.querySelector('#fullScreenButton');
 
+console.log("hello!");
+
+
 // Web Audio API setup
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let oscillator = null;
