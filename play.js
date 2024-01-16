@@ -26,6 +26,13 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 
 const soundCheckbox = document.querySelector('#sound');
 const fullscreenCheckbox = document.querySelector('#fullscreen');
+const wakeLockCheckbox = document.querySelector('#keep-awake');
+const wakeLockStatus = document.querySelector('#wakeLockStatus');
+
+// Function to update Wake Lock status on the screen
+const updateStatus = (message) => {
+    wakeLockStatus.textContent = `Wake Lock Status: ${message}`;
+};
 
 (() => {
     // Toggles fullscreen
@@ -43,34 +50,60 @@ const fullscreenCheckbox = document.querySelector('#fullscreen');
     }
 
     // Correct feature detection for the Wake Lock API
-    if ('wakeLock' in navigator) {
-        const wakeLockCheckbox = document.querySelector('#keep-awake');
+    if ('wakeLock' in navigator || 'getWakeLock' in navigator || 'WakeLock' in window) {
         wakeLockCheckbox.style.display = 'block';
         wakeLockCheckbox.labels[0].style.display = 'block';
         let wakeLock = null;
+        let controller = new AbortController();
 
         const requestWakeLock = async () => {
             try {
-                wakeLock = await navigator.wakeLock.request('screen');
-                console.log('Wake Lock is active');
-                wakeLockCheckbox.checked = true;
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                } else if ('getWakeLock' in navigator) {
+                    wakeLock = await navigator.getWakeLock('screen');
+                } else if ('WakeLock' in window) {
+                    controller = new AbortController();
+                    const signal = controller.signal;
+                    wakeLock = await window.WakeLock.request('screen', { signal });
+                }
+                updateStatus('Active');
             } catch (err) {
-                console.error('Failed to acquire wake lock:', err);
+                updateStatus(`Failed: ${err.message}`);
                 wakeLockCheckbox.checked = false;
+            }
+        };
+
+        const releaseWakeLock = () => {
+            if (wakeLock) {
+                if ('wakeLock' in navigator) {
+                    wakeLock.release();
+                } else {
+                    controller.abort(); // For window.WakeLock
+                }
+                wakeLock = null;
+                updateStatus('Inactive');
             }
         };
 
         wakeLockCheckbox.addEventListener('click', async () => {
             if (wakeLockCheckbox.checked) {
                 await requestWakeLock();
-            } else if (wakeLock) {
-                wakeLock.release();
-                wakeLock = null;
-                console.log('Wake Lock has been released');
+            } else {
+                releaseWakeLock();
             }
         });
+
+        // Initial status update
+        updateStatus('Inactive');
+    } else {
+        wakeLockCheckbox.remove();
+        wakeLockCheckbox.labels[0].remove();
+        updateStatus('Not Supported');
     }
 })();
+
+
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
