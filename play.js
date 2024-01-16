@@ -24,44 +24,31 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
-let wakeLock = null;
-let wakeLockActiveTime = 0;
-let wakeLockTimer = null;
-const statusDiv = document.getElementById("wakeLockStatus");
 
-const updateStatus = (isActive) => {
-  if (isActive) {
-    statusDiv.textContent = `Wake Lock Active: ${wakeLockActiveTime} seconds`;
-  } else {
-    statusDiv.textContent = "Wake Lock Inactive";
-  }
-};
-
-const startTimer = () => {
-  wakeLockActiveTime = 0;
-  wakeLockTimer = setInterval(() => {
-    wakeLockActiveTime++;
-    updateStatus(true);
-  }, 1000); // Update every second
-};
-
-const stopTimer = () => {
-  clearInterval(wakeLockTimer);
-  wakeLockTimer = null;
-  updateStatus(false);
-};
-
-async function requestWakeLock() {
-  try {
-    if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
-      wakeLock = await navigator.wakeLock.request("screen");
-      startTimer();
-    }
-    console.log("Wake Lock is active");
-  } catch (e) {
-    console.error(`Wake Lock error: ${e.name}, ${e.message}`);
-    stopTimer();
-  }
+if ('getWakeLock' in navigator) {
+  let wakeLockObj = null;
+  
+  navigator.getWakeLock('screen').then((wlObj) => {
+    wakeLockObj = wlObj;
+    let wakeLockRequest = null;
+    const toggleWakeLock = () => {
+      if (wakeLockRequest) {
+        wakeLockRequest.cancel();
+        wakeLockRequest = null;
+        return;
+      }
+      wakeLockRequest = wakeLockObj.createRequest();
+    };
+    
+    wakeLockCheckbox.addEventListener('click', () => {
+      toggleWakeLock();
+      return console.log(
+          `Wake lock is ${
+          wakeLockObj.active ? 'active' : 'not active'}`);
+    });
+  }).catch((err) => {
+    return console.error('Could not obtain wake lock', err);
+  });
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
