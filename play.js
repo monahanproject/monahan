@@ -24,32 +24,54 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
+const soundCheckbox = document.querySelector('#sound');
+const fullscreenCheckbox = document.querySelector('#fullscreen');
 
-if ('getWakeLock' in navigator) {
-  let wakeLockObj = null;
-  
-  navigator.getWakeLock('screen').then((wlObj) => {
-    wakeLockObj = wlObj;
-    let wakeLockRequest = null;
-    const toggleWakeLock = () => {
-      if (wakeLockRequest) {
-        wakeLockRequest.cancel();
-        wakeLockRequest = null;
-        return;
-      }
-      wakeLockRequest = wakeLockObj.createRequest();
-    };
-    
-    wakeLockCheckbox.addEventListener('click', () => {
-      toggleWakeLock();
-      return console.log(
-          `Wake lock is ${
-          wakeLockObj.active ? 'active' : 'not active'}`);
-    });
-  }).catch((err) => {
-    return console.error('Could not obtain wake lock', err);
-  });
-}
+(() => {
+    // Toggles fullscreen
+    if (document.fullscreenEnabled) {
+        fullscreenCheckbox.addEventListener('change', () => {
+            if (fullscreenCheckbox.checked) {
+                document.body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    } else {
+        fullscreenCheckbox.remove();
+        document.querySelector('label[for="fullscreen"]').remove();
+    }
+
+    // Correct feature detection for the Wake Lock API
+    if ('wakeLock' in navigator) {
+        const wakeLockCheckbox = document.querySelector('#keep-awake');
+        wakeLockCheckbox.style.display = 'block';
+        wakeLockCheckbox.labels[0].style.display = 'block';
+        let wakeLock = null;
+
+        const requestWakeLock = async () => {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+                console.log('Wake Lock is active');
+                wakeLockCheckbox.checked = true;
+            } catch (err) {
+                console.error('Failed to acquire wake lock:', err);
+                wakeLockCheckbox.checked = false;
+            }
+        };
+
+        wakeLockCheckbox.addEventListener('click', async () => {
+            if (wakeLockCheckbox.checked) {
+                await requestWakeLock();
+            } else if (wakeLock) {
+                wakeLock.release();
+                wakeLock = null;
+                console.log('Wake Lock has been released');
+            }
+        });
+    }
+})();
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
