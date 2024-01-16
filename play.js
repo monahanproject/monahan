@@ -1904,9 +1904,9 @@ function addOutrosAndCreditsToTracklist() {
 
 function handlePlayPauseClick() {
   if (firstPlay) {
-    if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
-      requestWakeLock();
-    }
+    // if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
+    //   requestWakeLock();
+    // }
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
