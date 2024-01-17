@@ -24,31 +24,85 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
-if ('getWakeLock' in navigator) {
-  let wakeLockObj = null;
-  
-  navigator.getWakeLock('screen').then((wlObj) => {
-    wakeLockObj = wlObj;
-    let wakeLockRequest = null;
-    const toggleWakeLock = () => {
-      if (wakeLockRequest) {
-        wakeLockRequest.cancel();
-        wakeLockRequest = null;
-        return;
-      }
-      wakeLockRequest = wakeLockObj.createRequest();
-    };
-    
-    wakeLockCheckbox.addEventListener('click', () => {
-      toggleWakeLock();
-      return console.log(
-          `Wake lock is ${
-          wakeLockObj.active ? 'active' : 'not active'}`);
-    });
-  }).catch((err) => {
-    return console.error('Could not obtain wake lock', err);
-  });
-}
+const soundCheckbox = document.querySelector('#sound');
+const fullscreenCheckbox = document.querySelector('#fullscreen');
+const wakeLockCheckbox = document.querySelector('#keep-awake');
+const wakeLockStatus = document.querySelector('#wakeLockStatus');
+
+// Function to update Wake Lock status on the screen
+const updateStatus = (message) => {
+    wakeLockStatus.textContent = `Wake Lock Status: ${message}`;
+};
+
+(() => {
+    // Toggles fullscreen
+    if (document.fullscreenEnabled) {
+        fullscreenCheckbox.addEventListener('change', () => {
+            if (fullscreenCheckbox.checked) {
+                document.body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    } else {
+        fullscreenCheckbox.remove();
+        document.querySelector('label[for="fullscreen"]').remove();
+    }
+
+    // Correct feature detection for the Wake Lock API
+    if ('wakeLock' in navigator || 'getWakeLock' in navigator || 'WakeLock' in window) {
+        wakeLockCheckbox.style.display = 'block';
+        wakeLockCheckbox.labels[0].style.display = 'block';
+        let wakeLock = null;
+        let controller = new AbortController();
+
+        const requestWakeLock = async () => {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                } else if ('getWakeLock' in navigator) {
+                    wakeLock = await navigator.getWakeLock('screen');
+                } else if ('WakeLock' in window) {
+                    controller = new AbortController();
+                    const signal = controller.signal;
+                    wakeLock = await window.WakeLock.request('screen', { signal });
+                }
+                updateStatus('Active');
+            } catch (err) {
+                updateStatus(`Failed: ${err.message}`);
+                wakeLockCheckbox.checked = false;
+            }
+        };
+
+        const releaseWakeLock = () => {
+            if (wakeLock) {
+                if ('wakeLock' in navigator) {
+                    wakeLock.release();
+                } else {
+                    controller.abort(); // For window.WakeLock
+                }
+                wakeLock = null;
+                updateStatus('Inactive');
+            }
+        };
+
+        wakeLockCheckbox.addEventListener('click', async () => {
+            if (wakeLockCheckbox.checked) {
+                await requestWakeLock();
+            } else {
+                releaseWakeLock();
+            }
+        });
+
+        // Initial status update
+        updateStatus('Inactive');
+    } else {
+        wakeLockCheckbox.remove();
+        wakeLockCheckbox.labels[0].remove();
+        updateStatus('Not Supported');
+    }
+})();
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
