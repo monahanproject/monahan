@@ -28,6 +28,7 @@ let wakeLock = null;
 let wakeLockActiveTime = 0;
 let wakeLockTimer = null;
 const statusDiv = document.getElementById("wakeLockStatus");
+const keepAwakeCheckbox = document.getElementById("keep-awake"); // Reference to your checkbox
 
 const updateStatus = (isActive) => {
   if (isActive) {
@@ -51,47 +52,37 @@ const stopTimer = () => {
   updateStatus(false);
 };
 
-// async function requestWakeLock() {
-//   try {
-//     if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
-//       wakeLock = await navigator.wakeLock.request("screen");
-//       startTimer();
-//     }
-//     console.log("Wake Lock is active");
-//   } catch (e) {
-//     console.error(`Wake Lock error: ${e.name}, ${e.message}`);
-//     stopTimer();
-//   }
-// }
-
 async function requestWakeLock() {
-  if ("getWakeLock" in navigator) {
-    let wakeLockObj = null;
-
-    navigator
-      .getWakeLock("screen")
-      .then((wlObj) => {
-        wakeLockObj = wlObj;
-        let wakeLockRequest = null;
-        const toggleWakeLock = () => {
-          if (wakeLockRequest) {
-            wakeLockRequest.cancel();
-            wakeLockRequest = null;
-            return;
-          }
-          wakeLockRequest = wakeLockObj.createRequest();
-        };
-
-        wakeLockCheckbox.addEventListener("click", () => {
-          toggleWakeLock();
-          return console.log(`Wake lock is ${wakeLockObj.active ? "active" : "not active"}`);
-        });
-      })
-      .catch((err) => {
-        return console.error("Could not obtain wake lock", err);
-      });
+  try {
+    if ("wakeLock" in navigator) {
+      wakeLock = await navigator.wakeLock.request("screen");
+      startTimer();
+      console.log("Wake Lock is active");
+    }
+  } catch (e) {
+    console.error(`Wake Lock error: ${e.name}, ${e.message}`);
+    stopTimer();
   }
 }
+
+async function releaseWakeLock() {
+  if (wakeLock != null) {
+    wakeLock.release();
+    wakeLock = null;
+    stopTimer();
+    console.log("Wake Lock is released");
+  }
+}
+
+// Event Listener for the checkbox
+keepAwakeCheckbox.addEventListener('change', async () => {
+  if (keepAwakeCheckbox.checked) {
+    await requestWakeLock();
+  } else {
+    await releaseWakeLock();
+  }
+});
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
