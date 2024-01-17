@@ -49,59 +49,56 @@ const updateStatus = (message) => {
         document.querySelector('label[for="fullscreen"]').remove();
     }
 
-    // Correct feature detection for the Wake Lock API
-    if ('wakeLock' in navigator || 'getWakeLock' in navigator || 'WakeLock' in window) {
+    let wakeLockObj = null;
+    let wakeLockRequest = null;
+
+    // Correct feature detection and handling for the Wake Lock API
+    if ('getWakeLock' in navigator || 'WakeLock' in window) {
         wakeLockCheckbox.style.display = 'block';
         wakeLockCheckbox.labels[0].style.display = 'block';
-        let wakeLock = null;
-        let controller = new AbortController();
 
-        const requestWakeLock = async () => {
-            try {
-                if ('wakeLock' in navigator) {
-                    wakeLock = await navigator.wakeLock.request('screen');
-                } else if ('getWakeLock' in navigator) {
-                    wakeLock = await navigator.getWakeLock('screen');
-                } else if ('WakeLock' in window) {
-                    controller = new AbortController();
-                    const signal = controller.signal;
-                    wakeLock = await window.WakeLock.request('screen', { signal });
-                }
-                updateStatus('Active');
-            } catch (err) {
-                updateStatus(`Failed: ${err.message}`);
-                wakeLockCheckbox.checked = false;
-            }
-        };
-
-        const releaseWakeLock = () => {
-            if (wakeLock) {
-                if ('wakeLock' in navigator) {
-                    wakeLock.release();
-                } else {
-                    controller.abort(); // For window.WakeLock
-                }
-                wakeLock = null;
+        const toggleWakeLock = () => {
+            if (wakeLockRequest) {
+                wakeLockRequest.cancel();
+                wakeLockRequest = null;
                 updateStatus('Inactive');
+                return;
+            }
+            if ('getWakeLock' in navigator) {
+                navigator.getWakeLock('screen').then((wlObj) => {
+                    wakeLockObj = wlObj;
+                    wakeLockRequest = wakeLockObj.createRequest();
+                    updateStatus('Active');
+                }).catch((err) => {
+                    updateStatus(`Failed: ${err.message}`);
+                });
+            } else if ('WakeLock' in window) {
+                let controller = new AbortController();
+                const signal = controller.signal;
+                window.WakeLock.request('screen', {signal})
+                    .then(() => {
+                        wakeLockRequest = controller;
+                        updateStatus('Active');
+                    })
+                    .catch((e) => {
+                        if (e.name === 'AbortError') {
+                            updateStatus('Aborted');
+                        } else {
+                            updateStatus(`Failed: ${e.message}`);
+                        }
+                    });
             }
         };
 
-        wakeLockCheckbox.addEventListener('click', async () => {
-            if (wakeLockCheckbox.checked) {
-                await requestWakeLock();
-            } else {
-                releaseWakeLock();
-            }
-        });
+        wakeLockCheckbox.addEventListener('click', toggleWakeLock);
 
-        // Initial status update
-        updateStatus('Inactive');
     } else {
         wakeLockCheckbox.remove();
         wakeLockCheckbox.labels[0].remove();
         updateStatus('Not Supported');
     }
 })();
+
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
