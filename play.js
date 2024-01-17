@@ -27,13 +27,13 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 let wakeLock = null;
 let wakeLockActiveTime = 0;
 let wakeLockTimer = null;
-const statusDiv = document.getElementById('wakeLockStatus');
+const statusDiv = document.getElementById("wakeLockStatus");
 
 const updateStatus = (isActive) => {
   if (isActive) {
     statusDiv.textContent = `Wake Lock Active: ${wakeLockActiveTime} seconds`;
   } else {
-    statusDiv.textContent = 'Wake Lock Inactive';
+    statusDiv.textContent = "Wake Lock Inactive";
   }
 };
 
@@ -51,41 +51,18 @@ const stopTimer = () => {
   updateStatus(false);
 };
 
-const requestWakeLock = async () => {
+async function requestWakeLock() {
   try {
-    if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
-      wakeLock = await navigator.wakeLock.request('screen');
-      startTimer();
-    } else if ('WakeLock' in window && 'request' in window.WakeLock) {
-      const controller = new AbortController();
-      const signal = controller.signal;
-      await window.WakeLock.request('screen', {signal});
+    if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
+      wakeLock = await navigator.wakeLock.request("screen");
       startTimer();
     }
-    console.log('Wake Lock is active');
+    console.log("Wake Lock is active");
   } catch (e) {
-    console.error(`${e.name}, ${e.message}`);
+    console.error(`Wake Lock error: ${e.name}, ${e.message}`);
     stopTimer();
   }
-};
-
-const handleVisibilityChange = () => {
-  if (document.visibilityState === 'visible') {
-    requestWakeLock();
-  }
-};
-
-document.addEventListener('visibilitychange', handleVisibilityChange);
-document.addEventListener('fullscreenchange', handleVisibilityChange);
-
-window.addEventListener("load", () => {
-  if (('WakeLock' in window && 'request' in window.WakeLock) || ('wakeLock' in navigator && 'request' in navigator.wakeLock)) {
-    requestWakeLock();
-  } else {  
-    console.error('Wake Lock API not supported.');
-    updateStatus(false);
-  }
-});
+}
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1919,9 +1896,9 @@ function addOutrosAndCreditsToTracklist() {
 
 function handlePlayPauseClick() {
   if (firstPlay) {
-    // if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
-    //   requestWakeLock();
-    // }
+    if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
+      requestWakeLock();
+    }
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
