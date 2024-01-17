@@ -24,86 +24,68 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
-const soundCheckbox = document.querySelector('#sound');
-const fullscreenCheckbox = document.querySelector('#fullscreen');
-const wakeLockCheckbox = document.querySelector('#keep-awake');
-const wakeLockStatus = document.querySelector('#wakeLockStatus');
+let wakeLock = null;
+let wakeLockActiveTime = 0;
+let wakeLockTimer = null;
+const statusDiv = document.getElementById('wakeLockStatus');
 
-// Function to update Wake Lock status on the screen
-const updateStatus = (message) => {
-    wakeLockStatus.textContent = `Wake Lock Status: ${message}`;
+const updateStatus = (isActive) => {
+  if (isActive) {
+    statusDiv.textContent = `Wake Lock Active: ${wakeLockActiveTime} seconds`;
+  } else {
+    statusDiv.textContent = 'Wake Lock Inactive';
+  }
 };
 
-((doc, win, nav) => {
-  'use strict';
+const startTimer = () => {
+  wakeLockActiveTime = 0;
+  wakeLockTimer = setInterval(() => {
+    wakeLockActiveTime++;
+    updateStatus(true);
+  }, 1000); // Update every second
+};
 
-  // Toggles fullscreen
-  if (doc.fullscreenEnabled) {
-    fullscreenCheckbox.addEventListener('change', () => {
-      if (fullscreenCheckbox.checked) {
-        doc.body.requestFullscreen();
-      } else {
-        doc.exitFullscreen();
-      }
-    });
-  } else {
-    fullscreenCheckbox.remove();
-    document.querySelector('label[for="fullscreen"]').remove();
-  }
+const stopTimer = () => {
+  clearInterval(wakeLockTimer);
+  wakeLockTimer = null;
+  updateStatus(false);
+};
 
-  if ('getWakeLock' in nav) {
-    wakeLockCheckbox.style.display = 'block';
-    wakeLockCheckbox.labels[0].style.display = 'block';
-    let wakeLockObj = null;
-    nav.getWakeLock('screen').then((wlObj) => {
-      wakeLockObj = wlObj;
-      let wakeLockRequest = null;
-      const toggleWakeLock = () => {
-        if (wakeLockRequest) {
-          wakeLockRequest.cancel();
-          wakeLockRequest = null;
-          return;
-        }
-        wakeLockRequest = wakeLockObj.createRequest();
-      };
-      wakeLockCheckbox.addEventListener('click', () => {
-        toggleWakeLock();
-        return console.log(
-            `Wake lock is ${wakeLockObj.active ? 'active' : 'not active'}`);
-      });
-    }).catch((err) => {
-      return console.error('Could not obtain wake lock', err);
-    });
-  } else if ('WakeLock' in win) {
-    wakeLockCheckbox.style.display = 'block';
-    wakeLockCheckbox.labels[0].style.display = 'block';
-
-    let controller = new AbortController();
-    const requestWakeLock = () => {
-      controller = new AbortController();
+const requestWakeLock = async () => {
+  try {
+    if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      startTimer();
+    } else if ('WakeLock' in window && 'request' in window.WakeLock) {
+      const controller = new AbortController();
       const signal = controller.signal;
-      win.WakeLock.request('screen', {signal})
-      .catch((e) => {
-        if (e.name === 'AbortError') {
-          console.log('Wake Lock was aborted');
-        } else {
-          console.error(e.name, e.message);
-        }
-        wakeLockCheckbox.checked = false;
-        return;
-      });
-      console.log('Wake Lock is active');
-      wakeLockCheckbox.checked = true;
-    };
-
-    wakeLockCheckbox.addEventListener('click', () => {
-      if (wakeLockCheckbox.checked) {
-        return requestWakeLock();
-      }
-      return controller.abort();
-    });
+      await window.WakeLock.request('screen', {signal});
+      startTimer();
+    }
+    console.log('Wake Lock is active');
+  } catch (e) {
+    console.error(`${e.name}, ${e.message}`);
+    stopTimer();
   }
-})(document, window, navigator);
+};
+
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    requestWakeLock();
+  }
+};
+
+document.addEventListener('visibilitychange', handleVisibilityChange);
+document.addEventListener('fullscreenchange', handleVisibilityChange);
+
+window.addEventListener("load", () => {
+  if (('WakeLock' in window && 'request' in window.WakeLock) || ('wakeLock' in navigator && 'request' in navigator.wakeLock)) {
+    requestWakeLock();
+  } else {  
+    console.error('Wake Lock API not supported.');
+    updateStatus(false);
+  }
+});
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
