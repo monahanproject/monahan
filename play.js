@@ -1316,7 +1316,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
       console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
       if (
         // true
-        isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
+        isTrackValidForGeneralRules(geeseTrack, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
       ) {
         if (curatedTracklistTotalTimeInSecs + (geeseTrack.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
           console.log(
