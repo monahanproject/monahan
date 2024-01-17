@@ -34,60 +34,76 @@ const updateStatus = (message) => {
     wakeLockStatus.textContent = `Wake Lock Status: ${message}`;
 };
 
-(() => {
-    // Toggles fullscreen
-    if (document.fullscreenEnabled) {
-        fullscreenCheckbox.addEventListener('change', () => {
-            if (fullscreenCheckbox.checked) {
-                document.body.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
-        });
-    } else {
-        fullscreenCheckbox.remove();
-        document.querySelector('label[for="fullscreen"]').remove();
-    }
+((doc, win, nav) => {
+  'use strict';
 
-    // Wake Lock handling
-    if ('wakeLock' in navigator) {
-        wakeLockCheckbox.style.display = 'block';
-        wakeLockCheckbox.labels[0].style.display = 'block';
-        let wakeLock = null;
+  // Toggles fullscreen
+  if (doc.fullscreenEnabled) {
+    fullscreenCheckbox.addEventListener('change', () => {
+      if (fullscreenCheckbox.checked) {
+        doc.body.requestFullscreen();
+      } else {
+        doc.exitFullscreen();
+      }
+    });
+  } else {
+    fullscreenCheckbox.remove();
+    document.querySelector('label[for="fullscreen"]').remove();
+  }
 
-        const requestWakeLock = async () => {
-            try {
-                wakeLock = await navigator.wakeLock.request('screen');
-                updateStatus('Active');
-            } catch (err) {
-                updateStatus(`Failed: ${err.message}`);
-                wakeLockCheckbox.checked = false;
-            }
-        };
+  if ('getWakeLock' in nav) {
+    wakeLockCheckbox.style.display = 'block';
+    wakeLockCheckbox.labels[0].style.display = 'block';
+    let wakeLockObj = null;
+    nav.getWakeLock('screen').then((wlObj) => {
+      wakeLockObj = wlObj;
+      let wakeLockRequest = null;
+      const toggleWakeLock = () => {
+        if (wakeLockRequest) {
+          wakeLockRequest.cancel();
+          wakeLockRequest = null;
+          return;
+        }
+        wakeLockRequest = wakeLockObj.createRequest();
+      };
+      wakeLockCheckbox.addEventListener('click', () => {
+        toggleWakeLock();
+        return console.log(
+            `Wake lock is ${wakeLockObj.active ? 'active' : 'not active'}`);
+      });
+    }).catch((err) => {
+      return console.error('Could not obtain wake lock', err);
+    });
+  } else if ('WakeLock' in win) {
+    wakeLockCheckbox.style.display = 'block';
+    wakeLockCheckbox.labels[0].style.display = 'block';
 
-        const releaseWakeLock = () => {
-            if (wakeLock) {
-                wakeLock.release();
-                wakeLock = null;
-                updateStatus('Inactive');
-            }
-        };
+    let controller = new AbortController();
+    const requestWakeLock = () => {
+      controller = new AbortController();
+      const signal = controller.signal;
+      win.WakeLock.request('screen', {signal})
+      .catch((e) => {
+        if (e.name === 'AbortError') {
+          console.log('Wake Lock was aborted');
+        } else {
+          console.error(e.name, e.message);
+        }
+        wakeLockCheckbox.checked = false;
+        return;
+      });
+      console.log('Wake Lock is active');
+      wakeLockCheckbox.checked = true;
+    };
 
-        wakeLockCheckbox.addEventListener('click', () => {
-            if (wakeLockCheckbox.checked) {
-                requestWakeLock();
-            } else {
-                releaseWakeLock();
-            }
-        });
-    } else {
-        wakeLockCheckbox.remove();
-        wakeLockCheckbox.labels[0].remove();
-        updateStatus('Not Supported');
-    }
-})();
-
-
+    wakeLockCheckbox.addEventListener('click', () => {
+      if (wakeLockCheckbox.checked) {
+        return requestWakeLock();
+      }
+      return controller.abort();
+    });
+  }
+})(document, window, navigator);
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
