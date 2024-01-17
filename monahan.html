@@ -36,13 +36,19 @@
   </head>
 
   <body class="preload">
-    <div id="wakeLockStatus" style="position: fixed; top: 0; width: 100%; background-color: lightgray; text-align: center; padding: 5px;">
+    <div id="" style="position: fixed; top: 0; width: 100%; background-color: lightgray; text-align: center; padding: 5px">
       Wake Lock Status: Inactive
 
-
-      <input type="checkbox" id="sound"><label class="settings" for="sound">🔊Sound</label>
-      <input type="checkbox" id="fullscreen"><label class="settings" for="fullscreen">💢Fullscreen</label>
-      <input type="checkbox" id="keep-awake"><label class="settings" for="keep-awake">☕️Keep screen on</label>
+      <p id="wakeLockStatus"></p>
+      <div
+        style="display: flex; flex-wrap: nowrap; flex-direction: row; align-content: flex-end; justify-content: space-between; align-items: center">
+        <input type="checkbox" id="keep-awake" /><label class="settings" for="keep-awake">☕️Keep on</label>
+        <input type="checkbox" id="sound" /><label class="settings" for="sound">🔊Sound</label> <input type="checkbox" id="fullscreen" /><label
+          class="settings"
+          for="fullscreen"
+          >💢Fullscreen</label
+        >
+      </div>
     </div>
     <main id="playerPageMain">
       <section id="landingPage" class="page">
@@ -81,8 +87,6 @@
         <!-- <div class="pageContent"> -->
 
         <div id="audio-player-container">
-
-
           <button type="button" id="play-button" class="play-icon">
             <span id="play-button-svg-container">
               <img src="images/icons/playButton.svg" alt="Play" class="svg-icon" />
@@ -90,7 +94,6 @@
             <span id="play-button-text-container">BEGIN</span>
           </button>
           <div id="button-container">
-
             <button type="button" id="skipBackwardButton" class="skip-button">
               <span id="skip-backward-button-svg-container">
                 <img src="images/svg/15s.svg" alt="Skip Backward" class="svg-icon" />
@@ -102,7 +105,6 @@
                 <img src="images/svg/30s.svg" alt="Skip Forward" class="svg-icon" />
               </span>
             </button>
-            
           </div>
           <div id="playerTrackNameContainer"><p id="playerTrackName"></p></div>
 
@@ -182,12 +184,13 @@
             <h3 id="monH2">MONAHAN</h3>
           </div>
           <div class="textBoxDiv">
-          <p>A sound piece for curious ears.</p>
-          <p>Experience the site anew with each visit through dozens of sounds and stories gathered for the Monahan wetlands.</p>
-          <p>
-            Delve into sounds that explore movement, migration, story as medicine, non-human beings, plants as healers, voice, translation, and place.
-          </p>
-        </div>
+            <p>A sound piece for curious ears.</p>
+            <p>Experience the site anew with each visit through dozens of sounds and stories gathered for the Monahan wetlands.</p>
+            <p>
+              Delve into sounds that explore movement, migration, story as medicine, non-human beings, plants as healers, voice, translation, and
+              place.
+            </p>
+          </div>
           <div class="svg-container"></div>
 
           <!-- <img src="images/icons/border.svg" alt="" class="decorativeImage" /> -->
