@@ -5,15 +5,19 @@ const fullScreenButton = document.querySelector('#fullScreenButton');
 
 console.log("hello!");
 
-
 // Web Audio API setup
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let oscillator = null;
 
 function startSound() {
+  // Resume AudioContext if it's suspended
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+
   oscillator = audioContext.createOscillator();
-  oscillator.type = 'sine'; // You can change this to 'square', 'sawtooth', 'triangle'
-  oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Frequency in Hertz
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
   oscillator.connect(audioContext.destination);
   oscillator.start();
 }
@@ -23,6 +27,11 @@ function stopSound() {
     oscillator.stop();
     oscillator.disconnect();
   }
+
+  // Optionally suspend the AudioContext
+  // if (audioContext.state === 'running') {
+  //   audioContext.suspend();
+  // }
 }
 
 fullScreenButton.addEventListener('click', () => {
@@ -43,6 +52,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     const signal = controller.signal;
     window.WakeLock.request('screen', {signal})
       .then(() => {
+        console.log("Start sound");
         startSound(); // Start sound when wake lock is active
       })
       .catch((e) => {      
@@ -63,9 +73,21 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
   
   wakeLockCheckbox.addEventListener('change', () => {
     if (wakeLockCheckbox.checked) {
-      wakeLock = requestWakeLock();
+      // User interaction starts here
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => {
+          console.log('AudioContext resumed!');
+          startSound(); // Start sound after resuming AudioContext
+          wakeLock = requestWakeLock(); // Request wake lock after starting sound
+        });
+      } else {
+        startSound(); // Start sound directly if AudioContext is running
+        wakeLock = requestWakeLock();
+      }
     } else {
-      wakeLock.abort();
+      if (wakeLock) {
+        wakeLock.abort(); // Abort wake lock when unchecked
+      }
       stopSound(); // Stop sound when wake lock is not active
       wakeLock = null;
     }
@@ -121,11 +143,18 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     }
   });
   
-  const handleVisibilityChange = () => {    
-    if (wakeLock !== null && document.visibilityState === 'visible') {
-      requestWakeLock();
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'visible') {
+      // Resume AudioContext and reacquire wake lock if needed
+      if (wakeLock !== null) {
+        wakeLock = requestWakeLock();
+      }
+      startSound(); // This will also resume the AudioContext
+    } else {
+      // Optionally, stop sound when the tab goes into the background
+      // stopSound();
     }
-  };    
+  };   
   
   reaquireCheckbox.addEventListener('change', () => {
     if (reaquireCheckbox.checked) {
