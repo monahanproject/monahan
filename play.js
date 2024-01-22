@@ -24,18 +24,15 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
+
+
 let wakeLock = null;
 let wakeLockActiveTime = 0;
 let wakeLockTimer = null;
 const statusDiv = document.getElementById("wakeLockStatus");
-const keepAwakeCheckbox = document.getElementById("keep-awake"); // Reference to your checkbox
 
 const updateStatus = (isActive) => {
-  if (isActive) {
-    statusDiv.textContent = `Wake Lock Active: ${wakeLockActiveTime} seconds`;
-  } else {
-    statusDiv.textContent = "Wake Lock Inactive";
-  }
+  statusDiv.textContent = isActive ? `Wake Lock Active: ${wakeLockActiveTime} seconds` : "Wake Lock Inactive";
 };
 
 const startTimer = () => {
@@ -43,7 +40,7 @@ const startTimer = () => {
   wakeLockTimer = setInterval(() => {
     wakeLockActiveTime++;
     updateStatus(true);
-  }, 1000); // Update every second
+  }, 1000);
 };
 
 const stopTimer = () => {
@@ -74,14 +71,7 @@ async function releaseWakeLock() {
   }
 }
 
-// Event Listener for the checkbox
-keepAwakeCheckbox.addEventListener("change", async () => {
-  if (keepAwakeCheckbox.checked) {
-    await requestWakeLock();
-  } else {
-    await releaseWakeLock();
-  }
-});
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -1912,22 +1902,6 @@ function addOutrosAndCreditsToTracklist() {
   curatedTracklist.push(...finalOutroAudioSounds.map(addAudioFromUrl));
 }
 
-const SSE_URL = "https://stream.wikimedia.org/v2/stream/recentchange";
-const soundCheckbox = document.getElementById("keep-awake"); // Reference to your checkbox
-
-
-let voices = speechSynthesis.getVoices().reduce((acc, voice) => {
-  acc[voice.lang.substr(0, 2)] = voice;
-  return acc;
-}, {});
-
-speechSynthesis.onvoiceschanged = () => {
-  voices = speechSynthesis.getVoices().reduce((acc, voice) => {
-    acc[voice.lang.substr(0, 2)] = voice;
-    return acc;
-  }, {});
-};
-
 function handlePlayPauseClick() {
   if (firstPlay) {
     // Existing wake lock code
@@ -1944,39 +1918,6 @@ function handlePlayPauseClick() {
     audioContext.resume();
     isValidTracklist(curatedTracklist);
 
-    // Integrate the Wikipedia change streaming
-    const eventSource = new EventSource(SSE_URL);
-    eventSource.onmessage = (e) => {
-      console.log("yo");
-      const data = JSON.parse(e.data);
-      if (data.type === "edit" && !data.bot && data.namespace === 0 && data.wiki !== "wikidatawiki") {
-        const language = data.wiki.replace("wiki", "");
-        const voice = voices[language] || voices["en"];
-        if (voice && !speechSynthesis.speaking && !speechSynthesis.pending) {
-          const utterance = new SpeechSynthesisUtterance(data.title);
-          utterance.voice = voice;
-          utterance.volume = soundCheckbox.checked ? 1 : 0;
-          speechSynthesis.speak(utterance);
-        }
-      }
-    };
-
-    // Integrated wake lock functionality
-    // const wakeLockCheckbox = document.querySelector("#keep-awake");
-    // if (wakeLockCheckbox && "wakeLock" in navigator) {
-    //   wakeLockCheckbox.addEventListener("click", async () => {
-    //     if (wakeLockRequest) {
-    //       wakeLockRequest.cancel();
-    //       wakeLockRequest = null;
-    //     } else {
-    //       try {
-    //         wakeLockRequest = await navigator.wakeLock.request("screen");
-    //       } catch (err) {
-    //         console.error("Wake lock could not be activated:", err);
-    //       }
-    //     }
-    //   });
-    // }
 
     firstPlay = false; // Set firstPlay to false after handling the first play
   } else {
@@ -1996,3 +1937,64 @@ function handlePlayPauseClick() {
     }
   }
 }
+
+
+((doc, win, nav) => {
+  'use strict';
+
+  const SSE_URL = 'https://stream.wikimedia.org/v2/stream/recentchange';
+  const soundCheckbox = doc.querySelector('#sound');
+
+  let voices = speechSynthesis.getVoices().reduce((acc, voice) => {
+    acc[voice.lang.substr(0, 2)] = voice;
+    return acc;
+  }, {});
+
+  speechSynthesis.onvoiceschanged = () => {
+    voices = speechSynthesis.getVoices().reduce((acc, voice) => {
+      acc[voice.lang.substr(0, 2)] = voice;
+      return acc;
+    }, {});
+  };
+
+  const eventSource = new EventSource(SSE_URL);
+  eventSource.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    if (data.type === 'edit' && !data.bot && data.namespace === 0 && data.wiki !== 'wikidatawiki') {
+      const language = data.wiki.replace('wiki', '');
+      const voice = voices[language] || voices['en'];
+      if (voice && !speechSynthesis.speaking && !speechSynthesis.pending) {
+        const utterance = new SpeechSynthesisUtterance(data.title);
+        utterance.voice = voice;
+        utterance.volume = soundCheckbox.checked ? 1 : 0;
+        speechSynthesis.speak(utterance);
+      }
+    }
+  };
+
+  soundCheckbox.addEventListener('click', () => {
+    if (soundCheckbox.checked && !speechSynthesis.speaking) {
+      const testUtterance = new SpeechSynthesisUtterance('Sound is on');
+      speechSynthesis.speak(testUtterance);
+    }
+  });
+
+  const wakeLockCheckbox = doc.querySelector('#keep-awake');
+  let wakeLockRequest = null;
+
+  if (wakeLockCheckbox && 'wakeLock' in nav) {
+    wakeLockCheckbox.addEventListener('click', async () => {
+      if (wakeLockRequest) {
+        wakeLockRequest.cancel();
+        wakeLockRequest = null;
+      } else {
+        try {
+          wakeLockRequest = await nav.wakeLock.request('screen');
+        } catch (err) {
+          console.error('Wake lock could not be activated:', err);
+        }
+      }
+    });
+  }
+
+})(document, window, navigator);
