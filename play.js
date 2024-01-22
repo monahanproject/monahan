@@ -75,14 +75,13 @@ async function releaseWakeLock() {
 }
 
 // Event Listener for the checkbox
-keepAwakeCheckbox.addEventListener('change', async () => {
+keepAwakeCheckbox.addEventListener("change", async () => {
   if (keepAwakeCheckbox.checked) {
     await requestWakeLock();
   } else {
     await releaseWakeLock();
   }
 });
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -1913,8 +1912,25 @@ function addOutrosAndCreditsToTracklist() {
   curatedTracklist.push(...finalOutroAudioSounds.map(addAudioFromUrl));
 }
 
+const SSE_URL = "https://stream.wikimedia.org/v2/stream/recentchange";
+const soundCheckbox = document.getElementById("keep-awake"); // Reference to your checkbox
+
+
+let voices = speechSynthesis.getVoices().reduce((acc, voice) => {
+  acc[voice.lang.substr(0, 2)] = voice;
+  return acc;
+}, {});
+
+speechSynthesis.onvoiceschanged = () => {
+  voices = speechSynthesis.getVoices().reduce((acc, voice) => {
+    acc[voice.lang.substr(0, 2)] = voice;
+    return acc;
+  }, {});
+};
+
 function handlePlayPauseClick() {
   if (firstPlay) {
+    // Existing wake lock code
     if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
       requestWakeLock();
     }
@@ -1927,6 +1943,40 @@ function handlePlayPauseClick() {
     playerPlayState = "play";
     audioContext.resume();
     isValidTracklist(curatedTracklist);
+
+    // Integrate the Wikipedia change streaming
+    const eventSource = new EventSource(SSE_URL);
+    eventSource.onmessage = (e) => {
+      console.log("yo");
+      const data = JSON.parse(e.data);
+      if (data.type === "edit" && !data.bot && data.namespace === 0 && data.wiki !== "wikidatawiki") {
+        const language = data.wiki.replace("wiki", "");
+        const voice = voices[language] || voices["en"];
+        if (voice && !speechSynthesis.speaking && !speechSynthesis.pending) {
+          const utterance = new SpeechSynthesisUtterance(data.title);
+          utterance.voice = voice;
+          utterance.volume = soundCheckbox.checked ? 1 : 0;
+          speechSynthesis.speak(utterance);
+        }
+      }
+    };
+
+    // Integrated wake lock functionality
+    // const wakeLockCheckbox = document.querySelector("#keep-awake");
+    // if (wakeLockCheckbox && "wakeLock" in navigator) {
+    //   wakeLockCheckbox.addEventListener("click", async () => {
+    //     if (wakeLockRequest) {
+    //       wakeLockRequest.cancel();
+    //       wakeLockRequest = null;
+    //     } else {
+    //       try {
+    //         wakeLockRequest = await navigator.wakeLock.request("screen");
+    //       } catch (err) {
+    //         console.error("Wake lock could not be activated:", err);
+    //       }
+    //     }
+    //   });
+    // }
 
     firstPlay = false; // Set firstPlay to false after handling the first play
   } else {
