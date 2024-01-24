@@ -24,53 +24,30 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXX WAKELOCK  XXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
+// Wake lock functionality
+const requestWakeLock = async () => {
+  if ("wakeLock" in navigator) {
+    try {
+      const wakeLockRequest = await navigator.wakeLock.request("screen");
+      console.log("Wake lock activated.");
 
-
-let wakeLock = null;
-let wakeLockActiveTime = 0;
-let wakeLockTimer = null;
-const statusDiv = document.getElementById("wakeLockStatus");
-
-const updateStatus = (isActive) => {
-  statusDiv.textContent = isActive ? `Wake Lock Active: ${wakeLockActiveTime} seconds` : "Wake Lock Inactive";
-};
-
-const startTimer = () => {
-  wakeLockActiveTime = 0;
-  wakeLockTimer = setInterval(() => {
-    wakeLockActiveTime++;
-    updateStatus(true);
-  }, 1000);
-};
-
-const stopTimer = () => {
-  clearInterval(wakeLockTimer);
-  wakeLockTimer = null;
-  updateStatus(false);
-};
-
-async function requestWakeLock() {
-  try {
-    if ("wakeLock" in navigator) {
-      wakeLock = await navigator.wakeLock.request("screen");
-      startTimer();
-      console.log("Wake Lock is active");
+      // Re-request the wake lock if the visibility state changes
+      document.addEventListener("visibilitychange", async () => {
+        if (document.visibilityState === "visible" && !wakeLockRequest) {
+          wakeLockRequest = await navigator.wakeLock.request("screen");
+          console.log("Wake lock re-activated.");
+        }
+      });
+    } catch (err) {
+      console.error("Wake lock could not be activated:", err);
     }
-  } catch (e) {
-    console.error(`Wake Lock error: ${e.name}, ${e.message}`);
-    stopTimer();
+  } else {
+    console.warn("Wake lock API not available.");
   }
-}
+};
 
-async function releaseWakeLock() {
-  if (wakeLock != null) {
-    wakeLock.release();
-    wakeLock = null;
-    stopTimer();
-    console.log("Wake Lock is released");
-  }
-}
-
+// Request wake lock on page load
+requestWakeLock();
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
