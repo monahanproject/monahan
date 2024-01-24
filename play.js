@@ -1835,27 +1835,7 @@ function checkPlaylistRules(playlist) {
 let firstPlay = true;
 var playButtonTextContainer = document.getElementById("play-button-text-container");
 
-async function requestWakeLock() {
-  try {
-    if ('wakeLock' in navigator) {
-      wakeLock = await navigator.wakeLock.request('screen');
-      startTimer();
-      console.log('Wake Lock is active');
-    }
-  } catch (e) {
-    console.error(`Wake Lock error: ${e.name}, ${e.message}`);
-    stopTimer();
-  }
-}
 
-async function releaseWakeLock() {
-  if (wakeLock != null) {
-    wakeLock.release();
-    wakeLock = null;
-    stopTimer();
-    console.log('Wake Lock is released');
-  }
-}
 
 
 const playingSVG = `<img id="play-icon" class="svg-icon" src="images/icons/playButton.svg" alt="Play Icon">`;
@@ -1905,13 +1885,7 @@ function addOutrosAndCreditsToTracklist() {
 function handlePlayPauseClick() {
   if (firstPlay) {
 
-    requestWakeLock(); // Request wake lock on first play
-
-    const initUtterance = new SpeechSynthesisUtterance('Initializing playback');
-    initUtterance.volume = 0; // Mute the speech
-    speechSynthesis.speak(initUtterance);
-
-    // speechSynthesis.speak(new SpeechSynthesisUtterance('Starting playback'));
+    requestWakeLock();
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
@@ -1941,49 +1915,4 @@ function handlePlayPauseClick() {
     }
   }
 }
-// SSE and Speech Synthesis Setup
-((doc, win, nav) => {
-  'use strict';
-
-  const SSE_URL = 'https://stream.wikimedia.org/v2/stream/recentchange';
-
-  // Initialize voices for speech synthesis
-  let voices = speechSynthesis.getVoices().reduce((acc, voice) => {
-    acc[voice.lang.substr(0, 2)] = voice;
-    return acc;
-  }, {});
-  console.log('Initial voices loaded:', voices);
-
-  // Update voices when they change
-  speechSynthesis.onvoiceschanged = () => {
-    voices = speechSynthesis.getVoices().reduce((acc, voice) => {
-      acc[voice.lang.substr(0, 2)] = voice;
-      return acc;
-    }, {});
-    console.log('Voices updated:', voices);
-  };
-
-  // Setup SSE to listen for changes on Wikimedia
-  const eventSource = new EventSource(SSE_URL);
-  eventSource.onmessage = (e) => {
-    const data = JSON.parse(e.data);
-
-    // Filter for 'edit' events, excluding bots and certain wikis
-    if (data.type === 'edit' && !data.bot && data.namespace === 0 && data.wiki !== 'wikidatawiki') {
-      const language = data.wiki.replace('wiki', '');
-      const voice = voices[language] || voices['en'];
-      console.log(`Language: ${language}, Using voice:`, voice);
-
-      // Speak the title of the edited article with very low volume
-      if (voice && !speechSynthesis.speaking && !speechSynthesis.pending) {
-        const utterance = new SpeechSynthesisUtterance(data.title);
-        utterance.voice = voice;
-        utterance.volume = 0.05; // Further reduce the volume
-        speechSynthesis.speak(utterance);
-        console.log('Speaking:', data.title);
-      }
-    }
-  };
-
-})(document, window, navigator);
 
