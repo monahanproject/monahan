@@ -1858,8 +1858,6 @@ function checkPlaylistRules(playlist) {
 let firstPlay = true;
 var playButtonTextContainer = document.getElementById("play-button-text-container");
 
-
-
 async function requestWakeLock() {
   try {
     if ('wakeLock' in navigator) {
@@ -1881,9 +1879,6 @@ async function releaseWakeLock() {
     console.log('Wake Lock is released');
   }
 }
-
-
-
 
 
 const playingSVG = `<img id="play-icon" class="svg-icon" src="images/icons/playButton.svg" alt="Play Icon">`;
@@ -1940,11 +1935,6 @@ function handlePlayPauseClick() {
     speechSynthesis.speak(initUtterance);
 
     // speechSynthesis.speak(new SpeechSynthesisUtterance('Starting playback'));
-
-    // // Existing wake lock code
-    // if ("wakeLock" in navigator && "request" in navigator.wakeLock) {
-    //   requestWakeLock();
-    // }
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
