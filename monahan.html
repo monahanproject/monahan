@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link href="styles.css" rel="stylesheet" type="text/css" /> -->
+    <link href="styles.css" rel="stylesheet" type="text/css" />
     <!-- <link href="stylez.css" rel="stylesheet" type="text/css" /> -->
 
     <link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet" />
@@ -28,11 +28,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <!-- <link rel="manifest" href="/site.webmanifest"> -->
 
-    <!-- <script>
+    <script>
       window.addEventListener("load", (event) => {
         document.body.classList.remove("preload");
       });
-    </script> -->
+    </script>
   </head>
 
   <body class="preload">
@@ -42,7 +42,7 @@
       <p id="wakeLockStatus"></p>
       <div
         style="display: flex; flex-wrap: nowrap; flex-direction: row; align-content: flex-end; justify-content: space-between; align-items: center">
-        <p>onwards!!!</p>
+        <p>friend!!!</p>
         <audio id="background-music" loop>
           <source src="wikipedia-screensaver-masterr/025_1.WAV" type="audio/wav" />
           Your browser does not support the audio element.
@@ -51,10 +51,10 @@
       </div>
     </div>
 
-    <!-- <div id="wakeLockStatus" style="position: fixed; top: 0; width: 100%; background-color: lightgray; text-align: center; padding: 5px;">
+    <div id="wakeLockStatus" style="position: fixed; top: 0; width: 100%; background-color: lightgray; text-align: center; padding: 5px">
       Wake Lock Status: Inactive
-    </div> -->
-    <!-- <main id="playerPageMain">
+    </div>
+    <main id="playerPageMain">
       <section id="landingPage" class="page">
         <p>MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.</p>
         <div id="titleText">
@@ -88,7 +88,6 @@
       </section>
 
       <section id="playerPage" class="page">
-
         <div id="audio-player-container">
           <button type="button" id="play-button" class="play-icon">
             <span id="play-button-svg-container">
@@ -190,7 +189,6 @@
             </p>
           </div>
           <div class="svg-container"></div>
-
         </div>
       </section>
 
@@ -320,7 +318,7 @@
           <p>Thank you for visiting MONAHAN.  We hope you will return for a different experience!</p>
         </div>
       </section>
-    </main> -->
+    </main>
 
     <!-- <footer>
       <div id="scriptOutputContainer"></div>
@@ -334,60 +332,56 @@
       window.addEventListener("load", () => {});
     </script> -->
 
-
     <script>
       // "use strict";
-    
 
+      // Background music
+      const backgroundMusic = document.querySelector("#background-music");
+      console.log("Background music element:", backgroundMusic);
 
-
-
-
-    // Background music
-    const backgroundMusic = document.querySelector("#background-music");
-    console.log("Background music element:", backgroundMusic);
-    
-    // Function to play background music
-    const playBackgroundMusic = () => {
-      if (backgroundMusic) {
-        console.log("Attempting to play background music");
-        backgroundMusic.play().then(() => {
-          console.log("Background music playing");
-        }).catch((err) => {
-          console.error("Background music could not be played:", err);
-        });
-      } else {
-        console.error("Background music element not found");
-      }
-    };
-    
-    document.addEventListener("click", () => {
-      console.log("Document clicked");
-      playBackgroundMusic();
-    }, { once: true });
-    
-    // Wake lock functionality
-    const requestWakeLock = async () => {
-      if ("wakeLock" in navigator) {
-        console.log("Wake lock API available");
-        try {
-          const wakeLockRequest = await navigator.wakeLock.request("screen");
-          console.log("Wake lock activated.");
-        } catch (err) {
-          console.error("Wake lock could not be activated:", err);
+      // Function to play background music
+      const playBackgroundMusic = () => {
+        if (backgroundMusic) {
+          console.log("Attempting to play background music");
+          backgroundMusic
+            .play()
+            .then(() => {
+              console.log("Background music playing");
+            })
+            .catch((err) => {
+              console.error("Background music could not be played:", err);
+            });
+        } else {
+          console.error("Background music element not found");
         }
-      } else {
-        console.warn("Wake lock API not available.");
-      }
-    };
-    
-    // Request wake lock on page load
-    requestWakeLock();
-    
+      };
+
+      document.addEventListener(
+        "click",
+        () => {
+          console.log("Document clicked");
+          playBackgroundMusic();
+        },
+        { once: true }
+      );
+
+      // Wake lock functionality
+      const requestWakeLock = async () => {
+        if ("wakeLock" in navigator) {
+          console.log("Wake lock API available");
+          try {
+            const wakeLockRequest = await navigator.wakeLock.request("screen");
+            console.log("Wake lock activated.");
+          } catch (err) {
+            console.error("Wake lock could not be activated:", err);
+          }
+        } else {
+          console.warn("Wake lock API not available.");
+        }
+      };
+
+      // Request wake lock on page load
+      requestWakeLock();
     </script>
-
-
-
   </body>
-  <footer></footer>
 </html>
