@@ -1,5 +1,56 @@
 // need to add the credit durations to the duration
 
+   // "use strict";
+
+      // Background music
+      const backgroundMusic = document.querySelector("#background-music");
+      console.log("Background music element:", backgroundMusic);
+
+      // Function to play background music
+      const playBackgroundMusic = () => {
+        if (backgroundMusic) {
+          console.log("Attempting to play background music");
+          backgroundMusic
+            .play()
+            .then(() => {
+              console.log("Background music playing");
+            })
+            .catch((err) => {
+              console.error("Background music could not be played:", err);
+            });
+        } else {
+          console.error("Background music element not found");
+        }
+      };
+
+      document.addEventListener(
+        "click",
+        () => {
+          console.log("Document clicked");
+          playBackgroundMusic();
+        },
+        { once: true }
+      );
+
+      // Wake lock functionality
+      const requestWakeLock = async () => {
+        if ("wakeLock" in navigator) {
+          console.log("Wake lock API available");
+          try {
+            const wakeLockRequest = await navigator.wakeLock.request("screen");
+            console.log("Wake lock activated.");
+          } catch (err) {
+            console.error("Wake lock could not be activated:", err);
+          }
+        } else {
+          console.warn("Wake lock API not available.");
+        }
+      };
+
+      // Request wake lock on page load
+      requestWakeLock();
+
+
 console.log("hi");
 
 var myLang = localStorage["lang"] || "defaultValue";
@@ -1915,4 +1966,8 @@ function handlePlayPauseClick() {
     }
   }
 }
+
+
+
+
 
