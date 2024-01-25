@@ -1,5 +1,6 @@
 // need to add the credit durations to the duration
 
+
    // "use strict";
 
       // Background music
@@ -27,7 +28,7 @@
         "click",
         () => {
           console.log("Document clicked");
-          playBackgroundMusic();
+          // playBackgroundMusic();
         },
         { once: true }
       );
