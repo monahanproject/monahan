@@ -25,29 +25,29 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 //  XXXXXXXXXXXXXXXXXXXXXXXX
 
 // Wake lock functionality
-const requestWakeLock = async () => {
-  if ("wakeLock" in navigator) {
-    try {
-      const wakeLockRequest = await navigator.wakeLock.request("screen");
-      console.log("Wake lock activated.");
+// const requestWakeLock = async () => {
+//   if ("wakeLock" in navigator) {
+//     try {
+//       const wakeLockRequest = await navigator.wakeLock.request("screen");
+//       console.log("Wake lock activated.");
 
-      // Re-request the wake lock if the visibility state changes
-      document.addEventListener("visibilitychange", async () => {
-        if (document.visibilityState === "visible" && !wakeLockRequest) {
-          wakeLockRequest = await navigator.wakeLock.request("screen");
-          console.log("Wake lock re-activated.");
-        }
-      });
-    } catch (err) {
-      console.error("Wake lock could not be activated:", err);
-    }
-  } else {
-    console.warn("Wake lock API not available.");
-  }
-};
+//       // Re-request the wake lock if the visibility state changes
+//       document.addEventListener("visibilitychange", async () => {
+//         if (document.visibilityState === "visible" && !wakeLockRequest) {
+//           wakeLockRequest = await navigator.wakeLock.request("screen");
+//           console.log("Wake lock re-activated.");
+//         }
+//       });
+//     } catch (err) {
+//       console.error("Wake lock could not be activated:", err);
+//     }
+//   } else {
+//     console.warn("Wake lock API not available.");
+//   }
+// };
 
 // Request wake lock on page load
-requestWakeLock();
+// requestWakeLock();
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1885,7 +1885,7 @@ function addOutrosAndCreditsToTracklist() {
 function handlePlayPauseClick() {
   if (firstPlay) {
 
-    requestWakeLock();
+    // requestWakeLock();
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
