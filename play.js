@@ -1,56 +1,62 @@
 // need to add the credit durations to the duration
 
 
-   // "use strict";
+function createAudioContent() {
+  var divElement = document.createElement("div");
+  var paragraphElement = document.createElement("p");
+  paragraphElement.textContent = "oh yes!!!!";
+  divElement.appendChild(paragraphElement);
+  var audioElement = document.createElement("audio");
+  audioElement.id = "background-music";
+  audioElement.loop = true;
+  var sourceElement = document.createElement("source");
+  sourceElement.src = "sounds/CONTENT/P_ALBERT_05.mp3";
+  sourceElement.type = "audio/wav";
+  audioElement.appendChild(sourceElement);
+  audioElement.innerHTML = "Your browser does not support the audio element.";
+  divElement.appendChild(audioElement);
+  document.body.appendChild(divElement); 
+}
 
-      // Background music
-      const backgroundMusic = document.querySelector("#background-music");
-      console.log("Background music element:", backgroundMusic);
+createAudioContent();
 
-      // Function to play background music
-      const playBackgroundMusic = () => {
-        if (backgroundMusic) {
-          console.log("Attempting to play background music");
-          backgroundMusic
-            .play()
-            .then(() => {
-              console.log("Background music playing");
-            })
-            .catch((err) => {
-              console.error("Background music could not be played:", err);
-            });
-        } else {
-          console.error("Background music element not found");
-        }
-      };
+const backgroundMusic = document.querySelector("#background-music");
+console.log("Background music element:", backgroundMusic);
 
-      document.addEventListener(
-        "click",
-        () => {
-          console.log("Document clicked");
-          // playBackgroundMusic();
-        },
-        { once: true }
-      );
+// Function to play background music
+const playBackgroundMusic = () => {
+  if (backgroundMusic) {
+    console.log("Attempting to play background music");
+    backgroundMusic
+      .play()
+      .then(() => {
+        console.log("Background music playing");
+      })
+      .catch((err) => {
+        console.error("Background music could not be played:", err);
+      });
+  } else {
+    console.error("Background music element not found");
+  }
+};
 
-      // Wake lock functionality
-      const requestWakeLock = async () => {
-        if ("wakeLock" in navigator) {
-          console.log("Wake lock API available");
-          try {
-            const wakeLockRequest = await navigator.wakeLock.request("screen");
-            console.log("Wake lock activated.");
-          } catch (err) {
-            console.error("Wake lock could not be activated:", err);
-          }
-        } else {
-          console.warn("Wake lock API not available.");
-        }
-      };
+// Wake lock functionality
+const requestWakeLock = async () => {
+  if ("wakeLock" in navigator) {
+    console.log("Wake lock API available");
+    try {
+      const wakeLockRequest = await navigator.wakeLock.request("screen");
+      console.log("Wake lock activated.");
+    } catch (err) {
+      console.error("Wake lock could not be activated:", err);
+    }
+  } else {
+    console.warn("Wake lock API not available.");
+  }
+};
 
-      // Request wake lock on page load
-      requestWakeLock();
-
+// Request wake lock on page load
+// requestWakeLock();
 
 console.log("hi");
 
@@ -100,7 +106,6 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 
 // Request wake lock on page load
 // requestWakeLock();
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -1160,22 +1165,6 @@ function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, 
   return isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions);
 }
 
-// function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
-//   for (const generalRule of generalRuleFunctions) {
-//     let ruleNumber = generalRule.name.match(/\d+/)[0]; // Extract the rule number from the function name
-//     let ruleDescriptionVarName = `r${ruleNumber}rule`; // Construct the variable name for the rule description
-//     let ruleDescription = eval(ruleDescriptionVarName); // Get the rule description using eval
-
-//     if (!generalRule(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)) {
-//       console.log(`🫧 General rule failed for ${track.name} by rule ${generalRule.name}: ${ruleDescription}`);
-//       return false; // General rule failed
-//     } else {
-//       // console.log(`🎉 Rule ${ruleNumber} Passed for Curated Track ${trackIndex + 1} (${track.name}): ${ruleDescription}`);
-//     }
-//   }
-//   return true; // All general rules passed
-// }
-
 function ensureTrack(track, currIndex, ensureRules, ensureRulesEnforced, curatedTracklist) {
   for (const rule of ensureRules) {
     const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
@@ -1639,6 +1628,8 @@ function printEntireTracklistDebug(shuffledSongsWithOpen) {
   }
 }
 
+
+
 // first time is queueNextTrack(curatedTracklist, 0, 0, cache));
 function queueNextTrack(songs, index, currentRuntime, cache) {
   try {
@@ -1655,6 +1646,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
       audio.preload = "auto";
     }
 
+  
     const track = audioContext.createMediaElementSource(audio);
     track.connect(volumeNode);
 
@@ -1887,9 +1879,6 @@ function checkPlaylistRules(playlist) {
 let firstPlay = true;
 var playButtonTextContainer = document.getElementById("play-button-text-container");
 
-
-
-
 const playingSVG = `<img id="play-icon" class="svg-icon" src="images/icons/playButton.svg" alt="Play Icon">`;
 const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/icons/pauseButton.svg" alt="Pause Icon">`;
 
@@ -1935,9 +1924,28 @@ function addOutrosAndCreditsToTracklist() {
 }
 
 function handlePlayPauseClick() {
+  console.log("Entering handlePlayPauseClick function");
+
+  try {
+    // Existing code inside handlePlayPauseClick...
+  } catch (error) {
+    console.error("Error in handlePlayPauseClick: ", error);
+  }
+
+  console.log("Entering handlePlayPauseClick function");
+
+try {
+  // Existing code inside handlePlayPauseClick...
+} catch (error) {
+  console.error("Error in handlePlayPauseClick: ", error);
+}
+
+
+
+  
   if (firstPlay) {
 
-    // requestWakeLock();
+    // playBackgroundMusic();
 
     toggleButtonVisuals(true); // Assume playing state on first play
     generatePlayer();
@@ -1947,9 +1955,9 @@ function handlePlayPauseClick() {
     playerPlayState = "play";
     audioContext.resume();
     isValidTracklist(curatedTracklist);
-
-
     firstPlay = false; // Set firstPlay to false after handling the first play
+    requestWakeLock();
+
   } else {
     // Handle subsequent toggles between play and pause
     if (playButton.classList.contains("playing")) {
@@ -1967,8 +1975,3 @@ function handlePlayPauseClick() {
     }
   }
 }
-
-
-
-
-
