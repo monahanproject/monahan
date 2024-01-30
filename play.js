@@ -1,5 +1,7 @@
 // need to add the credit durations to the duration
 
+window.addEventListener("load", () => {
+
 
 function createAudioContent() {
   var divElement = document.createElement("div");
@@ -23,7 +25,6 @@ createAudioContent();
 const backgroundMusic = document.querySelector("#background-music");
 console.log("Background music element:", backgroundMusic);
 
-// Function to play background music
 const playBackgroundMusic = () => {
   if (backgroundMusic) {
     console.log("Attempting to play background music");
@@ -39,6 +40,12 @@ const playBackgroundMusic = () => {
     console.error("Background music element not found");
   }
 };
+
+
+
+
+
+
 
 // Wake lock functionality
 const requestWakeLock = async () => {
@@ -60,10 +67,10 @@ const requestWakeLock = async () => {
 
 console.log("hi");
 
-var myLang = localStorage["lang"] || "defaultValue";
-var player;
-var audioContext = null;
-var volumeNode;
+let myLang = localStorage["lang"] || "defaultValue";
+let player;
+let audioContext = null;
+let volumeNode;
 let playerPlayState = "play";
 let hasSkippedToEnd = false;
 let displayConsoleLog = "<br>";
@@ -135,6 +142,7 @@ function createVolumeSlider() {
   return volumeSlider;
 }
 const volumeSlider = createVolumeSlider();
+
 function createAudioElement(id) {
   const audio = document.createElement("audio");
   audio.id = id;
@@ -370,19 +378,23 @@ const finalOutroAudioSounds = [
 /* 5. Define an array SONGS containing multiple song objects, each song object is 
   processed using the addAudioFromUrl function. */
 
-let songs; // Initialize SONGS with the data
+  let songs;
 
-// Load JSON data from the file
-fetch("songs.json")
-  .then((response) => response.json())
-  .then((data) => {
-    // Use the JSON data in your script
-    songs = data.map(addAudioFromUrl);
-    // ...
-  })
-  .catch((error) => {
-    console.error("Error loading JSON data:", error);
-  });
+    async function loadSongs() {
+      try {
+        const response = await fetch("songs.json");
+        const data = await response.json();
+        songs = data.map(addAudioFromUrl);
+        // Now you can use songs
+        const allSongs = [...songs];
+        // ... rest of your code that uses allSongs
+      } catch (error) {
+        console.error("Error loading JSON data:", error);
+      }
+    }
+  
+  loadSongs();
+  
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX CREDITS STUFF XXXXXXXXXXXXX
@@ -1975,3 +1987,6 @@ try {
     }
   }
 }
+
+
+});

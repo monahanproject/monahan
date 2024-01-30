@@ -37,13 +37,13 @@
 
   <body class="preload">
     <main id="playerPageMain">
-        <div>
-          <p>oh no?!!!!</p>
-          <audio id="background-music" loop>
-            <source src="sounds/CONTENT/P_ALBERT_05.mp3" type="audio/wav" />
-            Your browser does not support the audio element.
-          </audio>
-        </div>
+      <div>
+        <p>oh no?!!!!</p>
+        <audio id="background-music" loop>
+          <source src="sounds/CONTENT/P_ALBERT_05.mp3" type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
 
       <section id="landingPage" class="page">
         <p>MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.</p>
@@ -182,10 +182,12 @@
         </div>
       </section>
 
-      <section id="howToListenPage" class="page">
+      <section id="" class="page">
         <div class="pageContent">
-          <h2 id="howToListenH2">HOW TO LISTEN</h2>
-          <ul>
+          <div class="headerDiv">
+            <h2 id="howToListenH2">HOW TO LISTEN</h2>
+          </div>
+          <ul class="access">
             <li>Scan the QR code </li>
             <li>Arrive at the MONAHAN website</li>
             <li>Put on your HEADPHONES</li>
@@ -193,18 +195,20 @@
             <li>LISTEN to a personalized sound piece</li>
           </ul>
           <p>You can listen to MONAHAN wherever you are.  We suggest spending time outside while listening.</p>
-          <img src="images/icons/border.svg" alt="" class="decorativeImage" />
         </div>
+        <div class="svg-container2"></div>
       </section>
 
-      <section id="howItWorksPage" class="page">
+      <section id="" class="page">
         <div class="pageContent">
-          <p>HOW IT WORKS</p>
+          <div class="headerDiv">
+            <h2 id="howitWorksH2">HOW IT WORKS</h2>
+          </div>
           <p>
             Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are
             created by a diverse group of contributors. You’ll hear everything from songs and poems to nature sounds, interviews and stories.
           </p>
-          <img src="images/icons/divider.svg" alt="" class="decorativeImage" />
+          <img src="images/icons/separator.svg" alt="" class="decorativeImage" />
           <p>
             By bringing together sounds by human and non-human beings MONAHAN creates an ever-evolving experience. You may hear a chapter you’ve heard
             before, but this time it’s next to something new.  Like the landscape around you, MONAHAN is always changing. 
@@ -212,12 +216,16 @@
         </div>
       </section>
 
-      <section id="whereToFindUsPage" class="page">
+      <section id="" class="page">
         <div class="pageContent">
-          <p>WHERE TO FIND US</p>
+          <div class="headerDiv">
+            <h2 id="whereToFindUsH2">WHERE TO FIND US</h2>
+          </div>
           <p>Visit the Monahan Wetlands (or Monahan Drain) in Ottawa, Canada.</p>
-          <p>ACCESSIBILITY</p>
-          <ul>
+          <div class="headerDiv">
+            <h2 id="accessH2">ACCESSIBILITY</h2>
+          </div>
+          <ul class="access">
             <li>The paths around the site are paved, and accessible, and include benches. </li>
             <li>With a smartphone and data access you can scan a QR code to experience the sound piece. </li>
             <li>QR codes are on the main sign located near the bridge and on a selection of benches along the main path. </li>
@@ -227,8 +235,29 @@
         </div>
       </section>
 
-      <section id="contributorsPage" class="page">
+      <section id="" class="page">
         <div class="pageContent">
+          <div class="headerDiv">
+            <h2 id="whereToFindUsH2">CONTRIBUTORS</h2>
+          </div>
+
+          <div class="svg-contributors"></div>
+          <div>
+            <p>SARAH ABBOTT</p>
+            <p>+</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+
+          <details>
+            <summary>SARAH ABBOTT</summary>
+            <article>
+              <pre>
+Lorem ipsum dolor sit amet, consectetur adipiscing.
+            </pre
+              >
+            </article>
+          </details>
+
           <p>------------------</p>
           <div>
             <p>SARAH ABBOTT</p>
@@ -317,11 +346,5 @@
     <script src="songs.json"></script>
     <script src="play.js"></script>
     <script src="translate.js"></script>
-
-    <script>
-      window.addEventListener("load", () => {});
-    </script>
-
-    <script></script>
   </body>
 </html>
