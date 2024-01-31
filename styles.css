@@ -190,7 +190,7 @@ body {
   #landingPage {
     display: flex;
     height: 100vh;
-    justify-content: space-between;
+    justify-content: center;
   }
 }
 
@@ -319,6 +319,7 @@ p {
 
   #engLand {
     order: 2; /* Move the top paragraph below the header */
+    max-width: 20vw;
   }
 
   header {
@@ -327,6 +328,8 @@ p {
 
   #frLand {
     order: 3; /* Move the bottom paragraph to the bottom */
+    max-width: 20vw;
+
   }
 }
 
