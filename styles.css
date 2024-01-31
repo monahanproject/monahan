@@ -182,7 +182,16 @@ body {
 #landingPage {
   display: flex;
   height: 100vh;
+  width: 100vw;
   justify-content: space-between;
+}
+
+@media screen and (min-width: 900px) {
+  #landingPage {
+    display: flex;
+    height: 100vh;
+    justify-content: space-between;
+  }
 }
 
 #curiousEarsPage {
@@ -252,12 +261,15 @@ nav {
 
 p {
   padding: 1rem;
-  line-height: 1.35;
-  font-size: 1.3rem;
-  font-family: "Zilla Slab", serif;
-  font-weight: 300;
-}
 
+  /* ~~~ */
+
+  font-family: "Zilla Slab";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 2rem; /* 133.333% */
+}
 .DMSans {
   font-family: "DM Sans", sans-serif;
 }
@@ -278,16 +290,120 @@ p {
   align-items: center;
 }
 
+.lettersBox {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin: 0 auto; /* Center the box */
+  /* transform: scale(0.95); Scale down the entire letters box */
+}
+
+@media screen and (min-width: 900px) {
+  #titleText {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .lettersBox,
+  #artPubArt {
+    margin: 0;
+    margin: 0 2px; /* Adjust the margin as needed, or set to 0 for no space */
+  }
+
+  #artPubArt {
+    max-width: 10rem;
+    text-align: left;
+  }
+
+  #engLand {
+    order: 2; /* Move the top paragraph below the header */
+  }
+
+  header {
+    order: 1; /* Keep the header in the middle */
+  }
+
+  #frLand {
+    order: 3; /* Move the bottom paragraph to the bottom */
+  }
+}
+
+.letters {
+  flex: 0 0 auto; /* Do not grow, do not shrink, based on content */
+  padding: 0.35vw;
+}
+
+.m,
+.o,
+.n,
+.a,
+.h {
+  width: auto; /* Adjust this value based on your design */
+  height: 12vw; /* Maintain aspect ratio */
+  max-height: 10rem; /* Maintain aspect ratio */
+}
+
+.o {
+  position: relative; /* Ensures it stays in front of the behind-element */
+  z-index: 1; /* Higher z-index to ensure it's above the behind-element */
+}
+
+#odiv {
+  position: relative; /* Parent container */
+  display: flex; /* Using flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+#otree {
+  position: absolute;
+  z-index: 1;
+  width: auto; /* Example responsive width */
+  height: 7.5vw; /* Maintain aspect ratio */
+  max-height: 6rem; /* Maintain aspect ratio */
+}
+
+@media screen and (min-width: 900px) {
+  .lettersBox {
+    transform-origin: center;
+  }
+}
+
 #siteName {
   font-size: 7.8vw;
   font-family: "DM Sans", sans-serif;
   color: var(--lightgreen);
+
+  /* ``` */
+
+  color: var(--Text, #bfffc2);
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.90269rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 97.7%; /* 1.85894rem */
+  text-transform: uppercase;
 }
 
 #curiousEarsTxt {
   text-align: center;
   font-family: "Zilla Slab", serif;
   font-size: 10vw;
+
+  /* ~~~ */
+  color: var(--Text, #bfffc2);
+  text-align: center;
+  font-feature-settings: "ss02" on;
+
+  /* h1 mobile */
+  font-family: "Zilla Slab";
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 98%; /* 2.94rem */
 }
 
 @media screen and (min-width: 900px) {
@@ -347,6 +463,27 @@ a:hover {
   padding: 15px;
   width: 94vw;
   border-radius: 6px;
+
+  /* ~~~ */
+  border-radius: 0.5625rem;
+  border: 2px solid var(--Background, #224e43);
+  background: var(--Background, #224e43);
+  color: var(--Text, #bfffc2);
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 123.7%;
+  /* 1.54625rem */
+  text-transform: uppercase;
+}
+
+#transcriptButton:hover {
+  background: var(--Text, #bfffc2);
+  color: var(--Background, #224e43);
+  border-radius: 0.5625rem;
+  border: 2px solid #000;
 }
 
 #langToggle {
@@ -364,6 +501,16 @@ a:hover {
   outline: none;
   border: none;
   cursor: pointer;
+
+  /* ~~~~ */
+
+  color: var(--Text, #bfffc2);
+  /* font-family: "DM Mono"; */
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem; /* 120% */
+  letter-spacing: 0.10625rem;
 }
 
 /***********************/
@@ -376,8 +523,12 @@ img {
 }
 
 .navIcons {
-  width: 2rem;
+  width: 2.7rem;
   padding: 0 0 0 8px;
+
+  /* width: 1.59906rem; */
+  /* height: 1.87213rem; */
+  flex-shrink: 0;
 }
 
 .decorativeImage {
@@ -395,6 +546,31 @@ h1 {
   font-weight: 700;
 }
 
+#title {
+  color: var(--Background, #224e43);
+  text-align: center;
+  font-feature-settings: "ss02" on;
+  font-family: "DM Sans";
+  font-size: 4.33538rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 97.7%; /* 4.23569rem */
+  letter-spacing: -0.13006rem;
+  text-transform: uppercase;
+}
+
+#artPubArt {
+  color: var(--Background, #224e43);
+  text-align: center;
+  font-feature-settings: "ss02" on;
+  font-family: "DM Sans";
+  font-size: 2.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 97.7%; /* 2.68675rem */
+  text-transform: uppercase;
+}
+
 #howToListenH2,
 #howitWorksH2,
 #whereToFindUsH2,
@@ -405,8 +581,40 @@ h1 {
   margin: 1em 0em 0.75em 0em;
 }
 
+#howToListenH2 {
+  color: var(--Background, #224e43);
+  text-align: center;
+
+  /* h2 mobile */
+  font-family: "DM Sans";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2.125rem; /* 141.667% */
+  letter-spacing: 0.075rem;
+  text-transform: uppercase;
+}
+
+#howItWorksH2 {
+  color: var(--Text, #bfffc2);
+}
+
 #aboutH2 {
   font-size: 1.2rem;
+
+  /* ~~~ */
+
+  color: var(--Text, #bfffc2);
+  text-align: center;
+
+  /* h2 mobile */
+  font-family: "DM Sans";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2.125rem; /* 141.667% */
+  letter-spacing: 0.075rem;
+  text-transform: uppercase;
 }
 
 #monH2 {
@@ -425,6 +633,13 @@ h2 {
   font-family: "DM Sans", sans-serif;
   font-size: 10.8vw;
   font-weight: 400;
+
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2.125rem; /* 141.667% */
+  letter-spacing: 0.075rem;
+  text-transform: uppercase;
 }
 
 h3 {
@@ -468,6 +683,17 @@ li {
   line-height: 1.35;
   font-family: "Zilla Slab", serif;
   font-weight: 300;
+
+  /* ~~~ */
+
+  color: var(--Background, #224e43);
+
+  /* P mobile lightbg */
+  font-family: "Zilla Slab";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2rem; /* 133.333% */
 }
 
 @media screen and (min-width: 900px) {
@@ -593,6 +819,22 @@ li {
   pointer-events: none; /* Allows clicks to pass through the text */
   font-family: "Zilla Slab", sans-serif;
   font-size: 6.5vw; /* Adjusted for larger button size */
+
+  /* ~~~ */
+
+  color: var(--Text, #bfffc2);
+  text-align: center;
+  font-feature-settings: "ss02" on;
+  font-family: "DM Sans";
+  font-size: 2.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 97.7%; /* 2.19825rem */
+  text-transform: uppercase;
+}
+
+#play-button-text-container:hover {
+  opacity: 0.6;
 }
 
 .svg-container {
@@ -609,6 +851,7 @@ li {
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
   width: 100vw;
+  background-color: #224e43;
 }
 
 .svg-contributors {
@@ -667,6 +910,18 @@ li {
   font-family: "DM Sans", sans-serif;
   font-weight: 500;
   margin-top: 13px;
+
+  /* ~~~ */
+
+  /* color: var(--Background, #224E43);
+text-align: center;
+leading-trim: both;
+text-edge: cap;
+font-family: "DM Sans";
+font-size: 1rem;
+font-style: normal;
+font-weight: 700;
+line-height: 3.14463rem; 314.463% */
 }
 
 .time-label {
@@ -790,23 +1045,28 @@ input[type="range"] {
   margin: 20px 5px;
 }
 
+#transcriptContainer:hover {
+  opacity: 0.6;
+}
+
 /* 88888888888888 */
 /* DETAILS  */
 /* 88888888888888 */
 
 details {
   transition: 0.2s background linear;
+  display: flex;
 }
 
 details:hover {
-  background: #dad3b1;
+  /* background: #dad3b1; */
 }
 
 details > summary {
   transition: color 1s;
 }
 details[open] > summary {
-  color: #d9103e;
+  /* color: #d9103e; */
 }
 
 summary {
@@ -814,8 +1074,27 @@ summary {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  font-weight: bold;
+  /* padding: 10px 15px; */
+  /* font-weight: bold; */
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+
+  line-height: 2.125rem; /* 141.667% */
+  letter-spacing: 0.075rem;
+  text-transform: uppercase;
+
+  color: var(--Text, #bfffc2);
+  font-feature-settings: "ss02" on, "ss03" on;
+  font-family: "DM Sans";
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.6875rem; /* 135% */
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
 }
 
 summary::after {
@@ -841,15 +1120,26 @@ summary::-webkit-details-marker {
 
 summary {
   border-radius: 5px;
-  color: #30353b;
+  color: var(--Text, #bfffc2);
+
+  /* ``` */
+
+  color: var(--Text, #bfffc2);
+
+  /* p mobile */
+  font-family: "Zilla Slab";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 2rem; /* 133.333% */
 }
 
 details[open] summary {
   border-radius: 5px 5px 0 0;
+  max-width: 80vw;
 }
 
 details {
-  background: #eeebdc;
   border-radius: 5px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -857,32 +1147,28 @@ details {
 /* extra styles */
 
 * {
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 body {
-  font-family: system-ui, sans-serif;
-  margin: 20px;
-  background: #fff9f1;
+  /* margin: 20px; */
+  /* background: #fff9f1; */
 }
 h1 {
-  font-size: 1.2em;
+  /* font-size: 1.2em; */
 }
 article > *:first-child {
-  margin: 0;
+  /* margin: 0; */
 }
 article > * + * {
-  margin: 0.75em 0 0 0;
+  /* margin: 0.75em 0 0 0; */
 }
 pre {
-  color: white;
-  background: #4c5568;
-  padding: 1em;
-  border-radius: 5px;
+  /* padding: 1em; */
 }
 article {
-  padding: 15px;
-  margin: 0;
+  /* padding: 15px; */
+  /* margin: 0; */
 }
 details code {
-  font-size: 1.1em;
+  /* font-size: 1.1em; */
 }
