@@ -97,6 +97,14 @@ video {
   font: inherit;
   vertical-align: baseline;
 }
+
+details summary { 
+  cursor: pointer;
+}
+
+details summary > * {
+  display: inline;
+}
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -156,16 +164,15 @@ body {
   font-family: "Zilla Slab", serif;
   font-weight: 300;
   font-size: 6.9vw;
-  width: 100vw;
   height: 100vh;
 }
 
 @media screen and (min-width: 900px) {
   body {
+    box-sizing: border-box;
     font-family: "Zilla Slab", serif;
     font-weight: 300;
     font-size: 4rem;
-    width: 100vw;
     height: 100vh;
   }
 }
@@ -173,25 +180,10 @@ body {
 .page {
   display: flex;
   height: 100vh;
+  width: 100vw;
   padding: 10px;
   box-sizing: border-box;
   flex-direction: column;
-  /* justify-content: space-between; */
-}
-
-#landingPage {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  justify-content: space-between;
-}
-
-@media screen and (min-width: 900px) {
-  #landingPage {
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-  }
 }
 
 #curiousEarsPage {
@@ -286,50 +278,86 @@ p {
 
 #titleText {
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
-  align-items: center;
 }
 
-.lettersBox {
+#landingPage {
+  height: 100vh; /* Full viewport height */
+}
+
+#zip {
   display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
-  margin: 0 auto; /* Center the box */
-  /* transform: scale(0.95); Scale down the entire letters box */
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: space-around;
 }
 
 @media screen and (min-width: 900px) {
-  #titleText {
+  #landingPage {
+    height: 100vh; /* Full viewport height */
+  }
+
+  #zip {
+    display: grid;
+    align-content: center;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;
+    grid-template-rows: auto auto; /* Two rows: one for titleText, one for engLand and frLand */
+    grid-template-columns: 15vw 1fr 1fr 1fr 15vw; /* Three equal columns with 10vw margins on both sides */
+    margin: 0; /* Remove the previous margin declaration */
+  }
+}
+
+#lettersBox {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+@media screen and (min-width: 900px) {
+  #lettersBox {
     display: flex;
-    align-items: flex-start;
-    flex-direction: row;
     justify-content: center;
-  }
-
-  .lettersBox,
-  #artPubArt {
+    justify-content: start; /* Align the content to the start */
     margin: 0;
-    margin: 0 2px; /* Adjust the margin as needed, or set to 0 for no space */
   }
 
   #artPubArt {
-    max-width: 10rem;
-    text-align: left;
+    max-width: 8rem;
+    text-align: left !important;
+    margin: 0;
+    padding: 0 1rem;
+    font-size: 2rem !important;
+  }
+
+  #titleText {
+    grid-row: 1; /* Place titleText in the first row */
+    grid-column: 2 / span 3;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
   }
 
   #engLand {
-    order: 2; /* Move the top paragraph below the header */
-    max-width: 20vw;
-  }
-
-  header {
-    order: 1; /* Keep the header in the middle */
+    grid-row: 2;
+    grid-column: 2;
+    align-self: start;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem 0;
+    /* width: 80%; */
   }
 
   #frLand {
-    order: 3; /* Move the bottom paragraph to the bottom */
-    max-width: 20vw;
+    grid-row: 2;
+    grid-column: 3;
+    align-self: start;
+    padding: 1rem 0;
 
+    /* width: 80%; */
   }
 }
 
@@ -350,7 +378,28 @@ p {
 
 .o {
   position: relative; /* Ensures it stays in front of the behind-element */
-  z-index: 1; /* Higher z-index to ensure it's above the behind-element */
+}
+
+@media screen and (min-width: 900px) {
+  .letters {
+    /* flex: 0 0 auto; Do not grow, do not shrink, based on content */
+    padding: 0 0.35vw;
+  }
+
+  .m,
+  .o,
+  .n,
+  .a,
+  .h {
+    height: auto;
+    /* width: auto; Adjust this value based on your design */
+    /* height: 12vw; Maintain aspect ratio */
+    /* max-height: 10rem; Maintain aspect ratio */
+  }
+
+  .o {
+    position: relative; /* Ensures it stays in front of the behind-element */
+  }
 }
 
 #odiv {
@@ -362,16 +411,8 @@ p {
 
 #otree {
   position: absolute;
-  z-index: 1;
-  width: auto; /* Example responsive width */
   height: 7.5vw; /* Maintain aspect ratio */
   max-height: 6rem; /* Maintain aspect ratio */
-}
-
-@media screen and (min-width: 900px) {
-  .lettersBox {
-    transform-origin: center;
-  }
 }
 
 #siteName {
@@ -414,14 +455,24 @@ p {
     font-family: "Zilla Slab", serif;
     font-weight: 300;
     font-size: 4rem;
-    width: 100vw;
-    height: 100vh;
+    font-size: 6.6875rem;
+    max-width: 50vw;
+
+    /* width: 100vw; */
+    /* height: 100vh; */
   }
 }
 
 #arrow {
-  width: 2.5rem;
+  width: 10vw;
   padding: 0 0 15px 0; /* margin-top: 8rem; */
+}
+
+@media screen and (min-width: 900px) {
+  #arrow {
+    width: 8vw;
+    padding: 0 0 15px 0; /* margin-top: 8rem; */
+  }
 }
 
 @media screen and (min-width: 900px) {
@@ -466,6 +517,7 @@ a:hover {
   padding: 15px;
   width: 94vw;
   border-radius: 6px;
+  font-family: "DM Sans";
 
   /* ~~~ */
   border-radius: 0.5625rem;
@@ -480,6 +532,14 @@ a:hover {
   line-height: 123.7%;
   /* 1.54625rem */
   text-transform: uppercase;
+  color: var(--Text, #bfffc2);
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 123.7%; /* 1.54625rem */
+  text-transform: uppercase;
 }
 
 #transcriptButton:hover {
@@ -487,6 +547,12 @@ a:hover {
   color: var(--Background, #224e43);
   border-radius: 0.5625rem;
   border: 2px solid #000;
+}
+
+@media screen and (min-width: 900px) {
+  #transcriptButton {
+    width: 20rem;
+  }
 }
 
 #langToggle {
@@ -535,7 +601,15 @@ img {
 }
 
 .decorativeImage {
+  padding-bottom: 2rem;
   width: 23vw;
+}
+
+@media screen and (min-width: 900px) {
+  .decorativeImage {
+    padding-bottom: 6rem;
+    width: 9vw;
+  }
 }
 
 /***********************/
@@ -545,7 +619,7 @@ img {
 h1 {
   font-family: "Merriweather", serif;
   font-size: 16.9vw;
-  margin-top: -5rem;
+  /* margin-top: -5rem; */
   font-weight: 700;
 }
 
@@ -612,7 +686,7 @@ h1 {
 
   /* h2 mobile */
   font-family: "DM Sans";
-  font-size: 1.5rem;
+  font-family: "DM Sans";
   font-style: normal;
   font-weight: 500;
   line-height: 2.125rem; /* 141.667% */
@@ -629,6 +703,26 @@ h1 {
 @media screen and (min-width: 900px) {
   h1 {
     font-size: 6.9vw;
+  }
+
+  #aboutH2 {
+    color: var(--Text, #bfffc2);
+    font-family: "DM Sans";
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 2.449rem; /* 122.449% */
+    text-transform: uppercase;
+  }
+
+  #monH2 {
+    color: var(--Text, #bfffc2);
+    font-family: "DM Sans";
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 2.949rem;
+    text-transform: uppercase;
   }
 }
 
@@ -720,28 +814,19 @@ li {
 
 #playerPage {
   width: 100vw;
-  height: 200vh;
+  height: 100vh;
   padding: 0;
   margin: 0;
-  /* display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: space-around;
-  align-items: center;
-  top: 20rem; */
-  /* align-items: flex-start; */
 }
 
 @media screen and (min-width: 900px) {
   #playerPage {
     width: 100vw;
-    /* height: 200vh; */
     display: flex;
     flex-direction: column;
     align-content: center;
     justify-content: space-around;
     align-items: center;
-    top: 20rem;
     align-items: flex-start;
   }
 }
@@ -785,7 +870,7 @@ li {
   }
 
   .skip-button span {
-    width: 10vw; /* Larger width for desktop */
+    width: 5vw; /* Larger width for desktop */
     padding-top: calc(1.2 * 10vw); /* Adjusted aspect ratio for desktop */
   }
 }
@@ -799,9 +884,15 @@ li {
 
 #play-button-svg-container {
   display: block;
-  width: 80vw; /* Increased from 50vw to 80vw for a wider button on mobile */
-  padding-top: calc((319 / 279) * 80vw); /* Adjusted aspect ratio based on the new width */
-  position: relative; /* Context for the absolute positioning */
+  width: 80vw;
+  padding-top: calc((319 / 279) * 80vw);
+  position: relative;
+}
+@media screen and (min-width: 900px) {
+  #play-button-svg-container {
+    width: 30vw; /* Decrease the size for desktop */
+    padding-top: calc((319 / 279) * 30vw); /* Adjust aspect ratio based on the new width */
+  }
 }
 
 #play-icon {
@@ -836,6 +927,16 @@ li {
   text-transform: uppercase;
 }
 
+@media screen and (min-width: 900px) {
+  #play-button-text-container {
+    font-size: 5vw;
+    font-family: "Zilla Slab";
+    font-style: normal;
+    font-weight: 300;
+    line-height: 6.75rem; /* 100.935% */
+  }
+}
+
 #play-button-text-container:hover {
   opacity: 0.6;
 }
@@ -864,17 +965,6 @@ li {
   height: 110px; /* This should be at least as tall as the background-size height */
   width: 80vw; /* Full width of the viewport */
   box-sizing: border-box; /* Ensures padding is included in the width */
-}
-
-@media screen and (min-width: 900px) {
-  #play-button-svg-container {
-    width: 20vw; /* Adjusted width for desktop, can tweak as necessary */
-    padding-top: calc((319 / 279) * 20vw); /* Adjusted aspect ratio for desktop */
-  }
-
-  #play-button-text-container {
-    font-size: 1.8vw; /* Adjusted for larger button size on desktop */
-  }
 }
 
 /* PROGRESS BAR  */
@@ -1059,119 +1149,82 @@ input[type="range"] {
 details {
   transition: 0.2s background linear;
   display: flex;
+  border-radius: 5px;
+  max-width: 80vw;
+  box-sizing: border-box;
 }
 
-details:hover {
-  /* background: #dad3b1; */
+.role {
+  grid-row-start: 2;
+  grid-column: 1 / -1;
+  text-transform: lowercase;
 }
 
 details > summary {
   transition: color 1s;
-}
-details[open] > summary {
-  /* color: #d9103e; */
-}
-
-summary {
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: auto auto; /* Two rows for mobile */
+  grid-template-columns: 1fr auto; /* Two columns for the first row */
+  grid-gap: 5px;
   align-items: center;
-  /* padding: 10px 15px; */
-  /* font-weight: bold; */
-
-  font-family: "DM Sans", sans-serif;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 500;
-
-  line-height: 2.125rem; /* 141.667% */
-  letter-spacing: 0.075rem;
+  list-style: none;
   text-transform: uppercase;
-
   color: var(--Text, #bfffc2);
-  font-feature-settings: "ss02" on, "ss03" on;
-  font-family: "DM Sans";
+  font-family: "DM Sans", sans-serif;
   font-size: 1.25rem;
-  font-style: normal;
   font-weight: 500;
-  line-height: 1.6875rem; /* 135% */
+  line-height: 1.6875rem;
   letter-spacing: 0.0625rem;
-  text-transform: uppercase;
+  font-feature-settings: "ss02" on, "ss03" on;
+  border-radius: 5px;
+  width: 80vw;
+  box-sizing: border-box;
 }
 
 summary::after {
-  content: "";
-  width: 0;
-  height: 0;
-  border-top: 10px solid #15171b;
-  border-inline: 7px solid transparent;
+  content: "+";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  margin-right: 10px;
   transition: 0.2s;
-}
-
-details[open] > summary {
-  border-bottom: 2px solid #fff9f1;
-}
-
-details[open] > summary::after {
-  transform: rotate(-180deg);
+  grid-row: 1;
+  grid-column: 2;
 }
 
 summary::-webkit-details-marker {
   display: none;
 }
 
-summary {
-  border-radius: 5px;
-  color: var(--Text, #bfffc2);
-
-  /* ``` */
-
-  color: var(--Text, #bfffc2);
-
-  /* p mobile */
-  font-family: "Zilla Slab";
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 2rem; /* 133.333% */
+details[open] summary::after {
+  content: "-";
 }
 
-details[open] summary {
-  border-radius: 5px 5px 0 0;
-  max-width: 80vw;
+/* Styles for article and pre */
+article, pre {
+  box-sizing: border-box;
 }
 
-details {
-  border-radius: 5px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+@media screen and (min-width: 900px) {
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    grid-template-rows: 1fr; /* One row for desktop */
+    grid-template-columns: 1fr auto 1fr; /* Three columns */
+  }
+
+  .role {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  summary::after {
+    grid-row: 1;
+    grid-column: 3;
+  }
 }
 
-/* extra styles */
 
-* {
-  /* box-sizing: border-box; */
-}
-body {
-  /* margin: 20px; */
-  /* background: #fff9f1; */
-}
-h1 {
-  /* font-size: 1.2em; */
-}
-article > *:first-child {
-  /* margin: 0; */
-}
-article > * + * {
-  /* margin: 0.75em 0 0 0; */
-}
-pre {
-  /* padding: 1em; */
-}
-article {
-  /* padding: 15px; */
-  /* margin: 0; */
-}
-details code {
-  /* font-size: 1.1em; */
-}
+
