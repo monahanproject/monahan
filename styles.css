@@ -98,7 +98,7 @@ video {
   vertical-align: baseline;
 }
 
-details summary { 
+details summary {
   cursor: pointer;
 }
 
@@ -191,7 +191,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 
 .pageContent {
@@ -238,30 +237,33 @@ body {
 
 
 @media screen and (min-width: 900px) {
-
-  .sideBySideTxtImage  {
+  .sideBySideTxtImage {
     display: flex;
     flex-direction: row;
+    min-height: 70vh;
     justify-content: baseline;
     justify-content: space-between; /* This distributes space between and around items */
+    height: auto;
+    }
 
+  .sideBySideTxtImage > * > .content {
+    padding: 20px; /* Apply padding here */
+    padding: 2rem 2rem;
   }
 
-  .reverse  {
+  .reverse {
     flex-direction: row-reverse;
   }
 
-
   .sideBySideTxtImage > * {
     flex: 1; /* Makes each child take equal width */
-    /* Optionally, add some padding or margin for spacing between elements */
+    padding: 3rem;
   }
 
   .headerDiv {
     display: flex;
     align-items: flex-start;
     /* padding: 1rem; */
-
 
     /* flex-direction: column; */
     /* align-items: center; */
@@ -270,7 +272,9 @@ body {
   /* findme */
 
   .pageContentTxt {
-    align-items: flex-start
+    align-items: flex-start;
+    /* padding: 2rem 2rem; */
+    /* padding: 3rem 5rem; */
     /* display: flex;
     flex-direction: column;
     align-content: center;
@@ -279,7 +283,6 @@ body {
     height: auto; */
   }
 }
-
 
 .centerCluster {
   display: flex;
@@ -315,7 +318,7 @@ nav {
 }
 
 p {
-  /* padding: 1rem; */
+  padding-top: 2rem;
 
   /* ~~~ */
 
@@ -669,7 +672,7 @@ img {
 }
 
 #aboutNav {
-margin-right: 7px;
+  margin-right: 7px;
 }
 
 .decorativeImage {
@@ -679,7 +682,7 @@ margin-right: 7px;
 
 #spacer {
   margin: 0;
-  padding:0;
+  padding: 0;
 }
 
 @media screen and (min-width: 900px) {
@@ -733,9 +736,6 @@ h1 {
 #contributorsH2 {
   font-size: 1.5rem;
   margin: 1em 0em 0.75em 0em;
-}
-
-#howToListenH2 {
   color: var(--Background, #224e43);
   text-align: center;
 
@@ -780,6 +780,8 @@ h1 {
   }
 
   #aboutH2 {
+    font-size: 2rem;
+
     /* color: var(--Text, #bfffc2);
     font-family: "DM Sans";
     font-size: 2rem;
@@ -790,6 +792,8 @@ h1 {
   }
 
   #monH2 {
+    font-size: 3rem;
+
     /* color: var(--Text, #bfffc2);
     font-family: "DM Sans";
     font-size: 3rem;
@@ -797,6 +801,27 @@ h1 {
     font-weight: 500;
     line-height: 2.949rem;
     text-transform: uppercase; */
+  }
+
+  #howToListenH2,
+  #howitWorksH2,
+  #whereToFindUsH2,
+  #accessH2,
+  #whereToFindUsH2,
+  #contributorsH2 {
+    font-size: 1.5rem;
+    margin: 1em 0em 0.75em 0em;
+    color: var(--Background, #224e43);
+    text-align: center;
+
+    /* h2 mobile */
+    font-family: "DM Sans";
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 2.125rem; /* 141.667% */
+    letter-spacing: 0.075rem;
+    text-transform: uppercase;
   }
 }
 
@@ -874,6 +899,13 @@ li {
 }
 
 @media screen and (min-width: 900px) {
+
+  .page {
+    display: flex;
+    min-height: auto;
+    height: auto;
+  }
+
   #playerPageMain {
     display: flex;
     flex-direction: column;
@@ -1028,19 +1060,18 @@ li {
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
   width: 100vw;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
 }
 
 .svg-listen {
   background-image: url("images/svg/svg-listen.svg");
-  background-repeat: repeat-x; 
+  background-repeat: repeat-x;
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
   width: 100vw;
   /* background-color: #224e43; */
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
 }
-
 
 .svg-thanks {
   background-image: url("images/svg/svg-thanks.svg");
@@ -1049,7 +1080,7 @@ li {
   height: 110px; /* This should be at least as tall as the background-size height */
   width: 100vw;
   /* background-color: #224e43; */
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
 }
 
 .svg-contributors {
@@ -1062,12 +1093,13 @@ li {
 }
 
 @media screen and (min-width: 900px) {
-  .svg-about,   .svg-listen, .svg-thanks  {
+  .svg-about,
+  .svg-listen,
+  .svg-thanks {
     background-repeat: repeat; /* Allow repeating in both directions */
-    height: 100vh; /* This should be at least as tall as the background-size height */
-    width: 100vw;    
+    height: auto; /* This should be at least as tall as the background-size height */
+    width: 100vw;
   }
- 
 
   .svg-contributors {
     background-image: url("images/svg/-contributors1.svg");
@@ -1079,7 +1111,6 @@ li {
   }
 }
 
-
 /* PROGRESS BAR  */
 
 #progress-container {
@@ -1089,7 +1120,6 @@ li {
   background-color: grey; /* Unplayed part is now grey */
   margin: 8px auto 0 auto; /* Center the progress bar */
   margin-top: 1.5rem;
-
 }
 
 #progress-bar {
@@ -1247,15 +1277,13 @@ input[type="range"] {
   background-color: white;
   position: absolute; /* Allows you to move it anywhere */
   overflow: auto; /* Adds scrollbars if content overflows */
-
-
 }
 
 #transcriptContainer {
   background-color: #224e43;
   margin: 20px 5px;
   min-height: 0; /* Allows container to grow */
-  overflow: auto; 
+  overflow: auto;
 }
 
 #transcriptContainer:hover {
@@ -1322,7 +1350,8 @@ details[open] summary::after {
 }
 
 /* Styles for article and pre */
-article, pre {
+article,
+pre {
   box-sizing: border-box;
 }
 
@@ -1345,7 +1374,3 @@ article, pre {
     grid-column: 3;
   }
 }
-
-
-
-
