@@ -190,6 +190,17 @@ body {
 #curiousEarsPage {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+}
+
+.pageContent {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .pageContentTxt {
@@ -199,36 +210,6 @@ body {
   justify-content: center;
   align-items: center;
   height: auto;
-}
-
-@media screen and (min-width: 900px) {
-
-  .sideBySideTxtImage  {
-    display: flex;
-    flex-direction: row;
-    justify-content: baseline;
-  }
-
-  .headerDiv {
-    display: flex;
-    align-items: flex-start;
-
-
-    /* flex-direction: column; */
-    /* align-items: center; */
-  }
-
-  .pageContentTxt {
-    align-items: flex-start
-
-
-    /* display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    height: auto; */
-  }
 }
 
 #howToListenPage {
@@ -242,7 +223,7 @@ body {
   align-items: center;
 }
 
-#aboutPage .pageContentTxt {
+.pageContentTxt {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Distribute space between children */
@@ -254,6 +235,39 @@ body {
 #aboutPage .pageContentTxt > :first-child {
   margin-top: 2rem;
 }
+
+
+@media screen and (min-width: 900px) {
+
+  .sideBySideTxtImage  {
+    display: flex;
+    flex-direction: row;
+    justify-content: baseline;
+  }
+
+  .headerDiv {
+    display: flex;
+    align-items: flex-start;
+    /* padding: 1rem; */
+
+
+    /* flex-direction: column; */
+    /* align-items: center; */
+  }
+
+  /* findme */
+
+  .pageContentTxt {
+    align-items: flex-start
+    /* display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    height: auto; */
+  }
+}
+
 
 .centerCluster {
   display: flex;
@@ -289,7 +303,7 @@ nav {
 }
 
 p {
-  padding: 1rem;
+  /* padding: 1rem; */
 
   /* ~~~ */
 
@@ -299,6 +313,11 @@ p {
   font-weight: 300;
   line-height: 2rem; /* 133.333% */
 }
+
+.txtBoxDiv {
+  /* padding: 1rem; */
+}
+
 .DMSans {
   font-family: "DM Sans", sans-serif;
 }
@@ -723,26 +742,24 @@ h1 {
 }
 
 #aboutH2 {
-  font-size: 1.2rem;
+  /* font-size: 1.2rem;
 
-  /* ~~~ */
 
   color: var(--Text, #bfffc2);
   text-align: center;
 
-  /* h2 mobile */
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 500;
-  line-height: 2.125rem; /* 141.667% */
+  line-height: 2.125rem; 
   letter-spacing: 0.075rem;
-  text-transform: uppercase;
+  text-transform: uppercase; */
 }
 
 #monH2 {
-  font-size: 2rem;
+  /* font-size: 2rem;
   font-family: "DM Sans";
-  font-weight: 500;
+  font-weight: 500; */
 }
 
 @media screen and (min-width: 900px) {
@@ -751,23 +768,23 @@ h1 {
   }
 
   #aboutH2 {
-    color: var(--Text, #bfffc2);
+    /* color: var(--Text, #bfffc2);
     font-family: "DM Sans";
     font-size: 2rem;
     font-style: normal;
     font-weight: 500;
-    line-height: 2.449rem; /* 122.449% */
-    text-transform: uppercase;
+    line-height: 2.449rem;
+    text-transform: uppercase; */
   }
 
   #monH2 {
-    color: var(--Text, #bfffc2);
+    /* color: var(--Text, #bfffc2);
     font-family: "DM Sans";
     font-size: 3rem;
     font-style: normal;
     font-weight: 500;
     line-height: 2.949rem;
-    text-transform: uppercase;
+    text-transform: uppercase; */
   }
 }
 
@@ -779,12 +796,14 @@ h2 {
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 500;
-  line-height: 2.125rem; /* 141.667% */
+  line-height: 2.125rem;
   letter-spacing: 0.075rem;
   text-transform: uppercase;
 }
 
 h3 {
+  font-family: "DM Sans", sans-serif;
+
   font-size: 1.5rem;
   font-weight: 400;
   color: var(--accentDark);
@@ -814,6 +833,10 @@ main {
 .access {
   margin: 1rem 0 0 0;
   max-width: 80vw;
+}
+
+ul {
+  padding: 1rem;
 }
 
 li {
@@ -1026,6 +1049,25 @@ li {
   width: 80vw; /* Full width of the viewport */
   box-sizing: border-box; /* Ensures padding is included in the width */
 }
+
+@media screen and (min-width: 900px) {
+  .svg-about,   .svg-listen, .svg-thanks  {
+    background-repeat: repeat; /* Allow repeating in both directions */
+    height: 100vh; /* This should be at least as tall as the background-size height */
+    width: 100vw;    
+  }
+ 
+
+  .svg-contributors {
+    background-image: url("images/svg/-contributors1.svg");
+    background-repeat: repeat-x; /* Repeat only horizontally */
+    background-size: 10px 200px; /* Adjust this to increase space between dashes */
+    height: 110px; /* This should be at least as tall as the background-size height */
+    width: 80vw; /* Full width of the viewport */
+    box-sizing: border-box; /* Ensures padding is included in the width */
+  }
+}
+
 
 /* PROGRESS BAR  */
 
