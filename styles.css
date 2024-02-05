@@ -243,6 +243,18 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: baseline;
+    justify-content: space-between; /* This distributes space between and around items */
+
+  }
+
+  .reverse  {
+    flex-direction: row-reverse;
+  }
+
+
+  .sideBySideTxtImage > * {
+    flex: 1; /* Makes each child take equal width */
+    /* Optionally, add some padding or margin for spacing between elements */
   }
 
   .headerDiv {
@@ -1021,7 +1033,7 @@ li {
 
 .svg-listen {
   background-image: url("images/svg/svg-listen.svg");
-  background-repeat: repeat-x; /* Repeat only horizontally */
+  background-repeat: repeat-x; 
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
   width: 100vw;
@@ -1039,7 +1051,6 @@ li {
   /* background-color: #224e43; */
   padding-bottom: .5rem;
 }
-
 
 .svg-contributors {
   background-image: url("images/svg/-contributors1.svg");
