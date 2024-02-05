@@ -512,7 +512,7 @@ function formatText(text) {
 function createHTMLFromText(text) {
   const container = createElement("div", {});
   const currentParagraph = createElement("p", {
-    style: "margin-top: 3rem; margin-bottom: 4rem; padding: 1rem; background-color: #f0ebf8; margin-left: 0; margin-right: 0;",
+    style: "margin-top: 3rem; margin-bottom: 4rem; padding: 1rem; background-color: #bfffc2; margin-left: 0; margin-right: 0;",
   });
 
   try {

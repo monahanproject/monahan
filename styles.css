@@ -179,7 +179,8 @@ body {
 
 .page {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   width: 100vw;
   /* padding: 10px; */
   box-sizing: border-box;
@@ -191,21 +192,48 @@ body {
   justify-content: space-between;
 }
 
-.pageContent {
+.pageContentTxt {
   display: flex;
   flex-direction: column;
   align-content: center;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: auto;
+}
 
+@media screen and (min-width: 900px) {
+
+  .sideBySideTxtImage  {
+    display: flex;
+    flex-direction: row;
+    justify-content: baseline;
+  }
+
+  .headerDiv {
+    display: flex;
+    align-items: flex-start;
+
+
+    /* flex-direction: column; */
+    /* align-items: center; */
+  }
+
+  .pageContentTxt {
+    align-items: flex-start
+
+
+    /* display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    height: auto; */
+  }
 }
 
 #howToListenPage {
   display: flex;
-  justify-content: space-around
-
-
+  /* justify-content: space-around */
 }
 
 .headerDiv {
@@ -214,7 +242,7 @@ body {
   align-items: center;
 }
 
-#aboutPage .pageContent {
+#aboutPage .pageContentTxt {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Distribute space between children */
@@ -223,7 +251,7 @@ body {
   box-sizing: border-box;
 }
 
-#aboutPage .pageContent > :first-child {
+#aboutPage .pageContentTxt > :first-child {
   margin-top: 2rem;
 }
 
@@ -295,7 +323,7 @@ p {
   height: 100vh; /* Full viewport height */
 }
 
-#zip {
+#container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -308,7 +336,7 @@ p {
     height: 100vh; /* Full viewport height */
   }
 
-  #zip {
+  #container {
     display: grid;
     align-content: center;
     height: 100vh; /* Full viewport height */
@@ -609,9 +637,18 @@ img {
   flex-shrink: 0;
 }
 
+#aboutNav {
+margin-right: 7px;
+}
+
 .decorativeImage {
   padding-bottom: 2rem;
   width: 23vw;
+}
+
+#spacer {
+  margin: 0;
+  padding:0;
 }
 
 @media screen and (min-width: 900px) {
@@ -818,11 +855,12 @@ li {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 }
 
 #playerPage {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   padding: 0;
   margin: 0;
 }
@@ -855,7 +893,7 @@ li {
 
 .skip-button span {
   display: block;
-  width: 15vw; /* Responsive width for mobile */
+  width: 12vw; /* Responsive width for mobile */
   padding-top: calc(1.2 * 15vw); /* Corrected aspect ratio */
   position: relative;
 }
@@ -887,12 +925,12 @@ li {
   position: relative; /* Enables absolute positioning for child elements */
   background: transparent;
   border: none;
-  margin: 80px 0;
+  margin: 3vh 0;
 }
 
 #play-button-svg-container {
   display: block;
-  width: 80vw;
+  width: 75vw;
   padding-top: calc((319 / 279) * 80vw);
   position: relative;
 }
@@ -950,7 +988,7 @@ li {
 }
 
 .svg-about {
-  background-image: url("images/svg/patternRow3.svg");
+  background-image: url("images/svg/svg-about.svg");
   background-repeat: repeat-x; /* Repeat only horizontally */
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
@@ -959,7 +997,7 @@ li {
 }
 
 .svg-listen {
-  background-image: url("images/svg/patternRow3.svg");
+  background-image: url("images/svg/svg-listen.svg");
   background-repeat: repeat-x; /* Repeat only horizontally */
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
@@ -970,7 +1008,7 @@ li {
 
 
 .svg-thanks {
-  background-image: url("images/svg/patternRow1b.svg");
+  background-image: url("images/svg/svg-thanks.svg");
   background-repeat: repeat-x; /* Repeat only horizontally */
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
@@ -997,6 +1035,8 @@ li {
   height: 2px;
   background-color: grey; /* Unplayed part is now grey */
   margin: 8px auto 0 auto; /* Center the progress bar */
+  margin-top: 1.5rem;
+
 }
 
 #progress-bar {
@@ -1025,6 +1065,7 @@ li {
   font-family: "DM Sans", sans-serif;
   font-weight: 500;
   margin-top: 13px;
+  height: 12.8px;
 
   /* ~~~ */
 
@@ -1145,12 +1186,12 @@ input[type="range"] {
 
 #debugdiv {
   display: block;
-  max-height: 300px; /* Adjust as needed */
+  max-height: 250px; /* Adjust as needed */
   overflow: auto;
   padding: 10px 5px;
   margin: 10px 2px;
   border: 2px solid orange;
-background-color: white;
+  background-color: white;
   position: absolute; /* Allows you to move it anywhere */
   overflow: auto; /* Adds scrollbars if content overflows */
 
@@ -1158,10 +1199,10 @@ background-color: white;
 }
 
 #transcriptContainer {
-  background-color: lightslategray;
-  max-height: 150px; /* Adjust as needed */
-  overflow: auto;
+  background-color: #224e43;
   margin: 20px 5px;
+  min-height: 0; /* Allows container to grow */
+  overflow: auto; 
 }
 
 #transcriptContainer:hover {
