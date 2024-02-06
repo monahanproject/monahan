@@ -302,6 +302,45 @@ body {
   color: var(--lightgreen);
 }
 
+
+/* For odd pages */
+.page:nth-of-type(odd) {
+  background-color: var(--lightgreen);
+}
+
+.page:nth-of-type(odd) h1,
+.page:nth-of-type(odd) h2,
+.page:nth-of-type(odd) p,
+.page:nth-of-type(odd) li,
+.page:nth-of-type(odd) .summary-content,
+.page:nth-of-type(odd) .role,
+/* .page:nth-of-type(odd) .svg-contributors, */
+
+.page:nth-of-type(odd) /* add any other selectors */ {
+  color: var(--darkgreen); /* Text color for odd pages */
+}
+
+/* For even pages */
+.page:nth-of-type(even) {
+  background-color: var(--darkgreen);
+}
+
+/* findme */
+
+.page:nth-of-type(even) h1,
+.page:nth-of-type(even) h2,
+.page:nth-of-type(even) p,
+.page:nth-of-type(even) li,
+.page:nth-of-type(even) .summary-content,
+.page:nth-of-type(odd) .role,
+/* .page:nth-of-type(odd) .svg-contributors, */
+
+.page:nth-of-type(even) /* add any other selectors */ {
+  color: var(--lightgreen); /* Text color for even pages */
+}
+
+
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -328,6 +367,10 @@ p {
   font-weight: 300;
   line-height: 2rem; /* 133.333% */
 }
+
+
+.italic {font-style: italic;}
+.bold {font-weight: bold;}
 
 .txtBoxDiv {
   /* padding: 1rem; */
@@ -558,7 +601,7 @@ p {
 /***********************/
 
 a {
-  /* color: var(--accentDark); */
+  color: var(--accentDark);
   /* text-decoration: none; */
 }
 
@@ -739,7 +782,7 @@ h1 {
 #whereToFindUsH2,
 #accessH2,
 #whereToFindUsH2,
-#contributorsH2 {
+#contributorsH2, #productionTeamH2 {
   font-size: 1.5rem;
   margin: 1em 0em 0.75em 0em;
   color: var(--Background, #224e43);
@@ -759,8 +802,6 @@ h1 {
 #howitWorksH2 ,
   #contributorsH2 {
     color: var(--Text, #bfffc2);
-
-
   }
 
 
@@ -1107,6 +1148,10 @@ li {
   width: 80vw;
 }
 
+.svg-contributors2 {
+  background-image: url(images/svg/-contributors2.svg);
+}
+
 
 @media screen and (min-width: 900px) {
   .svg-about,
@@ -1336,7 +1381,7 @@ details > summary {
   align-items: center;
   list-style: none;
   text-transform: uppercase;
-  color: var(--Text, #bfffc2);
+  /* color: var(--Text, #bfffc2); */
   font-family: "DM Sans", sans-serif;
   font-size: 1.25rem;
   font-weight: 500;
