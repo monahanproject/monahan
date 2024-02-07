@@ -220,7 +220,7 @@ a:hover {
 
 #transcriptButton {
   padding: 15px;
-  width: 94vw;
+  width: 92vw;
   border-radius: 0.5625rem;
   border: 2px solid var(--transcript-border-color);
   background: var(--transcript-bg);
@@ -306,7 +306,6 @@ a:hover {
   align-items: center;
 }
 
-
 .pageContent {
   height: 100vh;
 }
@@ -338,14 +337,17 @@ a:hover {
     align-items: center;
     align-items: flex-start;
   }
+}
 
- 
 .pageContentTxt {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
+
+.pageInnerContent {
+  padding: 3rem 2rem;
 }
 
 @media screen and (min-width: 900px) {
@@ -411,7 +413,6 @@ nav {
   align-items: center;
 }
 
-
 @media screen and (min-width: 900px) {
   .sideBySideTxtImage {
     display: flex;
@@ -434,7 +435,7 @@ nav {
 
   .sideBySideTxtImage > * > .content {
     padding: 20px;
-    padding: 2rem 2rem;
+    /* padding: 2rem 2rem; */
   }
 
   .reverse {
@@ -459,18 +460,16 @@ nav {
   .pageContentTxt {
     box-sizing: border-box;
     align-items: flex-start;
-    padding: 2rem;
+    /* padding: 2rem; */
   }
 
   #thanksPagePageContentTxt {
     padding: 2rem;
   }
-
-
 }
 
 #thanksPagePageContentTxt .pageContentTxt {
-  align-items: flex-start
+  align-items: flex-start;
 }
 
 /* .centerCluster {
@@ -723,6 +722,7 @@ p {
   font-style: normal;
   font-weight: 300;
   line-height: 98%;
+  padding: 1rem;
 }
 
 @media screen and (min-width: 900px) {
@@ -771,8 +771,9 @@ img {
 }
 
 #spacer {
-  margin: 0;
+  margin: 2rem auto;
   padding: 0;
+  display: flex;
 }
 
 @media screen and (min-width: 900px) {
@@ -809,6 +810,7 @@ h2 {
   color: var(--Background, #224e43);
   font-size: 10.4vw;
   line-height: 97.7%;
+  margin-top: .8rem;
 }
 
 #howToListenH2,
@@ -819,25 +821,21 @@ h2 {
 #contributorsH2,
 #productionTeamH2 {
   font-size: 1.5rem;
-  margin: 1em 0em 0.75em 0em;
+  margin: 0 0 1.75em 0;
+  
 }
 
-.sideBySideTxt {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
 
 
 #monH2 {
   font-family: "DM Sans", sans-serif;
-  font-size: 1.5rem;
+  font-size: 2.3rem;
   margin: 0 0 0.75em 0;
 }
 
 #aboutH2 {
-  /* font-size: 1.5rem; */
-  margin: 1em 0 0 0;
+  font-size: 1.5rem;
+  margin: 0 0 0 0;
 }
 
 @media screen and (min-width: 900px) {
@@ -859,7 +857,7 @@ h2 {
   #accessH2,
   #whereToFindUsH2,
   #contributorsH2 {
-    margin: 1em 0em 0.75em 0em;
+    margin: 0 0 0.75em 0;
   }
 }
 
@@ -893,7 +891,7 @@ li {
 }
 
 .access {
-  margin: 0 1rem;
+  margin: 0 0 0 1rem;
   max-width: 80vw;
 }
 
@@ -1164,6 +1162,8 @@ input[type="range"] {
   height: 110px;
   width: 100vw;
   padding-bottom: 0.5rem;
+  margin-top: 2rem;
+
 }
 
 .svg-upPlantDark {
@@ -1194,6 +1194,7 @@ input[type="range"] {
   width: 130vw;
   padding-bottom: 0.5rem;
   margin-left: -2rem;
+  margin-top: 1rem;
 }
 
 .svg-contributors {
@@ -1212,23 +1213,37 @@ input[type="range"] {
 @media screen and (min-width: 900px) {
   .svg-about,
   .svg-upPlantDark,
-  .svg-sidewaysLight,
   .svg-works {
     background-repeat: repeat;
     height: auto;
-    width: 100vw;
+    /* width: 100%; */
     margin: 0;
-    background-size: 200% 200%;
+    background-size: 120% auto; /* Increases width specifically */
+    background-position: center; /* Centers the background image */
+
+    /* background-size: 200% 200%; */
+    flex: 1;
+  }
+
+  .svg-sidewaysLight {
+    background-repeat: repeat;
+    height: auto;
+    margin: 0;
+    background-size: 120% auto; /* Increases width specifically */
+    background-position: center; /* Centers the background image */
+
   }
 
   .svg-about {
     background-image: url(images/svg/svg-sidewaysLightBig.svg);
     background-position: center;
+    
+    
   }
 
   .svg-upPlantDark {
     background-image: url("images/svg/svg-upDownDarkBig.svg");
-    background-position: left center;
+    /* background-position: left center; */
   }
 
   .svg-works {
@@ -1341,7 +1356,8 @@ summary::after {
   width: 20px;
   height: 20px;
   text-align: center;
-  margin-right: 10px;
+  margin-right: 5px;
+  margin-top: -10px;
   transition: 0.2s;
   grid-row: 1;
   grid-column: 2;
@@ -1410,8 +1426,15 @@ article > p {
 }
 
 #finalThanks {
-  display: flex;
-  justify-content: center;
-  margin: 0 4rem 4rem 4rem;
-  text-align: center;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+@media screen and (min-width: 900px) {
+  #finalThanks {
+    display: flex;
+    justify-content: center;
+    margin: 0 4rem 4rem 4rem;
+    text-align: center;
+  }
 }
