@@ -306,6 +306,7 @@ a:hover {
   align-items: center;
 }
 
+
 .pageContent {
   height: 100vh;
 }
@@ -337,6 +338,14 @@ a:hover {
     align-items: center;
     align-items: flex-start;
   }
+
+ 
+.pageContentTxt {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 }
 
 @media screen and (min-width: 900px) {
@@ -402,6 +411,7 @@ nav {
   align-items: center;
 }
 
+
 @media screen and (min-width: 900px) {
   .sideBySideTxtImage {
     display: flex;
@@ -447,16 +457,20 @@ nav {
   }
 
   .pageContentTxt {
+    box-sizing: border-box;
     align-items: flex-start;
+    padding: 2rem;
   }
 
   #thanksPagePageContentTxt {
     padding: 2rem;
   }
 
-  #thanksPagePageContentTxt .pageContentTxt {
-    align-items: flex-start;
-  }
+
+}
+
+#thanksPagePageContentTxt .pageContentTxt {
+  align-items: flex-start
 }
 
 /* .centerCluster {
@@ -530,7 +544,7 @@ p {
 }
 
 .txtBoxDiv {
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 @media screen and (min-width: 900px) {
@@ -807,6 +821,13 @@ h2 {
   font-size: 1.5rem;
   margin: 1em 0em 0.75em 0em;
 }
+
+.sideBySideTxt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 
 #monH2 {
   font-family: "DM Sans", sans-serif;
