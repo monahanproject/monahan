@@ -7,7 +7,7 @@ function createAudioContent() {
   var divElement = document.createElement("div");
   var paragraphElement = document.createElement("p");
   paragraphElement.textContent = "oh yes!!!!";
-  divElement.appendChild(paragraphElement);
+  // divElement.appendChild(paragraphElement);
   var audioElement = document.createElement("audio");
   audioElement.id = "background-music";
   audioElement.loop = true;

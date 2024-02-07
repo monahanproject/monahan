@@ -193,6 +193,20 @@ body {
   align-items: center;
 }
 
+#howItWorksPage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+
+#whereToFindUsPage {
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  padding-bottom: 3rem;
+}
+
 .pageContent {
   display: flex;
   flex-direction: column;
@@ -332,7 +346,7 @@ body {
 .page:nth-of-type(even) p,
 .page:nth-of-type(even) li,
 .page:nth-of-type(even) .summary-content,
-.page:nth-of-type(odd) .role,
+.page:nth-of-type(even) .role,
 /* .page:nth-of-type(odd) .svg-contributors, */
 
 .page:nth-of-type(even) /* add any other selectors */ {
@@ -346,6 +360,14 @@ nav {
   justify-content: space-between;
   align-content: center;
   align-items: center;
+  margin-top: 10px;
+  width: 95vw;
+}
+
+@media screen and (min-width: 900px) {
+  nav {
+    width: 98vw;
+  }
 }
 
 #navButtons {
@@ -373,7 +395,14 @@ p {
 .bold {font-weight: bold;}
 
 .txtBoxDiv {
-  /* padding: 1rem; */
+  padding: 1rem;
+}
+
+@media screen and (min-width: 900px) {
+  .txtBoxDiv {
+    padding: 0;
+    padding-top: 2rem;
+  }
 }
 
 .DMSans {
@@ -544,6 +573,7 @@ p {
   font-weight: 500;
   line-height: 97.7%; /* 1.85894rem */
   text-transform: uppercase;
+  padding: 0;
 }
 
 #curiousEarsTxt {
@@ -693,7 +723,7 @@ a:hover {
   font-style: normal;
   font-weight: 500;
   line-height: 1.5rem; /* 120% */
-  letter-spacing: 0.10625rem;
+  /* letter-spacing: 0.10625rem; */
 }
 
 /***********************/
@@ -821,6 +851,8 @@ h1 {
 }
 
 #monH2 {
+  font-size: 2rem;
+
   /* font-size: 2rem;
   font-family: "DM Sans";
   font-weight: 500; */
@@ -932,6 +964,13 @@ main {
 ul {
   padding: 1rem;
 }
+
+
+ul#thanksList li {
+  list-style-type: none !important;
+}
+
+
 
 li {
   font-size: 1.2rem; /* Consolidated font size */
@@ -1123,11 +1162,12 @@ li {
 .svg-listen {
   background-image: url("images/svg/svg-listen.svg");
   background-repeat: repeat-x;
-  background-size: auto 110px; /* Adjust the height as needed, width is automatic */
-  height: 110px; /* This should be at least as tall as the background-size height */
+  background-size: auto 61px;
+  height: 66px; /* This should be at least as tall as the background-size height */
   width: 100vw;
   /* background-color: #224e43; */
   padding-bottom: 0.5rem;
+  margin-top: 2rem;
 }
 
 .svg-thanks {
@@ -1135,9 +1175,10 @@ li {
   background-repeat: repeat-x; /* Repeat only horizontally */
   background-size: auto 110px; /* Adjust the height as needed, width is automatic */
   height: 110px; /* This should be at least as tall as the background-size height */
-  width: 100vw;
+  width: 130vw;
   /* background-color: #224e43; */
   padding-bottom: 0.5rem;
+  margin-left: -2rem;
 }
 
 .svg-contributors {
@@ -1146,6 +1187,7 @@ li {
   background-size: 12px 3px;
   height: 12px;
   width: 80vw;
+  margin-bottom: 0.8rem;
 }
 
 .svg-contributors2 {
@@ -1361,7 +1403,7 @@ details {
   border-radius: 5px;
   max-width: 80vw;
   box-sizing: border-box;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .role {
@@ -1397,6 +1439,7 @@ details > summary {
 
 summary::after {
   content: "+";
+  font-size: 2.6rem;
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -1443,4 +1486,13 @@ padding-top:1rem;
     grid-row: 1;
     grid-column: 3;
   }
+}
+
+#logoBox {
+  display: flex;
+  justify-content: space-evenly
+}
+
+.logo {
+  width: auto;
 }
