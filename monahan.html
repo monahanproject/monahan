@@ -39,6 +39,8 @@
     <main id="playerPageMain">
       <div>
         <p></p>
+
+        
         <audio id="background-music" loop>
           <source src="sounds/CONTENT/P_ALBERT_05.mp3" type="audio/wav" />
           Your browser does not support the audio element.
@@ -47,6 +49,7 @@
 
       <section id="landingPage" class="page">
         <div id="landingPageContainer">
+          
           <p class="txtBoxDiv" id="engLand">
             MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.
           </p>
@@ -166,10 +169,40 @@
             <p id="siteName">MONAHAN</p>
             <div id="navButtons">
               <button type="button" class="btn" id="langToggle">FR</button>
-              <a href="accessiblity.html" id="accessiblityNav"><img src="images/icons/accessIcon.svg" alt="access icon" class="navIcons" /></a>
+              <div id="accessiblityNav" class="navIcons btn noselect wrapperBtn wrapperBtnClosed">
+                <img src="images/icons/accessIcon.svg" alt="access icon">
+              </div>
               <a href="about.html" id="aboutNavImage"><img src="images/icons/infoIcon.svg" alt="info icon" class="navIcons" /></a>
             </div>
           </nav>
+
+          <div id="slidein" class="slide-in from-left">
+            <ul id="settingsDropdown" class="slide-in-content">
+              <li class="dropdownContainer">
+                Monochrome
+                <button id="monochromeBtn">Toggle</button>
+              </li>
+              <li class="dropdownContainer">
+                Text Size
+                <button id="increaseTextSizeBtn">+</button>
+                <button id="decreaseTextSizeBtn">-</button>
+              </li>
+              <li class="dropdownContainer">
+                Reset
+                <button id="resetBtn"></button>
+              </li>
+            </ul>
+          </div>
+
+
+
+
+          <div id="wrapperToggleDiv" class="settingsMenu">
+           
+          </div>
+          
+
+
         </header>
         <div class="pageContent">
           <img src="images/icons/firn.svg" alt="" class="decorativeImage" id="fern" />

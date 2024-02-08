@@ -186,7 +186,7 @@ main {
 /***********************/
 
 a {
-  color: var(--accentDark);
+  color: var(--darkgreen);
 }
 
 a:hover {
@@ -552,13 +552,11 @@ p {
 .txtBoxDiv {
   /* padding: 1rem; */
   /* padding-top: 2rem; */
-
 }
 
 .txtBoxDivPad {
   /* padding: 1rem; */
   padding-top: 2rem;
-
 }
 
 @media screen and (min-width: 900px) {
@@ -810,7 +808,6 @@ img {
     padding: 0;
     margin: auto;
     margin-top: 2rem;
-
   }
 }
 
@@ -959,7 +956,6 @@ li {
 }
 
 @media screen and (min-width: 900px) {
-
   #ffrw-button-container {
     display: flex;
     justify-content: center;
@@ -1259,7 +1255,6 @@ input[type="range"] {
     background-size: 120% auto; /* Increases width specifically */
     background-position: center; /* Centers the background image */
     margin-top: 1rem;
-
   }
 
   .svg-about {
@@ -1457,7 +1452,6 @@ article > p {
 }
 
 @media screen and (min-width: 900px) {
-
   .logo {
     width: auto;
     padding: 0 1rem;
@@ -1465,16 +1459,126 @@ article > p {
 
   #logoBox {
     display: flex;
-    justify-content: center
+    justify-content: center;
   }
-  
-
-
 
   #finalThanks {
     display: flex;
     justify-content: center;
     margin: 0 4rem 4rem 4rem;
     text-align: center;
+  }
+}
+
+/***********************/
+/***** ACCESS MENU *****/
+/***********************/
+
+#wrapperToggleDiv {
+  z-index: 1;
+  position: fixed;
+  display: flex;
+}
+
+.settingsBtn,
+.wrapperBtn {
+  cursor: pointer;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.wrapperBtnOpening {
+  animation: rotate 1s forwards;
+}
+
+.wrapperBtnClosing {
+  animation: rotateReverse 1s forwards;
+}
+
+#settingsDropdown {
+  min-width: 15rem;
+  max-width: 70vw; 
+  z-index: 1;
+  padding: 2rem 1rem;
+  border-radius: 40px 40px;
+  transition: all 3s ease-out;
+  opacity: 1;
+  outline: solid 5px  var(--lightgreen);
+}
+
+.dropdownContainer{
+  background-color: var(--lightgreen);; 
+  margin: 0.5rem 0; 
+  padding: 10px;
+  border-radius: 10px; 
+  display: flex;
+  justify-content: space-between; /* Text left, button/toggle right */
+  align-items: center;
+
+}
+
+.dropdownContainer:hover {
+  border-radius: 0.6rem;  
+}
+
+
+.dropdownContainer button {
+  background-color: transparent;
+  border: none;
+  color: darkgreen;
+  cursor: pointer;
+}
+
+#resetBtn {
+  background-color: transparent;
+  border: none;
+  color: darkgreen;
+  cursor: pointer;
+  text-align: center;
+}
+
+#settingsDropdown li {
+  color: darkgreen; /* Dark green text */
+  text-transform: uppercase; /* All caps */
+  /* font-size: 1rem; */
+}
+
+.showDropdown {
+  display: block;
+}
+
+.slide-in {
+  z-index: 10;
+  top: 15rem; 
+  /* right: 5%; */
+  width: 100%;
+  transform: translateX(100%);
+  transition: transform 0.5s ease-out;
+  background-color: var(--darkgreen);
+  padding: .8rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-radius: 40px 40px;
+}
+
+
+.slide-in.show {
+  transform: translateX(0); /* Bring it into view */
+  display: flex; /* Ensure it's displayed */
+}
+
+@media screen and (min-width: 900px) {
+  #slidein {
+    /* width: 300px; Adjust width as needed for desktop */
+    /* right: 0; Align with the right side of the screen */
+    /* top: 100%; Adjust if your nav height is different */
   }
 }
