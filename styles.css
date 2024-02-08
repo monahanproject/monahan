@@ -1606,6 +1606,7 @@ article > p {
   border-radius: 40px 40px;
   visibility: hidden;
   opacity: 0;
+  height: 0;
 }
 
 .slide-in.show {
@@ -1613,6 +1614,7 @@ article > p {
   visibility: visible; /* Make it visible */
   opacity: 1; /* Fade in */
   transition-delay: 0s; /* Apply transition delay reset for visibility and opacity */
+  height: auto;
 }
 
 @media screen and (min-width: 900px) {
