@@ -422,8 +422,7 @@ nav {
 }
 
 header {
-    /* position: relative; The parent container */
- 
+  /* position: relative; The parent container */
 }
 
 @media screen and (min-width: 900px) {
@@ -512,8 +511,6 @@ header {
 .page:nth-of-type(odd) {
   background-color: var(--lightgreen);
 }
-
-
 
 a {
   color: var(--darkgreen);
@@ -1529,24 +1526,22 @@ article > p {
   border-radius: 40px 40px;
   transition: all 3s ease-out;
   opacity: 1;
-  outline: solid 2px  var(--lightgreen);
+  outline: solid 2px var(--lightgreen);
 }
 
-.dropdownContainer{
-  background-color: var(--lightgreen);; 
-  margin: 0.5rem 0; 
+.dropdownContainer {
+  background-color: var(--lightgreen);
+  margin: 0.5rem 0;
   padding: 10px;
-  border-radius: 10px; 
+  border-radius: 10px;
   display: flex;
   justify-content: space-between; /* Text left, button/toggle right */
   align-items: center;
-
 }
 
 .dropdownContainer:hover {
-  border-radius: 0.6rem;  
+  border-radius: 0.6rem;
 }
-
 
 .dropdownContainer button {
   background-color: transparent;
@@ -1555,18 +1550,42 @@ article > p {
   cursor: pointer;
 }
 
+#btnDiv {
+  display: flex;
+}
+
+#increaseTextSizeBtn,
+#decreaseTextSizeBtn {
+  font-size: 2rem;
+}
+
+#decreaseTextSizeBtn {
+  margin-bottom: 5px;
+}
+
 #resetBtn {
-  background-color: transparent;
+  width: 100%; /* Ensures the button expands to fill its container */
+  text-align: center; /* Centers text horizontally */
+  display: block; /* Treat the button as a block-level element, allowing width to be set */
+  padding: 6px 0; /* Provides padding above and below the text */
+  /* Additional styling to ensure a consistent look and feel */
+  cursor: pointer;
+  font-size: 1.5rem; /* Adjust font size as needed */
+  margin: auto; /* If you need to center the button in its container */
   border: none;
-  color: darkgreen;
+  color: var(--darkgreen);
   cursor: pointer;
   text-align: center;
+  text-transform: uppercase;
+  font-family: "DM Sans", sans-serif;
+  outline: 5px solid var(--darkgreen);
 }
 
 #settingsDropdown li {
   color: darkgreen; /* Dark green text */
   text-transform: uppercase; /* All caps */
   /* font-size: 1rem; */
+  font-family: "DM Sans", sans-serif;
 }
 
 .showDropdown {
@@ -1580,7 +1599,7 @@ article > p {
   transform: translateX(-100%); /* Start off-screen */
   transition: transform 0.5s ease-out, visibility 0s linear 0.5s, opacity 0.5s linear;
   background-color: var(--darkgreen);
-  padding: .8rem;
+  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -1595,7 +1614,6 @@ article > p {
   opacity: 1; /* Fade in */
   transition-delay: 0s; /* Apply transition delay reset for visibility and opacity */
 }
-
 
 @media screen and (min-width: 900px) {
   #slidein {
