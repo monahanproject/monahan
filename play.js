@@ -1996,11 +1996,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
     "images/svg/30.svg": "images/svg/30Invert.svg",
     "images/svg/15.svg": "images/svg/15Invert.svg",
     "images/svg/-contributors1.svg": "images/svg/-contributors1Invert.svg",
-
     "images/svg/cityOfOttawaLogo.svg": "images/svg/cityOfOttawaLogoInvert.svg",
-
-
-    // contributors1
     "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg"
   };
 
@@ -2083,28 +2079,47 @@ function swapColors() {
   
   invertColoursBtn.addEventListener("click", swapColors);
 
-  // function toggleMonochrome() {
-  //   document.body.classList.toggle("monochrome");
-  // }
+  function toggleMonochrome() {
+    document.body.classList.toggle("monochrome");
+  }
 
-  // function changeTextSize(increase) {
-  //   let currentSize = parseFloat(getComputedStyle(document.body).fontSize);
-  //   if (increase) {
-  //     document.body.style.fontSize = `${currentSize + 1}px`;
-  //   } else {
-  //     document.body.style.fontSize = `${currentSize - 1}px`;
-  //   }
-  // }
+  function changeTextSize(increase) {
+    // Retrieve the current base font size from CSS variables
+    let root = document.documentElement;
+    let currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--base-font-size'));
+    
+    // Adjust the font size
+    if (increase) {
+      currentSize += 1;
+    } else {
+      currentSize -= 1;
+    }
+    
+    // Apply the new size to the root CSS variable
+    root.style.setProperty('--base-font-size', `${currentSize}px`);
+    
+    // Save the new size to localStorage
+    localStorage.setItem('userFontSize', currentSize);
+  }
+  
+  // Initialize the font size on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const userFontSize = localStorage.getItem('userFontSize');
+    if (userFontSize) {
+      document.documentElement.style.setProperty('--base-font-size', `${userFontSize}px`);
+    }
+  });
+  
 
   settingsBtn.addEventListener("click", function () {
     document.getElementById("slidein").classList.toggle("show");
   });
   
 
-  // monochromeBtn.addEventListener("click", toggleMonochrome);
-  // increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
-  // decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
-  // resetBtn.addEventListener("click", resetSettings);
+  monochromeBtn.addEventListener("click", toggleMonochrome);
+  increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
+  decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
+  resetBtn.addEventListener("click", resetSettings);
 
   // Close the menu by clicking outside
   window.addEventListener("click", function (e) {
@@ -2120,17 +2135,31 @@ function swapColors() {
     }
   });
 
-  // function resetSettings() {
-  //   document.body.classList.remove("monochrome");
-  //   document.body.style.fontSize = ""; // Reset to the default font size
-  //   const root = document.documentElement;
-  //   root.style.setProperty("--lightgreen", "rgb(191, 255, 194)");
-  //   root.style.setProperty("--darkgreen", "rgb(35, 78, 68)");
-  //   if (isInverted) { // Check if the site is currently inverted
-  //     isInverted = false; // Reset the inversion state
-  //     toggleImageSources(); // Reset images to their original sources
-  //   }
-  // }
+  function resetSettings() {
+    // Remove the monochrome class
+    document.body.classList.remove("monochrome");
+  
+    // Reset font size to default
+    let defaultFontSize = '6.9vw'; 
+    document.documentElement.style.setProperty('--base-font-size', defaultFontSize);
+    localStorage.removeItem('userFontSize'); // Clear stored font size
+  
+    // Reset color theme variables
+    const root = document.documentElement;
+    root.style.setProperty("--lightgreen", "rgb(191, 255, 194)");
+    root.style.setProperty("--darkgreen", "rgb(35, 78, 68)");
+    root.style.setProperty("--black", "rgb(0, 0, 0)");
+    root.style.setProperty("--white", "rgb(255, 255, 255)");
+    root.style.setProperty("--grey", "rgb(122, 122, 122)"); // Reset any other modified CSS variables to their defaults
+  
+    // Ensure isInverted is reset correctly
+    if (isInverted) {
+      isInverted = false;
+      toggleImageSources(); // Resets images to their original sources
+      toggleSvgBackgrounds(); // Ensure SVG backgrounds are also reset
+    }  
+  }
+  
 
 });
 

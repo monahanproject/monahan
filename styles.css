@@ -148,15 +148,6 @@ table {
   border-spacing: 0;
 }
 
-:root {
-  --lightgreen: #bfffc2;
-  --darkgreen: #234e44;
-  --grey: rgb(122, 122, 122);
-  --black: rgb(0, 0, 0);
-  --orange: rgb(255, 119, 0);
-  --white: rgb(255, 255, 255);
-}
-
 /***********************/
 /***** FOUNDATIONS *****/
 /***********************/
@@ -164,7 +155,7 @@ table {
 body {
   font-family: "Zilla Slab", serif;
   font-weight: 300;
-  font-size: 6.9vw;
+  font-size: var(--base-font-size);
   height: 100vh;
 }
 
@@ -202,22 +193,21 @@ a:hover {
 /***********************/
 
 :root {
-  --button-bg: #214e42;
-  --button-color: #bfffc2;
-  --transcript-border-color: var(--darkgreen);
-
-  --transcript-bg: var(--darkgreen);
-
-  --transcript-color: var(--lightgreen);
-
   --font-family-dm: "DM Sans", sans-serif;
   --font-family-mono: "DM Mono", sans-serif;
+  --lightgreen: #bfffc2;
+  --darkgreen: #234e44;
+  --grey: rgb(122, 122, 122);
+  --black: rgb(0, 0, 0);
+  --orange: rgb(255, 119, 0);
+  --white: rgb(255, 255, 255);
+  --base-font-size: 6.9vw;
 }
 
 .btn,
 #langToggle {
   background-color: var(--darkgreen);
-  color: var(--button-color);
+  color: var(--lightgreen);
   outline: none;
   border: none;
   border-radius: 6px;
@@ -1688,6 +1678,8 @@ article > p {
   }
 }
 
-.invert-images {
-  filter: invert(100%);
+
+
+.monochrome {
+  filter: grayscale(100%);
 }
