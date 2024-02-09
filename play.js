@@ -2100,6 +2100,25 @@ function swapColors() {
     document.getElementById("slidein").classList.toggle("show");
   });
 
+
+  document.getElementById("settingsBtn").addEventListener("click", function () {
+    // Toggle the visibility of the menu
+    document.getElementById("slidein").classList.toggle("show");
+
+    // Force redraw of SVG images by accessing a layout property
+    var invertColorsBtn = document.getElementById("invertColoursBtn").getElementsByTagName("img")[0];
+    var monochromeBtn = document.getElementById("monochromeBtn").getElementsByTagName("img")[0];
+
+    var forceRedraw = function(element) {
+        var _ = element.offsetHeight; // This line is for forcing a redraw
+    };
+
+    // Apply the redraw function to each SVG
+    forceRedraw(invertColorsBtn);
+    forceRedraw(monochromeBtn);
+});
+
+
   // monochromeBtn.addEventListener("click", toggleMonochrome);
   // increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
   // decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
