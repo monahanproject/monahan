@@ -1971,125 +1971,119 @@ assignS it to the song.audio property, and returns the modified song object.*/
     }
   }
   let settingsBtn = document.getElementById("accessiblityNav");
-  let monochromeBtn = document.getElementById("monochromeBtn");
-  let increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
-  let decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
-  let resetBtn = document.getElementById("resetBtn");
+  // let monochromeBtn = document.getElementById("monochromeBtn");
+  // let increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
+  // let decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
+  // let resetBtn = document.getElementById("resetBtn");
+
+
+  let isInverted = false;
+
   let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
-
-
   const imageSourceMap = {
     "images/svg/accessIcon.svg": "images/svg/accessIconInvert.svg",
     "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
     "images/svg/monochrome.svg": "images/svg/monochromeInvert.svg",
     "images/svg/firn.svg": "images/svg/firnInvert.svg",
     "images/svg/svg-upPlant.svg": "images/svg/svg-upPlantInvert.svg",
-
     "images/svg/separator.svg": "images/svg/separatorInvert.svg",
     "images/svg/cityOfOttawaLogo.svg": "images/svg/cityOfOttawaLogoInvert.svg",
     "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg"
   };
 
-  
   function toggleImageSources() {
+    console.log(`Toggling image sources. Current isInverted state: ${isInverted}`); // Log current state
     const images = document.querySelectorAll('img'); // Select all <img> elements
     images.forEach(img => {
-      const src = img.getAttribute('src');
-      let newSrc;
+        const src = img.getAttribute('src');
+        let newSrc;
   
-      if (!isInverted) {
-        // Switch to inverted images based on the mapping
-        newSrc = Object.keys(imageSourceMap).includes(src) ? imageSourceMap[src] : src;
-      } else {
-        // Find the original source by looking for the current src in the values of the mapping
-        const originalSrc = Object.keys(imageSourceMap).find(key => imageSourceMap[key] === src);
-        newSrc = originalSrc ? originalSrc : src;
-      }
-  
-      console.log(newSrc); // Log the new source to the console
-      img.setAttribute('src', newSrc); // Update the image source
-    });
-  }
-  
+        if (isInverted) {
+            // Directly use inverted images based on the mapping
+            newSrc = imageSourceMap[src] ? imageSourceMap[src] : src;
+            console.log(`Mapping to inverted: ${newSrc}`); // Correctly log intended new source
+        } else {
+            // Attempt to find the original source, this is correct for reverting
+            const originalSrc = Object.keys(imageSourceMap).find(key => imageSourceMap[key] === src);
+            newSrc = originalSrc ? originalSrc : src;
+            console.log(`Mapping to original: ${newSrc}`); // Log intended new source
+        }
 
+        img.setAttribute('src', newSrc); // Update the image source
+    });
+}
+
+  
   function toggleSvgBackgrounds() {
     // List of classes to toggle
     const svgClasses = [
-      {original: 'svg-about', invert: 'svg-about-invert'},
-      // Add entries for each SVG background you need to toggle
+      { original: 'svg-about', invert: 'svg-about-invert' },
+      { original: 'svg-upPlant', invert: 'svg-upPlant-invert' },
+      { original: 'svg-works', invert: 'svg-works-invert' },
+      { original: 'svg-sideways', invert: 'svg-sideways-invert' },
+      { original: 'svg-contributors', invert: 'svg-contributors-invert' },
+      { original: 'svg-contributors2', invert: 'svg-contributors2-invert' }
     ];
-  
+      
     svgClasses.forEach(svgClass => {
       const elements = document.querySelectorAll('.' + svgClass.original + ', .' + svgClass.invert);
       elements.forEach(element => {
-        // Remove both possible classes
-        element.classList.remove(svgClass.original, svgClass.invert);
-        
-        // Add the appropriate class based on the inversion state
         if (isInverted) {
-          element.classList.add(svgClass.invert);
+          if (!element.classList.contains(svgClass.invert)) {
+            element.classList.add(svgClass.invert);
+          }
         } else {
-          element.classList.add(svgClass.original);
+          if (element.classList.contains(svgClass.invert)) {
+            element.classList.remove(svgClass.invert);
+          }
         }
       });
     });
-  }
-  
+}
+
+function swapColors() {
+  console.log('swapColors called'); // Initial log
+  requestAnimationFrame(() => {
+      console.log(`Before toggling, isInverted is: ${isInverted}`); // Log before toggle
+      isInverted = !isInverted;
+      console.log(`After toggling, isInverted is now: ${isInverted}`); // Log after toggle
+
+      const root = document.documentElement;
+      root.style.setProperty("--lightgreen", isInverted ? "rgb(35, 78, 68)" : "rgb(191, 255, 194)");
+      root.style.setProperty("--darkgreen", isInverted ? "rgb(191, 255, 194)" : "rgb(35, 78, 68)");
+
+      // Apply the image source toggling within the same frame
+      toggleImageSources();
+      toggleSvgBackgrounds();
+  });
+}
 
 
-  // Global flag to track color inversion state
-  let isInverted = false;
-
-  function swapColors() {
-    const root = document.documentElement;
-    
-    // Toggle the state at the beginning based on the flag, not the CSS properties
-    if (!isInverted) {
-      // Apply inverted colors
-      root.style.setProperty("--lightgreen", "rgb(35, 78, 68)");
-      root.style.setProperty("--darkgreen", "rgb(191, 255, 194)");
-    } else {
-      // Revert to original colors
-      root.style.setProperty("--lightgreen", "rgb(191, 255, 194)");
-      root.style.setProperty("--darkgreen", "rgb(35, 78, 68)");
-    }
-    
-    // After applying the color changes, then toggle the images to match
-    toggleImageSources();
-    toggleSvgBackgrounds(); // Now also toggles SVG backgrounds defined in CSS
 
   
-    // Finally, toggle the inversion state to reflect the new state
-    isInverted = !isInverted;
-  }
-  
-  
-
-
-
   invertColoursBtn.addEventListener("click", swapColors);
 
-  function toggleMonochrome() {
-    document.body.classList.toggle("monochrome");
-  }
+  // function toggleMonochrome() {
+  //   document.body.classList.toggle("monochrome");
+  // }
 
-  function changeTextSize(increase) {
-    let currentSize = parseFloat(getComputedStyle(document.body).fontSize);
-    if (increase) {
-      document.body.style.fontSize = `${currentSize + 1}px`;
-    } else {
-      document.body.style.fontSize = `${currentSize - 1}px`;
-    }
-  }
+  // function changeTextSize(increase) {
+  //   let currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+  //   if (increase) {
+  //     document.body.style.fontSize = `${currentSize + 1}px`;
+  //   } else {
+  //     document.body.style.fontSize = `${currentSize - 1}px`;
+  //   }
+  // }
 
   settingsBtn.addEventListener("click", function () {
     document.getElementById("slidein").classList.toggle("show");
   });
 
-  monochromeBtn.addEventListener("click", toggleMonochrome);
-  increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
-  decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
-  resetBtn.addEventListener("click", resetSettings);
+  // monochromeBtn.addEventListener("click", toggleMonochrome);
+  // increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
+  // decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
+  // resetBtn.addEventListener("click", resetSettings);
 
   // Close the menu by clicking outside
   window.addEventListener("click", function (e) {
@@ -2105,32 +2099,16 @@ assignS it to the song.audio property, and returns the modified song object.*/
     }
   });
 
-  function resetSettings() {
-    document.body.classList.remove("monochrome");
-    document.body.style.fontSize = ""; // Reset to the default font size
-    const root = document.documentElement;
-    root.style.setProperty("--lightgreen", "rgb(191, 255, 194)");
-    root.style.setProperty("--darkgreen", "rgb(35, 78, 68)");
-    if (isInverted) { // Check if the site is currently inverted
-      isInverted = false; // Reset the inversion state
-      toggleImageSources(); // Reset images to their original sources
-    }
-  }
-
-
-  function logImageFilenames() {
-    // Select all <img> elements
-    const images = document.querySelectorAll('img');
-  
-    // Filter for PNG and SVG images and log their src attributes
-    images.forEach(img => {
-      const src = img.getAttribute('src');
-      if (src.endsWith('.png') || src.endsWith('.svg')) {
-        console.log(src);
-      }
-    });
-  }
-
-  logImageFilenames();
+  // function resetSettings() {
+  //   document.body.classList.remove("monochrome");
+  //   document.body.style.fontSize = ""; // Reset to the default font size
+  //   const root = document.documentElement;
+  //   root.style.setProperty("--lightgreen", "rgb(191, 255, 194)");
+  //   root.style.setProperty("--darkgreen", "rgb(35, 78, 68)");
+  //   if (isInverted) { // Check if the site is currently inverted
+  //     isInverted = false; // Reset the inversion state
+  //     toggleImageSources(); // Reset images to their original sources
+  //   }
+  // }
 
 });
