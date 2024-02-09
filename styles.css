@@ -1079,7 +1079,7 @@ li {
   position: absolute;
   width: 0;
   height: 100%;
-  background-color: var(--black);
+  background-color: var(--darkgreen);
 
 }
 
@@ -1089,7 +1089,7 @@ li {
   left: 0;
   width: 8px;
   height: 8px;
-  background-color: var(--black);
+  background-color: var(--darkgreen);
   border-radius: 50%;
 }
 
@@ -1106,7 +1106,7 @@ li {
 }
 
 .time-label {
-  color: var(--black);
+  color: var(--darkgreen);
 
 }
 
@@ -1183,7 +1183,7 @@ input[type="range"] {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: black;
+  background: darkgreen;
   cursor: pointer;
 }
 
@@ -1191,7 +1191,7 @@ input[type="range"] {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: black;
+  background: darkgreen;
   cursor: pointer;
 }
 
@@ -1375,7 +1375,7 @@ input[type="range"] {
 }
 
 #debugdiv {
-  display: block;
+  display: none;
   max-height: 250px;
   overflow: auto;
   padding: 10px 5px;

@@ -1943,6 +1943,9 @@ assignS it to the song.audio property, and returns the modified song object.*/
     if (firstPlay) {
       // playBackgroundMusic();
 
+
+
+
       toggleButtonVisuals(true); // Assume playing state on first play
       generatePlayer();
       prepareAudioContext();
@@ -1970,11 +1973,14 @@ assignS it to the song.audio property, and returns the modified song object.*/
       }
     }
   }
+
+
+
   let settingsBtn = document.getElementById("accessiblityNav");
-  // let monochromeBtn = document.getElementById("monochromeBtn");
-  // let increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
-  // let decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
-  // let resetBtn = document.getElementById("resetBtn");
+  let monochromeBtn = document.getElementById("monochromeBtn");
+  let increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
+  let decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
+  let resetBtn = document.getElementById("resetBtn");
 
 
   let isInverted = false;
@@ -1987,7 +1993,14 @@ assignS it to the song.audio property, and returns the modified song object.*/
     "images/svg/firn.svg": "images/svg/firnInvert.svg",
     "images/svg/svg-upPlant.svg": "images/svg/svg-upPlantInvert.svg",
     "images/svg/separator.svg": "images/svg/separatorInvert.svg",
+    "images/svg/30.svg": "images/svg/30Invert.svg",
+    "images/svg/15.svg": "images/svg/15Invert.svg",
+    "images/svg/-contributors1.svg": "images/svg/-contributors1Invert.svg",
+
     "images/svg/cityOfOttawaLogo.svg": "images/svg/cityOfOttawaLogoInvert.svg",
+
+
+    // contributors1
     "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg"
   };
 
@@ -2052,6 +2065,13 @@ function swapColors() {
       root.style.setProperty("--lightgreen", isInverted ? "rgb(35, 78, 68)" : "rgb(191, 255, 194)");
       root.style.setProperty("--darkgreen", isInverted ? "rgb(191, 255, 194)" : "rgb(35, 78, 68)");
 
+      root.style.setProperty("--black", isInverted ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)");
+      root.style.setProperty("--white", isInverted ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)");
+
+
+      root.style.setProperty("--grey", isInverted ? "rgb(122, 122, 122)" : "rgb(35, 78, 68)");
+
+
       // Apply the image source toggling within the same frame
       toggleImageSources();
       toggleSvgBackgrounds();
@@ -2111,4 +2131,19 @@ function swapColors() {
   //   }
   // }
 
+});
+
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'd' || event.key === 'D') { // This makes it case-insensitive
+        var debugDiv = document.getElementById('debugdiv');
+        if (debugDiv.style.display === 'none') {
+            debugDiv.style.display = 'block'; // Show the div
+            console.log("show div");
+        } else {
+            debugDiv.style.display = 'none'; // Hide the div
+            console.log("hide div");
+
+        }
+    }
 });
