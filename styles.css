@@ -149,8 +149,12 @@ table {
 }
 
 :root {
-  --lightgreen: rgb(191 255 194);
-  --darkgreen: rgb(35 78 68);
+  --lightgreen: #bfffc2;
+  --darkgreen: #234e44;
+  --grey: rgb(122, 122, 122);
+  --black: rgb(0, 0, 0);
+  --orange: rgb(255, 119, 0);
+  --white: rgb(255, 255, 255); 
 }
 
 /***********************/
@@ -200,16 +204,19 @@ a:hover {
 :root {
   --button-bg: #214e42;
   --button-color: #bfffc2;
-  --transcript-border-color: var(--Background, #224e43);
-  --transcript-bg: var(--Background, #224e43);
-  --transcript-color: var(--Text, #bfffc2);
+  --transcript-border-color: var(--darkgreen);
+
+  --transcript-bg: var(--darkgreen);
+
+  --transcript-color: var(--lightgreen);
+
   --font-family-dm: "DM Sans", sans-serif;
   --font-family-mono: "DM Mono", sans-serif;
 }
 
 .btn,
 #langToggle {
-  background-color: var(--button-bg);
+  background-color: var(--darkgreen);
   color: var(--button-color);
   outline: none;
   border: none;
@@ -222,9 +229,9 @@ a:hover {
   padding: 15px;
   width: 92vw;
   border-radius: 0.5625rem;
-  border: 2px solid var(--transcript-border-color);
-  background: var(--transcript-bg);
-  color: var(--transcript-color);
+  border: 2px solid var(--darkgreen);
+  background: var(--darkgreen);
+  color: var(--lightgreen);
   text-align: center;
   font-family: var(--font-family-dm);
   font-size: 1.25rem;
@@ -234,8 +241,8 @@ a:hover {
 }
 
 #transcriptButton:hover {
-  background: var(--transcript-color);
-  color: var(--transcript-bg);
+  background: var(--darkgreen);
+  color: var(--lightgreen);
   border: 2px solid #000;
 }
 
@@ -726,7 +733,8 @@ p {
   font-size: 7.8vw;
   font-family: "DM Sans", sans-serif;
   color: var(--lightgreen);
-  color: var(--Text, #bfffc2);
+  color: var(--lightgreen);
+
   text-align: center;
   font-family: "DM Sans";
   font-size: 1.90269rem;
@@ -745,7 +753,8 @@ p {
   text-align: center;
   font-family: "Zilla Slab", serif;
   font-size: 10vw;
-  color: var(--Text, #bfffc2);
+  color: var(--lightgreen);
+
   text-align: center;
   font-feature-settings: "ss02" on;
   font-family: "Zilla Slab";
@@ -845,7 +854,8 @@ h2 {
 }
 
 #artPubArt {
-  color: var(--Background, #224e43);
+  color: var(--darkgreen);
+
   font-size: 10.4vw;
   line-height: 97.7%;
   margin-top: 0.8rem;
@@ -917,7 +927,8 @@ li {
   line-height: 1.35;
   font-family: "Zilla Slab", serif;
   font-weight: 300;
-  color: var(--Background, #224e43);
+  color: var(--darkgreen);
+
   font-family: "Zilla Slab";
   font-size: 1.5rem;
   font-style: normal;
@@ -1030,7 +1041,8 @@ li {
   left: 35%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  color: var(--Text, #bfffc2);
+  color: var(--lightgreen);
+
   font-family: "DM Sans";
   font-size: 2.25rem;
 }
@@ -1056,7 +1068,7 @@ li {
   position: relative;
   width: 90%;
   height: 2px;
-  background-color: grey;
+  background-color: var(--grey);
   margin: 8px auto 0 auto;
   margin-top: 1.5rem;
 }
@@ -1065,7 +1077,8 @@ li {
   position: absolute;
   width: 0;
   height: 100%;
-  background-color: black;
+  background-color: var(--black);
+
 }
 
 #progress-dot {
@@ -1074,7 +1087,7 @@ li {
   left: 0;
   width: 8px;
   height: 8px;
-  background-color: black;
+  background-color: var(--black);
   border-radius: 50%;
 }
 
@@ -1091,7 +1104,8 @@ li {
 }
 
 .time-label {
-  color: black;
+  color: var(--black);
+
 }
 
 @media screen and (min-width: 900px) {
@@ -1099,7 +1113,8 @@ li {
     position: relative;
     width: 70%;
     height: 2px;
-    background-color: grey;
+    background-color: var(--grey);
+
     margin: 0 auto;
   }
 
@@ -1196,7 +1211,7 @@ input[type="range"] {
 /****************************/
 
 .svg-about {
-  background-image: url("images/svg/svg-upDownLeafLight.svg");
+  background-image: url("images/svg/svg-upDownLeaf.svg");
   background-repeat: repeat-x;
   background-size: auto 110px;
   height: 110px;
@@ -1205,14 +1220,22 @@ input[type="range"] {
   margin-top: 2rem;
 }
 
-.svg-upPlantDark {
-  background-image: url("images/svg/svg-upPlantDark.svg");
+.svg-about-invert {
+  background-image: url("images/svg/svg-upDownLeafInvert.svg");
+}
+
+.svg-upPlant {
+  background-image: url("images/svg/svg-upPlant.svg");
   background-repeat: repeat-x;
   background-size: auto 61px;
   height: 66px;
   width: 100vw;
   padding-bottom: 0.5rem;
   margin-top: 2rem;
+}
+
+.svg-upPlant-invert {
+  background-image: url("images/svg/svg-upPlantInvert.svg");
 }
 
 .svg-works {
@@ -1225,8 +1248,12 @@ input[type="range"] {
   margin-top: 2rem;
 }
 
-.svg-sidewaysLight {
-  background-image: url("images/svg/svg-sidewaysLight.svg");
+.svg-works-invert {
+  background-image: url("images/svg/svg-worksInvert.svg");
+}
+
+.svg-sideways {
+  background-image: url("images/svg/svg-sideways.svg");
   background-repeat: repeat-x;
   background-size: auto 110px;
   height: 110px;
@@ -1234,6 +1261,10 @@ input[type="range"] {
   padding-bottom: 0.5rem;
   /* margin-left: -2rem; */
   margin-top: 1rem;
+}
+
+.svg-sideways-invert {
+  background-image: url("images/svg/svg-sidewaysInvert.svg");
 }
 
 .svg-contributors {
@@ -1245,57 +1276,78 @@ input[type="range"] {
   margin-bottom: 0.8rem;
 }
 
+.svg-contributors-invert {
+  background-image: url("images/svg/svg-contributors1Invert.svg");
+}
+
 .svg-contributors2 {
   background-image: url(images/svg/-contributors2.svg);
 }
 
+.svg-contributors2-invert {
+  background-image: url("images/svg/svg-contributors2Invert.svg");
+}
+
 @media screen and (min-width: 900px) {
   .svg-about,
-  .svg-upPlantDark,
+  .svg-upPlant,
   .svg-works {
     background-repeat: repeat;
     height: auto;
-    /* width: 100%; */
     margin: 0;
-    background-size: 120% auto; /* Increases width specifically */
-    background-position: center; /* Centers the background image */
-
-    /* background-size: 200% 200%; */
+    background-size: 120% auto;
+    background-position: center; 
     flex: 1;
   }
 
-  .svg-sidewaysLight {
+  .svg-sideways {
     background-repeat: repeat;
     height: auto;
     margin: 0;
-    background-size: 120% auto; /* Increases width specifically */
-    background-position: center; /* Centers the background image */
+    background-size: 120% auto; 
+    background-position: center; 
     margin-top: 1rem;
   }
 
   .svg-about {
-    background-image: url(images/svg/svg-sidewaysLightBig.svg);
+    background-image: url(images/svg/svg-sidewaysBig.svg);
     background-position: center;
   }
 
-  .svg-upPlantDark {
-    background-image: url("images/svg/svg-upDownDarkBig.svg");
+  .svg-about-invert {
+    background-image: url("images/svg/svg-sidewaysBigInvert.svg");
+  }
+
+  .svg-upPlant {
+    background-image: url("images/svg/svg-upDownBig.svg");
     /* background-position: left center; */
   }
 
+  .svg-upPlant-invert {
+    background-image: url("images/svg/svg-upDownBigInvert.svg");
+  }
+
   .svg-works {
-    background-image: url("images/svg/svg-upLightBig.svg");
+    background-image: url("images/svg/svg-upBigInvert.svg");
     background-position: left center;
   }
 
-  .svg-sidewaysLight {
-    background-image: url("images/svg/svg-sidewaysLight.svg");
+  .svg-works-invert {
+    background-image: url("images/svg/svg-upBig.svg");
+  }
+
+  .svg-sideways {
+    background-image: url("images/svg/svg-sideways.svg");
     background-repeat: repeat-x;
     background-size: auto 110px;
     height: 110px;
     width: 100vw;
     padding-bottom: 0.5rem;
     margin-left: -2rem;
+  }
+
+  .svg-sideways-invert {
+    background-image: url("images/svg/svg-sidewaysInvert.svg");
   }
 
   .svg-contributors {
@@ -1307,8 +1359,16 @@ input[type="range"] {
     box-sizing: border-box;
   }
 
+  .svg-contributors-invert {
+    background-image: url("images/svg/svg-contributors1Invert.svg");
+  }
+
   .svg-contributors2 {
     background-image: url(images/svg/-contributors2.svg);
+  }
+
+  .svg-contributors2-invert {
+    background-image: url("images/svg/svg-contributors2Invert.svg");
   }
 }
 
@@ -1318,8 +1378,10 @@ input[type="range"] {
   overflow: auto;
   padding: 10px 5px;
   margin: 10px 2px;
-  border: 2px solid orange;
-  background-color: white;
+  border: 2px solid var(--orange);
+
+  background-color: var(--white);
+
   position: absolute;
   overflow: auto;
 }
@@ -1329,7 +1391,7 @@ input[type="range"] {
 /****************************/
 
 #transcriptContainer {
-  background-color: #224e43;
+  background-color: var(--darkgreen);
   margin: 20px 5px;
   min-height: 0;
   overflow: auto;
@@ -1546,7 +1608,7 @@ article > p {
 .dropdownContainer button {
   background-color: transparent;
   border: none;
-  color: darkgreen;
+  color: var(--darkgreen);
   cursor: pointer;
 }
 
@@ -1582,7 +1644,7 @@ article > p {
 }
 
 #settingsDropdown li {
-  color: darkgreen; /* Dark green text */
+  color: var(--darkgreen);
   text-transform: uppercase; /* All caps */
   /* font-size: 1rem; */
   font-family: "DM Sans", sans-serif;
@@ -1624,3 +1686,10 @@ article > p {
     /* top: 100%; Adjust if your nav height is different */
   }
 }
+
+
+
+.invert-images {
+  filter: invert(100%);
+}
+
