@@ -957,14 +957,16 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  max-width: 100%;
 }
 
 .skip-button {
   border: none;
   background: none;
   position: relative;
-  margin: 0 2.5vw;
+  /* margin: 0 2.5vw; */
+  max-width: 100%;
+
 }
 
 .skip-button span {
