@@ -154,7 +154,7 @@ table {
   --grey: rgb(122, 122, 122);
   --black: rgb(0, 0, 0);
   --orange: rgb(255, 119, 0);
-  --white: rgb(255, 255, 255); 
+  --white: rgb(255, 255, 255);
 }
 
 /***********************/
@@ -614,7 +614,9 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
   max-height: 100vh;
+
   justify-content: space-between;
 }
 
@@ -966,7 +968,6 @@ li {
   position: relative;
   /* margin: 0 2.5vw; */
   max-width: 100%;
-
 }
 
 .skip-button span {
@@ -1080,7 +1081,6 @@ li {
   width: 0;
   height: 100%;
   background-color: var(--darkgreen);
-
 }
 
 #progress-dot {
@@ -1107,7 +1107,6 @@ li {
 
 .time-label {
   color: var(--darkgreen);
-
 }
 
 @media screen and (min-width: 900px) {
@@ -1298,7 +1297,7 @@ input[type="range"] {
     height: auto;
     margin: 0;
     background-size: 120% auto;
-    background-position: center; 
+    background-position: center;
     flex: 1;
   }
 
@@ -1306,8 +1305,8 @@ input[type="range"] {
     background-repeat: repeat;
     height: auto;
     margin: 0;
-    background-size: 120% auto; 
-    background-position: center; 
+    background-size: 120% auto;
+    background-position: center;
     margin-top: 1rem;
   }
 
@@ -1689,9 +1688,6 @@ article > p {
   }
 }
 
-
-
 .invert-images {
   filter: invert(100%);
 }
-
