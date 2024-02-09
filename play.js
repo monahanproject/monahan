@@ -1879,8 +1879,8 @@ assignS it to the song.audio property, and returns the modified song object.*/
   let firstPlay = true;
   var playButtonTextContainer = document.getElementById("play-button-text-container");
 
-  const playingSVG = `<img id="play-icon" class="svg-icon" src="images/icons/playButton.svg" alt="Play Icon">`;
-  const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/icons/pauseButton.svg" alt="Pause Icon">`;
+  const playingSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButton.svg" alt="Play Icon">`;
+  const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButton.svg" alt="Pause Icon">`;
 
   // Text Constants
   const playingText = "PLAY";
