@@ -257,7 +257,7 @@ a:hover {
 
 .page {
   display: flex;
-  /* min-height: 100vh; */
+  /* min- height: 100vh; */
   height: auto;
   width: 100vw;
   max-width: 100vw;
