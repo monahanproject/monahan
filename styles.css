@@ -1581,7 +1581,7 @@ article > p {
   /* max-width: 70vw;  */
   z-index: 1;
   padding: 1rem 1rem;
-  border-radius: 40px 40px;
+  border-radius: 10px;
   transition: all 3s ease-out;
   opacity: 1;
   outline: solid 2px var(--lightgreen);
