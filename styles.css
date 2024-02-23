@@ -646,7 +646,7 @@ p {
     height: 70vh;
     /* width: 100vw; */
     grid-template-rows: auto auto;
-    grid-template-columns: 15vw 1fr 1fr 1fr 15vw;
+    grid-template-columns: 15vw 3fr 3fr 1fr 15vw;
     margin: 0;
     /* margin: 0 0 0 10vw; */
   }
@@ -1610,11 +1610,11 @@ article > p {
   /* min-width: 15rem; */
   /* max-width: 70vw;  */
   z-index: 1;
-  padding: 1rem 1rem;
+  /* padding: 1rem 1rem; */
   border-radius: 10px;
   transition: all 3s ease-out;
   opacity: 1;
-  outline: solid 2px var(--lightgreen);
+  /* outline: solid 2px var(--lightgreen); */
 }
 
 .dropdownContainer {
@@ -1680,36 +1680,39 @@ article > p {
   display: block;
 }
 
+
 .slide-in {
   z-index: 10;
-  top: 15rem;
-  /* width: 100%; */
-  transform: translateX(-100%); /* Start off-screen */
+  top: 15rem; /* Adjust if necessary to control the starting position */
+  transform: translateY(-100%); /* Start hidden above the view */
   transition: transform 0.5s ease-out, visibility 0s linear 0.5s, opacity 0.5s linear;
   background-color: var(--darkgreen);
   padding: 0.8rem;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  border-radius: 40px 40px;
+  border-radius: 10px 10px;
   visibility: hidden;
   opacity: 0;
-  height: 0;
+  height: auto; /* Ensure height is auto or fixed to control the size */
+  margin-top: 10px;
 }
 
 .slide-in.show {
-  transform: translateX(0); /* Bring it into view */
-  visibility: visible; /* Make it visible */
-  opacity: 1; /* Fade in */
-  transition-delay: 0s; /* Apply transition delay reset for visibility and opacity */
-  height: auto;
+  transform: translateY(0); /* Slide in to view */
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
 }
+
+
 
 @media screen and (min-width: 900px) {
   #slidein {
-    /* width: 300px; Adjust width as needed for desktop */
-    /* right: 0; Align with the right side of the screen */
-    /* top: 100%; Adjust if your nav height is different */
+    width: 30vw; 
+    position: fixed;
+    right: 0; 
+    top: 110px;
   }
 }
 
