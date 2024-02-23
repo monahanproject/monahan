@@ -452,7 +452,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
   let language = "english"; // Default language
   let transcriptVisible = false; // Track visibility of transcript
   let transcriptContent; // Define transcriptContent as a global variable
-  const transcriptContainer = document.getElementById("transcriptContainer"); // Moved to global scope
+  const transcriptContainer = document.getElementById("transcriptContainer"); 
 
   // Helper function to create elements with attributes
   function createElement(type, attributes) {
