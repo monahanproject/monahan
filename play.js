@@ -39,26 +39,6 @@ window.addEventListener("load", () => {
     }
   };
 
-  // Wake lock functionality
-  const requestWakeLock = async () => {
-    if ("wakeLock" in navigator) {
-      console.log("Wake lock API available");
-      try {
-        const wakeLockRequest = await navigator.wakeLock.request("screen");
-        console.log("Wake lock activated.");
-      } catch (err) {
-        console.error("Wake lock could not be activated:", err);
-      }
-    } else {
-      console.warn("Wake lock API not available.");
-    }
-  };
-
-  // Request wake lock on page load
-  // requestWakeLock();
-
-  console.log("hi");
-
   let myLang = localStorage["lang"] || "defaultValue";
   let player;
   let audioContext = null;
@@ -77,34 +57,6 @@ window.addEventListener("load", () => {
   let currentTimeElement; // Element to display current time
   const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
-  //  XXXXXXXXXXXXXXXXXXXXXXXX
-  //  XXXXXX WAKELOCK  XXXXXXX
-  //  XXXXXXXXXXXXXXXXXXXXXXXX
-
-  // Wake lock functionality
-  // const requestWakeLock = async () => {
-  //   if ("wakeLock" in navigator) {
-  //     try {
-  //       const wakeLockRequest = await navigator.wakeLock.request("screen");
-  //       console.log("Wake lock activated.");
-
-  //       // Re-request the wake lock if the visibility state changes
-  //       document.addEventListener("visibilitychange", async () => {
-  //         if (document.visibilityState === "visible" && !wakeLockRequest) {
-  //           wakeLockRequest = await navigator.wakeLock.request("screen");
-  //           console.log("Wake lock re-activated.");
-  //         }
-  //       });
-  //     } catch (err) {
-  //       console.error("Wake lock could not be activated:", err);
-  //     }
-  //   } else {
-  //     console.warn("Wake lock API not available.");
-  //   }
-  // };
-
-  // Request wake lock on page load
-  // requestWakeLock();
 
   //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -125,11 +77,10 @@ window.addEventListener("load", () => {
   function createVolumeSlider() {
     const volumeSlider = document.getElementById("volume-slider");
     if (volumeSlider) {
-      // Check if the element exists
       volumeSlider.type = "range";
       volumeSlider.max = "100";
       volumeSlider.min = "0";
-      volumeSlider.value = "75"; // Set this to your preferred starting value, e.g., 75 for 75%
+      volumeSlider.value = "75"; 
     }
     return volumeSlider;
   }
@@ -150,8 +101,6 @@ window.addEventListener("load", () => {
 
   if (volumeSlider) {
     volumeSlider.addEventListener("change", handleVolumeChange);
-
-    // Initialize the volume to the slider's starting value when the page loads
     document.addEventListener("DOMContentLoaded", () => {
       handleVolumeChange({ target: { value: volumeSlider.value } });
     });
@@ -183,7 +132,6 @@ window.addEventListener("load", () => {
     }
   }
 
-  // const trackNameElement = createTrackNameElement();
   playButton.addEventListener("click", handlePlayPauseClick);
   skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
   skipForwardButton.addEventListener("click", handleSkipForwardClick);
@@ -253,7 +201,6 @@ window.addEventListener("load", () => {
     return setInterval(() => {
       let delta = Date.now() - start; // Calculate elapsed milliseconds
       let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
-      // findmeeee
       updateProgressTimerr(Math.floor(player.currentTime), timerDuration);
       remainingTime = calculateRemainingTime(deltaSeconds);
     }, 1000); // Run the loop every x milliseconds
@@ -367,7 +314,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
   //  XXXXX GET OUR SONGS & TURN THEM INTO SONG OBJECTS! XXXXXX
   //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-  /* 5. Define an array SONGS containing multiple song objects, each song object is 
+  /* Define an array SONGS containing multiple song objects, each song object is 
   processed using the addAudioFromUrl function. */
 
   let songs;
@@ -447,11 +394,10 @@ assignS it to the song.audio property, and returns the modified song object.*/
   ////////// TRANSCRIPT STUFF //////////
   /////////////////////////////////////
 
-  // Global variables
-  let transcript = ""; // Store the transcript
-  let language = "english"; // Default language
-  let transcriptVisible = false; // Track visibility of transcript
-  let transcriptContent; // Define transcriptContent as a global variable
+  let transcript = ""; 
+  let language = "english"; 
+  let transcriptVisible = false; 
+  let transcriptContent; 
   const transcriptContainer = document.getElementById("transcriptContainer"); 
 
   // Helper function to create elements with attributes
@@ -461,7 +407,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
     return element;
   }
 
-  // Function to create the transcript container and button
+  // create the transcript container and button
   function createTranscriptContainer() {
     if (!transcriptContainer) {
       console.error("Transcript container not found.");
@@ -1913,20 +1859,39 @@ assignS it to the song.audio property, and returns the modified song object.*/
     createTranscriptContainer();
     printEntireTracklistDebug(curatedTracklist);
 
-    // findme
+    // Pre-cache audio tracks if needed
     window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+
     if (curatedTracklist.length > 0) {
-      const audioElement = document.querySelector("audio") || document.createElement("audio");
-      if (!audioElement.isConnected) {
-          document.body.appendChild(audioElement);
-      }
-      audioElement.src = curatedTracklist[0]; // Start with the first track
-      audioElement.addEventListener('ended', function() {
-          // Code to advance to the next track and update src
-      });
-  }
+        const audioElement = document.querySelector("audio") || document.createElement("audio");
+        if (!audioElement.isConnected) {
+            document.body.appendChild(audioElement);
+        }
+        audioElement.src = curatedTracklist[0]; // Start with the first track
+
+        // Function to play the next track
+        let currentTrackIndex = 0;
+        const playNextTrack = () => {
+            currentTrackIndex++;
+            if (currentTrackIndex < curatedTracklist.length) {
+                audioElement.src = curatedTracklist[currentTrackIndex];
+                audioElement.play();
+            } else {
+                console.log("End of playlist");
+                // Optionally, handle the end of the playlist, like looping or stopping.
+            }
+        };
+
+        // Add event listener to play next track when the current one ends
+        audioElement.addEventListener('ended', playNextTrack);
+
+        // Optionally, start playing the first track automatically
+        // audioElement.play();
+    }
+
     createTimerLoopAndUpdateProgressTimer();
-  }
+}
+
 
   function addOutrosAndCreditsToTracklist() {
     curatedTracklist.push(...outroAudioSounds.map(addAudioFromUrl));
