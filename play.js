@@ -1988,8 +1988,8 @@ assignS it to the song.audio property, and returns the modified song object.*/
   let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
   const imageSourceMap = {
     "images/svg/accessIcon.svg": "images/svg/accessIconInvert.svg",
-    "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
-    "images/svg/monochrome.svg": "images/svg/monochromeInvert.svg",
+    "images/svg/invertColors1.svg": "images/svg/invertColorsInvert.svg",
+    "images/svg/monochrome1.svg": "images/svg/monochromeInvert.svg",
     "images/svg/firn.svg": "images/svg/firnInvert.svg",
     "images/svg/svg-upPlant.svg": "images/svg/svg-upPlantInvert.svg",
     "images/svg/separator.svg": "images/svg/separatorInvert.svg",
