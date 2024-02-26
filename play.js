@@ -41,7 +41,6 @@ window.addEventListener("load", () => {
 
   // Wake lock functionality
   const requestWakeLock = async () => {
-    /*
     if ("wakeLock" in navigator) {
       console.log("Wake lock API available");
       try {
@@ -53,8 +52,6 @@ window.addEventListener("load", () => {
     } else {
       console.warn("Wake lock API not available.");
     }
-    */
-   console.warn("WAKE LOCK NOT ATTEMPTED GO AWAY");
   };
 
   // Request wake lock on page load
@@ -319,9 +316,7 @@ adds it to the cache, and returns the audio response. */
 assignS it to the song.audio property, and returns the modified song object.*/
 
   const addAudioFromUrl = (song) => {
-    // song.audio = createAudioElement(song.url);
-    console.log("DEMI DEMI DEMI");
-    song.audio = createAudioElement("./sounds/CONTENT/S_DEMI_14.mp3");
+    song.audio = createAudioElement(song.url);
     return song;
   };
 
@@ -1918,11 +1913,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
     createTranscriptContainer();
     printEntireTracklistDebug(curatedTracklist);
 
-    //window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-    let zaudio = document.createElement("audio");
-    document.body.appendChild(zaudio);
-    zaudio.setAttribute("src", "./sounds/CONTENT/S_KIKO_S_02.mp3");
-    //zaudio.play();
+    window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
     createTimerLoopAndUpdateProgressTimer();
   }
 
@@ -1951,7 +1942,6 @@ assignS it to the song.audio property, and returns the modified song object.*/
 
     if (firstPlay) {
       playBackgroundMusic();
-      console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZ");
 
 
 
