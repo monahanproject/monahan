@@ -1913,7 +1913,18 @@ assignS it to the song.audio property, and returns the modified song object.*/
     createTranscriptContainer();
     printEntireTracklistDebug(curatedTracklist);
 
+    // findme
     window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+    if (curatedTracklist.length > 0) {
+      const audioElement = document.querySelector("audio") || document.createElement("audio");
+      if (!audioElement.isConnected) {
+          document.body.appendChild(audioElement);
+      }
+      audioElement.src = curatedTracklist[0]; // Start with the first track
+      audioElement.addEventListener('ended', function() {
+          // Code to advance to the next track and update src
+      });
+  }
     createTimerLoopAndUpdateProgressTimer();
   }
 
@@ -1988,7 +1999,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
   let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
   const imageSourceMap = {
     "images/svg/accessIcon.svg": "images/svg/accessIconInvert.svg",
-    "images/svg/invertColors1.svg": "images/svg/invertColorsInvert.svg",
+    "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
     "images/svg/monochrome1.svg": "images/svg/monochromeInvert.svg",
     "images/svg/firn.svg": "images/svg/firnInvert.svg",
     "images/svg/svg-upPlant.svg": "images/svg/svg-upPlantInvert.svg",
