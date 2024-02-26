@@ -171,22 +171,14 @@ window.addEventListener("load", () => {
 
   // Function to create an audio element
   function createAudioElement(url) {
-    // THESE TWO LINES BELOW SEEM TO DO THE SAME THING?
     // const audio = new Audio();
         const audio = document.createElement("audio");
     audio.preload = "none";
     audio.src = url;
+    audio.id = id;
     audio.controls = false;
     return audio;
   }
-
-  
-  // function createAudioElement(id) {
-  //   console.log("create audio element");
-  //   const audio = document.createElement("audio");
-  //   audio.id = id;
-  //   return audio;
-  // }
 
 
   function updateTheStatusMessage(element, message) {
@@ -232,8 +224,11 @@ assignS it to the song.audio property, and returns the modified song object.*/
 
   const addAudioFromUrl = (song) => {
     song.audio = createAudioElement(song.url);
+    song.audio = createAudioElement("./sounds/CONTENT/S_DEMI_14.mp3");
+
     return song;
   };
+
 
   //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   //  XXXXX CREATE OUTRO AUDIO! XXXXXX
