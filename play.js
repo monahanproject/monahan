@@ -1,43 +1,6 @@
 // need to add the credit durations to the duration
 
 window.addEventListener("load", () => {
-  function createAudioContent() {
-    var divElement = document.createElement("div");
-    var paragraphElement = document.createElement("p");
-    paragraphElement.textContent = "oh yes!!!!";
-    // divElement.appendChild(paragraphElement);
-    var audioElement = document.createElement("audio");
-    audioElement.id = "background-music";
-    audioElement.loop = true;
-    var sourceElement = document.createElement("source");
-    sourceElement.src = "sounds/CONTENT/P_ALBERT_05.mp3";
-    sourceElement.type = "audio/wav";
-    audioElement.appendChild(sourceElement);
-    audioElement.innerHTML = "Your browser does not support the audio element.";
-    divElement.appendChild(audioElement);
-    document.body.appendChild(divElement);
-  }
-
-  createAudioContent();
-
-  const backgroundMusic = document.querySelector("#background-music");
-  console.log("Background music element:", backgroundMusic);
-
-  const playBackgroundMusic = () => {
-    if (backgroundMusic) {
-      console.log("Attempting to play background music");
-      backgroundMusic
-        .play()
-        .then(() => {
-          console.log("Background music playing");
-        })
-        .catch((err) => {
-          console.error("Background music could not be played:", err);
-        });
-    } else {
-      console.error("Background music element not found");
-    }
-  };
 
   let myLang = localStorage["lang"] || "defaultValue";
   let player;
@@ -85,12 +48,6 @@ window.addEventListener("load", () => {
     return volumeSlider;
   }
   const volumeSlider = createVolumeSlider();
-
-  function createAudioElement(id) {
-    const audio = document.createElement("audio");
-    audio.id = id;
-    return audio;
-  }
 
   function handleVolumeChange(event) {
     if (volumeNode !== undefined) {
@@ -214,12 +171,23 @@ window.addEventListener("load", () => {
 
   // Function to create an audio element
   function createAudioElement(url) {
-    const audio = new Audio();
+    // THESE TWO LINES BELOW SEEM TO DO THE SAME THING?
+    // const audio = new Audio();
+        const audio = document.createElement("audio");
     audio.preload = "none";
     audio.src = url;
     audio.controls = false;
     return audio;
   }
+
+  
+  // function createAudioElement(id) {
+  //   console.log("create audio element");
+  //   const audio = document.createElement("audio");
+  //   audio.id = id;
+  //   return audio;
+  // }
+
 
   function updateTheStatusMessage(element, message) {
     element.innerHTML = message;
@@ -1919,8 +1887,6 @@ assignS it to the song.audio property, and returns the modified song object.*/
       console.error("Error in handlePlayPauseClick: ", error);
     }
 
-    console.log("Entering handlePlayPauseClick function");
-
     try {
       // Existing code inside handlePlayPauseClick...
     } catch (error) {
@@ -1928,7 +1894,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
     }
 
     if (firstPlay) {
-      playBackgroundMusic();
+      // playBackgroundMusic();
 
       toggleButtonVisuals(true); // Assume playing state on first play
       generatePlayer();
