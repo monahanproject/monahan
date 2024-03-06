@@ -1837,7 +1837,20 @@ function prepareAndQueueTracks() {
   printEntireTracklistDebug(curatedTracklist);
 
   playTrack(0); // Start playing from the first track
+  createTimerLoopAndUpdateProgressTimer();
+
 }
+
+function prepareAndQueueTracks() {
+  
+
+  // window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+  
+  // let zaudio = document.createElement("audio");
+  // document.body.appendChild(zaudio);
+  // zaudio.setAttribute("src", "./sounds/CONTENT/S_KIKO_S_02.mp3");
+}
+
 
 
 function playTrack(index) {
