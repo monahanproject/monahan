@@ -224,8 +224,7 @@ assignS it to the song.audio property, and returns the modified song object.*/
 
   const addAudioFromUrl = (song) => {
     song.audio = createAudioElement(song.url);
-    song.audio = createAudioElement("./sounds/CONTENT/S_DEMI_14.mp3");
-
+    // song.audio = createAudioElement("./sounds/CONTENT/S_DEMI_14.mp3");
     return song;
   };
 
@@ -1824,8 +1823,6 @@ assignS it to the song.audio property, and returns the modified song object.*/
   }
 
 
-
-
 function prepareAndQueueTracks() {
   const allSongs = [...songs];
   const shuffledSongs = shuffleTracklist(allSongs);
@@ -1836,19 +1833,8 @@ function prepareAndQueueTracks() {
   createTranscriptContainer();
   printEntireTracklistDebug(curatedTracklist);
 
-  playTrack(0); // Start playing from the first track
+  window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
   createTimerLoopAndUpdateProgressTimer();
-
-}
-
-function prepareAndQueueTracks() {
-  
-
-  // window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-  
-  // let zaudio = document.createElement("audio");
-  // document.body.appendChild(zaudio);
-  // zaudio.setAttribute("src", "./sounds/CONTENT/S_KIKO_S_02.mp3");
 }
 
 
