@@ -1,3 +1,25 @@
+import {
+  r10rule,
+  r11rule,
+  r12rule,
+  r13rule,
+  r14rule,
+  r15rule,
+  r16rule,
+  r21rule,
+  r22rule,
+  r23rule,
+  r24rule,
+  r25rule,
+  r61rule,
+  r62rule,
+  r63rule,
+  r64rule,
+  r65rule,
+  r66rule,
+  r67rule,
+  r68rule,
+} from "./ruleStrings.js";
 
 export function checkPlaylistRules(playlist) {
     let prevTrack = null;
@@ -161,7 +183,7 @@ export function checkPlaylistRules(playlist) {
   
       // CHECK R00: Last track must have the placement 'end'
       if (i === playlist.length - 1 && !track.placement.includes("end")) {
-        console.log(`❌❌❌ R00 violated! (${track.name}): Last track does not have placement 'end', does not meet the criteria of ${r00rule}`);
+        console.log(`❌❌❌ R00 violated! (${track.name}): Last track does not have placement 'end', does not meet the criteria of {r00rule}`);
       }
   
       prevTrack = track; // Set the current track as the previous track for the next iteration

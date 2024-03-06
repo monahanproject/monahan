@@ -1,4 +1,4 @@
-import { logRuleApplication } from './play.js';
+import { logRuleApplication } from './playlistBuilder.js';
 
 let geeseTracks;
 
