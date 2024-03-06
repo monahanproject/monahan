@@ -1,0 +1,18 @@
+  function prepareAndQueueTracks() {
+    const allSongs = [...songs];
+    const shuffledSongs = shuffleTracklist(allSongs);
+    curatedTracklist = followTracklistRules(shuffledSongs);
+    checkPlaylistRules(curatedTracklist);
+
+    addOutrosAndCreditsToTracklist();
+    createTranscriptContainer();
+    printEntireTracklistDebug(curatedTracklist);
+
+    // findme
+    window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
+    let zaudio = document.createElement("audio");
+    document.body.appendChild(zaudio);
+    zaudio.setAttribute("src", "./sounds/CONTENT/S_KIKO_S_02.mp3");
+    //zaudio.play();
+    createTimerLoopAndUpdateProgressTimer();
+  }

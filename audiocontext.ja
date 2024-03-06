@@ -1,0 +1,37 @@
+function createAudioContent() {
+    var divElement = document.createElement("div");
+    var paragraphElement = document.createElement("p");
+    paragraphElement.textContent = "oh yes!!!!";
+    // divElement.appendChild(paragraphElement);
+    var audioElement = document.createElement("audio");
+    audioElement.id = "background-music";
+    audioElement.loop = true;
+    var sourceElement = document.createElement("source");
+    sourceElement.src = "sounds/CONTENT/P_ALBERT_05.mp3";
+    sourceElement.type = "audio/wav";
+    audioElement.appendChild(sourceElement);
+    audioElement.innerHTML = "Your browser does not support the audio element.";
+    divElement.appendChild(audioElement);
+    document.body.appendChild(divElement);
+  }
+
+  createAudioContent();
+
+  const backgroundMusic = document.querySelector("#background-music");
+  console.log("Background music element:", backgroundMusic);
+
+  const playBackgroundMusic = () => {
+    if (backgroundMusic) {
+      console.log("Attempting to play background music");
+      backgroundMusic
+        .play()
+        .then(() => {
+          console.log("Background music playing");
+        })
+        .catch((err) => {
+          console.error("Background music could not be played:", err);
+        });
+    } else {
+      console.error("Background music element not found");
+    }
+  };
