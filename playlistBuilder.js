@@ -36,7 +36,8 @@ let myTracklistDuration = 0;
 export function logRuleApplication(ruleNumber, trackName, logMessage, isApplied, ruleType) {
   const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
   const statusIcon = isApplied ? "🌱" : "🫧"; // Add status icon based on isApplied
-  console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage} `); //findme
+  // Rxxx duration is 113 failed undefined undefined 
+  // console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage} `); //findme
 }
 
 // Helper function to manage prevTrack1 and prevTrack2
@@ -54,6 +55,8 @@ function updatePrevTracks(track, prevTrack1, prevTrack2) {
 }
 
 function addNextValidTrack(track, curatedTracklist, tracks) {
+  console.log(`Updating myTracklistDuration: ${track.name} ${myTracklistDuration} + ${track.duration} = ${myTracklistDuration + track.duration}`);
+
   curatedTracklist.push(track);
   const trackIndex = tracks.findIndex((t) => t === track);
   if (trackIndex !== -1) {
@@ -274,9 +277,11 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
         if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
           if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
             let myTracklistDuration = calculateOrUpdatecuratedTracklistDuration();
+            console.log(`Checking if adding "${track.name}" with duration ${track.duration} would exceed maximum duration.`);
+
             if (myTracklistDuration + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
               console.log(
-                `NICE! OUT OF TIME while trying to add a track that meets ensure rules! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
+                `NICE! OUT OF duration TIME while trying to add a track that meets ensure rules! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
               );
               break; // Stop processing if the maximum duration is exceeded
             }
@@ -345,10 +350,11 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
   // Iterate through each track in the provided tracklist
   for (const track of tracklist) {
     // Check if adding the current track exceeds the maximum playlist duration
+    console.log(`Checking if adding "${track.name}" with duration ${track.duration} would exceed maximum duration.`);
 
     if (myTracklistDuration + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
       console.log(
-        `NICE! OUT OF TIME in phase 3! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
+        `NICE! OUT OF duration TIME in phase 3! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
       );
       break; // Stop processing if the maximum duration is exceeded
     }
@@ -406,15 +412,21 @@ export function followTracklistRules(tracklist) {
 
   const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24, r25], [r25]);
 
+  console.log(`Prephase 1 Total curated tracklist duration: ${myTracklistDuration} seconds and Max duration is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+
   executePhase1(tracklist, curatedTracklist, generalRuleFunctions);
+  console.log(`Prephase 2 Total curated tracklist duration: ${myTracklistDuration} seconds and Max duration is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);
+  console.log(`Prephase 3 Total curated tracklist duration: ${myTracklistDuration} seconds and Max duration is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+
   executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
 
   let curatedTracklistTotalTimeInSec = getFinalcuratedTracklistDuration(curatedTracklist);
   console.log("curatedTracklistTotalTimeInSecs is " + curatedTracklistTotalTimeInSec);
 
   if (curatedTracklistTotalTimeInSec > MAX_PLAYLIST_DURATION_SECONDS) {
-    console.log("⏰ Ran out of time before completing the tracklist curation!");
+    console.log("⏰ Ran out of duration time before completing the tracklist curation!");
   } else {
     console.log("✅ Finished curating the tracklist");
   }

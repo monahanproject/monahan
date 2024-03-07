@@ -51,21 +51,18 @@ let curatedTracklistTotalTimeInMins;
 let curatedTracklist;
 let timerDuration = 0;
 
-
 let remainingTime;
 let geeseTrackCounter;
-export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
-// export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
-// var totalDurationSeconds = 2140; //(19m)
-var totalDurationSeconds = 500; //(19m)
+// export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
+export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+var totalDurationSeconds = 2140; //(19m)
+// var totalDurationSeconds = 500; //(19m)
 let currentTimeElement; // Element to display current time
 const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX generate player  XXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 
 let globalAudioElement = document.createElement("audio");
 globalAudioElement.controls = false; // Assuming want to keep it headless
@@ -146,9 +143,6 @@ function handleSkipBackwardClick() {
   updateProgressUI();
 }
 
-
-
-
 playButton.addEventListener("click", handlePlayPauseClick);
 skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
 skipForwardButton.addEventListener("click", handleSkipForwardClick);
@@ -177,41 +171,26 @@ function handleTimerCompletion() {
   timeRemainingElement.innerHTML = "Done";
 }
 
-
-
-
 function calculateMinutesAndSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.round(seconds % 60); // Round seconds to avoid float
   return {
-      minutes: minutes,
-      seconds: remainingSeconds.toLocaleString("en-US", {
-          minimumIntegerDigits: 2,
-          useGrouping: false,
-      })
+    minutes: minutes,
+    seconds: remainingSeconds.toLocaleString("en-US", {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    }),
   };
 }
-
 
 function updateProgressUI() {
   let elapsedSecondsInCurrentTrack = Math.round(globalAudioElement.currentTime);
   let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
   let remainingSeconds = Math.max(0, totalPlaylistDuration - totalElapsedSeconds);
-  
-  // console.log("eee Elapsed Seconds in Current Track:", elapsedSecondsInCurrentTrack);
-  // console.log("eee Cumulative Elapsed Time (in seconds):", cumulativeElapsedTime);
-  // console.log("eee Total Elapsed Seconds (cumulative + current track):", totalElapsedSeconds);
-  // console.log("eee Calculated Remaining Seconds:", remainingSeconds);
 
-
-  // Now apply the calculations
   let playedPercentage = (totalElapsedSeconds / totalPlaylistDuration) * 100;
-  // console.log("eee totalElapsedSeconds:", totalElapsedSeconds);
-  // console.log("eee totalPlaylistDuration:", totalPlaylistDuration);
-  console.log("eee playedPercentage:", playedPercentage);
+  // console.log("eee playedPercentage:", playedPercentage);
 
-
-  // // Ensure the progress bar updates remain the same
   const progressBar = document.getElementById("progress-bar");
   if (progressBar) {
     progressBar.style.width = `${playedPercentage}%`;
@@ -224,42 +203,22 @@ function updateProgressUI() {
 
   // Recalculate minutes and seconds for both played and remaining times
   const playedTime = calculateMinutesAndSeconds(totalElapsedSeconds);
-    const remainingTimeDisplay = calculateMinutesAndSeconds(remainingSeconds);
+  const remainingTimeDisplay = calculateMinutesAndSeconds(remainingSeconds);
 
   // Updating the time played element
   const timePlayedElement = document.getElementById("time-played");
   if (timePlayedElement) {
-      timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+    timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
   }
 
   // Fix for the remaining time: Ensure it shows correctly
   const timeRemainingElement = document.getElementById("time-remaining");
-    if (timeRemainingElement) {
-        timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
-    }
-}
-
-
-
-function moveToNextTrack() {
-  if (currentTrackIndex < curatedTracklist.length - 1) {
-    // Update cumulative time with the duration of the current track
-    cumulativeElapsedTime += curatedTracklist[currentTrackIndex].duration;
-    
-    // Move to the next track
-    currentTrackIndex++;
-    globalAudioElement.src = curatedTracklist[currentTrackIndex].src; // Set new source
-    globalAudioElement.play(); // Start playback
-  } else {
-    // End of playlist
-    console.log("Playlist ended");
-    // Handle completion (e.g., reset state, UI updates)
+  if (timeRemainingElement) {
+    timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
   }
 }
 
-
 let isPlaying = false; // A flag to manage the playback state
-
 
 function handlePlay() {
   isPlaying = true;
@@ -283,15 +242,6 @@ function setupAudioEventHandlers() {
   globalAudioElement.onended = handleEnded;
   globalAudioElement.ontimeupdate = updateProgressUI;
 }
-
-
-
-
-
-
-
-
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX AUDIO CACHING SO WE DOWNLOAD SONGS AS WE GO XXXXXX
@@ -428,17 +378,16 @@ export function calculateOrUpdatecuratedTracklistDuration(track, curatedTracklis
 
 export function getFinalcuratedTracklistDuration(curatedTracklist) {
   let curatedTracklistTotalTimeInSecs = 0;
-
-  if (!Array.isArray(curatedTracklist)) {
-    console.error("Error: curatedTracklist is not an array");
-    return curatedTracklistTotalTimeInSecs;
-  }
-
   for (const track of curatedTracklist) {
-    console.log("Track name is " + track.name);
+    console.log("Track object:", track); // Log the entire track object
+
+    console.log("Type of name property: " + typeof track.name); // Check the type of the name property
+    console.log("Track name is " + track.name); // Log the name property
     curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
-    console.log("Track duration is " + (track.duration || 0));
+    console.log("Track duration is " + (parseInt(track.duration) || 0)); // Parse the duration to integer
   }
+
+  console.log("Total Playlist Duration (in seconds):", curatedTracklistTotalTimeInSecs);
 
   curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
 
@@ -487,7 +436,7 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
       // Calculate the new current runtime, if necessary
       const duration = song.duration;
       cumulativeElapsedTime += globalAudioElement.duration;
-      logRuleApplication(`xxx duration is ${duration}`)
+      logRuleApplication(`xxx duration is ${duration}`);
       timerDuration += Math.floor(duration); // Update currentRuntime with the cumulative duration
 
       const newCurrentRuntime = currentRuntime + (song.duration ? parseInt(song.duration, 10) : 0);
@@ -560,19 +509,27 @@ function prepareAndQueueTracks() {
 
   addOutrosAndCreditsToTracklist();
 
-// Reset totalPlaylistDuration to 0 before calculation
-totalPlaylistDuration = 0;
+  // Reset totalPlaylistDuration to 0 before calculation
+  totalPlaylistDuration = 0;
 
-// Iterate over each track in the curatedTracklist array
-for (let i = 0; i < curatedTracklist.length; i++) {
-  const track = curatedTracklist[i];
-  totalPlaylistDuration += Number(track.duration);
-}
+  console.log("Type of curatedTracklist property: " + typeof curatedTracklist); // Check the type of the name property
+console.log(curatedTracklist);
+
+  for (let i = 0; i < curatedTracklist.length; i++) {
+    const track = curatedTracklist[i];
+    console.log("Track name is " + track.name); // Log the name property
+    console.log("Track dur is " + track.duration); // Log the name property
+
+
+    totalPlaylistDuration += Number(track.duration);
+    console.log("Total dur is " + totalPlaylistDuration); // Log the name property
+
+  }
   cumulativeElapsedTime = 0; // Reset for the new playlist
 
   globalAudioElement.ontimeupdate = () => {
     updateProgressUI();
-};
+  };
 
   createTranscriptContainer();
   printEntireTracklistDebug(curatedTracklist);
@@ -584,7 +541,6 @@ for (let i = 0; i < curatedTracklist.length; i++) {
   //   zaudio.setAttribute("src", "./sounds/CONTENT/S_KIKO_S_02.mp3");
   //   zaudio.play();
 
-
   console.log("xxx timer loop");
   // createTimerLoopAndUpdateProgressTimer();
 }
@@ -595,8 +551,7 @@ function addOutrosAndCreditsToTracklist() {
   curatedTracklist.push(...finalOutroAudioSounds.map(prepareSongForPlayback));
 }
 
-// let isPlaying = false; 
-
+// let isPlaying = false;
 
 function handlePlayPauseClick() {
   console.log("Entering handlePlayPauseClick function");
@@ -617,25 +572,28 @@ function handlePlayPauseClick() {
 
   if (globalAudioElement.paused) {
     console.log("Playing");
-    globalAudioElement.play().then(() => {
+    globalAudioElement
+      .play()
+      .then(() => {
         console.log("Playback started");
         isPlaying = true; // Correctly update isPlaying here
         toggleButtonVisuals(true); // Reflect playing state in UI
-    }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error starting playback:", error);
-    });
+      });
     if (audioContext.state === "suspended") {
-        audioContext.resume();
+      audioContext.resume();
     }
-} else {
+  } else {
     console.log("Pausing");
     globalAudioElement.pause();
     isPlaying = false; // Ensure isPlaying is updated when pausing
     toggleButtonVisuals(false); // Reflect paused state in UI
     if (audioContext) {
-        audioContext.suspend(); // Correctly suspend the audio context if not playing
+      audioContext.suspend(); // Correctly suspend the audio context if not playing
     }
-}
+  }
 }
 
 // });
