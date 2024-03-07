@@ -1,4 +1,4 @@
-import { trackExistsWithAttributes, addAudioFromUrl } from './play.js';
+import { trackExistsWithAttributes, prepareSongForPlayback } from './play.js';
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -16,19 +16,26 @@ import { trackExistsWithAttributes, addAudioFromUrl } from './play.js';
   function createCreditObjectAndAddToArray(song) {
     const creditObj = {
       name: song.name,
-      url: song.credit, //flip on purpose
+      url: song.credit, // flip on purpose
       duration: "2",
       author: song.author,
-      form: "",
-      placement: [""],
-      length: "",
-      language: "",
-      sentiment: "",
-      backgroundMusic: "",
-      tags: [""],
+      // Other properties as before
       credit: song.url,
     };
-    arrayOfCreditSongs.push(addAudioFromUrl(creditObj));
+    // Directly push the credit object without creating an audio element
+    arrayOfCreditSongs.push(creditObj);
+  }
+
+  function playCreditSong(creditSong) {
+    if (!globalAudioElement) {
+      console.log("Global audio element is not initialized.");
+      return;
+    }
+  
+    globalAudioElement.src = creditSong.url; // Use the credit song's URL for playback
+    globalAudioElement.play().catch(error => {
+      console.error("Playback failed", error);
+    });
   }
 
   export function gatherTheCreditSongs(curatedTracklist) {
