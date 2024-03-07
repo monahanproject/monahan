@@ -118,28 +118,31 @@ if (volumeSlider) {
   });
 }
 function handleSkipForwardClick() {
-  const skipAmount = 20; // seconds
-  const newTime = Math.min(globalAudioElement.currentTime + skipAmount, globalAudioElement.duration);
-  globalAudioElement.currentTime = newTime;
+  if (Number.isFinite(globalAudioElement.duration)) { // Check if duration is a finite number
+    const skipAmount = 20; // seconds
+    // Ensure newTime is within valid bounds
+    const newTime = Math.min(globalAudioElement.currentTime + skipAmount, globalAudioElement.duration);
+    globalAudioElement.currentTime = Math.max(0, newTime); // Further ensure currentTime is not set to a negative value
 
-  // Adjust cumulativeElapsedTime for the skip, if playing from the playlist
-  if (isPlaying) {
-    cumulativeElapsedTime = Math.min(cumulativeElapsedTime + skipAmount, totalPlaylistDuration);
+    // Adjust cumulativeElapsedTime for the skip, ensuring it doesn't exceed totalPlaylistDuration
+    if (isPlaying) {
+      cumulativeElapsedTime = Math.min(cumulativeElapsedTime + skipAmount, totalPlaylistDuration);
+    }
+
+    updateProgressUI();
+  } else {
+    console.error('Media duration is not yet available.');
   }
-
-  updateProgressUI();
 }
+
 
 function handleSkipBackwardClick() {
   const skipAmount = -20; // seconds (negative for backward)
   const newTime = Math.max(globalAudioElement.currentTime + skipAmount, 0);
   globalAudioElement.currentTime = newTime;
-
+  
   // Adjust cumulativeElapsedTime for the skip, ensuring it doesn't go negative
-  if (isPlaying) {
-    cumulativeElapsedTime = Math.max(0, cumulativeElapsedTime + skipAmount); // Note: skipAmount is negative for backward skips
-  }
-
+  cumulativeElapsedTime = Math.max(0, cumulativeElapsedTime + skipAmount); // Note: skipAmount is negative for backward skips
   updateProgressUI();
 }
 
@@ -158,7 +161,7 @@ function createHTMLMusicPlayer() {}
 let cumulativeElapsedTime = 0; // Reset when a new playlist is loaded or when needed
 let totalPlaylistDuration = 0; // Initialize
 
-console.log("Total Playlist Duration (in seconds):", totalPlaylistDuration);
+// console.log("Total Playlist Duration (in seconds):", totalPlaylistDuration);
 
 // handles the scenario when the timer completes
 function handleTimerCompletion() {
@@ -186,10 +189,10 @@ function calculateMinutesAndSeconds(seconds) {
 function updateProgressUI() {
   let elapsedSecondsInCurrentTrack = Math.round(globalAudioElement.currentTime);
   let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
-  let remainingSeconds = Math.max(0, totalPlaylistDuration - totalElapsedSeconds);
+  let remainingSeconds = totalPlaylistDuration - totalElapsedSeconds;
 
-  let playedPercentage = (totalElapsedSeconds / totalPlaylistDuration) * 100;
-  // console.log("eee playedPercentage:", playedPercentage);
+  // Ensure playedPercentage does not exceed 100%
+  let playedPercentage = Math.min((totalElapsedSeconds / totalPlaylistDuration) * 100, 100);
 
   const progressBar = document.getElementById("progress-bar");
   if (progressBar) {
@@ -198,12 +201,15 @@ function updateProgressUI() {
 
   const progressDot = document.getElementById("progress-dot");
   if (progressDot) {
-    progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
+    // Ensure the progress dot does not go past the end of the progress bar
+    progressDot.style.left = `calc(${Math.min(playedPercentage, 100)}% - 5px)`;
   }
 
   // Recalculate minutes and seconds for both played and remaining times
   const playedTime = calculateMinutesAndSeconds(totalElapsedSeconds);
-  const remainingTimeDisplay = calculateMinutesAndSeconds(remainingSeconds);
+  // Prevent displaying negative remaining time
+  const adjustedRemainingSeconds = Math.max(0, remainingSeconds);
+  const remainingTimeDisplay = calculateMinutesAndSeconds(adjustedRemainingSeconds);
 
   // Updating the time played element
   const timePlayedElement = document.getElementById("time-played");
@@ -211,12 +217,13 @@ function updateProgressUI() {
     timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
   }
 
-  // Fix for the remaining time: Ensure it shows correctly
+  // Update the remaining time element, preventing it from showing negative values
   const timeRemainingElement = document.getElementById("time-remaining");
   if (timeRemainingElement) {
     timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
   }
 }
+
 
 let isPlaying = false; // A flag to manage the playback state
 
@@ -234,6 +241,8 @@ function handleEnded() {
   isPlaying = false; // Update state when a track ends
   toggleButtonVisuals(false); // Ensure UI reflects this state
   handleTimerCompletion(); // Proceed with timer completion logic
+  cumulativeElapsedTime += Math.round(globalAudioElement.duration); // Ensure it's rounded to the nearest second for consistency
+  updateProgressUI();
 }
 
 function setupAudioEventHandlers() {
@@ -288,7 +297,7 @@ const outroAudioSounds = [
   {
     name: "OUTRO2PT1SOLO",
     url: "./sounds/INTRO_OUTRO_NAMES/OUTRO_2.1.mp3",
-    duration: 6,
+    duration: 4,
     author: "",
     form: "",
     placement: [""],
@@ -307,7 +316,7 @@ const finalOutroAudioSounds = [
   {
     name: "OUTRO2PT2withMUSIC",
     url: "./sounds/INTRO_OUTRO_NAMES/OUTRO_2.2_MUSIC.mp3",
-    duration: 6,
+    duration: 30,
     author: "",
     form: "",
     placement: [""],
@@ -363,6 +372,7 @@ function addTrackDurationToTotal(totalTimeInSecs, track) {
 }
 
 export function calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist) {
+  console.log(`ttt entering`);
   if (curatedTracklistTotalTimeInSecs === 0) {
     for (const track of curatedTracklist) {
       curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
@@ -379,12 +389,12 @@ export function calculateOrUpdatecuratedTracklistDuration(track, curatedTracklis
 export function getFinalcuratedTracklistDuration(curatedTracklist) {
   let curatedTracklistTotalTimeInSecs = 0;
   for (const track of curatedTracklist) {
-    console.log("Track object:", track); // Log the entire track object
+    // console.log("Track object:", track); // Log the entire track object
 
-    console.log("Type of name property: " + typeof track.name); // Check the type of the name property
-    console.log("Track name is " + track.name); // Log the name property
+    // console.log("Type of name property: " + typeof track.name); // Check the type of the name property
+    // console.log("Track name is " + track.name); // Log the name property
     curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
-    console.log("Track duration is " + (parseInt(track.duration) || 0)); // Parse the duration to integer
+    // console.log("Track duration is " + (parseInt(track.duration) || 0)); // Parse the duration to integer
   }
 
   console.log("Total Playlist Duration (in seconds):", curatedTracklistTotalTimeInSecs);
@@ -501,30 +511,43 @@ function prepareAudioContext() {
   }
 }
 
+function addOutrosAndCreditsToTracklist(curatedTracklist) {
+  curatedTracklist.push(...outroAudioSounds.map(prepareSongForPlayback));
+  curatedTracklist.push(...gatherTheCreditSongs(curatedTracklist));
+  curatedTracklist.push(...finalOutroAudioSounds.map(prepareSongForPlayback));
+  return curatedTracklist;
+}
+
+function secondsToMinutesAndSeconds(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`; // Pads the seconds with a leading zero if necessary
+}
+
+
 function prepareAndQueueTracks() {
   const allSongs = [...songs];
   const shuffledSongs = shuffleTracklist(allSongs);
   curatedTracklist = followTracklistRules(shuffledSongs);
   checkPlaylistRules(curatedTracklist);
-
-  addOutrosAndCreditsToTracklist();
+  curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
 
   // Reset totalPlaylistDuration to 0 before calculation
   totalPlaylistDuration = 0;
+  console.log(curatedTracklist);
 
-  console.log("Type of curatedTracklist property: " + typeof curatedTracklist); // Check the type of the name property
-console.log(curatedTracklist);
+// findme
 
   for (let i = 0; i < curatedTracklist.length; i++) {
     const track = curatedTracklist[i];
-    console.log("Track name is " + track.name); // Log the name property
-    console.log("Track dur is " + track.duration); // Log the name property
-
-
+    // console.log("Track name is " + track.name); // Log the name property
+    // console.log("Track dur is " + secondsToMinutesAndSeconds(track.duration));
     totalPlaylistDuration += Number(track.duration);
-    console.log("Total dur is " + totalPlaylistDuration); // Log the name property
-
+    // console.log(`Totalplaylistdur is ${totalPlaylistDuration}`); // Log the total duration in a readable format
   }
+
+  console.log(`Totalplaylistdur is ${secondsToMinutesAndSeconds(totalPlaylistDuration)}`); // Log the total duration in a readable format
+
   cumulativeElapsedTime = 0; // Reset for the new playlist
 
   globalAudioElement.ontimeupdate = () => {
@@ -545,19 +568,15 @@ console.log(curatedTracklist);
   // createTimerLoopAndUpdateProgressTimer();
 }
 
-function addOutrosAndCreditsToTracklist() {
-  curatedTracklist.push(...outroAudioSounds.map(prepareSongForPlayback));
-  curatedTracklist.push(...gatherTheCreditSongs(curatedTracklist));
-  curatedTracklist.push(...finalOutroAudioSounds.map(prepareSongForPlayback));
-}
+
 
 // let isPlaying = false;
 
 function handlePlayPauseClick() {
-  console.log("Entering handlePlayPauseClick function");
+  // console.log("Entering handlePlayPauseClick function");
 
   if (firstPlay) {
-    console.log("First play action");
+    // console.log("First play action");
     // isPlaying = true;
 
     prepareAudioContext(); // Ensure the audio context is ready

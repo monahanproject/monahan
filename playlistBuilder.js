@@ -28,49 +28,65 @@ import {
 
 import { r25 } from "./geeseRule.js";
 import { shuffleTracklist, shuffleArrayOfRules } from "./shuffle.js";
-import { calculateOrUpdatecuratedTracklistDuration, MAX_PLAYLIST_DURATION_SECONDS, getFinalcuratedTracklistDuration } from "./play.js";
-
+import { MAX_PLAYLIST_DURATION_SECONDS } from "./play.js";
 
 let myTracklistDuration = 0;
+let CREDITSANDOUTROESTDUR = 44;
+let lastTrackEstDur = 150;
+let modifiedMaxPlaylistDurationSecs;
 
-export function logRuleApplication(ruleNumber, trackName, logMessage, isApplied, ruleType) {
-  const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
-  const statusIcon = isApplied ? "🌱" : "🫧"; // Add status icon based on isApplied
-  // Rxxx duration is 113 failed undefined undefined 
-  // console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage} `); //findme
+//  ///////////////////////////////////////////////////
+//         ~~~ Playlist Duration ~~~
+//  ///////////////////////////////////////////////////
+
+export function updatePlaylistDuration(curatedTracklist) {
+  myTracklistDuration = curatedTracklist.reduce((total, track) => total + (track.duration || 0), 0);
+  console.log(`Updated playlist duration: ${myTracklistDuration} && modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`);
+  return myTracklistDuration;
 }
 
-// Helper function to manage prevTrack1 and prevTrack2
-function updatePrevTracks(track, prevTrack1, prevTrack2) {
-  if (prevTrack1 === null) {
-    prevTrack1 = track;
-  } else if (prevTrack2 === null) {
-    prevTrack2 = prevTrack1;
-    prevTrack1 = track;
-  } else {
-    prevTrack2 = prevTrack1;
-    prevTrack1 = track;
-  }
-  return [prevTrack1, prevTrack2];
+
+
+function canAddTrackWithoutBreakingMaxPlaylistDur(newTrackDuration, myCurrentTracklistDuration) {
+  const result = myCurrentTracklistDuration + (newTrackDuration || 0) <= modifiedMaxPlaylistDurationSecs;
+  // console.log(
+  //   `Add track? ${result} | myCurTracklistDur: ${myCurrentTracklistDuration} + newTrackDuration: ${newTrackDuration} <= modifiedMaxPlaylistDurationSecs: ${modifiedMaxPlaylistDurationSecs}`
+  // );
+  return result;
 }
 
-function addNextValidTrack(track, curatedTracklist, tracks) {
-  console.log(`Updating myTracklistDuration: ${track.name} ${myTracklistDuration} + ${track.duration} = ${myTracklistDuration + track.duration}`);
+function canAddLastTrack(newTrackDuration, myCurrentTracklistDuration) {
+  // Directly compare against modifiedMaxPlaylistDurationSecs without subtracting lastTrackEstDur
+  const result = myCurrentTracklistDuration + newTrackDuration <= MAX_PLAYLIST_DURATION_SECONDS;
+  console.log(
+      `Checking if last track can be added: ${result} | Current Duration: ${myCurrentTracklistDuration}, Track Duration: ${myCurrentTracklistDuration}, Credits/Outro: ${CREDITSANDOUTROESTDUR}, Max: ${modifiedMaxPlaylistDurationSecs}`
+  );
+  return result;
+}
 
+
+
+function addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracks) {
+  // console.log(`ttt adding a track ${track.name}`);
+  // console.log(`Updating myTracklistDuration: ${track.name} with duration ${track.duration}. New total duration: ${myTracklistDuration}`);
   curatedTracklist.push(track);
+  myTracklistDuration = updatePlaylistDuration(curatedTracklist);
   const trackIndex = tracks.findIndex((t) => t === track);
   if (trackIndex !== -1) {
     tracks.splice(trackIndex, 1);
   }
 }
 
+function addTrackDurationToTotal(totalTimeInSecs, track) {
+  return totalTimeInSecs + (track.duration || 0);
+}
+// updateMyTracklistDuration
+// calculateOrUpdatecuratedTracklistDuration
+
 //  ///////////////////////////////////////////////////
-//  //////////  A LONG AND COMPLICATED FUNCTION ///////
-//  //////////  THAT MAKES A CURATED TRACKLIST ////////
-//  //////////  BY FOLLOWING THE RULES  ///////////////
+//         ~~~ Initialization Functions ~~~
 //  ///////////////////////////////////////////////////
 
-// ~~~ Initialization Functions ~~~
 function initializecuratedTracklist() {
   return [];
 }
@@ -92,6 +108,39 @@ function initializeEnsureRules(rules, fixedRules = []) {
   return { shuffledEnsureRules, ensureRulesEnforced };
 }
 
+//  ///////////////////////////////////////////////////
+//         ~~~ Log Rules ~~~
+//  ///////////////////////////////////////////////////
+
+export function logRuleApplication(ruleNumber, trackName, logMessage, isApplied, ruleType) {
+  const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
+  const statusIcon = isApplied ? "🌱" : "🫧"; // Add status icon based on isApplied
+  // Rxxx duration is 113 failed undefined undefined
+  // console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage} `); //findme
+}
+
+//  ///////////////////////////////////////////////////
+//         ~~~ Update prev tracks ~~~
+//  ///////////////////////////////////////////////////
+
+// Helper function to manage prevTrack1 and prevTrack2
+function updatePrevTracks(track, prevTrack1, prevTrack2) {
+  if (prevTrack1 === null) {
+    prevTrack1 = track;
+  } else if (prevTrack2 === null) {
+    prevTrack2 = prevTrack1;
+    prevTrack1 = track;
+  } else {
+    prevTrack2 = prevTrack1;
+    prevTrack1 = track;
+  }
+  return [prevTrack1, prevTrack2];
+}
+
+//  ///////////////////////////////////////////////////
+//     ~~~ helper functions for checking rules ~~~
+//  ///////////////////////////////////////////////////
+
 function ensureGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   for (const generalRule of generalRuleFunctions) {
     // Handle null values for prevTrack1 and prevTrack2
@@ -108,10 +157,9 @@ function ensureGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2,
 }
 
 function isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, index, generalRuleFunctions) {
-    return generalRuleFunctions.every((rule) => rule(track, prevTrack1, prevTrack2, curatedTracklist, index));
-  }
+  return generalRuleFunctions.every((rule) => rule(track, prevTrack1, prevTrack2, curatedTracklist, index));
+}
 
-// ~~~ Utility Functions ~~~
 function applySpecificRule(ruleFunction, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return ruleFunction(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex);
 }
@@ -147,58 +195,67 @@ function markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber) {
   ensureRulesEnforced[`r${ruleNumber}`] = true;
 }
 
+//  ///////////////////////////////////////////////////
+//     ~~~ helper functions for last track ~~~
+//  ///////////////////////////////////////////////////
+
 function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) {
   let potentialLastTracks = [];
   for (let track of tracklist) {
     if (track.placement.includes("end")) {
-      let simulatedPrevTrack1 = curatedTracklist[curatedTracklist.length - 1] || {};
-      let simulatedPrevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : {};
+      // let simulatedPrevTrack1 = curatedTracklist[curatedTracklist.length - 1] || {};
+      // let simulatedPrevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : {};
 
-      if (ensureGeneralRules(generalRuleFunctions, track, simulatedPrevTrack1, simulatedPrevTrack2, curatedTracklist, curatedTracklist.length)) {
+      // if (ensureGeneralRules(generalRuleFunctions, track, simulatedPrevTrack1, simulatedPrevTrack2, curatedTracklist, curatedTracklist.length)) {
         potentialLastTracks.push(track);
-      }
+      // }
     }
   }
+  // console.log(`last tracks are ${potentialLastTracks.map(track => track.name).join(', ')}`);
+  // console.log(`last tracks are ${potentialLastTracks.map(track => track.duration).join(', ')}`);
+
   return potentialLastTracks;
-}
-
-function finalizeTracklist(tracklist, curatedTracklist, generalRuleFunctions) {
-  if (curatedTracklist.length > 0) {
-    let possibleLastTracks = preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions);
-
-    let lastTrack = findSuitableLastTrack(possibleLastTracks, curatedTracklist, generalRuleFunctions);
-
-    if (lastTrack) {
-      curatedTracklist.push(lastTrack);
-    } else {
-      console.log("No suitable last track found that meets the general rules and is not already in the list.");
-    }
-  }
-  return curatedTracklist;
-}
-
-function findSuitableLastTrack(possibleLastTracks, curatedTracklist, generalRuleFunctions) {
-  for (let track of possibleLastTracks) {
-    if (
-      !trackAlreadyInList(track, curatedTracklist) &&
-      ensureGeneralRules(
-        generalRuleFunctions,
-        track,
-        curatedTracklist[curatedTracklist.length - 1],
-        curatedTracklist[curatedTracklist.length - 2],
-        curatedTracklist,
-        curatedTracklist.length
-      )
-    ) {
-      return track;
-    }
-  }
-  return null;
 }
 
 function trackAlreadyInList(track, curatedTracklist) {
   return curatedTracklist.some((curatedTrack) => curatedTrack.name === track.name);
 }
+
+
+function attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRuleFunctions) {
+  let lastTrackAdded = false;
+
+  for (let lastTrack of potentialLastTracks) {
+      if (!trackAlreadyInList(lastTrack, curatedTracklist) &&
+          canAddLastTrack(lastTrack.duration, updatePlaylistDuration(curatedTracklist)) &&
+          ensureGeneralRules(
+              generalRuleFunctions,
+              lastTrack,
+              curatedTracklist[curatedTracklist.length - 1],
+              curatedTracklist[curatedTracklist.length - 2],
+              curatedTracklist,
+              curatedTracklist.length
+          )) {
+          addNextValidTrackAndUpdateMyTracklistDur(lastTrack, curatedTracklist, potentialLastTracks);
+          console.log(`Successfully added last track: ${lastTrack.name}`);
+          lastTrackAdded = true;
+          break; // Exit the loop as we have successfully added a last track
+      }
+  }
+
+  if (!lastTrackAdded) {
+      console.log("Unable to add a suitable last track within the duration limit.");
+      console.log(`nable to add a suitable last track within the duration limit. Updated playlist duration: ${myTracklistDuration} && modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`);
+
+  }
+
+  // Return the possibly modified curatedTracklist
+  return curatedTracklist;
+}
+
+
+
+
 
 // ~~~ Phase Functions ~~~
 function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
@@ -212,197 +269,131 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
 
   for (let i = 0; i < specificRuleFunctions.length; i++) {
     let ruleMet = false;
-    let tracksTried = 0; // Counter for the number of tracks tried
-    let specificRuleDescription = eval(`r${61 + i}rule`); // Assumes rule descriptions are like r60rule, r61rule, etc.
+    let tracksTried = 0; // Initialize counter for the number of tracks tried
+
+    let specificRuleDescription = eval(`r${61 + i}rule`); // Dynamic evaluation of rule descriptions
+    // console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
 
     while (!ruleMet && tracksTried < tracklist.length) {
       let track = tracklist[tracksTried];
+      // console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
 
-      if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
-        if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
-          addNextValidTrack(track, curatedTracklist, tracklist);
-          myTracklistDuration = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
-          [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
-          console.log(`${curatedTracklist.length}:✅ Added ${track.name} to the curated tracklist`);
-          trackIndex++;
-          ruleMet = true;
+      if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration)) {
+        if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
+          if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
+            addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
+            [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
+            // console.log(`✅ Added ${track.name} to the curated tracklist using specific rule ${i + 61}.`);
+            trackIndex++;
+            ruleMet = true;
+            break; // Break out of the loop once a track has been successfully added
+          } else {
+            // console.log(`🫧 General Rules Failed for ${track.name}.`);
+          }
         } else {
-          // console.log(`🫧 General Rules Failed for ${track.name}`);
-          tracksTried++;
+          // console.log(`🫧 Specific Rule Failed for ${track.name}: ${specificRuleDescription}.`);
+          ruleFailureCounts[i]++; // Increment failure count for the specific rule
         }
       } else {
-        // console.log(`🫧 Specific Rule Failed for ${track.name}: ${specificRuleDescription}`);
-        ruleFailureCounts[i]++; // Increment failure count for the specific rule
-        tracksTried++;
+        // console.log(`Skipping ${track.name} as it would exceed the playlist duration.`);
       }
+      tracksTried++; // Increment tracksTried in all cases to ensure loop progression
     }
 
     if (!ruleMet) {
       const mostFrequentRuleIndex = ruleFailureCounts.indexOf(Math.max(...ruleFailureCounts));
       const mostFrequentRuleDescription = eval(`r${61 + mostFrequentRuleIndex}rule`);
-      console.log(`OHHHHH NOOOOOO No suitable track found for specific rule: ${specificRuleDescription}.`);
-      console.log(`Total tracks tried: ${tracksTried}. Most frequently broken rule: ${mostFrequentRuleDescription}`);
+      // console.log(`❌ No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`);
+      // console.log(`Total tracks tried for rule ${i + 61}: ${tracksTried}`);
     }
   }
 }
 
 function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced) {
-  console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 2: Ensure rules and final check rules");
+  console.log("🚀 Starting Phase 2: Ensure rules and final check rules");
 
   let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
   for (let rule of shuffledEnsureRules) {
+    let ruleMet = false;
     let ruleNumber = rule.name.replace("r", "");
     let ruleDescVarName = `r${ruleNumber}rule`;
     let ruleDescription = eval(ruleDescVarName);
-    let ruleMet = false;
+    console.log(`Checking for rule enforcement: ${ruleDescription}`);
 
-    console.log(`🔍 Checking if "${ruleDescription}" is already met in curatedTracklist.`);
-    // Check if the rule is satisfied by any track in the curatedTracklist
+    // First, check if the rule is already met by the existing tracks in the curatedTracklist
     for (let track of curatedTracklist) {
       if (rule(track, null, null, curatedTracklist, curatedTracklist.indexOf(track))) {
-        // console.log(`💯 ${ruleDescription} is already met by ${track.name} in curatedTracklist.`);
-        markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber); // Mark the rule as enforced
+        // console.log(`Rule ${ruleDescription} is already met by ${track.name} in the curatedTracklist.`);
+        markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
         ruleMet = true;
-        break; // Rule is satisfied, no need to check further
+        break;
       }
     }
 
-    // If rule not met in curatedTracklist, find a track in tracklist to satisfy the rule
     if (!ruleMet) {
-      console.log(`🔍 "${ruleDescription}" wasn't met, gotta go fishing!`);
+      console.log(`Rule ${ruleDescription} not yet met. Searching through tracklist.`);
+      // If the rule is not met, attempt to find a track that can satisfy the rule
       for (let track of tracklist) {
-        console.log(`🔍 Checking if "${track.name}" meets "${ruleDescription}"`);
-        if (rule(track, null, null, curatedTracklist, curatedTracklist.length)) {
-          if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
-            let myTracklistDuration = calculateOrUpdatecuratedTracklistDuration();
-            console.log(`Checking if adding "${track.name}" with duration ${track.duration} would exceed maximum duration.`);
-
-            if (myTracklistDuration + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
-              console.log(
-                `NICE! OUT OF duration TIME while trying to add a track that meets ensure rules! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
-              );
-              break; // Stop processing if the maximum duration is exceeded
-            }
-
-            addNextValidTrack(track, curatedTracklist, tracklist);
-            myTracklistDuration = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
+        if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration) && !trackAlreadyInList(track, curatedTracklist)) {
+          if (rule(track, null, null, curatedTracklist, curatedTracklist.length) && isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
+            // console.log(`Adding ${track.name} to meet the rule: ${ruleDescription}`);
+            addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
-            console.log(`✅ Added "${track.name}" to curatedTracklist to meet "${ruleDescription}"`);
-            markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber); // Mark the rule as enforced
             ruleMet = true;
-            break; // Suitable track found, stop searching
-          } else {
-            // console.log(`🫧 "${track.name}" meets "${ruleDescription}" but does not satisfy general rules.`);
+            markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
+            break; // Found a track that satisfies the rule, break out of the loop
           }
         }
       }
     }
 
     if (!ruleMet) {
-      console.log(`Oh nooooooooooo ❌ Could not find a suitable track to satisfy the rule: ${ruleDescription}`);
-      // Handle the situation where no track can satisfy the rule
+      console.log(`❌ Unable to find a track to satisfy the rule: ${ruleDescription}. Consider adjusting your rules or tracklist.`);
     }
   }
-
-  // Check the 'geese' tag rule
-//   if (geeseTrackCounter === 1) {
-//     const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
-//     let geeseTrackAdded = false;
-
-//     for (const geeseTrack of geeseTracks) {
-//       console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
-//       if (
-//         // true
-//         isTrackValidForGeneralRules(geeseTrack, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
-//       ) {
-//         if (myTracklistDuration + (geeseTrack.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
-//           console.log(
-//             `NICE! OUT OF TIME while trying to add a goose track that meets ensure rules! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
-//           );
-//           break; // Stop processing if the maximum duration is exceeded
-//         }
-
-//         addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
-//         myTracklistDuration = calculateOrUpdatecuratedTracklistDuration(geeseTrack, curatedTracklist);
-//         geeseTrackCounter++;
-//         geeseTrackAdded = true;
-//         break; // Stop the loop as we have added a valid geese track
-//       } else {
-//         console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
-//       }
-//     }
-
-//     if (!geeseTrackAdded) {
-//       console.log(`🚫 Could not find an additional 'geese' track that meets general rules.`);
-//     }
-//   }
 }
 
+
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
-  console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 3: Main general rules loop");
+  console.log("🚀 Starting Phase 3: Main general rules loop");
 
   // Get the last two tracks added to the curated list for rule comparisons
   let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
-  // Iterate through each track in the provided tracklist
+  // Track index for logging purposes
+  let trackIndex = curatedTracklist.length;
+
   for (const track of tracklist) {
-    // Check if adding the current track exceeds the maximum playlist duration
-    console.log(`Checking if adding "${track.name}" with duration ${track.duration} would exceed maximum duration.`);
-
-    if (myTracklistDuration + (track.duration || 0) > MAX_PLAYLIST_DURATION_SECONDS) {
-      console.log(
-        `NICE! OUT OF duration TIME in phase 3! curatedTracklistTotalTimeInSecs is ${myTracklistDuration} and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
-      );
-      break; // Stop processing if the maximum duration is exceeded
+    // Ensure the track isn't already in the curated list
+    if (!trackAlreadyInList(track, curatedTracklist)) {
+      // Check if adding this track would stay within the max playlist duration
+      if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration)) {
+        // Verify the track satisfies general rules
+        if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
+          console.log(`Adding ${track.name} to curatedTracklist. Meets general rules.`);
+          addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
+          [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
+          trackIndex++;
+        } else {
+          console.log(`General Rules Failed for ${track.name}. Not added to curatedTracklist.`);
+        }
+      } else {
+        console.log(`Adding ${track.name} would exceed max playlist duration. Stopping Phase 3.`);
+        break; // Exiting the loop if adding any more tracks would exceed the maximum playlist duration
+      }
     }
-
-    // Apply general rules to the track
-    if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)) {
-      // Add the track to the curated list if it passes all checks
-      addNextValidTrack(track, curatedTracklist, tracklist);
-      myTracklistDuration = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
-      [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
-    } else {
-      // console.log(`🫧 General Rules Failed for ${track.name}`);
-    }
-
-    // Check the 'geese' tag rule
-    // if (geeseTrackCounter === 1) {
-    //   const geeseTracks = tracklist.filter((track) => track.tags.includes("geese"));
-    //   let geeseTrackAdded = false;
-
-    //   for (const geeseTrack of geeseTracks) {
-    //     console.log(`🔍 Checking if 'geese' track: ${geeseTrack.name} meets general rules.`);
-
-    //     if (
-    //       // true
-    //       isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
-    //     ) {
-    //       addNextValidTrack(geeseTrack, curatedTracklist, tracklist);
-    //       curatedTracklistTotalTimeInSecs = calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist);
-    //       [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
-    //       geeseTrackCounter++;
-    //       console.log(`✅ Additional 'geese' track added: ${geeseTrack.name}`);
-    //       geeseTrackAdded = true;
-    //       break; // Stop the loop as we have added a valid geese track
-    //     } else {
-    //       console.log(`🚫 'geese' track: ${geeseTrack.name} does not meet general rules.`);
-    //     }
-    //   }
-
-    //   if (!geeseTrackAdded) {
-    //     console.log(`🚫 Couldn't find an additional 'geese' track that meets general rules.`);
-    //   }
-    // }
   }
 
-  // Log the completion of Phase 3 with the final duration
-  console.log(
-    `✅ Phase 3 completed with curated tracklist duration: ${myTracklistDuration} seconds and MAX_PLAYLIST_DURATION_SECONDS is ${MAX_PLAYLIST_DURATION_SECONDS}`
-  );
+  console.log(`Phase 3 completed. Curated tracklist now has ${curatedTracklist.length} tracks. Total duration: ${myTracklistDuration} seconds.`);
+}
+
+export function secondsToMinutesAndSeconds(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins} mins and ${secs} secs`;
 }
 
 export function followTracklistRules(tracklist) {
@@ -411,25 +402,34 @@ export function followTracklistRules(tracklist) {
   const generalRuleFunctions = initializeGeneralRules();
 
   const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24, r25], [r25]);
+  modifiedMaxPlaylistDurationSecs = MAX_PLAYLIST_DURATION_SECONDS - (CREDITSANDOUTROESTDUR + lastTrackEstDur);
+  console.log(`modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`);
 
-  console.log(`Prephase 1 Total curated tracklist duration: ${myTracklistDuration} seconds and Max duration is ${MAX_PLAYLIST_DURATION_SECONDS}`);
+  let potentialLastTracks = preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions);
 
+
+  console.log(`ttt Prephase 1 myTracklistDuration: ${myTracklistDuration} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(modifiedMaxPlaylistDurationSecs)}`);
   executePhase1(tracklist, curatedTracklist, generalRuleFunctions);
-  console.log(`Prephase 2 Total curated tracklist duration: ${myTracklistDuration} seconds and Max duration is ${MAX_PLAYLIST_DURATION_SECONDS}`);
-
+  console.log(`ttt Prephase 2 myTracklistDuration: ${myTracklistDuration} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(modifiedMaxPlaylistDurationSecs)}`);
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);
-  console.log(`Prephase 3 Total curated tracklist duration: ${myTracklistDuration} seconds and Max duration is ${MAX_PLAYLIST_DURATION_SECONDS}`);
-
+  console.log(`ttt Prephase 3 myTracklistDuration: ${myTracklistDuration} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(modifiedMaxPlaylistDurationSecs)}`);
   executePhase3(tracklist, curatedTracklist, generalRuleFunctions);
+  console.log(`ttt PreFinalTrack myTracklistDuration: ${myTracklistDuration} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(modifiedMaxPlaylistDurationSecs)}`);
 
-  let curatedTracklistTotalTimeInSec = getFinalcuratedTracklistDuration(curatedTracklist);
-  console.log("curatedTracklistTotalTimeInSecs is " + curatedTracklistTotalTimeInSec);
+  let curatedTracklistTotalTimeInSec = updatePlaylistDuration(curatedTracklist);
+  console.log(`ttt COMPARE this against curatedTracklistTotalTimeInSec: ${curatedTracklistTotalTimeInSec} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(modifiedMaxPlaylistDurationSecs)}`);
 
-  if (curatedTracklistTotalTimeInSec > MAX_PLAYLIST_DURATION_SECONDS) {
-    console.log("⏰ Ran out of duration time before completing the tracklist curation!");
+  if (curatedTracklistTotalTimeInSec > modifiedMaxPlaylistDurationSecs) {
+    console.log("⏰ OH NO Ran out of duration time before completing the tracklist curation!");
   } else {
     console.log("✅ Finished curating the tracklist");
   }
 
-  return finalizeTracklist(tracklist, curatedTracklist, generalRuleFunctions);
+
+  
+  let finalizedTracklist = attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRuleFunctions);
+console.log(`ttt added final track! myTracklistDuration: ${myTracklistDuration} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(modifiedMaxPlaylistDurationSecs)}`);
+console.log(`Updated playlist duration: ${myTracklistDuration} && modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`);
+
+return finalizedTracklist;
 }
