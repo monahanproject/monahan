@@ -1,0 +1,251 @@
+
+// function handleSkipForwardClick() {
+//   let newPlayerTime = player.currentTime + 20;
+//   newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
+//   if (!isUpdatingTime) {
+//     isUpdatingTime = true; // Set a flag to prevent rapid updates
+//     setTimeout(() => {
+//       player.currentTime = newPlayerTime;
+//       isUpdatingTime = false;
+//     }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+//   }
+// }
+
+// function handleSkipBackwardClick() {
+//   let newPlayerTime = player.currentTime - 20;
+//   newPlayerTime = Math.min(newPlayerTime, totalDurationSeconds);
+//   if (!isUpdatingTime) {
+//     isUpdatingTime = true; // Set a flag to prevent rapid updates
+//     setTimeout(() => {
+//       player.currentTime = newPlayerTime;
+//       isUpdatingTime = false;
+//     }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+//   }
+// }
+
+function handleSkipForwardClick() {
+  const newTime = Math.min(globalAudioElement.currentTime + 20, globalAudioElement.duration);
+  globalAudioElement.currentTime = newTime;
+}
+
+function handleSkipBackwardClick() {
+  const newTime = Math.max(globalAudioElement.currentTime - 20, 0);
+  globalAudioElement.currentTime = newTime;
+}
+
+// function updateRemainingTime() {
+//   // Assuming 'totalDurationSeconds' is the total duration of the entire playlist
+//   // and 'globalAudioElement.currentTime' is the current time within the current track
+//   const elapsedTimeInSeconds = calculateElapsedTime(); // Calculate the elapsed time based on the current and previous tracks
+//   const remainingTimeInSeconds = totalDurationSeconds - elapsedTimeInSeconds;
+//   updateProgressTimer(elapsedTimeInSeconds, remainingTimeInSeconds);
+// }
+
+// function calculateElapsedTime() {
+//   // This function calculates the elapsed time in the playlist up to the current track's currentTime.
+//   // Assuming 'curatedTracklistTotalTimeInSecs' reflects the total elapsed time of all fully played tracks
+//   // and 'globalAudioElement.currentTime' adds the current playback position in the currently playing track.
+//   return curatedTracklistTotalTimeInSecs + globalAudioElement.currentTime;
+// }
+
+// // Simplified function to update UI based on current playback state
+// function updateUIProgress() {
+//   const elapsedTimeInSeconds = calculateElapsedTime();
+//   const remainingTimeInSeconds = totalDurationSeconds - elapsedTimeInSeconds;
+  
+//   // Update progress bar and timer display
+//   updateProgressUI(elapsedTimeInSeconds, remainingTimeInSeconds);
+// }
+
+// function updateProgressUI(elapsedTimeInSeconds, remainingTimeInSeconds) {
+//   // Assuming you have functions to format time as a string
+//   const elapsedTimeFormatted = formatTime(elapsedTimeInSeconds);
+//   const remainingTimeFormatted = formatTime(remainingTimeInSeconds);
+
+//   // Update your progress bar's width and text elements with elapsed and remaining times
+//   const progressBar = document.getElementById("progress-bar");
+//   const elapsedTimeElement = document.getElementById("time-played");
+//   const remainingTimeElement = document.getElementById("time-remaining");
+
+//   if (progressBar && elapsedTimeElement && remainingTimeElement) {
+//       const progressPercentage = (elapsedTimeInSeconds / totalDurationSeconds) * 100;
+//       progressBar.style.width = `${progressPercentage}%`;
+//       elapsedTimeElement.innerText = elapsedTimeFormatted;
+//       remainingTimeElement.innerText = `-${remainingTimeFormatted}`;
+//   }
+// }
+
+// // Utility function for formatting time, as before
+// function formatTime(seconds) {
+//   const mins = Math.floor(seconds / 60);
+//   const secs = Math.floor(seconds % 60);
+//   return `${mins}:${secs.toString().padStart(2, '0')}`;
+// }
+
+// // Periodically update the UI to reflect playback progress
+// function startProgressUpdateLoop() {
+//   const updateInterval = 1000; // Update every second
+//   setInterval(updateUIProgress, updateInterval);
+// }
+
+// // Call this function when playback starts
+// startProgressUpdateLoop();
+
+
+// function updateProgressTimer(elapsedTimeInSeconds, remainingTimeInSeconds) {
+//   // Updates the UI to reflect the current progress and remaining time in the playlist.
+//   // This could be displaying the elapsed time, updating a progress bar, and showing remaining time.
+
+//   // Example: Update elapsed time display
+//   const elapsedTimeElement = document.getElementById('time-elapsed');
+//   elapsedTimeElement.textContent = formatTime(elapsedTimeInSeconds);
+
+//   // Example: Update remaining time display
+//   const remainingTimeElement = document.getElementById('time-remaining');
+//   remainingTimeElement.textContent = formatTime(remainingTimeInSeconds);
+
+//   // Example: Update progress bar
+//   const progressBar = document.getElementById('progress-bar');
+//   const percentage = (elapsedTimeInSeconds / totalDurationSeconds) * 100;
+//   progressBar.style.width = `${percentage}%`;
+// }
+
+// function formatTime(seconds) {
+//   // Utility function to convert seconds into MM:SS format
+//   const mins = Math.floor(seconds / 60);
+//   const secs = Math.floor(seconds % 60);
+//   return `${mins}:${secs.toString().padStart(2, '0')}`; // Ensures two digits for seconds
+// }
+
+
+
+
+// function handleSkipForwardClick() {
+//   const newTime = Math.min(globalAudioElement.currentTime + 20, globalAudioElement.duration);
+//   globalAudioElement.currentTime = newTime;
+//   updateRemainingTime(); // Recalculate and display the remaining time
+// }
+
+// function handleSkipBackwardClick() {
+//   const newTime = Math.max(globalAudioElement.currentTime - 20, 0);
+//   globalAudioElement.currentTime = newTime;
+//   updateRemainingTime(); // Recalculate and display the remaining time
+// }
+
+
+
+playButton.addEventListener("click", handlePlayPauseClick);
+skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
+skipForwardButton.addEventListener("click", handleSkipForwardClick);
+volumeSlider.addEventListener("change", handleVolumeChange);
+
+// // https://css-tricks.com/lets-create-a-custom-audio-player/
+// function createHTMLMusicPlayer() {}
+
+// //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
+// //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+// function updateProgressTimer(elapsedSeconds, previousDuration) {
+//   const progressBar = document.getElementById("progress-bar");
+//   const progressDot = document.getElementById("progress-dot");
+//   const timePlayedElement = document.getElementById("time-played");
+//   const timeRemainingElement = document.getElementById("time-remaining");
+
+//   if (!timePlayedElement || !timeRemainingElement || !progressBar || !progressDot) {
+//     console.error("Error: Missing elements");
+//     return;
+//   }
+
+//   totalDurationSeconds = curatedTracklistTotalTimeInSecs;
+//   const remainingDurationSeconds = totalDurationSeconds - (elapsedSeconds + previousDuration);
+
+//   // Calculate the percentage of the track that's been played
+//   const playedPercentage = ((elapsedSeconds + previousDuration) / totalDurationSeconds) * 100;
+
+//   // Update the progress bar and dot
+//   progressBar.style.width = `${playedPercentage}%`;
+//   progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
+
+//   // Update the time labels
+//   const playedTime = calculateMinutesAndSeconds(elapsedSeconds + previousDuration);
+//   const remainingTime = calculateMinutesAndSeconds(remainingDurationSeconds);
+
+//   timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+//   timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
+// }
+
+// function handleTimerCompletion() {
+//   const timeRemainingElement = document.getElementById("time-remaining");
+
+//   if (!timeRemainingElement) {
+//     console.error("Error: Missing element 'time-remaining'");
+//     return; // Exit the function to prevent further errors
+//   }
+//   timeRemainingElement.innerHTML = "Done";
+// }
+
+// function calculateMinutesAndSeconds(seconds) {
+//   const minutes = Math.floor(seconds / 60);
+//   const remainingSeconds = (seconds % 60).toLocaleString("en-US", {
+//     minimumIntegerDigits: 2,
+//     useGrouping: false,
+//   });
+//   return { minutes, seconds: remainingSeconds };
+// }
+
+// function calculateRemainingTime(elapsedSeconds) {
+//   return totalDurationSeconds - elapsedSeconds;
+// }
+
+// function createTimerLoopAndUpdateProgressTimer() {
+//   var start = Date.now(); // Record the start time of the loop
+//   return setInterval(() => {
+//     let delta = Date.now() - start; // Calculate elapsed milliseconds
+//     let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
+//     updateProgressTimer(Math.floor(player.currentTime), timerDuration);
+//     remainingTime = calculateRemainingTime(deltaSeconds);
+//   }, 1000); // Run the loop every x milliseconds
+// }
+
+
+// Assuming 'globalAudioElement' is your audio element and 'totalDurationSeconds' is the total duration of your playlist in seconds
+
+function calculateElapsedTime() {
+  // Assumes 'curatedTracklistTotalTimeInSecs' is updated elsewhere to reflect the total elapsed time of played tracks
+  return curatedTracklistTotalTimeInSecs + globalAudioElement.currentTime;
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+function updateUI() {
+  const elapsedTimeInSeconds = calculateElapsedTime();
+  const remainingTimeInSeconds = totalDurationSeconds - elapsedTimeInSeconds;
+  const progressPercentage = (elapsedTimeInSeconds / totalDurationSeconds) * 100;
+
+  document.getElementById("time-played").innerText = formatTime(elapsedTimeInSeconds);
+  document.getElementById("time-remaining").innerText = `-${formatTime(remainingTimeInSeconds)}`;
+  document.getElementById("progress-bar").style.width = `${progressPercentage}%`;
+}
+
+function startProgressUpdateLoop() {
+  setInterval(updateUI, 1000);
+}
+
+function skip(timeChange) {
+  const newTime = Math.min(Math.max(globalAudioElement.currentTime + timeChange, 0), globalAudioElement.duration);
+  globalAudioElement.currentTime = newTime;
+  updateUI(); // Ensure UI reflects changes immediately
+}
+
+// Example usage for skip buttons
+document.getElementById("skipForwardButton").addEventListener("click", () => skip(20));
+document.getElementById("skipBackwardButton").addEventListener("click", () => skip(-20));
+
+// Initialize UI update loop when playback starts
+startProgressUpdateLoop();
+

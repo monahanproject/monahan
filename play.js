@@ -127,7 +127,7 @@ function handleSkipForwardClick() {
 
   // Adjust cumulativeElapsedTime for the skip, if playing from the playlist
   if (isPlaying) {
-      cumulativeElapsedTime += skipAmount;
+    cumulativeElapsedTime = Math.min(cumulativeElapsedTime + skipAmount, totalPlaylistDuration);
   }
 
   updateProgressUI();
@@ -140,7 +140,7 @@ function handleSkipBackwardClick() {
 
   // Adjust cumulativeElapsedTime for the skip, ensuring it doesn't go negative
   if (isPlaying) {
-      cumulativeElapsedTime = Math.max(0, cumulativeElapsedTime + skipAmount);
+    cumulativeElapsedTime = Math.max(0, cumulativeElapsedTime + skipAmount); // Note: skipAmount is negative for backward skips
   }
 
   updateProgressUI();
@@ -164,6 +164,7 @@ function createHTMLMusicPlayer() {}
 let cumulativeElapsedTime = 0; // Reset when a new playlist is loaded or when needed
 let totalPlaylistDuration = 0; // Initialize
 
+console.log("Total Playlist Duration (in seconds):", totalPlaylistDuration);
 
 // handles the scenario when the timer completes
 function handleTimerCompletion() {
@@ -187,51 +188,54 @@ function handleTimerCompletion() {
 
 function calculateMinutesAndSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
+  const remainingSeconds = Math.round(seconds % 60); // Round seconds to avoid float
   return {
-    minutes,
-    seconds: remainingSeconds.toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    })
+      minutes: minutes,
+      seconds: remainingSeconds.toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+      })
   };
 }
 
-function updateProgressUI() {
-  // Assuming globalAudioElement is the currently playing track
-  let elapsedSecondsInCurrentTrack = globalAudioElement.currentTime;
-  let totalElapsedSeconds = cumulativeElapsedTime + elapsedSecondsInCurrentTrack;
-  let remainingSeconds = totalPlaylistDuration - totalElapsedSeconds;
 
-  // Calculate the percentage of the entire playlist that's been played
+function updateProgressUI() {
+  let elapsedSecondsInCurrentTrack = Math.round(globalAudioElement.currentTime);
+  let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
+  let remainingSeconds = Math.max(0, totalPlaylistDuration - totalElapsedSeconds);
+  
+  console.log("Elapsed Seconds in Current Track:", elapsedSecondsInCurrentTrack);
+  console.log("Cumulative Elapsed Time (in seconds):", cumulativeElapsedTime);
+  console.log("Total Elapsed Seconds (cumulative + current track):", totalElapsedSeconds);
+  console.log("Calculated Remaining Seconds:", remainingSeconds);
+
+
+  // Now apply the calculations
   let playedPercentage = (totalElapsedSeconds / totalPlaylistDuration) * 100;
 
-  // Update the progress bar
+  // Ensure the progress bar updates remain the same
   const progressBar = document.getElementById("progress-bar");
   if (progressBar) {
       progressBar.style.width = `${playedPercentage}%`;
   }
 
-  // Update the progress dot, if you have one
-  const progressDot = document.getElementById("progress-dot");
-  if (progressDot) {
-      progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust as necessary
-  }
-
-  // Update the time played and remaining labels
+  // Recalculate minutes and seconds for both played and remaining times
   const playedTime = calculateMinutesAndSeconds(totalElapsedSeconds);
-  const remainingTimeDisplay = calculateMinutesAndSeconds(remainingSeconds);
+    const remainingTimeDisplay = calculateMinutesAndSeconds(remainingSeconds);
 
+  // Updating the time played element
   const timePlayedElement = document.getElementById("time-played");
   if (timePlayedElement) {
       timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
   }
 
+  // Fix for the remaining time: Ensure it shows correctly
   const timeRemainingElement = document.getElementById("time-remaining");
-  if (timeRemainingElement) {
-      timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
-  }
+    if (timeRemainingElement) {
+        timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
+    }
 }
+
 
 
 function moveToNextTrack() {
@@ -553,7 +557,14 @@ function prepareAndQueueTracks() {
 
   addOutrosAndCreditsToTracklist();
 
-  totalPlaylistDuration = curatedTracklist.reduce((total, track) => total + track.duration, 0);
+// Reset totalPlaylistDuration to 0 before calculation
+totalPlaylistDuration = 0;
+
+// Iterate over each track in the curatedTracklist array
+for (let i = 0; i < curatedTracklist.length; i++) {
+  const track = curatedTracklist[i];
+  totalPlaylistDuration += Number(track.duration);
+}
   cumulativeElapsedTime = 0; // Reset for the new playlist
 
   globalAudioElement.ontimeupdate = () => {

@@ -1,0 +1,54 @@
+
+function queueNextTrack(songs, index, currentRuntime, cache) {
+  try {
+    const song = songs[index]; // get the song object
+    const audio = song.audio;
+    player = audio; // Update player to the current audio
+
+
+    console.log(`Queueing song: ${song.name}, Index: ${index}, Current Runtime: ${currentRuntime}`);
+    // currentRuntime = randomValueSomeTimerThing;
+
+    // Tell the browser to start downloading audio
+    if (audio) {
+      audio.preload = "auto";
+    }
+
+    const track = audioContext.createMediaElementSource(audio);
+    track.connect(volumeNode);
+
+    // When the song has ended, queue up the next one
+    audio.addEventListener("ended", (e) => {
+      const duration = audio.duration;
+      // console.log(`Song ended: ${song.name}, Duration: ${duration}`);
+      timerDuration += Math.floor(duration); // Update currentRuntime with the cumulative duration
+      // Queue up the next song (songs, index, currentRuntime, cache) {
+      console.log("Queueing next track with the following values:");
+      console.log(`Queueing- Index: ${index + 1}`);
+      console.log(`Queueing- Current Runtime: ${currentRuntime}`);
+      // console.log(`Queueing- Current Runtime + duration: ${currentRuntime + duration}`);
+      // console.log(`Queueing- Cache: ${cache}`);
+      queueNextTrack(songs, index + 1, currentRuntime, cache);
+    });
+
+    // Set a timer to preload the next file
+    const timeoutDurationMs = (song.duration - PREFETCH_BUFFER_SECONDS) * 1000;
+    setTimeout(() => {
+      const nextAudio = songs[index + 1];
+      nextAudio.preload = "auto";
+      fetchAndCacheAudio(nextAudio.url, cache).then((p) => console.log(`Loaded ${nextAudio.url} into cache`));
+    }, timeoutDurationMs);
+
+    // Log the debug information
+    gatherAndPrintDebugInfo(song, index);
+
+    // Play the audio
+    audio.play();
+
+    // Update the progress timer for the first time
+    // createTimerLoopAndUpdateProgressTimer();
+  } catch (error) {
+    // Log any errors that occur
+    console.error("An error occurred in queueNextTrack:", error);
+  }
+}
