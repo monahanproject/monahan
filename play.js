@@ -180,12 +180,6 @@ function handleTimerCompletion() {
 
 
 
-
-
-
-
-
-
 function calculateMinutesAndSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.round(seconds % 60); // Round seconds to avoid float
@@ -204,19 +198,28 @@ function updateProgressUI() {
   let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
   let remainingSeconds = Math.max(0, totalPlaylistDuration - totalElapsedSeconds);
   
-  console.log("Elapsed Seconds in Current Track:", elapsedSecondsInCurrentTrack);
-  console.log("Cumulative Elapsed Time (in seconds):", cumulativeElapsedTime);
-  console.log("Total Elapsed Seconds (cumulative + current track):", totalElapsedSeconds);
-  console.log("Calculated Remaining Seconds:", remainingSeconds);
+  // console.log("eee Elapsed Seconds in Current Track:", elapsedSecondsInCurrentTrack);
+  // console.log("eee Cumulative Elapsed Time (in seconds):", cumulativeElapsedTime);
+  // console.log("eee Total Elapsed Seconds (cumulative + current track):", totalElapsedSeconds);
+  // console.log("eee Calculated Remaining Seconds:", remainingSeconds);
 
 
   // Now apply the calculations
   let playedPercentage = (totalElapsedSeconds / totalPlaylistDuration) * 100;
+  // console.log("eee totalElapsedSeconds:", totalElapsedSeconds);
+  // console.log("eee totalPlaylistDuration:", totalPlaylistDuration);
+  console.log("eee playedPercentage:", playedPercentage);
 
-  // Ensure the progress bar updates remain the same
+
+  // // Ensure the progress bar updates remain the same
   const progressBar = document.getElementById("progress-bar");
   if (progressBar) {
-      progressBar.style.width = `${playedPercentage}%`;
+    progressBar.style.width = `${playedPercentage}%`;
+  }
+
+  const progressDot = document.getElementById("progress-dot");
+  if (progressDot) {
+    progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
   }
 
   // Recalculate minutes and seconds for both played and remaining times

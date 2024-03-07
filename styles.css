@@ -1110,9 +1110,12 @@ li {
 #progress-bar {
   position: absolute;
   width: 0;
-  height: 100%;
+  height: 5px; /* Adjust height as needed */
+  top: 50%;
+  transform: translateY(-50%);
   background-color: var(--darkgreen);
 }
+
 
 #progress-dot {
   position: absolute;
