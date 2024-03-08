@@ -55,8 +55,8 @@ let remainingTime;
 // export const MAX_PLAYLIST_DURATION_SECONDS = 3000; //(19m)
 let currentIndex = 0; // Initialize to 0, assuming the first track in the playlist
 
-export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
-// export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+// export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
+export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 var totalDurationSeconds = 2140; //(19m)
 // var totalDurationSeconds = 500; //(19m)
 let currentTimeElement; // Element to display current time
