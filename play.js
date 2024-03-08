@@ -53,7 +53,9 @@ let timerDuration = 0;
 
 let remainingTime;
 let geeseTrackCounter;
-export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
+export const MAX_PLAYLIST_DURATION_SECONDS = 3000; //(19m)
+
+// export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
 // export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 var totalDurationSeconds = 2140; //(19m)
 // var totalDurationSeconds = 500; //(19m)
