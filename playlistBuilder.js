@@ -209,7 +209,7 @@ function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) 
 
   // Remove the tracks in reverse order to not mess up the indexes of yet-to-be-removed tracks
   for (let i = indexesToRemove.length - 1; i >= 0; i--) {
-    // tracklist.splice(indexesToRemove[i], 1);
+    tracklist.splice(indexesToRemove[i], 1);
   }
 
   // console.log(`last tracks are ${potentialLastTracks.map(track => track.name).join(', ')}`);
