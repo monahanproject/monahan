@@ -59,3 +59,4 @@ import { logRuleApplication } from './playlistBuilder.js';
     logRuleApplication(24, logMessage, true, ruleType);
     return true;
   }
+  

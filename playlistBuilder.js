@@ -26,7 +26,7 @@ import {
   r68rule,
 } from "./ruleStrings.js";
 
-import { r25 } from "./geeseRule.js";
+// import { r25 } from "./geeseRule.js";
 import { shuffleTracklist, shuffleArrayOfRules } from "./shuffle.js";
 import { MAX_PLAYLIST_DURATION_SECONDS } from "./play.js";
 
@@ -34,6 +34,29 @@ let myTracklistDuration = 0;
 let CREDITSANDOUTROESTDUR = 44;
 let lastTrackEstDur = 150;
 let modifiedMaxPlaylistDurationSecs;
+let geeseTrackCounter = 0;
+
+
+function updateGeeseTrackCounterAndRearrange(track, tracklist) {
+  if (track.tags && track.tags.includes("geese")) {
+    geeseTrackCounter++;
+    console.log(`🦢 Goose! geeseTrackCounter updated: ${geeseTrackCounter}`);
+  }
+
+   // Find tracks with the "goose" tag and move them to the start of the curated tracklist
+   const geeseTracks = tracklist.filter(t => t.tags && t.tags.includes("geese"));
+   const nonGeeseTracks = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
+   const rearrangedTracklist = [...geeseTracks, ...nonGeeseTracks];
+ 
+   // Logging the rearrangement
+   if (geeseTracks.length > 0) {
+     console.log(`🔄 Moved tracks with "geese" tag to the start: ${geeseTracks.map(t => t.name).join(", ")}`);
+   }
+ 
+   // Return the rearranged tracklist
+   return rearrangedTracklist;
+}
+
 
 //  ///////////////////////////////////////////////////
 //         ~~~ Playlist Duration ~~~
@@ -274,10 +297,9 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
     // console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
 
     while (!ruleMet && tracksTried < tracklist.length) {
-
       if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
         console.log("we're basically out of time");
-    }
+      }
 
       let track = tracklist[tracksTried];
       // console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
@@ -286,6 +308,7 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
         if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
           if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
             addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
+            tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             // console.log(`✅ Added ${track.name} to the curated tracklist using specific rule ${i + 61}.`);
             trackIndex++;
@@ -307,8 +330,10 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
     if (!ruleMet) {
       const mostFrequentRuleIndex = ruleFailureCounts.indexOf(Math.max(...ruleFailureCounts));
       const mostFrequentRuleDescription = eval(`r${61 + mostFrequentRuleIndex}rule`);
-      // console.log(`❌ No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`);
-      // console.log(`Total tracks tried for rule ${i + 61}: ${tracksTried}`);
+      console.log(
+        `❌ No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`
+      );
+      console.log(`Total tracks tried for rule ${i + 61}: ${tracksTried}`);
     }
   }
 }
@@ -339,7 +364,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     if (!ruleMet) {
       if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
         console.log("we're basically out of time");
-    }
+      }
 
       console.log(`Rule ${ruleDescription} not yet met. Searching through tracklist.`);
       // If the rule is not met, attempt to find a track that can satisfy the rule
@@ -353,6 +378,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 
             // console.log(`Adding ${track.name} to meet the rule: ${ruleDescription}`);
             addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
+            tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             ruleMet = true;
             markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
@@ -368,7 +394,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
   }
 }
 
-function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseRule) {
+function executePhase3(tracklist, curatedTracklist, generalRuleFunctions) {
   console.log("🚀 Starting Phase 3: Main general rules loop");
 
   // Get the last two tracks added to the curated list for rule comparisons
@@ -387,6 +413,7 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions, gooseR
         if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
           console.log(`Adding ${track.name} to curatedTracklist. Meets general rules.`);
           addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
+          tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
           [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
           trackIndex++;
         } else {
@@ -413,7 +440,7 @@ export function followTracklistRules(tracklist) {
   let curatedTracklist = initializecuratedTracklist();
   const generalRuleFunctions = initializeGeneralRules();
 
-  const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24, r25], [r25]);
+  const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24]);
   modifiedMaxPlaylistDurationSecs = MAX_PLAYLIST_DURATION_SECONDS - (CREDITSANDOUTROESTDUR + lastTrackEstDur);
   console.log(`modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`);
 

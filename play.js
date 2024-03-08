@@ -3,7 +3,7 @@
 import { r10, r11, r12, r13, r14, r15, r16 } from "./generalRules.js";
 import { r21, r22, r23, r24 } from "./ensureRules.js";
 import { r61, r62, r63, r64, r65, r66, r67, r68 } from "./specificRules.js";
-import { r25 } from "./geeseRule.js";
+// import { r25 } from "./geeseRule.js";
 import {
   r10rule,
   r11rule,
@@ -52,10 +52,10 @@ let curatedTracklist;
 let timerDuration = 0;
 
 let remainingTime;
-let geeseTrackCounter;
-export const MAX_PLAYLIST_DURATION_SECONDS = 3000; //(19m)
+// export const MAX_PLAYLIST_DURATION_SECONDS = 3000; //(19m)
+let currentIndex = 0; // Initialize to 0, assuming the first track in the playlist
 
-// export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
+export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
 // export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 var totalDurationSeconds = 2140; //(19m)
 // var totalDurationSeconds = 500; //(19m)
@@ -119,23 +119,30 @@ if (volumeSlider) {
     handleVolumeChange({ target: { value: volumeSlider.value } });
   });
 }
+
+
+function debugSkipLogic(amount) {
+  console.log(`Skipping ${amount} seconds.`);
+  console.log(`Before Skip - CumulativeElapsedTime: ${cumulativeElapsedTime}, CurrentTime: ${globalAudioElement.currentTime}`);
+  // Perform skip logic...
+  console.log(`After Skip - CumulativeElapsedTime: ${cumulativeElapsedTime}, NewCurrentTime: ${globalAudioElement.currentTime}`);
+}
+
+
 function handleSkipForwardClick() {
-  if (Number.isFinite(globalAudioElement.duration)) { // Check if duration is a finite number
-    const skipAmount = 20; // seconds
-    // Ensure newTime is within valid bounds
+  const skipAmount = 20; // seconds
+  if (!isNaN(globalAudioElement.duration)) {
+    // Calculate new time without exceeding the track's duration
     const newTime = Math.min(globalAudioElement.currentTime + skipAmount, globalAudioElement.duration);
-    globalAudioElement.currentTime = Math.max(0, newTime); // Further ensure currentTime is not set to a negative value
-
-    // Adjust cumulativeElapsedTime for the skip, ensuring it doesn't exceed totalPlaylistDuration
-    if (isPlaying) {
-      cumulativeElapsedTime = Math.min(cumulativeElapsedTime + skipAmount, totalPlaylistDuration);
-    }
-
-    updateProgressUI();
+    globalAudioElement.currentTime = newTime;
+    
+    console.log(`Skipped Forward. CurrentTime: ${newTime}, Duration: ${globalAudioElement.duration}`);
   } else {
-    console.error('Media duration is not yet available.');
+    console.error('Skipping failed: Duration is not available.');
   }
 }
+
+
 
 
 function handleSkipBackwardClick() {
@@ -240,12 +247,20 @@ function handlePause() {
 }
 
 function handleEnded() {
+  // let trackActualDuration = curatedTracklist[currentIndex].duration; // This needs to be determined based on your actual data structure
+
+
   isPlaying = false; // Update state when a track ends
   toggleButtonVisuals(false); // Ensure UI reflects this state
-  handleTimerCompletion(); // Proceed with timer completion logic
+
+  console.log(`Before End - CumulativeElapsedTime: ${cumulativeElapsedTime}, Track Duration: ${Math.round(globalAudioElement.duration)}`);
   cumulativeElapsedTime += Math.round(globalAudioElement.duration); // Ensure it's rounded to the nearest second for consistency
-  updateProgressUI();
+  console.log(`After End - CumulativeElapsedTime: ${cumulativeElapsedTime}`);
+
+  handleTimerCompletion(); // Proceed with timer completion logic
+  updateProgressUI(); // Reflect changes in the UI
 }
+
 
 function setupAudioEventHandlers() {
   globalAudioElement.onplay = handlePlay;
@@ -438,6 +453,8 @@ function queueNextTrack(songs, index, currentRuntime, cache) {
 
     const song = songs[index];
     console.log(`Queueing and playing song: ${song.name}, Index: ${index}, Current Runtime: ${currentRuntime}`);
+
+    currentIndex = index; // Update the global currentIndex with the current track's index
 
     // Set the global audio element's source to the current song's URL
     globalAudioElement.src = song.url;
