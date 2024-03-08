@@ -1,4 +1,16 @@
-import { trackExistsWithAttributes, prepareSongForPlayback } from './play.js';
+// import { prepareSongForPlayback } from './play.js';
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -24,6 +36,23 @@ import { trackExistsWithAttributes, prepareSongForPlayback } from './play.js';
     };
     // Directly push the credit object without creating an audio element
     arrayOfCreditSongs.push(creditObj);
+  }
+
+  function trackExistsWithAttributes(curatedTracklist, attribute, value) {
+    for (const track of curatedTracklist) {
+      if (typeof track === "object" && track.hasOwnProperty(attribute)) {
+        // Check if track[attribute] is an array
+        if (Array.isArray(track[attribute])) {
+          // Check if any element in track[attribute] matches any element in value
+          if (track[attribute].some((item) => value.includes(item))) {
+            return track; // Return the first matching track
+          }
+        } else if (track[attribute] === value) {
+          return track; // Return the first matching track
+        }
+      }
+    }
+    return null; // Return null if no matching track is found
   }
 
   function playCreditSong(creditSong) {

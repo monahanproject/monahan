@@ -1,9 +1,6 @@
-// import {  } from "./playerSetup.js";
-
 import { r10, r11, r12, r13, r14, r15, r16 } from "./generalRules.js";
 import { r21, r22, r23, r24 } from "./ensureRules.js";
 import { r61, r62, r63, r64, r65, r66, r67, r68 } from "./specificRules.js";
-// import { r25 } from "./geeseRule.js";
 import {
   r10rule,
   r11rule,
@@ -29,12 +26,13 @@ import {
 import { gatherTheCreditSongs } from "./credits.js";
 import { createTranscriptContainer } from "./transcript.js";
 import { checkPlaylistRules } from "./checkRules.js";
+// import { handleVolumeChange } from "./volumeControl.js";
 import { isValidTracklist } from "./checkTracks.js";
+
 import { shuffleTracklist, shuffleArrayOfRules } from "./shuffle.js";
 import { printEntireTracklistDebug, gatherAndPrintDebugInfo } from "./debug.js";
 import { followTracklistRules, logRuleApplication } from "./playlistBuilder.js";
 
-// need to add the credit durations to the duration
 
 // window.addEventListener("load", () => {
 
@@ -48,19 +46,11 @@ let displayConsoleLog = "<br>";
 export let curatedTracklistTotalTimeInSecs;
 curatedTracklistTotalTimeInSecs = 0;
 let curatedTracklistTotalTimeInMins;
-let curatedTracklist;
+export let curatedTracklist;
 let timerDuration = 0;
 
-let remainingTime;
-// export const MAX_PLAYLIST_DURATION_SECONDS = 3000; //(19m)
 let currentIndex = 0; // Initialize to 0, assuming the first track in the playlist
-
-// export const MAX_PLAYLIST_DURATION_SECONDS = 500; //(19m)
 export const MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
-var totalDurationSeconds = 2140; //(19m)
-// var totalDurationSeconds = 500; //(19m)
-let currentTimeElement; // Element to display current time
-const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is completed to pre-fetch the next song */
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXX generate player  XXXXXXXXXX
@@ -69,16 +59,6 @@ const PREFETCH_BUFFER_SECONDS = 8; /* set how many seconds before a song is comp
 let globalAudioElement = document.createElement("audio");
 globalAudioElement.controls = false; // Assuming want to keep it headless
 
-function updateTheStatusMessage(element, message) {
-  element.innerHTML = message;
-}
-
-function removeAnElementByID(elementId) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.remove();
-  }
-}
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXX SET UP THE PLAYER  XXXXXXX
@@ -87,14 +67,26 @@ function removeAnElementByID(elementId) {
 player = document.getElementById("music_player");
 player.controls = false;
 
-const playButton = document.getElementById("play-button");
-var svgContainer = document.getElementById("play-button-svg-container");
-var textContainer = document.getElementById("play-button-text-container");
-const playIcon = document.getElementById("play-icon");
-const pauseIcon = document.getElementById("pause-icon");
+let playButton = document.getElementById("play-button");
+const svgContainer = document.getElementById("play-button-svg-container");
+const textContainer = document.getElementById("play-button-text-container");
 const skipBackwardButton = document.getElementById("skipBackwardButton");
 const skipForwardButton = document.getElementById("skipForwardButton");
-const trackNameContainer = document.getElementById("playerTrackNameContainer");
+
+
+function handleSkipForwardClick() {
+  const skipAmount = 20; // seconds
+  if (!isNaN(globalAudioElement.duration)) {
+    // Calculate new time without exceeding the track's duration
+    const newTime = Math.min(globalAudioElement.currentTime + skipAmount, globalAudioElement.duration);
+    globalAudioElement.currentTime = newTime;
+    
+    console.log(`Skipped Forward. CurrentTime: ${newTime}, Duration: ${globalAudioElement.duration}`);
+  } else {
+    console.error('Skipping failed: Duration is not available.');
+  }
+}
+
 
 function createVolumeSlider() {
   const volumeSlider = document.getElementById("volume-slider");
@@ -121,29 +113,6 @@ if (volumeSlider) {
 }
 
 
-function debugSkipLogic(amount) {
-  console.log(`Skipping ${amount} seconds.`);
-  console.log(`Before Skip - CumulativeElapsedTime: ${cumulativeElapsedTime}, CurrentTime: ${globalAudioElement.currentTime}`);
-  // Perform skip logic...
-  console.log(`After Skip - CumulativeElapsedTime: ${cumulativeElapsedTime}, NewCurrentTime: ${globalAudioElement.currentTime}`);
-}
-
-
-function handleSkipForwardClick() {
-  const skipAmount = 20; // seconds
-  if (!isNaN(globalAudioElement.duration)) {
-    // Calculate new time without exceeding the track's duration
-    const newTime = Math.min(globalAudioElement.currentTime + skipAmount, globalAudioElement.duration);
-    globalAudioElement.currentTime = newTime;
-    
-    console.log(`Skipped Forward. CurrentTime: ${newTime}, Duration: ${globalAudioElement.duration}`);
-  } else {
-    console.error('Skipping failed: Duration is not available.');
-  }
-}
-
-
-
 
 function handleSkipBackwardClick() {
   const skipAmount = -20; // seconds (negative for backward)
@@ -160,6 +129,7 @@ skipBackwardButton.addEventListener("click", handleSkipBackwardClick);
 skipForwardButton.addEventListener("click", handleSkipForwardClick);
 volumeSlider.addEventListener("change", handleVolumeChange);
 
+
 // https://css-tricks.com/lets-create-a-custom-audio-player/
 function createHTMLMusicPlayer() {}
 
@@ -170,12 +140,9 @@ function createHTMLMusicPlayer() {}
 let cumulativeElapsedTime = 0; // Reset when a new playlist is loaded or when needed
 let totalPlaylistDuration = 0; // Initialize
 
-// console.log("Total Playlist Duration (in seconds):", totalPlaylistDuration);
-
 // handles the scenario when the timer completes
 function handleTimerCompletion() {
   const timeRemainingElement = document.getElementById("time-remaining");
-
   if (!timeRemainingElement) {
     console.error("Error: Missing element 'time-remaining'");
     return; // Exit the function to prevent further errors
@@ -247,7 +214,7 @@ function handlePause() {
 }
 
 function handleEnded() {
-  // let trackActualDuration = curatedTracklist[currentIndex].duration; // This needs to be determined based on your actual data structure
+  // let trackActualDuration = curatedTracklist[currentIndex].duration; // This needs to be determined based on the actual data structure
 
 
   isPlaying = false; // Update state when a track ends
@@ -278,15 +245,11 @@ function checks if the audio file is already in the cache, and if not, fetches i
 adds it to the cache, and returns the audio response. */
 
 function fetchAndCacheAudio(audioFileUrl, cache) {
-  // Check first if audio is in the cache.
   return cache.match(audioFileUrl).then((cacheResponse) => {
-    // return cached response if audio is already in the cache.
     if (cacheResponse) {
       return cacheResponse;
     }
-    // Otherwise, fetch the audio from the network.
     return fetch(audioFileUrl).then((networkResponse) => {
-      // Add the response to the cache and return network response in parallel.
       cache.put(audioFileUrl, networkResponse.clone());
       return networkResponse;
     });
@@ -347,7 +310,7 @@ const finalOutroAudioSounds = [
 ].map(prepareSongForPlayback);
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXX GET OUR SONGS & TURN THEM INTO SONG OBJECTS! XXXXXX
+//  XXXXX GET THE SONGS & TURN THEM INTO SONG OBJECTS! XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 /* Define an array SONGS containing multiple song objects, each song object is 
@@ -360,9 +323,9 @@ async function loadSongs() {
     const response = await fetch("songs.json");
     const data = await response.json();
     songs = data.map(prepareSongForPlayback);
-    // Now you can use songs
+    // Now we can use songs
     const allSongs = [...songs];
-    // ... rest of your code that uses allSongs
+    // ... rest of the code that uses allSongs
   } catch (error) {
     console.error("Error loading JSON data:", error);
   }
@@ -370,80 +333,13 @@ async function loadSongs() {
 
 loadSongs();
 
-//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  ~~~~~~ TRACKLIST CREATION ~~~~~~~
-//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXX ✉️ GENERAL RULES XXXXXXXXXX
+//  XXXXX ✉️ queue next track XXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXX HELPER FUNCTIONS (DURATION) XXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-function addTrackDurationToTotal(totalTimeInSecs, track) {
-  return totalTimeInSecs + (track.duration || 0);
-}
-
-export function calculateOrUpdatecuratedTracklistDuration(track, curatedTracklist) {
-  console.log(`ttt entering`);
-  if (curatedTracklistTotalTimeInSecs === 0) {
-    for (const track of curatedTracklist) {
-      curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
-    }
-  } else if (track) {
-    curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
-  }
-
-  curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
-
-  return curatedTracklistTotalTimeInSecs;
-}
-
-export function getFinalcuratedTracklistDuration(curatedTracklist) {
-  let curatedTracklistTotalTimeInSecs = 0;
-  for (const track of curatedTracklist) {
-    // console.log("Track object:", track); // Log the entire track object
-
-    // console.log("Type of name property: " + typeof track.name); // Check the type of the name property
-    // console.log("Track name is " + track.name); // Log the name property
-    curatedTracklistTotalTimeInSecs = addTrackDurationToTotal(curatedTracklistTotalTimeInSecs, track);
-    // console.log("Track duration is " + (parseInt(track.duration) || 0)); // Parse the duration to integer
-  }
-
-  console.log("Total Playlist Duration (in seconds):", curatedTracklistTotalTimeInSecs);
-
-  curatedTracklistTotalTimeInMins = Math.floor(curatedTracklistTotalTimeInSecs / 60);
-
-  return curatedTracklistTotalTimeInSecs;
-}
-
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXX HELPER FUNCTIONS (FOR CHECKING TRACK VALIDITY) XXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-export function trackExistsWithAttributes(curatedTracklist, attribute, value) {
-  for (const track of curatedTracklist) {
-    if (typeof track === "object" && track.hasOwnProperty(attribute)) {
-      // Check if track[attribute] is an array
-      if (Array.isArray(track[attribute])) {
-        // Check if any element in track[attribute] matches any element in value
-        if (track[attribute].some((item) => value.includes(item))) {
-          return track; // Return the first matching track
-        }
-      } else if (track[attribute] === value) {
-        return track; // Return the first matching track
-      }
-    }
-  }
-  return null; // Return null if no matching track is found
-}
 
 // first time is queueNextTrack(curatedTracklist, 0, 0, cache));
-
 function queueNextTrack(songs, index, currentRuntime, cache) {
   try {
     if (index >= songs.length) {
@@ -550,19 +446,12 @@ function prepareAndQueueTracks() {
   curatedTracklist = followTracklistRules(shuffledSongs);
   checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
-
-  // Reset totalPlaylistDuration to 0 before calculation
   totalPlaylistDuration = 0;
   console.log(curatedTracklist);
 
-// findme
-
   for (let i = 0; i < curatedTracklist.length; i++) {
     const track = curatedTracklist[i];
-    // console.log("Track name is " + track.name); // Log the name property
-    // console.log("Track dur is " + secondsToMinutesAndSeconds(track.duration));
     totalPlaylistDuration += Number(track.duration);
-    // console.log(`Totalplaylistdur is ${totalPlaylistDuration}`); // Log the total duration in a readable format
   }
 
   console.log(`Totalplaylistdur is ${secondsToMinutesAndSeconds(totalPlaylistDuration)}`); // Log the total duration in a readable format
@@ -577,34 +466,13 @@ function prepareAndQueueTracks() {
   printEntireTracklistDebug(curatedTracklist);
 
   window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-
-  // let zaudio = document.createElement("audio");
-  //   document.body.appendChild(zaudio);
-  //   zaudio.setAttribute("src", "./sounds/CONTENT/S_KIKO_S_02.mp3");
-  //   zaudio.play();
-
-  console.log("xxx timer loop");
-  // createTimerLoopAndUpdateProgressTimer();
 }
 
-
-
-// let isPlaying = false;
-
 function handlePlayPauseClick() {
-  // console.log("Entering handlePlayPauseClick function");
 
   if (firstPlay) {
-    // console.log("First play action");
-    // isPlaying = true;
-
     prepareAudioContext(); // Ensure the audio context is ready
-    // generatePlayer();
     prepareAndQueueTracks();
-
-    // Optionally set up `globalAudioElement` here, if not already
-    // For example, setting `globalAudioElement.src` or initial volume
-
     firstPlay = false; // Prevent initialization from running again
   }
 

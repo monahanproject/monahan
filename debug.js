@@ -1,4 +1,4 @@
-// import { timerStateManager } from './play.js';
+import {  } from './play.js';
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXX CREATE AND PRINT DEBUG TEXT SO LAURA CAN SEE DETAILS XXXXXX
@@ -36,8 +36,8 @@ export function gatherAndPrintDebugInfo(song, index) {
     const currTags = song.tags;
     const currUrl = song.url;
     const currDurr = song.duration;
-    let timeSecs = timerStateManager.getTimeSecs();
-    const totalDurr = Math.floor(timeSecs / 60);
+    // let timeSecs = timerStateManager.getTimeSecs();
+    // const totalDurr = Math.floor(timeSecs / 60);
     const currName = song.name;
     // const bgMusic = song.backgroundMusic;
 
@@ -51,7 +51,7 @@ export function gatherAndPrintDebugInfo(song, index) {
     displayDebugText(currTagsHTMLElement, currTags, "no tags");
     // displayDebugText(currTagsHTMLElement, bgMusic, "no bgmusic");
     displayDebugText(currDurrHTMLElement, currDurr, "no duration");
-    displayDebugText(totalDurrHTMLElement, totalDurr, "no duration");
+    // displayDebugText(totalDurrHTMLElement, totalDurr, "no duration");
 
     // displayDebugText(displayConsoleLogHTMLElement, displayConsoleLog, "no log");
     displayDebugText(currCreditHTMLElement, currCredit, "no credit");
@@ -94,3 +94,17 @@ export function printEntireTracklistDebug(shuffledSongsWithOpen) {
     console.log("No items to display.");
   }
 }
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'd' || event.key === 'D') { // This makes it case-insensitive
+      var debugDiv = document.getElementById('debugdiv');
+      if (debugDiv.style.display === 'none') {
+          debugDiv.style.display = 'block'; // Show the div
+          console.log("show div");
+      } else {
+          debugDiv.style.display = 'none'; // Hide the div
+          console.log("hide div");
+
+      }
+  }
+});
