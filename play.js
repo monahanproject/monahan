@@ -36,8 +36,8 @@ import { followTracklistRules, logRuleApplication } from "./playlistBuilder.js";
 import { outroAudioSounds, finalOutroAudioSounds } from "./outroAudio.js";
 
 export let curatedTracklist;
-// export let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
-export let MAX_PLAYLIST_DURATION_SECONDS = 640; //(19m)
+export let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+// export let MAX_PLAYLIST_DURATION_SECONDS = 640; //(19m)
 
 let myLang = localStorage["lang"] || "defaultValue";
 export let curatedTracklistTotalTimeInSecs;
