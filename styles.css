@@ -1745,3 +1745,11 @@ article > p {
 .monochrome {
   filter: grayscale(100%);
 }
+
+
+#play-button-svg-container {
+  transition: opacity 0.3s ease;
+}
+
+
+

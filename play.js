@@ -56,9 +56,7 @@ const pausedText = "STOP";
 
 let currentIndex = 0; // Initialize to 0, assuming the first track in the playlist
 
-
 loadSongs();
-
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
@@ -182,10 +180,6 @@ async function loadSongs() {
   }
 }
 
-
-
-
-
 function prepareAndQueueTracks() {
   // get all the songs from a json file
   const allSongs = [...songs];
@@ -220,7 +214,6 @@ function prepareAndQueueTracks() {
   // todo
   // window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
   const simpleAudioPlayer = new SimpleAudioPlayer(curatedTracklist);
-
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -233,12 +226,11 @@ class SimpleAudioPlayer {
     this.currentIndex = 0;
     this.globalAudioElement = document.createElement("audio");
     this.isPlaying = false;
-    this.hasPlayed = false;
+    this.firstPlayDone = false;
     this.currentRuntime = 0;
     this.setupInitialUserInteraction();
     this.createVolumeSlider();
   }
-
 
   addTracks(newTracks) {
     // this.tracklist = [...this.tracklist, ...newTracks];
@@ -332,17 +324,31 @@ class SimpleAudioPlayer {
 
   startPlayback() {
     if (!this.isPlaying && this.currentIndex < this.tracklist.length) {
-      this.playTrack(this.currentIndex);
+      if (!this.firstPlayDone) {
+        console.log("Playing");
+
+        // If it's the first play, start from the beginning
+        this.playTrack(this.currentIndex);
+        this.firstPlayDone = true; // Mark that first play has occurred
+      } else {
+        // If not the first play, just resume
+        console.log("Playing");
+
+        this.globalAudioElement.play();
+        this.isPlaying = true;
+        this.toggleButtonVisuals(true);
+      }
+    } else {
+      this.pausePlayback(); // Pause playback if we're currently playing
     }
   }
 
   playTrack(index) {
-    console.log("yo");
-    // prepareAndQueueTracks();
 
     if (index >= this.tracklist.length) {
       console.log("End of playlist");
       this.isPlaying = false;
+      this.toggleButtonVisuals(false); // Ensure visuals reflect stopped state
       return;
     }
     const track = this.tracklist[index];
@@ -351,9 +357,8 @@ class SimpleAudioPlayer {
       .play()
       .then(() => {
         this.isPlaying = true;
+        this.toggleButtonVisuals(true); // Reflect playing state in UI
         console.log(`Now playing: ${track.url}`);
-        // console.log(`Queueing and playing song: ${song.name}, Index: ${index}, Current Runtime: ${currentRuntime}`);
-
         // Preload the next track if possible
         if (index + 1 < this.tracklist.length) {
           const nextTrack = this.tracklist[index + 1];
@@ -363,6 +368,7 @@ class SimpleAudioPlayer {
       })
       .catch((error) => {
         console.error("Playback initiation error:", error);
+        this.toggleButtonVisuals(false); // Reflect error state if play fails
       });
 
     // Chain the next track to play after the current one ends
@@ -388,93 +394,42 @@ class SimpleAudioPlayer {
     };
   }
 
-  togglePlayPause() {
-    
-    //first play
-    if (!this.hasPlayed) {
-      
-      // Special things for the first play
-      this.firstPlaySpecialStuff();
-      this.toggleButtonVisuals(true);
-    }
-    //pause
-
-    if (this.isPlaying) {
-      this.globalAudioElement.pause();
-      this.isPlaying = false;
-      console.log("Pausing");
-      this.toggleButtonVisuals(false);
-      //play
-    } else {
-      this.startPlayback();
-    }
+  pausePlayback() {
+    console.log("Pausing");
+    this.globalAudioElement.pause();
+    this.isPlaying = false;
+    this.toggleButtonVisuals(false);
   }
 
-  firstPlaySpecialStuff() {
-    console.log("yo");
-    this.hasPlayed = true;
-    // prepareAndQueueTracks();
-  }
 
-  toggleButtonVisuals(isPlaying) {
+   toggleButtonVisuals(isPlaying) {
+    const svgIcon = document.querySelector('#play-button-svg-container .svg-icon');
+    const playButton = document.querySelector('#play-button');
     const playButtonTextContainer = document.getElementById("play-button-text-container");
     const svgContainer = document.getElementById("play-button-svg-container");
-    const textContainer = document.getElementById("play-button-text-container");
-    const playButton = document.getElementById("play-button");
 
-    playButtonTextContainer.style.left = isPlaying ? "50%" : "35%";
-    svgContainer.innerHTML = isPlaying ? pausedSVG : playingSVG;
-    textContainer.textContent = isPlaying ? "STOP" : "PLAY";
+    
+    // Ensure text and SVG container changes are only applied after checking the current state to prevent unnecessary changes
+    if (isPlaying) {
+      if (!playButton.classList.contains("playing")) { // Check to prevent redundant operations
+        playButtonTextContainer.style.left = "50%";
+        svgContainer.innerHTML = pausedSVG; // Assuming pausedSVG is defined and contains the SVG code or an <img> tag for the pause button
+        playButtonTextContainer.textContent = pausedText;
+      }
+    } else {
+      if (!playButton.classList.contains("paused")) { // Check to prevent redundant operations
+        playButtonTextContainer.style.left = "35%";
+        svgContainer.innerHTML = playingSVG; // Assuming playingSVG is defined and contains the SVG code or an <img> tag for the play button
+        playButtonTextContainer.textContent = playingText;
+      }
+    }
+  
+    // Toggle these classes regardless of current state, as they control other visual aspects that may need to be updated
     playButton.classList.toggle("playing", isPlaying);
     playButton.classList.toggle("paused", !isPlaying);
   }
+  
+  
+  
+  
 }
-
-// const tracklist = [
-//   { url: "./sounds/INTRO_OUTRO_NAMES/NAMES_DEMETRI.mp3" },
-//   // { url: "./sounds/CONTENT/S_DEMI_18.mp3" },
-//   // { url: "./sounds/CONTENT/S_BIRDS_15.mp3" },
-//   // { url: "./sounds/CONTENT/S_DEMI_14.mp3" },
-// ];
-
-
-const tracklist = [
-  {
-    name: "NAMES_DEMETRI",
-    url: "./sounds/INTRO_OUTRO_NAMES/NAMES_DEMETRI.mp3",
-    duration: 2, // Placeholder duration, update with the actual duration in seconds
-    author: "", // Update with the author's name if applicable
-    form: "", // Update this with the type of content, e.g., "music", "interview"
-    placement: [], // Use this to describe where in the playlist this might fit
-    length: "", // Possible values: "short", "medium", "long", based on duration
-    language: "", // e.g., "verbal", "nonHuman" for instrumental or nature sounds
-    sentiment: "", // e.g., "light", "moderate", "heavy"
-    tags: [], // Array of tags relevant to the track
-    backgroundMusic: "", // URL if there is background music to mention
-    credit: "", // URL to a credit track if applicable
-    engTrans: "", // English transcript if available
-    frTrans: "" // French transcript if available
-  },
-  {
-    name: "demi",
-    url: "./sounds/CONTENT/S_DEMI_18.mp3",
-    duration: 20, // Placeholder duration, update with the actual duration in seconds
-    author: "", // Update with the author's name if applicable
-    form: "", // Update this with the type of content, e.g., "music", "interview"
-    placement: [], // Use this to describe where in the playlist this might fit
-    length: "", // Possible values: "short", "medium", "long", based on duration
-    language: "", // e.g., "verbal", "nonHuman" for instrumental or nature sounds
-    sentiment: "", // e.g., "light", "moderate", "heavy"
-    tags: [], // Array of tags relevant to the track
-    backgroundMusic: "", // URL if there is background music to mention
-    credit: "", // URL to a credit track if applicable
-    engTrans: "", // English transcript if available
-    frTrans: "" // French transcript if available
-  }
-  // Repeat for other tracks, commenting out the ones you're currently not using
-];
-
-// prepareAndQueueTracks();
-
-// const simpleAudioPlayer = new SimpleAudioPlayer(curatedTracklist);
-// simpleAudioPlayer.addTracks(curatedTracklist);
