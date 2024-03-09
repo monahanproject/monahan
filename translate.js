@@ -1,4 +1,5 @@
-let lang = "EN";
+// Initialize lang variable from localStorage or default to "EN"
+let lang = localStorage.getItem("lang") || "EN";
 
 function toggleLanguage() {
   lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
@@ -7,13 +8,7 @@ function toggleLanguage() {
   updateLanguageLabel();
   updatePageContent();
 
-  // When saving to localStorage
-  localStorage["lang"] = lang;
   console.log("Language preference saved to localStorage:", lang);
-
-  // When retrieving from localStorage
-  let myLang = localStorage["lang"] || "defaultValue";
-  console.log("Retrieved language preference from localStorage:", myLang);
 }
 
 const langLabel = document.getElementById("langToggle");
@@ -235,3 +230,17 @@ const buttonStrings = [
 
 // document.getElementById("aboutNav").innerHTML = "Page d'accueil";
 // document.getElementById("accessiblityNav").innerHTML = "Accessilbité";
+
+
+// Ensure the page is updated with the correct language when it loads
+document.addEventListener("DOMContentLoaded", () => {
+  updateLanguageLabel();
+  updatePageContent();
+});
+
+// Ensure the toggleLanguage function is properly linked to your toggle element
+if (langLabel) {
+  langLabel.addEventListener("click", toggleLanguage);
+} else {
+  console.error("langToggle button not found");
+}
