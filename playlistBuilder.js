@@ -41,22 +41,22 @@ let geeseTrackCounter = 0;
 function updateGeeseTrackCounterAndRearrange(track, tracklist) {
   if (track.tags && track.tags.includes("geese") && geeseTrackCounter === 0) {
     geeseTrackCounter++;
-    console.log(`🦢 Goose! geeseTrackCounter updated: ${geeseTrackCounter}`);
+    // console.log(`🦢 Goose! geeseTrackCounter updated: ${geeseTrackCounter}`);
     const geeseTracks = tracklist.filter(t => t.tags && t.tags.includes("geese"));
     const nonGeeseTracks = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
     const rearrangedTracklist = insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, 3);
-    console.log(`🔄 geese closer to the front!: ${geeseTracks.map(t => t.name).join(", ")}`);
+    // console.log(`🔄 geese closer to the front!: ${geeseTracks.map(t => t.name).join(", ")}`);
     return rearrangedTracklist;
   } else if (track.tags && track.tags.includes("geese") && geeseTrackCounter >= 1) {
     geeseTrackCounter++;
-    console.log(`🦢 That's enough geese! geeseTrackCounter updated: ${geeseTrackCounter}`);
+    // console.log(`🦢 That's enough geese! geeseTrackCounter updated: ${geeseTrackCounter}`);
     const rearrangedTracklist = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
     return rearrangedTracklist;
   } else if (track.tags && track.tags.includes("geese") && geeseTrackCounter > 2) {
-    console.log(`🦢 Too many geese, shouldn't be here! geeseTrackCounter updated: ${geeseTrackCounter}`);
+    // console.log(`🦢 Too many geese, shouldn't be here! geeseTrackCounter updated: ${geeseTrackCounter}`);
     return tracklist;
   } else {
-    console.log("no goose");
+    // console.log("no goose");
     return tracklist;
   }
 }

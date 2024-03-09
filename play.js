@@ -39,12 +39,7 @@ export let curatedTracklist;
 export let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 let myLang = localStorage["lang"] || "defaultValue";
-let player;
-let audioContext = null;
-let volumeNode;
-let playerPlayState = "play";
 let hasSkippedToEnd = false;
-let displayConsoleLog = "<br>";
 export let curatedTracklistTotalTimeInSecs;
 curatedTracklistTotalTimeInSecs = 0;
 let curatedTracklistTotalTimeInMins;
@@ -174,31 +169,27 @@ async function loadSongs() {
     console.log("Songs loaded successfully.");
 
     // Now call prepareAndQueueTracks here to ensure it happens after songs are loaded
-    prepareAndQueueTracks();
+    curatedTracklist = prepareCuratedTracklist(songs);
   } catch (error) {
     console.error("Error loading JSON data:", error);
   }
 }
 
-function prepareAndQueueTracks() {
-  // get all the songs from a json file
-  const allSongs = [...songs];
-  // shuffle those songs
-  const shuffledSongs = shuffleTracklist(allSongs);
-  // an external modle follows a set of complicated rules and returns a curated tracklist
-  curatedTracklist = followTracklistRules(shuffledSongs);
-  checkPlaylistRules(curatedTracklist);
-  curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
-  totalPlaylistDuration = 0;
-  console.log(curatedTracklist);
-
+function getTotalPlaylistDuration(playlist) {
   for (let i = 0; i < curatedTracklist.length; i++) {
     const track = curatedTracklist[i];
     totalPlaylistDuration += Number(track.duration);
+    console.log(`Totalplaylistdur is ${secondsToMinutesAndSeconds(totalPlaylistDuration)}`); // Log the total duration in a readable format
   }
+}
 
-  console.log(`Totalplaylistdur is ${secondsToMinutesAndSeconds(totalPlaylistDuration)}`); // Log the total duration in a readable format
-
+function prepareCuratedTracklist(songs) {
+  const allSongs = [...songs];
+  const shuffledSongs = shuffleTracklist(allSongs);
+  curatedTracklist = followTracklistRules(shuffledSongs);
+  checkPlaylistRules(curatedTracklist);
+  curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
+  // totalPlaylistDuration = getTotalPlaylistDuration();
   cumulativeElapsedTime = 0; // Reset for the new playlist
 
   // todo
@@ -208,12 +199,7 @@ function prepareAndQueueTracks() {
 
   createTranscriptContainer();
   printEntireTracklistDebug(curatedTracklist);
-
-  // const combinedTracklist = [...tracklist, ...curatedTracklist];
-
-  // todo
-  // window.caches.open("audio-pre-cache").then((cache) => queueNextTrack(curatedTracklist, 0, 0, cache));
-  const simpleAudioPlayer = new SimpleAudioPlayer(curatedTracklist);
+  const makeASimpleAudioPlayerAndPlayIt = new SimpleAudioPlayer(curatedTracklist);
 }
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -227,43 +213,94 @@ class SimpleAudioPlayer {
     this.globalAudioElement = document.createElement("audio");
     this.isPlaying = false;
     this.firstPlayDone = false;
+
     this.currentRuntime = 0;
+
+    this.hasSkippedToEnd = false;
+    this.cumulativeElapsedTime = 0;
+    this.totalPlaylistDuration = 0; // Initialize with the sum of durations of all tracks in the playlist
+
     this.setupInitialUserInteraction();
     this.createVolumeSlider();
     this.initializeButtonVisuals();
-
-    // Assuming this.globalAudioElement is your audio element
-    // and toggleButtonVisuals updates your button's visuals
-
-    // Event listener for when audio starts playing
-    this.globalAudioElement.addEventListener("play", () => {
-      this.isPlaying = true; // Update your isPlaying state
-      this.toggleButtonVisuals(true); // Update visuals to show the pause button
-    });
-
-    // Event listener for when audio is paused
-    this.globalAudioElement.addEventListener("pause", () => {
-      this.isPlaying = false; // Update your isPlaying state
-      this.toggleButtonVisuals(false); // Update visuals to show the play button
-    });
+    this.calcDuration();
+    // this.updateProgressUI();
+    this.globalAudioElement.onplay = () => this.handlePlay();
+    this.globalAudioElement.onpause = () => this.handlePause();
+    this.globalAudioElement.onended = () => this.handleEnded();
+    this.globalAudioElement.ontimeupdate = () => this.updateProgressUI();
   }
+
+  calcDuration() {
+    for (let i = 0; i < curatedTracklist.length; i++) {
+      const track = curatedTracklist[i];
+      this.totalPlaylistDuration += Number(track.duration);
+    }
+    console.log(`this.totalPlaylistDuration is ${this.totalPlaylistDuration}`);
+    return this.totalPlaylistDuration;
+  }
+
+  updateProgressUI() {
+    let elapsedSecondsInCurrentTrack = Math.round(this.globalAudioElement.currentTime);
+    let totalElapsedSeconds = this.cumulativeElapsedTime + elapsedSecondsInCurrentTrack;
+    let remainingSeconds = this.totalPlaylistDuration - totalElapsedSeconds;
+
+    // Ensure playedPercentage does not exceed 100%
+    let playedPercentage = Math.min((totalElapsedSeconds / this.totalPlaylistDuration) * 100, 100);
+
+    const progressBar = document.getElementById("progress-bar");
+    if (progressBar) {
+      progressBar.style.width = `${playedPercentage}%`;
+    }
+
+    const progressDot = document.getElementById("progress-dot");
+    if (progressDot) {
+      progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust as needed for your UI
+    }
+
+    const playedTime = this.calculateMinutesAndSeconds(totalElapsedSeconds);
+    const remainingTimeDisplay = this.calculateMinutesAndSeconds(Math.max(0, remainingSeconds));
+
+    const timePlayedElement = document.getElementById("time-played");
+    if (timePlayedElement) {
+      timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+    }
+
+    const timeRemainingElement = document.getElementById("time-remaining");
+    if (timeRemainingElement) {
+      timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
+    }
+  }
+
+  
+
+  handleTimerCompletion() {
+    // Assuming there's a UI element to show the timer or end of playlist message
+    const timeRemainingElement = document.getElementById("time-remaining");
+    if (timeRemainingElement) {
+      timeRemainingElement.textContent = "Playback finished"; // Customize as needed
+    }
+    // Reset or perform additional cleanup as necessary
+    this.isPlaying = false;
+    this.currentIndex = 0; // Optionally reset to start or handle as per your logic
+    // this.updatePlayPauseUI(); // Reflect the updated state in the UI
+  }
+
+  calculateMinutesAndSeconds(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return {
+      minutes,
+      seconds: remainingSeconds.toFixed(0).padStart(2, "0"), // Ensuring two digits
+    };
+  }
+
+  //   cumulativeElapsedTime = 0; // Reset for the new playlist
+
 
   initializeButtonVisuals() {
     // Assuming false means "not playing" and shows the play button
     this.toggleButtonVisuals(false);
-  }
-
-  addTracks(newTracks) {
-    // this.tracklist = [...this.tracklist, ...newTracks];
-
-    if (this.isPlaying && this.currentIndex === this.tracklist.length - newTracks.length - 1) {
-      this.preloadNextTrack();
-    }
-
-    // If the playlist was empty and a new tracklist is added, automatically start playback.
-    if (!this.isPlaying && this.tracklist.length === newTracks.length) {
-      this.playTrack(this.currentIndex);
-    }
   }
 
   preloadNextTrack() {
@@ -343,7 +380,6 @@ class SimpleAudioPlayer {
     }
   }
 
-
   // new idea, risky
   // skipForward() {
   //   const skipAmount = 30; // seconds
@@ -365,25 +401,19 @@ class SimpleAudioPlayer {
   startPlayback() {
     if (!this.isPlaying && this.currentIndex < this.tracklist.length) {
       if (!this.firstPlayDone) {
-        console.log("Playing");
-
         // If it's the first play, start from the beginning
         this.playTrack(this.currentIndex);
         this.firstPlayDone = true; // Mark that first play has occurred
       } else {
         // If not the first play, just resume
-        console.log("Playing");
-
         this.globalAudioElement.play();
-        this.isPlaying = true;
-        this.toggleButtonVisuals(true);
       }
     } else {
       this.pausePlayback(); // Pause playback if we're currently playing
     }
   }
 
-    // new idea, risky
+  // new idea, risky
   // queueNextTrack(nextIndex) {
   //   if (nextIndex < this.tracklist.length) {
   //     const nextTrack = this.tracklist[nextIndex];
@@ -392,13 +422,12 @@ class SimpleAudioPlayer {
   //   }
   // }
 
-      // new idea, risky
+  // new idea, risky
   // playTrack(index, startTime = 0) {
   playTrack(index) {
     if (index >= this.tracklist.length) {
       console.log("End of playlist");
       this.isPlaying = false;
-      this.toggleButtonVisuals(false); // Ensure visuals reflect stopped state
       return;
     }
     const track = this.tracklist[index];
@@ -407,7 +436,6 @@ class SimpleAudioPlayer {
       .play()
       .then(() => {
         this.isPlaying = true;
-        this.toggleButtonVisuals(true); // Reflect playing state in UI
         console.log(`Now playing: ${track.url}`);
         // Preload the next track if possible
         if (index + 1 < this.tracklist.length) {
@@ -418,7 +446,6 @@ class SimpleAudioPlayer {
       })
       .catch((error) => {
         console.error("Playback initiation error:", error);
-        this.toggleButtonVisuals(false); // Reflect error state if play fails
       });
 
     // Chain the next track to play after the current one ends
@@ -451,6 +478,34 @@ class SimpleAudioPlayer {
     this.toggleButtonVisuals(false);
   }
 
+  handlePlay() {
+    console.log("handlePlay");
+    this.isPlaying = true;
+    this.toggleButtonVisuals(true);
+  }
+
+  handlePause() {
+    console.log("handlePause");
+    this.isPlaying = false;
+    this.toggleButtonVisuals(false);
+  }
+
+  handleEnded() {
+    console.log("handleEnded");
+    this.isPlaying = false;
+    this.toggleButtonVisuals(false);
+    // console.log(`Before End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}, Track Duration: ${Math.round(this.globalAudioElement.duration)}`);
+    // this.cumulativeElapsedTime += Math.round(this.globalAudioElement.duration);
+    // console.log(`After End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}`);
+    // this.handleTimerCompletion();
+    // this.updateProgressUI();
+
+    // // Automatically queue the next track if there is one
+    // if (this.currentIndex < this.curatedTracklist.length - 1) {
+    //   this.queueNextTrack(this.currentIndex + 1);
+    // }
+  }
+
   toggleButtonVisuals(isPlaying) {
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");
@@ -461,7 +516,7 @@ class SimpleAudioPlayer {
       if (!playButton.classList.contains("playing")) {
         // Check to prevent redundant operations
         playButtonTextContainer.style.left = "50%";
-        svgContainer.innerHTML = pausedSVG; 
+        svgContainer.innerHTML = pausedSVG;
         playButtonTextContainer.textContent = pausedText;
       }
     } else {
@@ -471,7 +526,7 @@ class SimpleAudioPlayer {
         } else {
           // Check to prevent redundant operations
           playButtonTextContainer.style.left = "35%";
-          svgContainer.innerHTML = playingSVG; 
+          svgContainer.innerHTML = playingSVG;
           playButtonTextContainer.textContent = playingText;
         }
       }
