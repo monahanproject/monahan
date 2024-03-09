@@ -1,3 +1,5 @@
+// needs a lot of work
+
 // Initialize lang variable from localStorage or default to "EN"
 let lang = localStorage.getItem("lang") || "EN";
 

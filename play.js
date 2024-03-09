@@ -50,80 +50,6 @@ let currentIndex = 0; // Initialize to 0, assuming the first track in the playli
 
 loadSongs();
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-// let cumulativeElapsedTime = 0; // Reset when a new playlist is loaded or when needed
-// let totalPlaylistDuration = 0; // Initialize
-
-// handles the scenario when the timer completes
-// function handleTimerCompletion() {
-//   const timeRemainingElement = document.getElementById("time-remaining");
-//   if (!timeRemainingElement) {
-//     console.error("Error: Missing element 'time-remaining'");
-//     return; // Exit the function to prevent further errors
-//   }
-//   timeRemainingElement.innerHTML = "Done";
-// }
-
-// function calculateMinutesAndSeconds(seconds) {
-//   const minutes = Math.floor(seconds / 60);
-//   const remainingSeconds = Math.round(seconds % 60); // Round seconds to avoid float
-//   return {
-//     minutes: minutes,
-//     seconds: remainingSeconds.toLocaleString("en-US", {
-//       minimumIntegerDigits: 2,
-//       useGrouping: false,
-//     }),
-//   };
-// }
-
-// function updateRuntime(song, currentRuntime) {
-//   const duration = song.duration;
-//   cumulativeElapsedTime += globalAudioElement.duration;
-//   logRuleApplication(`xxx duration is ${duration}`);
-//   timerDuration += Math.floor(duration);
-//   return currentRuntime + (song.duration ? parseInt(song.duration, 10) : 0);
-// }
-
-// function updateProgressUI() {
-//   let elapsedSecondsInCurrentTrack = Math.round(globalAudioElement.currentTime);
-//   let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
-//   let remainingSeconds = totalPlaylistDuration - totalElapsedSeconds;
-
-//   // Ensure playedPercentage does not exceed 100%
-//   let playedPercentage = Math.min((totalElapsedSeconds / totalPlaylistDuration) * 100, 100);
-
-//   const progressBar = document.getElementById("progress-bar");
-//   if (progressBar) {
-//     progressBar.style.width = `${playedPercentage}%`;
-//   }
-
-//   const progressDot = document.getElementById("progress-dot");
-//   if (progressDot) {
-//     // Ensure the progress dot does not go past the end of the progress bar
-//     progressDot.style.left = `calc(${Math.min(playedPercentage, 100)}% - 5px)`;
-//   }
-
-//   // Recalculate minutes and seconds for both played and remaining times
-//   const playedTime = calculateMinutesAndSeconds(totalElapsedSeconds);
-//   // Prevent displaying negative remaining time
-//   const adjustedRemainingSeconds = Math.max(0, remainingSeconds);
-//   const remainingTimeDisplay = calculateMinutesAndSeconds(adjustedRemainingSeconds);
-
-//   // Updating the time played element
-//   const timePlayedElement = document.getElementById("time-played");
-//   if (timePlayedElement) {
-//     timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
-//   }
-
-//   // Update the remaining time element, preventing it from showing negative values
-//   const timeRemainingElement = document.getElementById("time-remaining");
-//   if (timeRemainingElement) {
-//     timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
-//   }
-// }
 
 function addOutrosAndCreditsToTracklist(curatedTracklist) {
   curatedTracklist.push(...outroAudioSounds.map(prepareSongForPlayback));
@@ -204,7 +130,6 @@ class SimpleAudioPlayer {
     this.createVolumeSlider();
     this.initializeButtonVisuals();
     this.calcDuration();
-    // this.updateProgressUI();
     this.globalAudioElement.onplay = () => this.handlePlay();
     this.globalAudioElement.onpause = () => this.handlePause();
     this.globalAudioElement.onended = () => this.handleEnded();
@@ -225,8 +150,9 @@ class SimpleAudioPlayer {
     let totalElapsedSeconds = this.cumulativeElapsedTime + elapsedSecondsInCurrentTrack;
     let remainingSeconds = this.totalPlaylistDuration - totalElapsedSeconds;
 
-    // Ensure playedPercentage does not exceed 100%
     let playedPercentage = Math.min((totalElapsedSeconds / this.totalPlaylistDuration) * 100, 100);
+
+    console.log(`Updating Progress UI. Total Elapsed: ${totalElapsedSeconds}s, Remaining: ${remainingSeconds}s, Played Percentage: ${playedPercentage}%`);
 
     const progressBar = document.getElementById("progress-bar");
     if (progressBar) {
@@ -324,33 +250,39 @@ class SimpleAudioPlayer {
   }
 
   // Skip forward by 30 seconds or to the next track if necessary
-  sskipForward() {
+  skipForward() {
     const skipAmount = 30; // seconds
-    let timeLeftInCurrentTrack = this.globalAudioElement.duration - this.globalAudioElement.currentTime;
-  
-    if (timeLeftInCurrentTrack > skipAmount) {
-      // Simple case: Skip within the current track
-      this.globalAudioElement.currentTime += skipAmount;
-      this.cumulativeElapsedTime += skipAmount;
+    let currentTime = this.globalAudioElement.currentTime;
+    let duration = this.globalAudioElement.duration;
+
+    console.log(`Skipping forward... Current track time left: ${duration - currentTime}s, Skip Amount: ${skipAmount}s`);
+
+    if (duration - currentTime > skipAmount) {
+        // Simple skip within the current track
+        this.globalAudioElement.currentTime += skipAmount;
+        this.cumulativeElapsedTime += skipAmount;
     } else {
-      // When skipping beyond the current track
-      this.cumulativeElapsedTime += timeLeftInCurrentTrack; // Add only the remaining time of the current track
-  
-      let skipRemainder = skipAmount - timeLeftInCurrentTrack;
-      this.currentIndex++;
-      if (this.currentIndex < this.tracklist.length) {
-        this.playTrack(this.currentIndex);
-        // Assuming playTrack will handle playing the track, we need to defer updating cumulativeElapsedTime
-      } else {
-        // If there are no more tracks, consider what your logic should be, possibly resetting or handling completion
-        console.log("Reached the end of the playlist.");
-        this.handleTimerCompletion();
-      }
-  
-      // You might want to adjust `cumulativeElapsedTime` here, but ensure it accurately reflects played time.
+        // Calculate the full duration of the track to add to cumulativeElapsedTime
+        let fullTrackTimeElapsed = duration - currentTime + currentTime; // This simplifies to just 'duration'
+        this.cumulativeElapsedTime += fullTrackTimeElapsed; // Add the full duration of the track
+
+        console.log(`Adding full track duration to cumulative: ${fullTrackTimeElapsed}s`);
+
+        this.currentIndex++;
+        if (this.currentIndex < this.tracklist.length) {
+            // Reset currentTime for the new track
+            this.globalAudioElement.currentTime = 0;
+            this.playTrack(this.currentIndex);
+        } else {
+            console.log("Reached the end of the playlist.");
+            this.handleTimerCompletion();
+        }
     }
-  }
-  
+
+    this.updateProgressUI();
+}
+
+
   
 
   skipBackward() {
