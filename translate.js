@@ -1,7 +1,75 @@
-let lang = "EN"
-localStorage['lang'] = "EN"; 
-let langLabel = document.querySelector('#langToggle')
-let langToggle = document.getElementById("langToggle").addEventListener("click", toggleLanguage);
+let lang = "EN";
+
+function toggleLanguage() {
+  lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
+  localStorage.setItem("lang", lang); // Save preference to localStorage
+
+  updateLanguageLabel();
+  updatePageContent();
+
+  // When saving to localStorage
+  localStorage["lang"] = lang;
+  console.log("Language preference saved to localStorage:", lang);
+
+  // When retrieving from localStorage
+  let myLang = localStorage["lang"] || "defaultValue";
+  console.log("Retrieved language preference from localStorage:", myLang);
+}
+
+const langLabel = document.getElementById("langToggle");
+
+function updateLanguageLabel() {
+  if (langLabel) {
+    langLabel.innerHTML = lang;
+  } else {
+    console.error("langToggle element not found");
+  }
+}
+
+function updatePageContent() {
+  let contributorsPage = document.getElementById("contributorsPage");
+  if (contributorsPage) {
+    contributorsPage.innerHTML = lang === "EN" ? contributorsPageEN : contributorsPageFR;
+  } else {
+    console.error("contributorsPage element not found");
+  }
+}
+
+function changeEachString(string) {
+  const element = document.getElementById(string.id);
+  console.log(`Looking for element with ID: ${string.id}, Found:`, element);
+  if (element) {
+    element.innerHTML = lang === "FR" ? string.fr : string.en;
+  } else {
+    console.error(`Element with ID '${string.id}' not found.`);
+  }
+}
+
+function changeEachBtnString(string) {
+  const element = document.querySelector("#" + string.id);
+  console.log(`Looking for button element with ID: ${string.id}, Found:`, element);
+  if (element) {
+    element.innerHTML = lang === "FR" ? string.fr : string.en;
+  } else {
+    console.error(`Button element with ID '${string.id}' not found.`);
+  }
+}
+
+function changeEachLangDiv(currLang) {
+  console.log(`Applying translations for language: ${currLang}`);
+  strings.forEach(changeEachString);
+  buttonStrings.forEach(changeEachBtnString);
+}
+
+// Initialize the page with the correct language on load
+document.addEventListener("DOMContentLoaded", () => {
+  updateLanguageLabel();
+  updatePageContent();
+  changeEachLangDiv(lang); // Ensure strings are translated on load
+});
+
+// Attach the toggleLanguage function to the langToggle element
+document.querySelector("#langToggle").addEventListener("click", toggleLanguage);
 
 const contributorsPageFR = `
 <section id="contributorsPage" class="page">
@@ -52,9 +120,9 @@ const contributorsPageFR = `
           <details><summary><span class="summary-content">LAURA TALER</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://laurataler.ca/">Laura Taler</a></span> est une artiste, cinéaste, chorégraphe et interprète de spectacle née en Roumanie maintes fois primée. Forte d'une carrière de 30 ans dans les pratiques artistiques collaboratives, Laura a une expérience de l'art public qui va des spectacles à grande échelle aux installations permanentes, en passant par les projections et les œuvres sur écran. Elle sait varier les médiums, repousser les limites et utiliser la technologie de manière simple et innovante. Depuis le début de sa carrière, Laura travaille en collaboration en tant que directrice d'une équipe d'artistes et de techniciens et techniciennes. Par l'intermédiaire de sa société Grimm Pictures, fondée en 1994, elle a produit des œuvres pour diverses petites et grandes organisations. En tant qu'artiste, elle tire sa force de sa capacité à donner une vision claire à l'équipe chevronnée qu'elle rassemble autour de chaque projet et à concrétiser cette vision avec précision et souplesse.</p></article></details><div class="svg-contributors"></div>
           <details><summary><span class="summary-content">JOCELYN TODD</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://www.remembernowmove.art/">Jocelyn Todd</a></span> est une danseuse, chorégraphe, productrice et artiste multidisciplinaire qui vit actuellement à Ottawa. Jocelyn travaille avec le corps et ses interactions avec le moment présent, l'environnement, le paysage politique, le son, l'espace, le concept et les autres corps. Après avoir obtenu un diplôme d'études en danse contemporaine à The School of Dance, Jocelyn a passé son temps à faire la navette entre le Canada et l'Angleterre. À Londres, elle s'est plongée intensément dans des séances d'étude de danse qu'elle organisait elle-même et a présenté son travail au Festival Suffolk High Tide et au Robin Howard Theatre de Londres. Elle a également présenté ses chorégraphies à Ottawa. Ses œuvres récentes (2020-2023) sont <span class="italic">shell</span>, <span class="italic">the A-team</span> et <span class="italic">Time + Light</span>. Son film <span class="italic">Gold</span> a été présenté dans le cadre de Dance On Screen au Mayfair Theatre à l'automne 2021. Elle est profondément reconnaissante du soutien du Centre de danse contemporaine et des communautés qui continuent de l'encourager à Ottawa et à London.</p></article></details><div class="svg-contributors"></div>
         </div>
-      </section>`
+      </section>`;
 
-      const contributorsPageEN = `<section id="contributorsPage" class="page">
+const contributorsPageEN = `<section id="contributorsPage" class="page">
       <div class="pageContentTxt">
         <div class="headerDiv">
           <h2 id="contributorsH2">CONTRIBUTORS</h2>
@@ -95,69 +163,75 @@ const contributorsPageFR = `
         <details><summary><span class="summary-content">MARYEM HASSAN TOLLAR</span><span class="role">~~~</span></summary><article><p><span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> is a renowned Egyptian-Canadian vocalist, known for her world music performances. Her voice has been heard on the theme of CBC's <span class="italic">Little Mosque on the Prairie</span> and A.R. Rahman's Bollywood hit, <span class="italic">Mayya Mayya</span>. Tollar has been a featured vocalist with Tafelmusik, The Winnipeg Symphony Orchestra, The Gryphon Trio and Patricia O'Callaghan. She performs with several Toronto musical groups including Al Qahwa, Turkwaz, and with storyteller Dawne McFarlane. In the fall of 2022 she toured in <span class="italic">The Cave</span> (Libretto by Tomson Highway, Music by John Millard, Script by Martha Ross) and in 2023 with the stage adaptation of Ann-Marie MaDonald's book <span class="italic">Fall On Your Knees</span> (Directed by Alisa Palmer, Script by Hannah Moscovitch). Maryem was awarded the inaugural Johanna Metcalf Prize for Performing Arts in 2019.</p></article></details><div class="svg-contributors"></div>
         <details><summary><span class="summary-content">JORDAN BELL</span><span class="role">~~~</span></summary><article><p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span> is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope, from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several different groups.</p></article></details><div class="svg-contributors"></div>
       </div>
-    </section>`
-
+    </section>`;
 
 const strings = [
-     {id: 'aboutNav', fr: 'Page d\'accueil', en: 'About'},
-     {id: 'accessiblityNav', fr: 'Accessibilité', en: 'Accessibility'},
-     {id: 'aboutNav', fr: 'Page d\'accueil', en: 'About'},
-     {id: 'homeH1', fr: 'Une promenade sonore pour les oreilles curieuses', en: 'A sound walk for curious ears'},
-     {id: 'homeTxt', fr: 'Rejoignez-nous pour une promenade audio personnalisée avec les sons des zones humides de Monahan.', en: 'Join us for a custom audio walk with the sounds of the Monahan wetlands'}
-    //  {id: 'beginBtn', fr: 'Commencer', en: 'Begin'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
-    //  {id: 'XXX', fr: 'XXX', en: 'XXX'}
+  // { id: "engLand", fr: "Boop", en: "Enbook" },
+  // { id: "curiousEarsTxt", fr: "curiousfreeenchsss", en: "curiousencishs" },
+  // { id: "aboutNav", fr: "Page d'accueil", en: "About" },
+  // { id: "homeH1", fr: "Une promenade sonore pour les oreilles curieuses", en: "A sound walk for curious ears" },
+  // {
+  //   id: "homeTxt",
+  //   fr: "Rejoignez-nous pour une promenade audio personnalisée avec les sons des zones humides de Monahan.",
+  //   en: "Join us for a custom audio walk with the sounds of the Monahan wetlands",
+  // },
+  //  {id: 'beginBtn', fr: 'Commencer', en: 'Begin'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'},
+  //  {id: 'XXX', fr: 'XXX', en: 'XXX'}
 ];
 
+// play-button-text-container
 const buttonStrings = [
-    {id: 'beginBtn', fr: 'Commencer', en: 'Begin'}
+  // { id: "beginBtn", fr: "Commencer", en: "Begin" },   { id: "curiousEarsTxt", fr: "curiousfreeenchsss", en: "curiousencishs" }
 ];
 
-function changeEachLangDiv(currLang){
-    function changeEachString (string) {
-        if (currLang == "FR") {
-            document.getElementById(string.id).innerHTML = string.fr;
-        } else {
-            document.getElementById(string.id).innerHTML = string.en;
-        }
-    }
 
-    function changeEachBtnString (string) {
-        if (currLang == "FR") {
-            document.querySelector('#' + string.id).innerHTML = string.fr;
-        } else {
-            document.querySelector('#' + string.id).innerHTML = string.en;
-        }
-    }
 
-    strings.forEach(changeEachString);
-    buttonStrings.forEach(changeEachBtnString);
+// function changeEachLangDiv(currLang){
+//     function changeEachString (string) {
+//         if (currLang == "FR") {
+//             document.getElementById(string.id).innerHTML = string.fr;
+//         } else {
+//             document.getElementById(string.id).innerHTML = string.en;
+//         }
+//     }
 
-}
+//     function changeEachBtnString (string) {
+//         if (currLang == "FR") {
+//             document.querySelector('#' + string.id).innerHTML = string.fr;
+//         } else {
+//             document.querySelector('#' + string.id).innerHTML = string.en;
+//         }
+//     }
 
-function toggleLanguage() {
-    let contributorsPage = document.getElementById("contributorsPage");
+//     strings.forEach(changeEachString);
+//     buttonStrings.forEach(changeEachBtnString);
 
-  if(lang == "EN"){
-      langLabel.innerHTML = 'EN';
-      lang = "FR";
-      contributorsPage.innerHTML = contributorsPageFR;
+// }
 
-  } else {
-      langLabel.innerHTML = 'FR';
-      lang  = "EN"
-  }
-  localStorage['lang'] = lang;
-  changeEachLangDiv(lang);
-}
+// function toggleLanguage() {
+//     let contributorsPage = document.getElementById("contributorsPage");
+
+//   if(lang == "EN"){
+//       langLabel.innerHTML = 'EN';
+//       lang = "FR";
+//       contributorsPage.innerHTML = contributorsPageFR;
+
+//   } else {
+//       langLabel.innerHTML = 'FR';
+//       lang  = "EN"
+//   }
+//   localStorage['lang'] = lang;
+//   changeEachLangDiv(lang);
+// }
 
 // document.getElementById("aboutNav").innerHTML = "Page d'accueil";
 // document.getElementById("accessiblityNav").innerHTML = "Accessilbité";

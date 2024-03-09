@@ -324,23 +324,34 @@ class SimpleAudioPlayer {
   }
 
   // Skip forward by 30 seconds or to the next track if necessary
-  skipForward() {
+  sskipForward() {
     const skipAmount = 30; // seconds
-    let timeLeft = this.globalAudioElement.duration - this.globalAudioElement.currentTime;
-
-    if (timeLeft > skipAmount) {
-      // If enough time left in the current track, just skip forward.
+    let timeLeftInCurrentTrack = this.globalAudioElement.duration - this.globalAudioElement.currentTime;
+  
+    if (timeLeftInCurrentTrack > skipAmount) {
+      // Simple case: Skip within the current track
       this.globalAudioElement.currentTime += skipAmount;
-    } else if (this.currentIndex < curatedTracklist.length - 1) {
-      // Move on to the next track and apply the remaining skip time.
-      this.queueNextTrack(this.currentIndex + 1);
-      // Assume queueNextTrack plays the next track, so we need to wait until it's ready to play.
-      this.globalAudioElement.oncanplaythrough = () => {
-        this.globalAudioElement.currentTime = skipAmount - timeLeft;
-      };
+      this.cumulativeElapsedTime += skipAmount;
+    } else {
+      // When skipping beyond the current track
+      this.cumulativeElapsedTime += timeLeftInCurrentTrack; // Add only the remaining time of the current track
+  
+      let skipRemainder = skipAmount - timeLeftInCurrentTrack;
+      this.currentIndex++;
+      if (this.currentIndex < this.tracklist.length) {
+        this.playTrack(this.currentIndex);
+        // Assuming playTrack will handle playing the track, we need to defer updating cumulativeElapsedTime
+      } else {
+        // If there are no more tracks, consider what your logic should be, possibly resetting or handling completion
+        console.log("Reached the end of the playlist.");
+        this.handleTimerCompletion();
+      }
+  
+      // You might want to adjust `cumulativeElapsedTime` here, but ensure it accurately reflects played time.
     }
-    // No else needed, if there's not enough time left and we're at the last track, do nothing.
   }
+  
+  
 
   skipBackward() {
     const skipAmount = 15; // seconds
@@ -395,20 +406,26 @@ class SimpleAudioPlayer {
         console.error("Playback initiation error:", error);
       });
 
+      // Reset currentTime to 0 for accurate tracking
+  this.globalAudioElement.currentTime = 0;
+
+
     // Chain the next track to play after the current one ends
     this.globalAudioElement.onended = () => {
       console.log(`Track ended: ${track.url}`);
-      this.currentIndex++; // Move to the next track
+      // Add the full duration of the track since it played to completion
+    this.cumulativeElapsedTime += Number(track.duration);
+    this.currentIndex++; // Move to the next track
       if (this.currentIndex < this.tracklist.length) {
         this.playTrack(this.currentIndex); // Automatic play for the next track
 
         //need to fix this block
         // newCurrentRuntime = updateRuntime(track, currentRuntime);
-        const duration = track.duration;
-        cumulativeElapsedTime += this.globalAudioElement.duration;
-        logRuleApplication(`xxx duration is ${duration}`);
-        timerDuration += Math.floor(duration); // Update currentRuntime with the cumulative duration
-        const newCurrentRuntime = this.currentRuntime + (track.duration ? parseInt(track.duration, 10) : 0);
+        // const duration = track.duration;
+        // cumulativeElapsedTime += this.globalAudioElement.duration;
+        // logRuleApplication(`xxx duration is ${duration}`);
+        // timerDuration += Math.floor(duration); // Update currentRuntime with the cumulative duration
+        // const newCurrentRuntime = this.currentRuntime + (track.duration ? parseInt(track.duration, 10) : 0);
       } else {
         console.log("Finished playing all tracks.");
 
