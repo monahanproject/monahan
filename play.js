@@ -230,6 +230,27 @@ class SimpleAudioPlayer {
     this.currentRuntime = 0;
     this.setupInitialUserInteraction();
     this.createVolumeSlider();
+    this.initializeButtonVisuals();
+
+    // Assuming this.globalAudioElement is your audio element
+    // and toggleButtonVisuals updates your button's visuals
+
+    // Event listener for when audio starts playing
+    this.globalAudioElement.addEventListener("play", () => {
+      this.isPlaying = true; // Update your isPlaying state
+      this.toggleButtonVisuals(true); // Update visuals to show the pause button
+    });
+
+    // Event listener for when audio is paused
+    this.globalAudioElement.addEventListener("pause", () => {
+      this.isPlaying = false; // Update your isPlaying state
+      this.toggleButtonVisuals(false); // Update visuals to show the play button
+    });
+  }
+
+  initializeButtonVisuals() {
+    // Assuming false means "not playing" and shows the play button
+    this.toggleButtonVisuals(false);
   }
 
   addTracks(newTracks) {
@@ -344,7 +365,6 @@ class SimpleAudioPlayer {
   }
 
   playTrack(index) {
-
     if (index >= this.tracklist.length) {
       console.log("End of playlist");
       this.isPlaying = false;
@@ -401,35 +421,33 @@ class SimpleAudioPlayer {
     this.toggleButtonVisuals(false);
   }
 
-
-   toggleButtonVisuals(isPlaying) {
-    const svgIcon = document.querySelector('#play-button-svg-container .svg-icon');
-    const playButton = document.querySelector('#play-button');
+  toggleButtonVisuals(isPlaying) {
+    const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
+    const playButton = document.querySelector("#play-button");
     const playButtonTextContainer = document.getElementById("play-button-text-container");
     const svgContainer = document.getElementById("play-button-svg-container");
 
-    
-    // Ensure text and SVG container changes are only applied after checking the current state to prevent unnecessary changes
     if (isPlaying) {
-      if (!playButton.classList.contains("playing")) { // Check to prevent redundant operations
+      if (!playButton.classList.contains("playing")) {
+        // Check to prevent redundant operations
         playButtonTextContainer.style.left = "50%";
-        svgContainer.innerHTML = pausedSVG; // Assuming pausedSVG is defined and contains the SVG code or an <img> tag for the pause button
+        svgContainer.innerHTML = pausedSVG; 
         playButtonTextContainer.textContent = pausedText;
       }
     } else {
-      if (!playButton.classList.contains("paused")) { // Check to prevent redundant operations
-        playButtonTextContainer.style.left = "35%";
-        svgContainer.innerHTML = playingSVG; // Assuming playingSVG is defined and contains the SVG code or an <img> tag for the play button
-        playButtonTextContainer.textContent = playingText;
+      if (!playButton.classList.contains("paused")) {
+        if (!this.firstPlayDone) {
+          // we're in a begin state
+        } else {
+          // Check to prevent redundant operations
+          playButtonTextContainer.style.left = "35%";
+          svgContainer.innerHTML = playingSVG; 
+          playButtonTextContainer.textContent = playingText;
+        }
       }
     }
-  
     // Toggle these classes regardless of current state, as they control other visual aspects that may need to be updated
     playButton.classList.toggle("playing", isPlaying);
     playButton.classList.toggle("paused", !isPlaying);
   }
-  
-  
-  
-  
 }
