@@ -39,11 +39,8 @@ export let curatedTracklist;
 export let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 
 let myLang = localStorage["lang"] || "defaultValue";
-let hasSkippedToEnd = false;
 export let curatedTracklistTotalTimeInSecs;
 curatedTracklistTotalTimeInSecs = 0;
-let curatedTracklistTotalTimeInMins;
-let timerDuration = 0;
 const playingSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButton.svg" alt="Play Icon">`;
 const pausedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButton.svg" alt="Pause Icon">`;
 const playingText = "PLAY";
@@ -57,76 +54,76 @@ loadSongs();
 //  XXXXXXXXXXX  TIMER  XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-let cumulativeElapsedTime = 0; // Reset when a new playlist is loaded or when needed
-let totalPlaylistDuration = 0; // Initialize
+// let cumulativeElapsedTime = 0; // Reset when a new playlist is loaded or when needed
+// let totalPlaylistDuration = 0; // Initialize
 
 // handles the scenario when the timer completes
-function handleTimerCompletion() {
-  const timeRemainingElement = document.getElementById("time-remaining");
-  if (!timeRemainingElement) {
-    console.error("Error: Missing element 'time-remaining'");
-    return; // Exit the function to prevent further errors
-  }
-  timeRemainingElement.innerHTML = "Done";
-}
+// function handleTimerCompletion() {
+//   const timeRemainingElement = document.getElementById("time-remaining");
+//   if (!timeRemainingElement) {
+//     console.error("Error: Missing element 'time-remaining'");
+//     return; // Exit the function to prevent further errors
+//   }
+//   timeRemainingElement.innerHTML = "Done";
+// }
 
-function calculateMinutesAndSeconds(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.round(seconds % 60); // Round seconds to avoid float
-  return {
-    minutes: minutes,
-    seconds: remainingSeconds.toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    }),
-  };
-}
+// function calculateMinutesAndSeconds(seconds) {
+//   const minutes = Math.floor(seconds / 60);
+//   const remainingSeconds = Math.round(seconds % 60); // Round seconds to avoid float
+//   return {
+//     minutes: minutes,
+//     seconds: remainingSeconds.toLocaleString("en-US", {
+//       minimumIntegerDigits: 2,
+//       useGrouping: false,
+//     }),
+//   };
+// }
 
-function updateRuntime(song, currentRuntime) {
-  const duration = song.duration;
-  cumulativeElapsedTime += globalAudioElement.duration;
-  logRuleApplication(`xxx duration is ${duration}`);
-  timerDuration += Math.floor(duration);
-  return currentRuntime + (song.duration ? parseInt(song.duration, 10) : 0);
-}
+// function updateRuntime(song, currentRuntime) {
+//   const duration = song.duration;
+//   cumulativeElapsedTime += globalAudioElement.duration;
+//   logRuleApplication(`xxx duration is ${duration}`);
+//   timerDuration += Math.floor(duration);
+//   return currentRuntime + (song.duration ? parseInt(song.duration, 10) : 0);
+// }
 
-function updateProgressUI() {
-  let elapsedSecondsInCurrentTrack = Math.round(globalAudioElement.currentTime);
-  let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
-  let remainingSeconds = totalPlaylistDuration - totalElapsedSeconds;
+// function updateProgressUI() {
+//   let elapsedSecondsInCurrentTrack = Math.round(globalAudioElement.currentTime);
+//   let totalElapsedSeconds = Math.round(cumulativeElapsedTime) + elapsedSecondsInCurrentTrack;
+//   let remainingSeconds = totalPlaylistDuration - totalElapsedSeconds;
 
-  // Ensure playedPercentage does not exceed 100%
-  let playedPercentage = Math.min((totalElapsedSeconds / totalPlaylistDuration) * 100, 100);
+//   // Ensure playedPercentage does not exceed 100%
+//   let playedPercentage = Math.min((totalElapsedSeconds / totalPlaylistDuration) * 100, 100);
 
-  const progressBar = document.getElementById("progress-bar");
-  if (progressBar) {
-    progressBar.style.width = `${playedPercentage}%`;
-  }
+//   const progressBar = document.getElementById("progress-bar");
+//   if (progressBar) {
+//     progressBar.style.width = `${playedPercentage}%`;
+//   }
 
-  const progressDot = document.getElementById("progress-dot");
-  if (progressDot) {
-    // Ensure the progress dot does not go past the end of the progress bar
-    progressDot.style.left = `calc(${Math.min(playedPercentage, 100)}% - 5px)`;
-  }
+//   const progressDot = document.getElementById("progress-dot");
+//   if (progressDot) {
+//     // Ensure the progress dot does not go past the end of the progress bar
+//     progressDot.style.left = `calc(${Math.min(playedPercentage, 100)}% - 5px)`;
+//   }
 
-  // Recalculate minutes and seconds for both played and remaining times
-  const playedTime = calculateMinutesAndSeconds(totalElapsedSeconds);
-  // Prevent displaying negative remaining time
-  const adjustedRemainingSeconds = Math.max(0, remainingSeconds);
-  const remainingTimeDisplay = calculateMinutesAndSeconds(adjustedRemainingSeconds);
+//   // Recalculate minutes and seconds for both played and remaining times
+//   const playedTime = calculateMinutesAndSeconds(totalElapsedSeconds);
+//   // Prevent displaying negative remaining time
+//   const adjustedRemainingSeconds = Math.max(0, remainingSeconds);
+//   const remainingTimeDisplay = calculateMinutesAndSeconds(adjustedRemainingSeconds);
 
-  // Updating the time played element
-  const timePlayedElement = document.getElementById("time-played");
-  if (timePlayedElement) {
-    timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
-  }
+//   // Updating the time played element
+//   const timePlayedElement = document.getElementById("time-played");
+//   if (timePlayedElement) {
+//     timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+//   }
 
-  // Update the remaining time element, preventing it from showing negative values
-  const timeRemainingElement = document.getElementById("time-remaining");
-  if (timeRemainingElement) {
-    timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
-  }
-}
+//   // Update the remaining time element, preventing it from showing negative values
+//   const timeRemainingElement = document.getElementById("time-remaining");
+//   if (timeRemainingElement) {
+//     timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
+//   }
+// }
 
 function addOutrosAndCreditsToTracklist(curatedTracklist) {
   curatedTracklist.push(...outroAudioSounds.map(prepareSongForPlayback));
@@ -135,18 +132,11 @@ function addOutrosAndCreditsToTracklist(curatedTracklist) {
   return curatedTracklist;
 }
 
-function secondsToMinutesAndSeconds(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`; // Pads the seconds with a leading zero if necessary
-}
-
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXX CREATE EACH SONG! XXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-/* Takes a song object as input, create an audio element for the song's URL, 
-assignS it to the song.audio property, and returns the modified song object.*/
+/* Possibly does nothing!.*/
 
 export const prepareSongForPlayback = (song) => {
   return song;
@@ -175,25 +165,15 @@ async function loadSongs() {
   }
 }
 
-function getTotalPlaylistDuration(playlist) {
-  for (let i = 0; i < curatedTracklist.length; i++) {
-    const track = curatedTracklist[i];
-    totalPlaylistDuration += Number(track.duration);
-    console.log(`Totalplaylistdur is ${secondsToMinutesAndSeconds(totalPlaylistDuration)}`); // Log the total duration in a readable format
-  }
-}
-
 function prepareCuratedTracklist(songs) {
   const allSongs = [...songs];
   const shuffledSongs = shuffleTracklist(allSongs);
   curatedTracklist = followTracklistRules(shuffledSongs);
   checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
-  // totalPlaylistDuration = getTotalPlaylistDuration();
-  cumulativeElapsedTime = 0; // Reset for the new playlist
 
   // todo
-  // globalAudioElement.ontimeupdate = () => {
+  // this.globalAudioElement.ontimeupdate = () => {
   //   updateProgressUI();
   // };
 
@@ -272,7 +252,6 @@ class SimpleAudioPlayer {
     }
   }
 
-  
 
   handleTimerCompletion() {
     // Assuming there's a UI element to show the timer or end of playlist message
@@ -295,11 +274,8 @@ class SimpleAudioPlayer {
     };
   }
 
-  //   cumulativeElapsedTime = 0; // Reset for the new playlist
-
 
   initializeButtonVisuals() {
-    // Assuming false means "not playing" and shows the play button
     this.toggleButtonVisuals(false);
   }
 
@@ -356,7 +332,7 @@ class SimpleAudioPlayer {
       // If enough time left in the current track, just skip forward.
       this.globalAudioElement.currentTime += skipAmount;
     } else if (this.currentIndex < curatedTracklist.length - 1) {
-      // Move to the next track and apply the remaining skip time.
+      // Move on to the next track and apply the remaining skip time.
       this.queueNextTrack(this.currentIndex + 1);
       // Assume queueNextTrack plays the next track, so we need to wait until it's ready to play.
       this.globalAudioElement.oncanplaythrough = () => {
@@ -380,24 +356,6 @@ class SimpleAudioPlayer {
     }
   }
 
-  // new idea, risky
-  // skipForward() {
-  //   const skipAmount = 30; // seconds
-  //   const remainingTime = this.globalAudioElement.duration - this.globalAudioElement.currentTime;
-
-  //   if (remainingTime > skipAmount) {
-  //     // If enough time left in the current track, just skip forward.
-  //     this.globalAudioElement.currentTime += skipAmount;
-  //   } else if (this.currentIndex < this.tracklist.length - 1) {
-  //     // Move to the next track and apply the remaining skip time.
-  //     const nextIndex = this.currentIndex + 1;
-  //     this.queueNextTrack(nextIndex);
-  //     const timeToSkip = skipAmount - remainingTime;
-  //     this.playTrack(nextIndex, timeToSkip);
-  //   }
-  //   // No else needed, if there's not enough time left and we're at the last track, do nothing.
-  // }
-
   startPlayback() {
     if (!this.isPlaying && this.currentIndex < this.tracklist.length) {
       if (!this.firstPlayDone) {
@@ -413,17 +371,6 @@ class SimpleAudioPlayer {
     }
   }
 
-  // new idea, risky
-  // queueNextTrack(nextIndex) {
-  //   if (nextIndex < this.tracklist.length) {
-  //     const nextTrack = this.tracklist[nextIndex];
-  //     const audioPreload = new Audio(nextTrack.url);
-  //     audioPreload.preload = "auto"; // Preload the next track
-  //   }
-  // }
-
-  // new idea, risky
-  // playTrack(index, startTime = 0) {
   playTrack(index) {
     if (index >= this.tracklist.length) {
       console.log("End of playlist");
