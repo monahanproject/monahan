@@ -318,7 +318,7 @@ class SimpleAudioPlayer {
     if (timeLeft > skipAmount) {
       // If enough time left in the current track, just skip forward.
       this.globalAudioElement.currentTime += skipAmount;
-    } else if (this.currentIndex < this.curatedTracklist.length - 1) {
+    } else if (this.currentIndex < curatedTracklist.length - 1) {
       // Move to the next track and apply the remaining skip time.
       this.queueNextTrack(this.currentIndex + 1);
       // Assume queueNextTrack plays the next track, so we need to wait until it's ready to play.
@@ -343,6 +343,25 @@ class SimpleAudioPlayer {
     }
   }
 
+
+  // new idea, risky
+  // skipForward() {
+  //   const skipAmount = 30; // seconds
+  //   const remainingTime = this.globalAudioElement.duration - this.globalAudioElement.currentTime;
+
+  //   if (remainingTime > skipAmount) {
+  //     // If enough time left in the current track, just skip forward.
+  //     this.globalAudioElement.currentTime += skipAmount;
+  //   } else if (this.currentIndex < this.tracklist.length - 1) {
+  //     // Move to the next track and apply the remaining skip time.
+  //     const nextIndex = this.currentIndex + 1;
+  //     this.queueNextTrack(nextIndex);
+  //     const timeToSkip = skipAmount - remainingTime;
+  //     this.playTrack(nextIndex, timeToSkip);
+  //   }
+  //   // No else needed, if there's not enough time left and we're at the last track, do nothing.
+  // }
+
   startPlayback() {
     if (!this.isPlaying && this.currentIndex < this.tracklist.length) {
       if (!this.firstPlayDone) {
@@ -364,6 +383,17 @@ class SimpleAudioPlayer {
     }
   }
 
+    // new idea, risky
+  // queueNextTrack(nextIndex) {
+  //   if (nextIndex < this.tracklist.length) {
+  //     const nextTrack = this.tracklist[nextIndex];
+  //     const audioPreload = new Audio(nextTrack.url);
+  //     audioPreload.preload = "auto"; // Preload the next track
+  //   }
+  // }
+
+      // new idea, risky
+  // playTrack(index, startTime = 0) {
   playTrack(index) {
     if (index >= this.tracklist.length) {
       console.log("End of playlist");
