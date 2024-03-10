@@ -282,6 +282,8 @@ a:hover {
   align-items: center;
 }
 
+
+
 #contributorsPage,
 #productionTeamPage,
 #whereToFindUsPage,
@@ -1306,9 +1308,10 @@ input[type="range"] {
   background-image: url(images/svg/-contributors1.svg);
   background-repeat: repeat-x;
   background-size: 12px 3px;
-  height: 12px;
+  min-height: 12px;
   width: 80vw;
   margin-bottom: 0.8rem;
+    padding: 10px 0;
 }
 
 .svg-contributors-invert {
@@ -1388,7 +1391,8 @@ input[type="range"] {
     background-image: url(images/svg/-contributors1.svg);
     background-repeat: repeat-x;
     background-size: 12px 12px;
-    height: 12px;
+    min-height: 12px;
+    /* height: 12px; this breaks everything?!! */ 
     width: 90vw;
     box-sizing: border-box;
   }
@@ -1745,3 +1749,4 @@ article > p {
 .monochrome {
   filter: grayscale(100%);
 }
+
