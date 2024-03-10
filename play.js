@@ -1,48 +1,18 @@
 import { SimpleAudioPlayer } from "./audioplayer.js";
-
-
-import { r10, r11, r12, r13, r14, r15, r16 } from "./generalRules.js";
-import { r21, r22, r23, r24 } from "./ensureRules.js";
-import { r61, r62, r63, r64, r65, r66, r67, r68 } from "./specificRules.js";
-import {
-  r10rule,
-  r11rule,
-  r12rule,
-  r13rule,
-  r14rule,
-  r15rule,
-  r16rule,
-  r21rule,
-  r22rule,
-  r23rule,
-  r24rule,
-  r25rule,
-  r61rule,
-  r62rule,
-  r63rule,
-  r64rule,
-  r65rule,
-  r66rule,
-  r67rule,
-  r68rule,
-} from "./ruleStrings.js";
 import { gatherTheCreditSongs } from "./credits.js";
-
 import { createTranscriptContainer } from "./transcript.js";
 import { checkPlaylistRules } from "./checkRules.js";
 // import { handleVolumeChange } from "./volumeControl.js";
 import { isValidTracklist } from "./checkTracks.js";
 
-import { shuffleTracklist, shuffleArrayOfRules } from "./shuffle.js";
-import { printEntireTracklistDebug, gatherAndPrintDebugInfo } from "./debug.js";
-import { followTracklistRules, logRuleApplication } from "./playlistBuilder.js";
+import { shuffleTracklist } from "./shuffle.js";
+import { printEntireTracklistDebug } from "./debug.js";
+import { followTracklistRules } from "./playlistBuilder.js";
 import { outroAudioSounds, finalOutroAudioSounds } from "./outroAudio.js";
 
 export let curatedTracklist;
 export let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
-// export let MAX_PLAYLIST_DURATION_SECONDS = 640; //(19m)
 
-let myLang = localStorage["lang"] || "defaultValue";
 export let curatedTracklistTotalTimeInSecs;
 curatedTracklistTotalTimeInSecs = 0;
 
