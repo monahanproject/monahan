@@ -22,6 +22,12 @@ export class SimpleAudioPlayer {
     this.isUpdatingTime = false; // Flag to prevent rapid updates
     this.timerDuration = 0;
 
+    this.transcript = "";
+    this.language = "english";
+    this.transcriptVisible = false;
+    this.transcriptContent = null;
+    this.transcriptContainer = document.getElementById("transcriptContainer");
+
     this.playingSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButton.svg" alt="Play Icon">`;
     this.pausedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButton.svg" alt="Pause Icon">`;
     this.playingText = "PLAY";
@@ -39,6 +45,8 @@ export class SimpleAudioPlayer {
     this.globalAudioElement.onended = () => this.handleEnded();
     // this.globalAudioElement.ontimeupdate = () => this.updateProgressUI(Math.floor(this.globalAudioElement.currentTime), this.timerDuration);
   }
+
+  // TIMER
 
   calcDuration() {
     this.totalPlaylistDuration = this.tracklist.reduce((acc, track) => acc + Number(track.duration), 0);
@@ -120,6 +128,113 @@ export class SimpleAudioPlayer {
   //     audioPreload.preload = "auto";
   //   }
   // }
+
+  // TRANSCRIPT
+
+  // Helper function to create elements with attributes
+  createElement(type, attributes) {
+    const element = document.createElement(type);
+    Object.keys(attributes).forEach((attr) => (element[attr] = attributes[attr]));
+    return element;
+  }
+
+  // create the transcript container and button
+  createTranscriptContainer() {
+    if (!this.transcriptContainer) {
+      console.error("Transcript container not found.");
+      return;
+    }
+    const transcriptButton = this.createElement("button", {
+      type: "button",
+      className: "btn",
+      id: "transcriptButton",
+      textContent: "TRANSCRIPT",
+    });
+
+    const transBtnContainer = document.getElementById("transButtonContainer");
+    transBtnContainer.appendChild(transcriptButton);
+    transcriptButton.addEventListener("click", this.toggleTranscript.bind(this));
+    // Initialize transcriptContent here to avoid re-declaration later
+    this.transcriptContent = this.createElement("div", { id: "transcriptContent", style: "display: none" });
+    this.transcriptContainer.appendChild(this.transcriptContent); // Append to the container
+  }
+
+  // Function to apply formatting to text
+  formatText(text) {
+    const formatPatterns = {
+      bold: /\^([^]+?)\^\^/g,
+      center: /@([^]+?)@@/g,
+      italics: /\$([^]+?)\$\$/g,
+      lineBreak: /%/g,
+      doubleLineBreak: /\*/g,
+    };
+
+    return text
+      .replace(formatPatterns.bold, '<span style="font-weight: bold;">$1</span>')
+      .replace(formatPatterns.center, '<span style="display: block; text-align: center;">$1</span>')
+      .replace(formatPatterns.italics, '<span style="font-style: italic;">$1</span>')
+      .replace(formatPatterns.lineBreak, "</br>")
+      .replace(formatPatterns.doubleLineBreak, "<p></br></br></p>");
+  }
+
+  createHTMLFromText(text) {
+    const container = this.createElement("div", {});
+    const currentParagraph = this.createElement("p", {
+      style: "margin-top: 3rem; margin-bottom: 1rem; padding: 1rem; background-color: #bfffc2; margin-left: 0; margin-right: 0;",
+    });
+
+    try {
+      currentParagraph.innerHTML = this.formatText(text); // Refactored to formatText function
+      container.appendChild(currentParagraph);
+    } catch (error) {
+      console.error("Error while processing input text:", error);
+    }
+
+    return container;
+  }
+
+  // Function to update the transcript based on the selected language
+  updateTranscript() {
+    if (!this.transcriptContainer) {
+      console.error("Transcript container not found.");
+      return;
+    }
+
+    this.transcriptContainer.innerHTML = ""; // Clear previous content
+
+    const langKey = this.language === "english" ? "engTrans" : "frTrans";
+    const copyRightText =
+      this.language === "english"
+        ? "$All recordings and transcripts are copyright protected. All rights reserved.$$"
+        : "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
+
+    this.tracklist.forEach((song) => {
+      const inputString = song[langKey];
+      if (inputString && inputString.trim() !== "") {
+        this.transcriptContainer.appendChild(this.createHTMLFromText(inputString));
+      }
+    });
+
+    this.transcriptContainer.appendChild(this.createHTMLFromText(copyRightText));
+    this.transcriptContainer.style.display = "block";
+  }
+
+  // Function to toggle the transcript visibility
+  toggleTranscript() {
+    const transcriptButton = document.getElementById("transcriptButton");
+
+    this.transcriptVisible = !this.transcriptVisible; // Toggle the flag first for more predictable logic
+    if (this.transcriptVisible) {
+      this.updateTranscript(); // Update before showing
+      this.transcriptContainer.style.display = "block";
+      transcriptButton.textContent = "Hide Transcript";
+    } else {
+      this.transcriptContainer.style.display = "none";
+      transcriptButton.textContent = "Show Transcript";
+    }
+  }
+
+  // INTERACTIONS
   setupInitialUserInteraction() {
     const playButton = document.getElementById("play-button");
     const skipBackwardButton = document.getElementById("skipBackwardButton");
@@ -141,17 +256,21 @@ export class SimpleAudioPlayer {
 
   createVolumeSlider() {
     var volumeSlider = document.getElementById("volume-slider");
-    if (volumeSlider && volumeSlider instanceof HTMLInputElement) { // Runtime check
-        volumeSlider.type = "range";
-        volumeSlider.max = "100";
-        volumeSlider.min = "0";
-        volumeSlider.value = "75"; // Default volume
-        volumeSlider.addEventListener("change", function(event) {
-            this.handleVolumeChange(event);
-        }.bind(this));
-        this.globalAudioElement.volume = parseFloat(volumeSlider.value) / 100;
+    if (volumeSlider && volumeSlider instanceof HTMLInputElement) {
+      // Runtime check
+      volumeSlider.type = "range";
+      volumeSlider.max = "100";
+      volumeSlider.min = "0";
+      volumeSlider.value = "75"; // Default volume
+      volumeSlider.addEventListener(
+        "change",
+        function (event) {
+          this.handleVolumeChange(event);
+        }.bind(this)
+      );
+      this.globalAudioElement.volume = parseFloat(volumeSlider.value) / 100;
     }
-}
+  }
 
   handleVolumeChange(event) {
     const newVolume = parseFloat(event.target.value) / 100;
@@ -189,6 +308,8 @@ export class SimpleAudioPlayer {
         // If it's the first play, start from the beginning
         this.playTrack(this.currentIndex);
         this.firstPlayDone = true; // Mark that first play has occurred
+        this.createTranscriptContainer();
+
       } else {
         // If not the first play, just resume
         this.globalAudioElement.play();
@@ -310,6 +431,7 @@ export class SimpleAudioPlayer {
     } else {
       if (!playButton.classList.contains("paused")) {
         if (!this.firstPlayDone) {
+
           // we're in a begin state
         } else {
           // Check to prevent redundant operations
