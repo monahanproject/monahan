@@ -121,15 +121,20 @@ class SimpleAudioPlayer {
     this.totalPlaylistDuration = 0; // Initialize with the sum of durations of all tracks in the playlist
     this.isDebouncingBackwardSkip = false;
     this.debounceTimeout = 500; // 500 milliseconds
+    this.isUpdatingTime = false; // Flag to prevent rapid updates
+    this.timerDuration = 0;
+
+    this.createTimerLoopAndUpdateProgressTimer();
 
     this.setupInitialUserInteraction();
     this.createVolumeSlider();
     this.initializeButtonVisuals();
     this.calcDuration();
+
     this.globalAudioElement.onplay = () => this.handlePlay();
     this.globalAudioElement.onpause = () => this.handlePause();
     this.globalAudioElement.onended = () => this.handleEnded();
-    this.globalAudioElement.ontimeupdate = () => this.updateProgressUI();
+    // this.globalAudioElement.ontimeupdate = () => this.updateProgressUI();
   }
 
   calcDuration() {
@@ -138,41 +143,44 @@ class SimpleAudioPlayer {
     return this.totalPlaylistDuration;
   }
 
-
-  updateProgressUI() {
+  updateProgressUI(elapsedSeconds, previousDuration) {
     try {
-      let elapsedSecondsInCurrentTrack = Math.round(this.globalAudioElement.currentTime);
-      let totalElapsedSeconds = this.cumulativeElapsedTime + elapsedSecondsInCurrentTrack;
-      totalElapsedSeconds = Math.min(totalElapsedSeconds, this.totalPlaylistDuration); // Ensure it doesn't exceed total duration
-      let remainingSeconds = this.totalPlaylistDuration - totalElapsedSeconds;
-      let playedPercentage = (totalElapsedSeconds / this.totalPlaylistDuration) * 100;
-
       const progressBar = document.getElementById("progress-bar");
-      progressBar.style.width = `${playedPercentage}%`;
       const progressDot = document.getElementById("progress-dot");
-      progressDot.style.left = `calc(${playedPercentage}% - 5px)`;
-      const playedTime = this.calculateMinutesAndSeconds(totalElapsedSeconds);
-      const remainingTimeDisplay = this.calculateMinutesAndSeconds(remainingSeconds);
-
       const timePlayedElement = document.getElementById("time-played");
-      timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
       const timeRemainingElement = document.getElementById("time-remaining");
-      timeRemainingElement.innerText = `-${remainingTimeDisplay.minutes}:${remainingTimeDisplay.seconds}`;
+
+      const remainingDurationSeconds = this.totalPlaylistDuration - (elapsedSeconds + previousDuration);
+      // Calculate the percentage of the track that's been played
+      const playedPercentage = ((elapsedSeconds + previousDuration) / this.totalPlaylistDuration) * 100;
+
+      // Update the progress bar and dot
+      progressBar.style.width = `${playedPercentage}%`;
+      progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
+      // Update the time labels
+      const playedTime = this.calculateMinutesAndSeconds(elapsedSeconds + previousDuration);
+      const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
+
+      timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+      timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
     } catch (error) {
-      console.error(`[updateProgressUI] Error: ${error.message}`);
+      // Handle errors that occur in the try block
+      console.error("An error occurred in updateProgressUI:", error);
+    } finally {
+      // Code here will run regardless of whether an error occurred
+      // This block is optional and can be omitted if not needed
     }
   }
 
-  handleTimerCompletion() {
-    const timeRemainingElement = document.getElementById("time-remaining");
-    if (timeRemainingElement) {
-      timeRemainingElement.textContent = "Playback finished"; // Customize as needed
-    }
-    // Reset or perform additional cleanup as necessary
-    this.isPlaying = false;
-    this.currentIndex = 0; // Optionally reset to start or handle as per your logic
-    // this.updatePlayPauseUI(); // Reflect the updated state in the UI
-  }
+  // handleTimerCompletion() {
+  //   const timeRemainingElement = document.getElementById("time-remaining");
+
+  //   if (!timeRemainingElement) {
+  //     console.error("Error: Missing element 'time-remaining'");
+  //     return; // Exit the function to prevent further errors
+  //   }
+  //   timeRemainingElement.innerHTML = "Done";
+  // }
 
   calculateMinutesAndSeconds(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -183,17 +191,32 @@ class SimpleAudioPlayer {
     };
   }
 
+  calculateRemainingTime(elapsedSeconds) {
+    return this.totalPlaylistDuration - elapsedSeconds;
+  }
+
+  createTimerLoopAndUpdateProgressTimer() {
+    var start = Date.now(); // Record the start time of the loop
+    return setInterval(() => {
+      let delta = Date.now() - start; // Calculate elapsed milliseconds
+      let deltaSeconds = Math.floor(delta / 1000); // Convert milliseconds to seconds
+      // new name below
+      this.updateProgressUI(Math.floor(this.globalAudioElement.currentTime), this.timerDuration);
+      this.remainingTime = this.calculateRemainingTime(deltaSeconds);
+    }, 1000); // Run the loop every x milliseconds
+  }
+
   initializeButtonVisuals() {
     this.toggleButtonVisuals(false);
   }
 
-  preloadNextTrack() {
-    if (this.currentIndex + 1 < this.tracklist.length) {
-      const nextTrack = this.tracklist[this.currentIndex + 1];
-      const audioPreload = new Audio(nextTrack.url);
-      audioPreload.preload = "auto";
-    }
-  }
+  // preloadNextTrack() {
+  //   if (this.currentIndex + 1 < this.tracklist.length) {
+  //     const nextTrack = this.tracklist[this.currentIndex + 1];
+  //     const audioPreload = new Audio(nextTrack.url);
+  //     audioPreload.preload = "auto";
+  //   }
+  // }
   setupInitialUserInteraction() {
     const playButton = document.getElementById("play-button");
     const skipBackwardButton = document.getElementById("skipBackwardButton");
@@ -201,15 +224,15 @@ class SimpleAudioPlayer {
 
     if (playButton) {
       playButton.addEventListener("click", () => this.startPlayback());
-      playButton.addEventListener('touchend', () => this.startPlayback(), false);
+      playButton.addEventListener("touchend", () => this.startPlayback(), false);
     }
     if (skipBackwardButton) {
-      skipBackwardButton.addEventListener("click", () => this.skipBackward());
-      playButton.addEventListener('touchend', () => this.startPlayback(), false);
+      skipBackwardButton.addEventListener("click", () => this.handleSkipBackward());
+      playButton.addEventListener("touchend", () => this.startPlayback(), false);
     }
     if (skipForwardButton) {
-      skipForwardButton.addEventListener("click", () => this.skipForward());
-      playButton.addEventListener('touchend', () => this.startPlayback(), false);
+      skipForwardButton.addEventListener("click", () => this.handleSkipForward());
+      playButton.addEventListener("touchend", () => this.startPlayback(), false);
     }
   }
 
@@ -231,63 +254,29 @@ class SimpleAudioPlayer {
     // TODO any visual volume indicators in the UI here
   }
 
-  skipForward() {
-    const amountToSkipForward = 30; // The number of seconds to skip forward
-    let currentPositionInTrackInSeconds = this.globalAudioElement.currentTime; // Current playback position in seconds
-    let totalTrackDurationSeconds = this.globalAudioElement.duration; // Total duration of the current track in seconds
-
-    // Check if there's enough remaining time in the track to skip forward (easy)
-    if (totalTrackDurationSeconds - currentPositionInTrackInSeconds > amountToSkipForward) {
-      console.log("skip within track");
-      this.globalAudioElement.currentTime += amountToSkipForward;
-    } else {
-      let fullTrackTimeElapsed = totalTrackDurationSeconds; // Assume the full track duration has elapsed
-      this.cumulativeElapsedTime += fullTrackTimeElapsed;
-      this.currentIndex++;
-      // If at the end of the playlist, handle completion accordingly
-      if (this.currentIndex >= this.tracklist.length) {
-        this.currentIndex = this.tracklist.length - 1; // Adjust currentIndex to reflect the last track
-        this.handleTimerCompletion(); // Handle the end-of-playlist scenario, such as stopping playback or looping
-      } else {
-        // If not at the end, reset currentTime to the beginning of the next track and play it
-        this.globalAudioElement.currentTime = 0;
-        this.playTrack(this.currentIndex);
-      }
-    }
-    this.updateProgressUI();
-  }
-
-  skipBackward() {
-    const skipAmount = 15; // seconds
-    let currentPositionInTrackInSeconds = this.globalAudioElement.currentTime;
-  
-    if (currentPositionInTrackInSeconds > skipAmount) {
-      console.log("skip back within track");
-      this.globalAudioElement.currentTime -= skipAmount;
-      this.cumulativeElapsedTime -= skipAmount;
-      setTimeout(() => this.updateProgressUI(), 100); // Delay UI update
-    } else {
-      console.log("Moving to previous track");
-      if (this.currentIndex >= 0) { // Ensure there is a previous track
-        this.currentIndex--; // Move to the previous track
-        const previousTrackDuration = this.tracklist[this.currentIndex].duration;
-        this.globalAudioElement.currentTime = previousTrackDuration - (skipAmount - currentPositionInTrackInSeconds);
-        this.cumulativeElapsedTime -= (currentPositionInTrackInSeconds + (skipAmount - currentPositionInTrackInSeconds));
-        this.playTrack(this.currentIndex);
-        setTimeout(() => this.updateProgressUI(), 100); // Delay UI update
-      } else {
-        // If it's the first track, simply reset to the start or handle as desired
-        console.log("First track. Cannot skip to previous.");
-        this.globalAudioElement.currentTime = 0;
-        setTimeout(() => this.updateProgressUI(), 100); // Delay UI update
-        // Optionally, reset cumulativeElapsedTime if needed
-        // this.cumulativeElapsedTime = 0;
-      }
+  handleSkipForward() {
+    let newPlayerTime = this.globalAudioElement.currentTime + 20;
+    newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
+    if (!this.isUpdatingTime) {
+      this.isUpdatingTime = true; // Set a flag to prevent rapid updates
+      setTimeout(() => {
+        this.globalAudioElement.currentTime = newPlayerTime;
+        this.isUpdatingTime = false;
+      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
     }
   }
-  
-  
-  
+
+  handleSkipBackward() {
+    let newPlayerTime = this.globalAudioElement.currentTime - 20;
+    newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
+    if (!this.isUpdatingTime) {
+      this.isUpdatingTime = true; // Set a flag to prevent rapid updates
+      setTimeout(() => {
+        this.globalAudioElement.currentTime = newPlayerTime;
+        this.isUpdatingTime = false;
+      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+    }
+  }
 
   startPlayback() {
     if (!this.isPlaying && this.currentIndex < this.tracklist.length) {
@@ -317,7 +306,7 @@ class SimpleAudioPlayer {
       console.log(`[playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
 
       this.globalAudioElement.src = track.url;
-      this.globalAudioElement.currentTime = 0; // Ensure track starts from the beginning
+      // this.globalAudioElement.currentTime = 0; // Ensure track starts from the beginning
 
       // Attempt to play the track
       this.globalAudioElement
@@ -346,6 +335,9 @@ class SimpleAudioPlayer {
 
       // Handle track end
       this.globalAudioElement.onended = () => {
+        const duration = this.globalAudioElement.duration;
+        this.timerDuration += Math.floor(duration);
+
         console.log(`[playTrack] Track ended. Index=${index}, URL=${track.url}`);
         this.cumulativeElapsedTime += Number(track.duration); // Update cumulative time with track duration
         console.log(`[playTrack] Updated cumulativeElapsedTime after track end: ${this.cumulativeElapsedTime}s`);
