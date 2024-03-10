@@ -62,23 +62,24 @@
 
           <div id="slidein" class="slide-in from-left">
             <ul id="settingsDropdown" class="slide-in-content">
-              <li class="dropdownContainer">
+              <li class="dropdownContainer invertColors">
                 Invert Colours
                 <button id="invertColoursBtn">
                   <img src="images/svg/invertColors.svg" alt="Invert Colors" style="width: 24px; height: 24px" />
                 </button>
               </li>
-              <li class="dropdownContainer">
+              <li class="dropdownContainer monochromee">
                 Monochrome
                 <button id="monochromeBtn">
                   <img src="images/svg/monochrome1.svg" alt="Monochrome" style="width: 24px; height: 24px" />
                 </button>
               </li>
+              
               <li class="dropdownContainer">
                 Text Size
                 <div id="btnDiv">
-                  <button id="decreaseTextSizeBtn" onclick="changeTextSize(false)">-</button>
-                  <button id="increaseTextSizeBtn" onclick="changeTextSize(true)">+</button>
+                  <button id="decreaseTextSizeBtn">-</button>
+                  <button id="increaseTextSizeBtn">+</button>
                 </div>
               </li>
               <li class="dropdownContainer">
@@ -86,6 +87,7 @@
               </li>
             </ul>
           </div>
+          
 
           <div id="wrapperToggleDiv" class="settingsMenu"></div>
         </header>

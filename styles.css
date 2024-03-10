@@ -6,6 +6,10 @@
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=VT323&family=Zilla+Slab:wght@300;400&display=swap");
 
+
+:root {
+  font-size: 16px; /* Default font size */
+}
 /***********************/
 /*****  CSS RESET  *****/
 /***********************/
@@ -155,16 +159,20 @@ table {
 body {
   font-family: "Zilla Slab", serif;
   font-weight: 300;
-  font-size: var(--base-font-size);
+  /* font-size: var(--base-font-size); */
   height: 100vh;
+  font-size: var(--base-font-size, 2rem); /* Default to 16px if the variable is not set */
 }
+
 
 @media screen and (min-width: 900px) {
   body {
     box-sizing: border-box;
     font-family: "Zilla Slab", serif;
     font-weight: 300;
-    font-size: 4rem;
+    font-size: var(--base-font-size, 4rem); /* Default to 16px if the variable is not set */
+
+    /* font-size: 4rem; */
     height: 100vh;
   }
 }
@@ -793,15 +801,17 @@ p {
   font-weight: 300;
   line-height: 98%;
   padding: 1rem;
+  font-size: clamp(1rem, 3rem, 5rem);
+
 }
 
 @media screen and (min-width: 900px) {
   #curiousEarsTxt {
     font-family: "Zilla Slab", serif;
     font-weight: 300;
-    font-size: 4rem;
-    font-size: 6.6875rem;
     max-width: 50vw;
+    font-size: clamp(1rem, 6.6875rem, 5rem);
+
   }
 }
 
@@ -879,6 +889,7 @@ h1 {
   font-family: "Merriweather", serif;
   font-size: 16.9vw;
   font-weight: 700;
+  font-size: clamp(1rem, 16.9vw, 2rem);
 }
 
 h2 {
@@ -922,6 +933,8 @@ h2 {
 @media screen and (min-width: 900px) {
   h1 {
     font-size: 6.9vw;
+    font-size: clamp(1rem, 6.9vw, 2rem);
+
   }
 
   #aboutH2 {
