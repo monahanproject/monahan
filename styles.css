@@ -703,6 +703,14 @@ p {
     padding: 0 1rem;
     font-size: 1.5rem !important;
   }
+  /* #artPubArt {
+    color: var(--darkgreen);
+  
+    font-size: 10.4vw;
+    line-height: 97.7%;
+    margin-top: 0.8rem;
+  } */
+  
 
   #titleText {
     grid-row: 1;
@@ -919,8 +927,7 @@ h2 {
 
 #artPubArt {
   color: var(--darkgreen);
-
-  font-size: 10.4vw;
+  font-size: 9vw;
   line-height: 97.7%;
   margin-top: 0.8rem;
 }
@@ -995,6 +1002,17 @@ ul {
 
 ul#thanksList li {
   list-style-type: none !important;
+}
+
+#thanksList {
+  list-style-type: none !important;
+  margin-left: 0;
+  padding-left: 0;  
+}
+
+#thanksList li {
+  margin-top: 0;
+  padding-top: 0;  
 }
 
 li {
@@ -1366,7 +1384,24 @@ input[type="range"] {
   min-height: 12px;
   width: 80vw;
   margin-bottom: 0.8rem;
-  padding: 10px 0;
+  padding: 0 0;
+
+
+  /* background-image: url(images/svg/-contributors1.svg);
+  background-repeat: repeat-x;
+  background-size: 12px 3px;
+  min-height: 12px;
+  width: 80vw;
+  margin-bottom: 0.8rem;
+  padding: 10px 0; */
+}
+
+.svg-contributors-indent {
+  background-repeat: repeat-x;
+  background-size: 12px 12px;
+  width: 74vw;
+  margin-left: 6vw;
+
 }
 
 .svg-contributors-invert {
@@ -1459,8 +1494,6 @@ input[type="range"] {
     margin-left:25vw;
 
   }
-
-
   
 
   .svg-contributors-invert {
@@ -1526,7 +1559,9 @@ details {
   border-radius: 5px;
   max-width: 80vw;
   box-sizing: border-box;
-  margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
+
+  /* margin-bottom: 1.2rem; */
 }
 
 .role {
