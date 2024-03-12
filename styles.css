@@ -395,6 +395,10 @@ a:hover {
     top: 20rem;
     align-items: flex-start;
   }
+
+  #cred {
+    margin-top: 0;
+  }
 }
 
 @media screen and (min-width: 900px) {
@@ -1654,7 +1658,17 @@ article > p {
   .role {
     grid-row: 1;
     grid-column: 2;
+    margin-top: 0rem;
+    margin-left: -62.5vw;
+
   }
+  /* .role {
+    grid-row-start: 2;
+    grid-column: 1 / -1;
+    text-transform: lowercase;
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+  } */
 
   summary::after {
     grid-row: 1;
