@@ -2,73 +2,73 @@ let lang = "EN"; // Global variable to track current language state
 
 // Function to toggle the language
 function toggleLanguage() {
-  lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
+ lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
 
-  updateLanguageLabel();
-  updatePageContent();
-  changeEachLangDiv(); // Update all dynamic strings to the current language
+ updateLanguageLabel();
+ updatePageContent();
+ changeEachLangDiv(); // Update all dynamic strings to the current language
 }
 
 // Update the language toggle button label
 function updateLanguageLabel() {
-  const langLabel = document.getElementById("langToggle");
-  if (langLabel) {
-    langLabel.innerText = lang === "EN" ? "FR" : "EN"; // Switch label between FR and EN
-  } else {
-    console.error("langToggle element not found");
-  }
+ const langLabel = document.getElementById("langToggle");
+ if (langLabel) {
+  langLabel.innerText = lang === "EN" ? "FR" : "EN"; // Switch label between FR and EN
+ } else {
+  console.error("langToggle element not found");
+ }
 }
 
 // Update the main content of the page based on the current language
 function updatePageContent() {
-  const contributorsPage = document.getElementById("contributorsTeamPageInner");
-  const productionPage = document.getElementById("productionTeamPageInner");
+ const contributorsPage = document.getElementById("contributorsTeamPageInner");
+ const productionPage = document.getElementById("productionTeamPageInner");
 
-  if (contributorsPage) {
-    contributorsPage.innerHTML = lang === "EN" ? contributorsPageEN : contributorsPageFR;
-  } else {
-    console.error("contributorsPage element not found");
-  }
+ if (contributorsPage) {
+  contributorsPage.innerHTML = lang === "EN" ? contributorsPageEN : contributorsPageFR;
+ } else {
+  console.error("contributorsPage element not found");
+ }
 
-  if (productionPage) {
-    productionPage.innerHTML = lang === "EN" ? productionPageEN : productionPageFR;
-  } else {
-    console.error("productionTeamPage element not found");
-  }
+ if (productionPage) {
+  productionPage.innerHTML = lang === "EN" ? productionPageEN : productionPageFR;
+ } else {
+  console.error("productionTeamPage element not found");
+ }
 }
 
 // Update individual strings to the current language and adjust font sizes for specific elements
 function changeEachString(string) {
-  const element = document.getElementById(string.id);
-  if (element) {
-    element.innerHTML = lang === "FR" ? string.fr : string.en;
-    adjustFontSize(string.id); // Adjust font size based on language
-  } else {
-    console.error(`Element with ID '${string.id}' not found.`);
-  }
+ const element = document.getElementById(string.id);
+ if (element) {
+  element.innerHTML = lang === "FR" ? string.fr : string.en;
+  adjustFontSize(string.id); // Adjust font size based on language
+ } else {
+  console.error(`Element with ID '${string.id}' not found.`);
+ }
 }
 
 // Update button strings to the current language
 function changeEachBtnString(string) {
-  const element = document.querySelector("#" + string.id);
-  if (element) {
-    element.innerHTML = lang === "FR" ? string.fr : string.en;
-  } else {
-    console.error(`Button element with ID '${string.id}' not found.`);
-  }
+ const element = document.querySelector("#" + string.id);
+ if (element) {
+  element.innerHTML = lang === "FR" ? string.fr : string.en;
+ } else {
+  console.error(`Button element with ID '${string.id}' not found.`);
+ }
 }
 
 // Apply translations for all registered strings and button strings
 function changeEachLangDiv() {
-  strings.forEach(changeEachString);
-  buttonStrings.forEach(changeEachBtnString);
+ strings.forEach(changeEachString);
+ buttonStrings.forEach(changeEachBtnString);
 }
 
 // Initialize the page with the correct language on load
 document.addEventListener("DOMContentLoaded", () => {
-  updateLanguageLabel();
-  updatePageContent();
-  changeEachLangDiv(); // Ensure strings are translated on load
+ updateLanguageLabel();
+ updatePageContent();
+ changeEachLangDiv(); // Ensure strings are translated on load
 });
 
 // Object to store the original font sizes of elements that need to be resized
@@ -76,154 +76,154 @@ const originalFontSizes = {};
 
 // Function to adjust or revert font sizes for specific elements based on language
 function adjustFontSize(elementId) {
-  const sizeReductions = {
-    curiousEarsTxt: 0.8, // 20% smaller for French
-    "play-button-text-container": 0.7, // 30% smaller for French
-  };
+ const sizeReductions = {
+  curiousEarsTxt: 0.8, // 20% smaller for French
+  "play-button-text-container": 0.7, // 30% smaller for French
+ };
 
-  // Check if the current element's ID is in the sizeReductions object
-  if (sizeReductions[elementId]) {
-    const element = document.getElementById(elementId);
-    // If switching to French, adjust font size and store original
-    if (lang === "FR") {
-      if (!originalFontSizes[elementId]) {
-        originalFontSizes[elementId] = window.getComputedStyle(element).fontSize;
-      }
-      const currentFontSize = originalFontSizes[elementId];
-      const currentSize = parseFloat(currentFontSize);
-      const newSize = currentSize * sizeReductions[elementId];
-      element.style.fontSize = `${newSize}px`;
-    } else {
-      // If switching back to English, revert to original font size
-      if (originalFontSizes[elementId]) {
-        element.style.fontSize = originalFontSizes[elementId];
-      }
-    }
+ // Check if the current element's ID is in the sizeReductions object
+ if (sizeReductions[elementId]) {
+  const element = document.getElementById(elementId);
+  // If switching to French, adjust font size and store original
+  if (lang === "FR") {
+   if (!originalFontSizes[elementId]) {
+    originalFontSizes[elementId] = window.getComputedStyle(element).fontSize;
+   }
+   const currentFontSize = originalFontSizes[elementId];
+   const currentSize = parseFloat(currentFontSize);
+   const newSize = currentSize * sizeReductions[elementId];
+   element.style.fontSize = `${newSize}px`;
+  } else {
+   // If switching back to English, revert to original font size
+   if (originalFontSizes[elementId]) {
+    element.style.fontSize = originalFontSizes[elementId];
+   }
   }
+ }
 }
 
 const strings = [
-  { id: "langToggle", en: "FR", fr: "EN" },
-  // { id: "engLand", en: "MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.", fr: "MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des millénaires." },
-  { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
-  { id: "curiousEarsTxt", en: "A Sound Piece for Curious Ears", fr: "Une œuvre sonore pour les oreilles curieuses" },
-  { id: "aboutH2", en: "ABOUT", fr: "À PROPOS" },
-  { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
-  {
-    id: "eachTimeYouClick",
-    en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a diverse group of contributors. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",
-    fr: "Chaque fois que vous cliquerez sur BEGIN, vous entendrez une pièce sonore unique, composée par notre algorithme à partir de 173 chapitres sonores. Tous ces chapitres sont créés par un groupe diversifié de contributeurs. Vous entendrez de tout, des chansons et des poèmes aux sons de la nature, en passant par des interviews et des histoires.",
-  },
-  {
-    id: "ByBringingTogether",
-    en: "By bringing together sounds by human and non-human beings MONAHAN creates an ever-evolving experience. You may hear a chapter you’ve heard before, but this time it’s next to something new.  Like the landscape around you, MONAHAN is always changing.",
-    fr: "En réunissant des sons produits par des êtres humains et non humains, MONAHAN crée une expérience en constante évolution. Il se peut que vous entendiez un chapitre que vous avez déjà entendu, mais cette fois-ci à côté de quelque chose de nouveau.  Comme le paysage qui vous entoure, MONAHAN est en constante évolution.",
-  },
-  {
-    id: "experienceAnew",
-    en: "Experience the site anew with each visit through dozens of sounds and stories gathered for the Monahan wetlands.",
-    fr: "À chaque visite, l'expérience du site est renouvelée par des dizaines de sons et d'histoires recueillis pour les zones humides de Monahan.",
-  },
-  {
-    id: "delveInto",
-    en: "Delve into sounds that explore movement, migration, story as medicine, non-human beings, plants as healers, voice, translation, and place.",
-    fr: "Plongez dans des sons qui explorent le mouvement, la migration, l'histoire comme médecine, les êtres non humains, les plantes comme guérisseurs, la voix, la traduction et le lieu.",
-  },
+ { id: "langToggle", en: "FR", fr: "EN" },
+ // { id: "engLand", en: "MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.", fr: "MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des millénaires." },
+ { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
+ { id: "curiousEarsTxt", en: "A Sound Piece for Curious Ears", fr: "Une œuvre sonore pour les oreilles curieuses" },
+ { id: "aboutH2", en: "ABOUT", fr: "À PROPOS" },
+ { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
+ {
+  id: "eachTimeYouClick",
+  en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a diverse group of contributors. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",
+  fr: "Chaque fois que vous cliquerez sur BEGIN, vous entendrez une pièce sonore unique, composée par notre algorithme à partir de 173 chapitres sonores. Tous ces chapitres sont créés par un groupe diversifié de contributeurs. Vous entendrez de tout, des chansons et des poèmes aux sons de la nature, en passant par des interviews et des histoires.",
+ },
+ {
+  id: "ByBringingTogether",
+  en: "By bringing together sounds by human and non-human beings MONAHAN creates an ever-evolving experience. You may hear a chapter you’ve heard before, but this time it’s next to something new.  Like the landscape around you, MONAHAN is always changing.",
+  fr: "En réunissant des sons produits par des êtres humains et non humains, MONAHAN crée une expérience en constante évolution. Il se peut que vous entendiez un chapitre que vous avez déjà entendu, mais cette fois-ci à côté de quelque chose de nouveau. Comme le paysage qui vous entoure, MONAHAN est en constante évolution.",
+ },
+ {
+  id: "experienceAnew",
+  en: "Experience the site anew with each visit through dozens of sounds and stories gathered for the Monahan wetlands.",
+  fr: "À chaque visite, l'expérience du site est renouvelée par des dizaines de sons et d'histoires recueillis pour les zones humides de Monahan.",
+ },
+ {
+  id: "delveInto",
+  en: "Delve into sounds that explore movement, migration, story as medicine, non-human beings, plants as healers, voice, translation, and place.",
+  fr: "Plongez dans des sons qui explorent le mouvement, la migration, l'histoire comme médecine, les êtres non humains, les plantes comme guérisseurs, la voix, la traduction et le lieu.",
+ },
 
-  // { id: "productionTeamH2", en: "PRODUCTION TEAM", fr: "L'ÉQUIPE DE PRODUCTION" },
-  { id: "monH2", en: "MONAHAN", fr: "MONAHAN" },
+ // { id: "productionTeamH2", en: "PRODUCTION TEAM", fr: "L'ÉQUIPE DE PRODUCTION" },
+ { id: "monH2", en: "MONAHAN", fr: "MONAHAN" },
 
-  {
-    id: "pavedPaths",
-    en: "The paths around the site are paved, and accessible, and include benches.",
-    fr: "Les chemins autour du site sont pavés, accessibles et comprennent des bancs.",
-  },
-  {
-    id: "smartphoneQRAccess",
-    en: "With a smartphone and data access you can scan a QR code to experience the sound piece.",
-    fr: "Avec un smartphone et un accès aux données, vous pouvez scanner un code QR pour expérimenter l'œuvre sonore.",
-  },
-  {
-    id: "qrCodeLocations",
-    en: "QR codes are on the main sign located near the bridge and on a selection of benches along the main path.",
-    fr: "Les codes QR se trouvent sur le panneau principal situé près du pont et sur une sélection de bancs le long du chemin principal.",
-  },
-  {
-    id: "benchQRCodes",
-    en: "The QR codes on the benches are installed on the backrests.",
-    fr: "Les codes QR sur les bancs sont installés sur les dossiers.",
-  },
-  { id: "noWashrooms", en: "There are no washrooms on site.", fr: "Il n'y a pas de toilettes sur le site." },
+ {
+  id: "pavedPaths",
+  en: "The paths around the site are paved, and accessible, and include benches.",
+  fr: "Les chemins autour du site sont pavés, accessibles et comprennent des bancs.",
+ },
+ {
+  id: "smartphoneQRAccess",
+  en: "With a smartphone and data access you can scan a QR code to experience the sound piece.",
+  fr: "Avec un smartphone et un accès aux données, vous pouvez scanner un code QR pour expérimenter l'œuvre sonore.",
+ },
+ {
+  id: "qrCodeLocations",
+  en: "QR codes are on the main sign located near the bridge and on a selection of benches along the main path.",
+  fr: "Les codes QR se trouvent sur le panneau principal situé près du pont et sur une sélection de bancs le long du chemin principal.",
+ },
+ {
+  id: "benchQRCodes",
+  en: "The QR codes on the benches are installed on the backrests.",
+  fr: "Les codes QR sur les bancs sont installés sur les dossiers.",
+ },
+ { id: "noWashrooms", en: "There are no washrooms on site.", fr: "Il n'y a pas de toilettes sur le site." },
 
-  { id: "howToListenH2", en: "HOW TO LISTEN", fr: "COMMENT ÉCOUTER" },
-  { id: "scanQR", en: "Scan the QR code", fr: "Scannez le code QR" },
-  { id: "arriveWebsite", en: "Arrive at the MONAHAN website", fr: "Arrivez sur le site de MONAHAN" },
-  { id: "putHeadphones", en: "Put on your HEADPHONES", fr: "Mettez vos ÉCOUTEURS" },
-  { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur COMMENCER" },
-  // { id: "contributorsH2", en: "CONTRIBUTORS", fr: "CONTRIBUTORS" },
+ { id: "howToListenH2", en: "HOW TO LISTEN", fr: "COMMENT ÉCOUTER" },
+ { id: "scanQR", en: "Scan the QR code", fr: "Scannez le code QR" },
+ { id: "arriveWebsite", en: "Arrive at the MONAHAN website", fr: "Arrivez sur le site de MONAHAN" },
+ { id: "putHeadphones", en: "Put on your HEADPHONES", fr: "Mettez vos ÉCOUTEURS" },
+ { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur COMMENCER" },
+ // { id: "contributorsH2", en: "CONTRIBUTORS", fr: "CONTRIBUTORS" },
 
-  { id: "listenSoundPiece", en: "LISTEN to a personalized sound piece", fr: "ÉCOUTEZ une œuvre sonore personnalisée" },
-  {
-    id: "listenAnywhere",
-    en: "You can listen to MONAHAN wherever you are. We suggest spending time outside while listening.",
-    fr: "Vous pouvez écouter MONAHAN où que vous soyez. Nous vous suggérons de passer du temps à l'extérieur pendant l'écoute.",
-  },
+ { id: "listenSoundPiece", en: "LISTEN to a personalized sound piece", fr: "ÉCOUTEZ une œuvre sonore personnalisée" },
+ {
+  id: "listenAnywhere",
+  en: "You can listen to MONAHAN wherever you are. We suggest spending time outside while listening.",
+  fr: "Vous pouvez écouter MONAHAN où que vous soyez. Nous vous suggérons de passer du temps à l'extérieur pendant l'écoute.",
+ },
 
-  { id: "howitWorksH2", en: "HOW IT WORKS", fr: "COMMENT ÇA MARCHE" },
-  { id: "whereToFindUsH2", en: "WHERE TO FIND US", fr: "OÙ NOUS TROUVER" },
-  {
-    id: "visit",
-    en: "Visit the Monahan Wetlands (or Monahan Drain) in Ottawa, Canada.",
-    fr: "Visitez les zones humides de Monahan (ou le drain de Monahan) à Ottawa, au Canada.",
-  },
-  { id: "accessH2", en: "ACCESSIBILITY", fr: "ACCESSIBILITÉ" },
-  {
-    id: "finalThanks",
-    en: "Thank you for visiting MONAHAN. We hope you will return for a different experience!",
-    fr: "Merci de votre visite à MONAHAN. Nous espérons que vous reviendrez pour une expérience différente !",
-  },
+ { id: "howitWorksH2", en: "HOW IT WORKS", fr: "COMMENT ÇA MARCHE" },
+ { id: "whereToFindUsH2", en: "WHERE TO FIND US", fr: "OÙ NOUS TROUVER" },
+ {
+  id: "visit",
+  en: "Visit the Monahan Wetlands (or Monahan Drain) in Ottawa, Canada.",
+  fr: "Visitez les zones humides de Monahan (ou le drain de Monahan) à Ottawa, au Canada.",
+ },
+ { id: "accessH2", en: "ACCESSIBILITY", fr: "ACCESSIBILITÉ" },
+ {
+  id: "finalThanks",
+  en: "Thank you for visiting MONAHAN. We hope you will return for a different experience!",
+  fr: "Merci de votre visite à MONAHAN. Nous espérons que vous reviendrez pour une expérience différente !",
+ },
 
-  {
-    id: "thanksSignageFabrication",
-    en: 'Thank you to <a target="_blank" href="LINK">Beacon Lite</a> and <a target="_blank" href="LINK">Dymech</a> for fabricating the signage.',
-    fr: 'Merci à <a target="_blank" href="LINK">Beacon Lite</a> et <a target="_blank" href="LINK">Dymech</a> pour la fabrication de la signalisation.',
-  },
-  {
-    id: "thanksKomiku",
-    en: 'Thank you to Komiku for "The place that never get old", retrieved from Citizen DJ, Free Music Archive at the Library of Congress, Web Archives Division.',
-    fr: 'Merci à Komiku pour "The place that never get old", extrait de Citizen DJ, Free Music Archive à la Bibliothèque du Congrès, Division des archives Web.',
-  },
-  {
-    id: "hugeThanks",
-    en: "Huge thank you’s go out to:",
-    fr: "Un grand merci à :",
-  },
-  // { id: "volumeLower", en: "Lower Volume", fr: "Baisser le volume" },
-  // { id: "volumeRaise", en: "Raise Volume", fr: "Augmenter le volume" },
-  // { id: "trackDuration", en: "Track duration (seconds):", fr: "Durée du morceau (secondes) :" },
-  // { id: "currentTrackName", en: "Track name:", fr: "Nom du morceau :" },
-  // { id: "credits", en: "Credits:", fr: "Crédits :" },
-  {
-    id: "cred",
-    en: "MONAHAN was produced by Grimm Pictures and commissioned by the City of Ottawa’s Public Art Program.",
-    fr: "MONAHAN a été produit par Grimm Pictures et commandé par le Programme d'art public de la Ville d'Ottawa.",
-  },
-  { id: "contact", en: "Contact: publicartprogram@ottawa.ca", fr: "Contact : publicartprogram@ottawa.ca" },
-  { id: "copyright", en: "©2023 All Rights Reserved", fr: "©2023 Tous droits réservés" },
-  { id: "cityArtCollection", en: "City of Ottawa Art Collection", fr: "Collection d'art de la ville d'Ottawa" },
+ {
+  id: "thanksSignageFabrication",
+  en: 'Thank you to <a target="_blank" href="LINK">Beacon Lite</a> and <a target="_blank" href="LINK">Dymech</a> for fabricating the signage.',
+  fr: 'Merci à <a target="_blank" href="LINK">Beacon Lite</a> et <a target="_blank" href="LINK">Dymech</a> pour la fabrication de la signalisation.',
+ },
+ {
+  id: "thanksKomiku",
+  en: 'Thank you to Komiku for "The place that never get old", retrieved from Citizen DJ, Free Music Archive at the Library of Congress, Web Archives Division.',
+  fr: 'Merci à Komiku pour "The place that never get old", extrait de Citizen DJ, Free Music Archive à la Bibliothèque du Congrès, Division des archives Web.',
+ },
+ {
+  id: "hugeThanks",
+  en: "Huge thank you’s go out to:",
+  fr: "Un grand merci à :",
+ },
+ // { id: "volumeLower", en: "Lower Volume", fr: "Baisser le volume" },
+ // { id: "volumeRaise", en: "Raise Volume", fr: "Augmenter le volume" },
+ // { id: "trackDuration", en: "Track duration (seconds):", fr: "Durée du morceau (secondes) :" },
+ // { id: "currentTrackName", en: "Track name:", fr: "Nom du morceau :" },
+ // { id: "credits", en: "Credits:", fr: "Crédits :" },
+ {
+  id: "cred",
+  en: "MONAHAN was produced by Grimm Pictures and commissioned by the City of Ottawa’s Public Art Program.",
+  fr: "MONAHAN a été produit par Grimm Pictures et commandé par le Programme d'art public de la Ville d'Ottawa.",
+ },
+ { id: "contact", en: "Contact: publicartprogram@ottawa.ca", fr: "Contact : publicartprogram@ottawa.ca" },
+ { id: "copyright", en: "©2023 All Rights Reserved", fr: "©2023 Tous droits réservés" },
+ { id: "cityArtCollection", en: "City of Ottawa Art Collection", fr: "Collection d'art de la ville d'Ottawa" },
 ];
 
 const buttonStrings = [
-  // { id: "invertColoursBtn", en: "Invert Colours", fr: "Inverser les couleurs" },
-  // { id: "monochromeBtn", en: "Monochrome", fr: "Monochrome" },
-  // { id: "textSizeDecreaseBtn", en: "Decrease Text Size", fr: "Diminuer la taille du texte" },
-  // { id: "textSizeIncreaseBtn", en: "Increase Text Size", fr: "Augmenter la taille du texte" },
-  { id: "resetBtn", en: "Reset", fr: "Réinitialiser" },
-  // { id: "transcriptButton", en: "TRANSCRIPT", fr: "TRANSCRIPTION" },
+ // { id: "invertColoursBtn", en: "Invert Colours", fr: "Inverser les couleurs" },
+ // { id: "monochromeBtn", en: "Monochrome", fr: "Monochrome" },
+ // { id: "textSizeDecreaseBtn", en: "Decrease Text Size", fr: "Diminuer la taille du texte" },
+ // { id: "textSizeIncreaseBtn", en: "Increase Text Size", fr: "Augmenter la taille du texte" },
+ { id: "resetBtn", en: "Reset", fr: "Réinitialiser" },
+ // { id: "transcriptButton", en: "TRANSCRIPT", fr: "TRANSCRIPTION" },
 
-  { id: "play-button-text-container", en: "BEGIN", fr: "COMMENCER" },
-  // { id: "skipBackwardButton", en: "Skip Backward", fr: "Reculer" },
-  // { id: "skipForwardButton", en: "Skip Forward", fr: "Avancer" },
+ { id: "play-button-text-container", en: "BEGIN", fr: "COMMENCER" },
+ // { id: "skipBackwardButton", en: "Skip Backward", fr: "Reculer" },
+ // { id: "skipForwardButton", en: "Skip Forward", fr: "Avancer" },
 ];
 
 
@@ -233,178 +233,169 @@ const productionPageEN = `
 </div>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">SARAH ABBOTT</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold">
-        <a target="_blank" href="https://sarahabbott.ca/"> Sarah Abbott </a>
-      </span>
-      's research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
-      though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
-      science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
-      the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change.
-      She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine
-      Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University.
-      Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts
-      and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">SARAH ABBOTT</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold">
+    <a target="_blank" href="https://sarahabbott.ca/"> Sarah Abbott </a>
+   </span>
+   's research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
+   though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
+   science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
+   the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change.
+   She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine
+   Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University.
+   Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts
+   and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">BRANDON EDWARDS</span>
-    <span class="role">Specify the role here</span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="http://brandonedwards.ca/"> Brandon Edwards </a> </span>{" "} is a PhD Candidate in
-      Biology at Carleton University in Ottawa, Ontario. For his thesis, he is developing tools to allow researchers to bring together
-      multiple different types of bird survey data into one statistical model, as well as techniques to control for a person's ability to
-      accurately perceive birds in different environments such as roadsides, forests, open grasslands, etc. He has had a keen interest in
-      nature his entire life, particularly in photographing the world around us. His passion for birds has allowed him to discover many of
-      the other living and non-living things that make up this planet. He brings curiosity and passion for the natural world to his
-      projects.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">BRANDON EDWARDS</span>
+  <span class="role">Specify the role here</span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="http://brandonedwards.ca/"> Brandon Edwards </a> </span> is a PhD Candidate in
+   Biology at Carleton University in Ottawa, Ontario. For his thesis, he is developing tools to allow researchers to bring together
+   multiple different types of bird survey data into one statistical model, as well as techniques to control for a person's ability to
+   accurately perceive birds in different environments such as roadsides, forests, open grasslands, etc. He has had a keen interest in
+   nature his entire life, particularly in photographing the world around us. His passion for birds has allowed him to discover many of
+   the other living and non-living things that make up this planet. He brings curiosity and passion for the natural world to his
+   projects.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">SIMON GUIBORD</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://simonguibord.com/"> Simon Guibord </a> </span>{" "} is a graphic designer who
-      works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN,
-      AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities.
-      His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since
-      2015, he has taught typography at the University of Quebec in Outaouais.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">SIMON GUIBORD</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://simonguibord.com/"> Simon Guibord </a> </span> is a graphic designer who
+   works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN,
+   AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities.
+   His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since
+   2015, he has taught typography at the University of Quebec in Outaouais.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">RACHEL GRAY</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://rachelgray.art/"> Rachel Gray </a> </span>{" "} is a Canadian interdisciplinary
-      artist based in Algonquin Territory/Ottawa. Navigating the world with Dyslexia has led her to explore art as a way to create
-      customized language. Through drawing, performance, installation, and storytelling she tries to speak into the places language leaves
-      blank. Her work has been exhibited nationally and internationally. Rachel is also an author, animator, and illustrator, with her
-      graphic novel <span class="italic">Jess</span> adapted into a musical work commissioned by Pacific Opera Victoria. Rachel is deeply
-      connected to the disability arts community, serving as an advocate for accessible art practices, curating exhibitions, and working
-      with organizations and academic institutions to harness art and storytelling. She is a founding member of Ghost Rooster, a
-      disability arts collective, and continues to seek opportunities for collaboration and community connection through art.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">RACHEL GRAY</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://rachelgray.art/"> Rachel Gray </a> </span> is a Canadian interdisciplinary
+   artist based in Algonquin Territory/Ottawa. Navigating the world with Dyslexia has led her to explore art as a way to create
+   customized language. Through drawing, performance, installation, and storytelling she tries to speak into the places language leaves
+   blank. Her work has been exhibited nationally and internationally. Rachel is also an author, animator, and illustrator, with her
+   graphic novel <span class="italic">Jess</span> adapted into a musical work commissioned by Pacific Opera Victoria. Rachel is deeply
+   connected to the disability arts community, serving as an advocate for accessible art practices, curating exhibitions, and working
+   with organizations and academic institutions to harness art and storytelling. She is a founding member of Ghost Rooster, a
+   disability arts collective, and continues to seek opportunities for collaboration and community connection through art.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">MARIE LEBLANC FLANAGAN</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://marieflanagan.com/"> Marie LeBlanc Flanagan </a> </span>{" "} is an artist
-      working in the playful spaces between people, related to connection and community. Marie builds experimental video games, playful
-      installations, and cooperative experiences and has an enduring fondness for the possibilities of trash. Marie founded
-      <a target="_blank" href="https://wyrdartsinitiatives.org/"> Wyrd Arts Initiatives </a>
-      , a nationwide nonprofit dedicated to encouraging, documenting, and connecting creative expression across Canada;
-      <a target="_blank" href="http://droneday.org/"> Drone Day, </a>{" "} an annual international celebration of drone music communities;
-      co-founded{" "}
-      <a target="_blank" href="https://imaginaryresidency.com/"> Imaginary Residency </a>
-      , an artist-run online residency, co-founded{" "}
-      <a target="_blank" href="https://torontogamesweek.com/"> Toronto Games Week </a>{" "} and co-organizes
-      <a target="_blank" href="http://gaiasymposium.net/"> GAIA </a>
-      , a global biennial gathering of playful curators. Marie is on the board of{" "}
-      <a target="_blank" href="https://www.interartsmatrix.ca/"> Inter Arts Matrix </a>
-      , the
-      <a target="_blank" href="https://easternbloc.ca/fr"> Eastern Bloc </a>{" "} artistic programming committee, and has served as a
-      <a target="_blank" href="https://polarismusicprize.ca/"> Polaris Prize </a>{" "} Juror. Marie's consulting work with artists and
-      arts organizations include{" "}
-      <a target="_blank" href="https://wizardzines.com/"> Wizard Zines </a>
-      ,
-      <a target="_blank" href="https://2021.amaze-berlin.de/"> A MAZE. Berlin </a>{" "} International Games and Playful Media Festival,
-      <a target="_blank" href="https://processingfoundation.org/"> The Processing Foundation </a>
-      ,
-      <a target="_blank" href="https://www.schoolofma.org/"> The School of Machines, Making, and Make-Believe </a>
-      ,
-      <a target="_blank" href="https://www.ada-x.org/"> Ada x </a>
-      ,
-      <a target="_blank" href="https://www.dailytouslesjours.com/en"> Daily Tous Les Jours </a>
-      , and
-      <a target="_blank" href="https://gameartsinternational.network/"> Game Arts International Network </a>
-      .
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">MARIE LEBLANC FLANAGAN</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://marieflanagan.com/"> Marie LeBlanc Flanagan </a> </span> is an artist
+   working in the playful spaces between people, related to connection and community. Marie builds experimental video games, playful
+   installations, and cooperative experiences and has an enduring fondness for the possibilities of trash. Marie founded
+   <a target="_blank" href="https://wyrdartsinitiatives.org/"> Wyrd Arts Initiatives </a>, a nationwide nonprofit dedicated to encouraging, documenting, and connecting creative expression across Canada;
+   <a target="_blank" href="http://droneday.org/"> Drone Day, </a> an annual international celebration of drone music communities;
+   co-founded
+   <a target="_blank" href="https://imaginaryresidency.com/"> Imaginary Residency </a>, an artist-run online residency, co-founded
+   <a target="_blank" href="https://torontogamesweek.com/"> Toronto Games Week </a> and co-organizes
+   <a target="_blank" href="http://gaiasymposium.net/"> GAIA </a>, a global biennial gathering of playful curators. Marie is on the board of
+   <a target="_blank" href="https://www.interartsmatrix.ca/"> Inter Arts Matrix </a>, the
+   <a target="_blank" href="https://easternbloc.ca/fr"> Eastern Bloc </a> artistic programming committee, and has served as a
+   <a target="_blank" href="https://polarismusicprize.ca/"> Polaris Prize </a> Juror. Marie's consulting work with artists and
+   arts organizations include
+   <a target="_blank" href="https://wizardzines.com/"> Wizard Zines </a>,
+   <a target="_blank" href="https://2021.amaze-berlin.de/"> A MAZE. Berlin </a> International Games and Playful Media Festival,
+   <a target="_blank" href="https://processingfoundation.org/"> The Processing Foundation </a>,
+   <a target="_blank" href="https://www.schoolofma.org/"> The School of Machines, Making, and Make-Believe </a>,
+   <a target="_blank" href="https://www.ada-x.org/"> Ada x </a>,
+   <a target="_blank" href="https://www.dailytouslesjours.com/en"> Daily Tous Les Jours </a>, and
+   <a target="_blank" href="https://gameartsinternational.network/"> Game Arts International Network </a>
+   .
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">ALLISON O'CONNOR</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold">
-        <a target="_blank" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca"> Allison O'Connor </a>
-      </span>
-      is a Public Art Officer with the City of Ottawa's Public Art Program. She coordinates and commissions temporary and permanent
-      artworks, as well as a variety of diverse cultural initiatives across the city. Allison is also an internationally touring
-      installation artist who creates artworks that consider the environment and its other-than-human habitants. Allison is an MFA
-      graduate from the School of Visual Arts of New York City, where she received the Paula Rhodes Memorial Award for her thesis writing
-      on public art for ecological remediation.Allison is an apiarist, amateur archer, and mycology enthusiast. Her recent work focuses on
-      the stewardship of seeds.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">ALLISON O'CONNOR</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold">
+    <a target="_blank" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca"> Allison O'Connor </a>
+   </span>
+   is a Public Art Officer with the City of Ottawa's Public Art Program. She coordinates and commissions temporary and permanent
+   artworks, as well as a variety of diverse cultural initiatives across the city. Allison is also an internationally touring
+   installation artist who creates artworks that consider the environment and its other-than-human habitants. Allison is an MFA
+   graduate from the School of Visual Arts of New York City, where she received the Paula Rhodes Memorial Award for her thesis writing
+   on public art for ecological remediation.Allison is an apiarist, amateur archer, and mycology enthusiast. Her recent work focuses on
+   the stewardship of seeds.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">LAURA TALER</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://laurataler.ca/"> Laura Taler </a> </span>{" "} is a Romanian-born,
-      award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience
-      with public art ranges from large-scale performance works, to projections and screen-based works, to permanent installations. She
-      expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura
-      has worked collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in
-      1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to
-      provide a clear vision to the team of experts that she gathers around each project and to guide that vision with precision and
-      flexibility.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">LAURA TALER</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://laurataler.ca/"> Laura Taler </a> </span> is a Romanian-born,
+   award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience
+   with public art ranges from large-scale performance works, to projections and screen-based works, to permanent installations. She
+   expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura
+   has worked collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in
+   1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to
+   provide a clear vision to the team of experts that she gathers around each project and to guide that vision with precision and
+   flexibility.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">JOCELYN TODD</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://www.remembernowmove.art/"> Jocelyn Todd </a> </span>{" "} is a dancer,
-      choreographer, producer and multi-disciplinary artist currently based in so-called Ottawa. Jocelyn works with the body and its
-      interaction with the present moment, environment, political landscape, sound, space, concept and other bodies. After graduating from
-      The School of Dance with a Diploma in Contemporary Dance Studies, Jocelyn split her time between Canada and England. In London, she
-      delved into self-curated and intensive periods of dance study, and presented her work in the Suffolk High Tide Festival and at
-      London's Robin Howard Theatre. She has also presented her choreographic works in Ottawa. Most recently (2020-2023):
-      <span class="italic">shell</span>, <span class="italic">the A-team</span> and <span class="italic">Time + Light</span>. Jocelyn's
-      film{" "} <span class="italic">Gold</span> was presented as part of Dance On Screen at the Mayfair Theatre in Fall 2021. She is
-      deeply thankful for the support of Ottawa Dance Directive and the communities that continue to nurture her, in Ottawa and London.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">JOCELYN TODD</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://www.remembernowmove.art/"> Jocelyn Todd </a> </span> is a dancer,
+   choreographer, producer and multi-disciplinary artist currently based in so-called Ottawa. Jocelyn works with the body and its
+   interaction with the present moment, environment, political landscape, sound, space, concept and other bodies. After graduating from
+   The School of Dance with a Diploma in Contemporary Dance Studies, Jocelyn split her time between Canada and England. In London, she
+   delved into self-curated and intensive periods of dance study, and presented her work in the Suffolk High Tide Festival and at
+   London's Robin Howard Theatre. She has also presented her choreographic works in Ottawa. Most recently (2020-2023):
+   <span class="italic">shell</span>, <span class="italic">the A-team</span> and <span class="italic">Time + Light</span>. Jocelyn's
+   film <span class="italic">Gold</span> was presented as part of Dance On Screen at the Mayfair Theatre in Fall 2021. She is
+   deeply thankful for the support of Ottawa Dance Directive and the communities that continue to nurture her, in Ottawa and London.
+  </p>
+ </article>
 </details>
 `;
 const productionPageFR = `
@@ -413,178 +404,169 @@ const productionPageFR = `
 </div>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">SARAH ABBOTT</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold">
-        <a target="_blank" href="https://sarahabbott.ca/"> Sarah Abbott </a>
-      </span>
-      's research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
-      though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
-      science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
-      the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change.
-      She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine
-      Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University.
-      Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts
-      and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">SARAH ABBOTT</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold">
+    <a target="_blank" href="https://sarahabbott.ca/"> Sarah Abbott </a>
+   </span>
+   's research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
+   though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
+   science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
+   the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change.
+   She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine
+   Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University.
+   Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts
+   and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">BRANDON EDWARDS</span>
-    <span class="role">Specify the role here</span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="http://brandonedwards.ca/"> Brandon Edwards </a> </span>{" "} is a PhD Candidate in
-      Biology at Carleton University in Ottawa, Ontario. For his thesis, he is developing tools to allow researchers to bring together
-      multiple different types of bird survey data into one statistical model, as well as techniques to control for a person's ability to
-      accurately perceive birds in different environments such as roadsides, forests, open grasslands, etc. He has had a keen interest in
-      nature his entire life, particularly in photographing the world around us. His passion for birds has allowed him to discover many of
-      the other living and non-living things that make up this planet. He brings curiosity and passion for the natural world to his
-      projects.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">BRANDON EDWARDS</span>
+  <span class="role">Specify the role here</span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="http://brandonedwards.ca/"> Brandon Edwards </a> </span> is a PhD Candidate in
+   Biology at Carleton University in Ottawa, Ontario. For his thesis, he is developing tools to allow researchers to bring together
+   multiple different types of bird survey data into one statistical model, as well as techniques to control for a person's ability to
+   accurately perceive birds in different environments such as roadsides, forests, open grasslands, etc. He has had a keen interest in
+   nature his entire life, particularly in photographing the world around us. His passion for birds has allowed him to discover many of
+   the other living and non-living things that make up this planet. He brings curiosity and passion for the natural world to his
+   projects.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">SIMON GUIBORD</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://simonguibord.com/"> Simon Guibord </a> </span>{" "} is a graphic designer who
-      works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN,
-      AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities.
-      His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since
-      2015, he has taught typography at the University of Quebec in Outaouais.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">SIMON GUIBORD</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://simonguibord.com/"> Simon Guibord </a> </span> is a graphic designer who
+   works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN,
+   AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities.
+   His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since
+   2015, he has taught typography at the University of Quebec in Outaouais.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">RACHEL GRAY</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://rachelgray.art/"> Rachel Gray </a> </span>{" "} is a Canadian interdisciplinary
-      artist based in Algonquin Territory/Ottawa. Navigating the world with Dyslexia has led her to explore art as a way to create
-      customized language. Through drawing, performance, installation, and storytelling she tries to speak into the places language leaves
-      blank. Her work has been exhibited nationally and internationally. Rachel is also an author, animator, and illustrator, with her
-      graphic novel <span class="italic">Jess</span> adapted into a musical work commissioned by Pacific Opera Victoria. Rachel is deeply
-      connected to the disability arts community, serving as an advocate for accessible art practices, curating exhibitions, and working
-      with organizations and academic institutions to harness art and storytelling. She is a founding member of Ghost Rooster, a
-      disability arts collective, and continues to seek opportunities for collaboration and community connection through art.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">RACHEL GRAY</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://rachelgray.art/"> Rachel Gray </a> </span> is a Canadian interdisciplinary
+   artist based in Algonquin Territory/Ottawa. Navigating the world with Dyslexia has led her to explore art as a way to create
+   customized language. Through drawing, performance, installation, and storytelling she tries to speak into the places language leaves
+   blank. Her work has been exhibited nationally and internationally. Rachel is also an author, animator, and illustrator, with her
+   graphic novel <span class="italic">Jess</span> adapted into a musical work commissioned by Pacific Opera Victoria. Rachel is deeply
+   connected to the disability arts community, serving as an advocate for accessible art practices, curating exhibitions, and working
+   with organizations and academic institutions to harness art and storytelling. She is a founding member of Ghost Rooster, a
+   disability arts collective, and continues to seek opportunities for collaboration and community connection through art.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">MARIE LEBLANC FLANAGAN</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://marieflanagan.com/"> Marie LeBlanc Flanagan </a> </span>{" "} is an artist
-      working in the playful spaces between people, related to connection and community. Marie builds experimental video games, playful
-      installations, and cooperative experiences and has an enduring fondness for the possibilities of trash. Marie founded
-      <a target="_blank" href="https://wyrdartsinitiatives.org/"> Wyrd Arts Initiatives </a>
-      , a nationwide nonprofit dedicated to encouraging, documenting, and connecting creative expression across Canada;
-      <a target="_blank" href="http://droneday.org/"> Drone Day, </a>{" "} an annual international celebration of drone music communities;
-      co-founded{" "}
-      <a target="_blank" href="https://imaginaryresidency.com/"> Imaginary Residency </a>
-      , an artist-run online residency, co-founded{" "}
-      <a target="_blank" href="https://torontogamesweek.com/"> Toronto Games Week </a>{" "} and co-organizes
-      <a target="_blank" href="http://gaiasymposium.net/"> GAIA </a>
-      , a global biennial gathering of playful curators. Marie is on the board of{" "}
-      <a target="_blank" href="https://www.interartsmatrix.ca/"> Inter Arts Matrix </a>
-      , the
-      <a target="_blank" href="https://easternbloc.ca/fr"> Eastern Bloc </a>{" "} artistic programming committee, and has served as a
-      <a target="_blank" href="https://polarismusicprize.ca/"> Polaris Prize </a>{" "} Juror. Marie's consulting work with artists and
-      arts organizations include{" "}
-      <a target="_blank" href="https://wizardzines.com/"> Wizard Zines </a>
-      ,
-      <a target="_blank" href="https://2021.amaze-berlin.de/"> A MAZE. Berlin </a>{" "} International Games and Playful Media Festival,
-      <a target="_blank" href="https://processingfoundation.org/"> The Processing Foundation </a>
-      ,
-      <a target="_blank" href="https://www.schoolofma.org/"> The School of Machines, Making, and Make-Believe </a>
-      ,
-      <a target="_blank" href="https://www.ada-x.org/"> Ada x </a>
-      ,
-      <a target="_blank" href="https://www.dailytouslesjours.com/en"> Daily Tous Les Jours </a>
-      , and
-      <a target="_blank" href="https://gameartsinternational.network/"> Game Arts International Network </a>
-      .
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">MARIE LEBLANC FLANAGAN</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://marieflanagan.com/"> Marie LeBlanc Flanagan </a> </span> is an artist
+   working in the playful spaces between people, related to connection and community. Marie builds experimental video games, playful
+   installations, and cooperative experiences and has an enduring fondness for the possibilities of trash. Marie founded
+   <a target="_blank" href="https://wyrdartsinitiatives.org/"> Wyrd Arts Initiatives </a>, a nationwide nonprofit dedicated to encouraging, documenting, and connecting creative expression across Canada;
+   <a target="_blank" href="http://droneday.org/"> Drone Day, </a> an annual international celebration of drone music communities;
+   co-founded
+   <a target="_blank" href="https://imaginaryresidency.com/"> Imaginary Residency </a>, an artist-run online residency, co-founded
+   <a target="_blank" href="https://torontogamesweek.com/"> Toronto Games Week </a> and co-organizes
+   <a target="_blank" href="http://gaiasymposium.net/"> GAIA </a>, a global biennial gathering of playful curators. Marie is on the board of
+   <a target="_blank" href="https://www.interartsmatrix.ca/"> Inter Arts Matrix </a>, the
+   <a target="_blank" href="https://easternbloc.ca/fr"> Eastern Bloc </a> artistic programming committee, and has served as a
+   <a target="_blank" href="https://polarismusicprize.ca/"> Polaris Prize </a> Juror. Marie's consulting work with artists and
+   arts organizations include
+   <a target="_blank" href="https://wizardzines.com/"> Wizard Zines </a>,
+   <a target="_blank" href="https://2021.amaze-berlin.de/"> A MAZE. Berlin </a> International Games and Playful Media Festival,
+   <a target="_blank" href="https://processingfoundation.org/"> The Processing Foundation </a>,
+   <a target="_blank" href="https://www.schoolofma.org/"> The School of Machines, Making, and Make-Believe </a>,
+   <a target="_blank" href="https://www.ada-x.org/"> Ada x </a>,
+   <a target="_blank" href="https://www.dailytouslesjours.com/en"> Daily Tous Les Jours </a>, and
+   <a target="_blank" href="https://gameartsinternational.network/"> Game Arts International Network </a>
+   .
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">ALLISON O'CONNOR</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold">
-        <a target="_blank" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca"> Allison O'Connor </a>
-      </span>
-      is a Public Art Officer with the City of Ottawa's Public Art Program. She coordinates and commissions temporary and permanent
-      artworks, as well as a variety of diverse cultural initiatives across the city. Allison is also an internationally touring
-      installation artist who creates artworks that consider the environment and its other-than-human habitants. Allison is an MFA
-      graduate from the School of Visual Arts of New York City, where she received the Paula Rhodes Memorial Award for her thesis writing
-      on public art for ecological remediation.Allison is an apiarist, amateur archer, and mycology enthusiast. Her recent work focuses on
-      the stewardship of seeds.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">ALLISON O'CONNOR</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold">
+    <a target="_blank" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca"> Allison O'Connor </a>
+   </span>
+   is a Public Art Officer with the City of Ottawa's Public Art Program. She coordinates and commissions temporary and permanent
+   artworks, as well as a variety of diverse cultural initiatives across the city. Allison is also an internationally touring
+   installation artist who creates artworks that consider the environment and its other-than-human habitants. Allison is an MFA
+   graduate from the School of Visual Arts of New York City, where she received the Paula Rhodes Memorial Award for her thesis writing
+   on public art for ecological remediation.Allison is an apiarist, amateur archer, and mycology enthusiast. Her recent work focuses on
+   the stewardship of seeds.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">LAURA TALER</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://laurataler.ca/"> Laura Taler </a> </span>{" "} is a Romanian-born,
-      award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience
-      with public art ranges from large-scale performance works, to projections and screen-based works, to permanent installations. She
-      expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura
-      has worked collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in
-      1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to
-      provide a clear vision to the team of experts that she gathers around each project and to guide that vision with precision and
-      flexibility.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">LAURA TALER</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://laurataler.ca/"> Laura Taler </a> </span> is a Romanian-born,
+   award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience
+   with public art ranges from large-scale performance works, to projections and screen-based works, to permanent installations. She
+   expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura
+   has worked collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in
+   1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to
+   provide a clear vision to the team of experts that she gathers around each project and to guide that vision with precision and
+   flexibility.
+  </p>
+ </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
-    <span class="summary-content">JOCELYN TODD</span>
-    <span class="role"></span>
-  </summary>
-  <article>
-    <p>
-      <span class="bold"> <a target="_blank" href="https://www.remembernowmove.art/"> Jocelyn Todd </a> </span>{" "} is a dancer,
-      choreographer, producer and multi-disciplinary artist currently based in so-called Ottawa. Jocelyn works with the body and its
-      interaction with the present moment, environment, political landscape, sound, space, concept and other bodies. After graduating from
-      The School of Dance with a Diploma in Contemporary Dance Studies, Jocelyn split her time between Canada and England. In London, she
-      delved into self-curated and intensive periods of dance study, and presented her work in the Suffolk High Tide Festival and at
-      London's Robin Howard Theatre. She has also presented her choreographic works in Ottawa. Most recently (2020-2023):
-      <span class="italic">shell</span>, <span class="italic">the A-team</span> and <span class="italic">Time + Light</span>. Jocelyn's
-      film{" "} <span class="italic">Gold</span> was presented as part of Dance On Screen at the Mayfair Theatre in Fall 2021. She is
-      deeply thankful for the support of Ottawa Dance Directive and the communities that continue to nurture her, in Ottawa and London.
-    </p>
-  </article>
+ <summary>
+  <span class="summary-content">JOCELYN TODD</span>
+  <span class="role"></span>
+ </summary>
+ <article>
+  <p>
+   <span class="bold"> <a target="_blank" href="https://www.remembernowmove.art/"> Jocelyn Todd </a> </span> is a dancer,
+   choreographer, producer and multi-disciplinary artist currently based in so-called Ottawa. Jocelyn works with the body and its
+   interaction with the present moment, environment, political landscape, sound, space, concept and other bodies. After graduating from
+   The School of Dance with a Diploma in Contemporary Dance Studies, Jocelyn split her time between Canada and England. In London, she
+   delved into self-curated and intensive periods of dance study, and presented her work in the Suffolk High Tide Festival and at
+   London's Robin Howard Theatre. She has also presented her choreographic works in Ottawa. Most recently (2020-2023):
+   <span class="italic">shell</span>, <span class="italic">the A-team</span> and <span class="italic">Time + Light</span>. Jocelyn's
+   film <span class="italic">Gold</span> was presented as part of Dance On Screen at the Mayfair Theatre in Fall 2021. She is
+   deeply thankful for the support of Ottawa Dance Directive and the communities that continue to nurture her, in Ottawa and London.
+  </p>
+ </article>
 </details>
 `;
 const contributorsPageEN = `
@@ -596,531 +578,531 @@ const contributorsPageEN = `
 <details>
 <summary><span class="summary-content">SARAH ABBOTT</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://sarahabbott.ca/">Sarah Abbott</a></span
-    >'s research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
-    though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
-    science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
-    the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change.
-    She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine
-    Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University.
-    Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts
-    and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://sarahabbott.ca/">Sarah Abbott</a></span
+  >'s research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
+  though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
+  science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
+  the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change.
+  She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine
+  Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University.
+  Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts
+  and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">DIANA BERESFORD-KROEGER</span><span class="role"></span></summary>
 <article>
-  <p>
-    Botanist, medical biochemist and author
-    <span class="bold"><a target="_blank" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> possesses a
-    unique combination of western scientific training and an understanding of the knowledge and methods of a wide variety of traditional
-    and alternative sources. Beresford-Kroeger's concept of bioplanning challenges ordinary people to develop a new relationship with
-    the natural world, to view the environment as a biological system and to perform the ecological task of replanting the global
-    forest. Her books include <span class="italic">The Sweetness of a Simple Life</span>,
-    <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>,
-    <span class="italic">Arboretum America: A Philosophy of the Forest</span>, and <span class="italic">A Garden for Life</span>. A
-    feature documentary about her work, the Canadian Screen Awards-nominated
-    <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, appeared in 2017. Her latest book is
-    <span class="italic">To Speak for the Trees: My Life's Journey From Ancient Celtic Wisdom To a Healing Vision of the Forest</span>.
-  </p>
+ <p>
+  Botanist, medical biochemist and author
+  <span class="bold"><a target="_blank" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> possesses a
+  unique combination of western scientific training and an understanding of the knowledge and methods of a wide variety of traditional
+  and alternative sources. Beresford-Kroeger's concept of bioplanning challenges ordinary people to develop a new relationship with
+  the natural world, to view the environment as a biological system and to perform the ecological task of replanting the global
+  forest. Her books include <span class="italic">The Sweetness of a Simple Life</span>,
+  <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>,
+  <span class="italic">Arboretum America: A Philosophy of the Forest</span>, and <span class="italic">A Garden for Life</span>. A
+  feature documentary about her work, the Canadian Screen Awards-nominated
+  <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, appeared in 2017. Her latest book is
+  <span class="italic">To Speak for the Trees: My Life's Journey From Ancient Celtic Wisdom To a Healing Vision of the Forest</span>.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">PIERRE-LUC CLÉMENT</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://pierrelucclement.xyz/">Pierre-Luc Clément</a></span> is a self-taught
-    multi-disciplinary artist, sound designer, composer and producer who is actively involved in the artistic community in
-    Ottawa/Gatineau. Founding member of the groups FET.NAT, KAY-fayb, Or and others, he also works as a percussionist and composer for
-    renowned artists and contemporary dance and theatre companies across Canada. He has been listed on the prestigious Polaris short
-    list for the album Le mal in 2019, and nominated at l'ADISQ for the producing of
-    <span class="italic">Message texte à Nelligan</span> in 2016. He also co-fabricated three children. Prizes include SAW Gallery's New
-    work prize in 2020 and two Rideau Prizes for best theatre sound design in 2014 and 2019. Pierre-Luc's work is characterized by the
-    always tentative implementation of innovative concepts, approaches and methods. His creations are often intense and polarizing,
-    oscillating between the beautiful and the abject while incorporating possibilities for failure.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://pierrelucclement.xyz/">Pierre-Luc Clément</a></span> is a self-taught
+  multi-disciplinary artist, sound designer, composer and producer who is actively involved in the artistic community in
+  Ottawa/Gatineau. Founding member of the groups FET.NAT, KAY-fayb, Or and others, he also works as a percussionist and composer for
+  renowned artists and contemporary dance and theatre companies across Canada. He has been listed on the prestigious Polaris short
+  list for the album Le mal in 2019, and nominated at l'ADISQ for the producing of
+  <span class="italic">Message texte à Nelligan</span> in 2016. He also co-fabricated three children. Prizes include SAW Gallery's New
+  work prize in 2020 and two Rideau Prizes for best theatre sound design in 2014 and 2019. Pierre-Luc's work is characterized by the
+  always tentative implementation of innovative concepts, approaches and methods. His creations are often intense and polarizing,
+  oscillating between the beautiful and the abject while incorporating possibilities for failure.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">ALBERT DUMONT</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="http://albertdumont.com/about/">Albert Dumont</a></span> is an Algonquin spiritual
-    advisor, poet, and storyteller from Kitigan Zibi Anishinabeg. His artistic talents touch many areas of the arts community. He was
-    the English Poet Laureate for Ottawa from April 2021 to April 2023. He is also a pen & ink artist, actor, and playwright. Albert has
-    performed his play <span class="italic">Bloodline</span> several times and has acted in fire prevention videos, TV commercials, and
-    plays. Albert has written six books of poetry and short stories, and two children's books. He is the founder of Turtle Moons
-    Contemplations, featuring his artwork and poems. Albert was presented with a Human Rights Award by the Public Service Alliance of
-    Canada in 2010. In January 2017 he received the DreamKEEPERS Citation for Outstanding Leadership. Albert has dedicated his life to
-    promoting Aboriginal spirituality and healing and to protecting the rights of Aboriginal Peoples particularly those of the young. He
-    is the father of three daughters, grandfather of five grandchildren and has one great-grandchild.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="http://albertdumont.com/about/">Albert Dumont</a></span> is an Algonquin spiritual
+  advisor, poet, and storyteller from Kitigan Zibi Anishinabeg. His artistic talents touch many areas of the arts community. He was
+  the English Poet Laureate for Ottawa from April 2021 to April 2023. He is also a pen & ink artist, actor, and playwright. Albert has
+  performed his play <span class="italic">Bloodline</span> several times and has acted in fire prevention videos, TV commercials, and
+  plays. Albert has written six books of poetry and short stories, and two children's books. He is the founder of Turtle Moons
+  Contemplations, featuring his artwork and poems. Albert was presented with a Human Rights Award by the Public Service Alliance of
+  Canada in 2010. In January 2017 he received the DreamKEEPERS Citation for Outstanding Leadership. Albert has dedicated his life to
+  promoting Aboriginal spirituality and healing and to protecting the rights of Aboriginal Peoples particularly those of the young. He
+  is the father of three daughters, grandfather of five grandchildren and has one great-grandchild.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">LANG ELLIOTT</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold">Lang Elliott</span> is a well-known nature recordist currently specializing in spacious 3D-binaural soundscapes
-    gathered in wild areas across North America. To learn more about his work visit
-    <a target="_blank" href="https://musicofnature.com/">Music of Nature</a>. Many of Lang's best and most immersive soundscapes are
-    featured in his popular mobile application
-    <a target="_blank" href="https://apps.apple.com/us/app/pure-nature-3d-soundscapes/id1357380255">Pure Nature 3D Soundscapes</a>,
-    which effortlessly transports the listener into the wilds, each recording accompanied by an informative essay describing the habitat
-    and what is heard. Lang is also the co-developer of
-    <a target="_blank" href="https://apps.apple.com/us/app/hear-birds-again/id6444369779?platform=iphone;">Hear Birds Again</a>, a
-    unique new mobile app aimed at birders suffering from high frequency hearing loss. The app works by lowering the pitch of high bird
-    songs to bring them into a frequency range where they can once again be heard.
-  </p>
+ <p>
+  <span class="bold">Lang Elliott</span> is a well-known nature recordist currently specializing in spacious 3D-binaural soundscapes
+  gathered in wild areas across North America. To learn more about his work visit
+  <a target="_blank" href="https://musicofnature.com/">Music of Nature</a>. Many of Lang's best and most immersive soundscapes are
+  featured in his popular mobile application
+  <a target="_blank" href="https://apps.apple.com/us/app/pure-nature-3d-soundscapes/id1357380255">Pure Nature 3D Soundscapes</a>,
+  which effortlessly transports the listener into the wilds, each recording accompanied by an informative essay describing the habitat
+  and what is heard. Lang is also the co-developer of
+  <a target="_blank" href="https://apps.apple.com/us/app/hear-birds-again/id6444369779?platform=iphone;">Hear Birds Again</a>, a
+  unique new mobile app aimed at birders suffering from high frequency hearing loss. The app works by lowering the pitch of high bird
+  songs to bring them into a frequency range where they can once again be heard.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">SAM ESSER</span><span class="role"></span></summary>
 <article>
-  <p>
-    As a Storm Water Field Technician for the City of Ottawa's Stormwater Management Branch, <span class="bold">Sam Esser</span> is part
-    of a team dedicated to the revitalization of the Monahan wetlands. This work has seen a significant increase of wetland habitat
-    through the propagation and protection of key aquatic plant species. In addition to providing critical habitat for birds, reptiles,
-    and fish, these plants clean the water through the absorption and uptake of pollutants from upstream urban stormwater runoff. Sam's
-    work extends throughout the city where he assesses the function of different stormwater facilities relative to water quality and
-    quantity objectives. Before working for the City, he earned a Master's of Science at McGill University. He has had various
-    environmental roles in the private and public sector and even worked aboard commercial fishing vessels in the Bering Sea. When he's
-    not at work, you'll find him paddleboarding and fishing up and down the Rideau River.
-  </p>
+ <p>
+  As a Storm Water Field Technician for the City of Ottawa's Stormwater Management Branch, <span class="bold">Sam Esser</span> is part
+  of a team dedicated to the revitalization of the Monahan wetlands. This work has seen a significant increase of wetland habitat
+  through the propagation and protection of key aquatic plant species. In addition to providing critical habitat for birds, reptiles,
+  and fish, these plants clean the water through the absorption and uptake of pollutants from upstream urban stormwater runoff. Sam's
+  work extends throughout the city where he assesses the function of different stormwater facilities relative to water quality and
+  quantity objectives. Before working for the City, he earned a Master's of Science at McGill University. He has had various
+  environmental roles in the private and public sector and even worked aboard commercial fishing vessels in the Bering Sea. When he's
+  not at work, you'll find him paddleboarding and fishing up and down the Rideau River.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">CHARLOTTE FRANK</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold">Charlotte Frank</span> is a singer and songwriter trained in bel canto, choral music, and creative writing. She
-    has collaborated with multiple artists, writing, recording, and performing music in Ottawa, Berlin, and Montreal since 2015. She
-    currently lives in Montreal where she is recording music as a member of the bands Misty Mood and Ezme, both of which released debut
-    EPs in 2022 and 2023. Currently pursuing her PhD in English Literature at McGill University, Charlotte recently published a chapbook
-    with fellow poets through Collusion Books entitled <span class="italic">Terrifying Friends</span>. She has degrees in the humanities
-    and creative writing from Carleton University and Concordia University respectively.
-  </p>
+ <p>
+  <span class="bold">Charlotte Frank</span> is a singer and songwriter trained in bel canto, choral music, and creative writing. She
+  has collaborated with multiple artists, writing, recording, and performing music in Ottawa, Berlin, and Montreal since 2015. She
+  currently lives in Montreal where she is recording music as a member of the bands Misty Mood and Ezme, both of which released debut
+  EPs in 2022 and 2023. Currently pursuing her PhD in English Literature at McGill University, Charlotte recently published a chapbook
+  with fellow poets through Collusion Books entitled <span class="italic">Terrifying Friends</span>. She has degrees in the humanities
+  and creative writing from Carleton University and Concordia University respectively.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">KIM KILPATRICK</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold">Kim Kilpatrick</span> is a professional storyteller, music therapist, accessibility consultant, and lover of
-    nature. She has three one woman shows about living as a blind person in a sighted world:
-    <span class="italic">Flying in the Dark</span> (2011), <span class="italic">Raising Stanley/Life with Tulia</span> (2018) and
-    <span class="italic">Dangerous Touch</span> (living through COVID when blind 2022). Kim is a featured artist with
-    <a target="_blank" href="http://www.ottawastorytellers.ca/">Ottawa Storytellers</a>,
-    <a target="_blank" href="http://www.masconline.ca/">MASC</a> and
-    <a target="_blank" href="http://www.radicalconnections.ca/">radical connections</a>. She shares her travels with her fifth guide dog
-    Ginger, who is a yellow lab and who walked the nature paths with her for this project.
-  </p>
+ <p>
+  <span class="bold">Kim Kilpatrick</span> is a professional storyteller, music therapist, accessibility consultant, and lover of
+  nature. She has three one woman shows about living as a blind person in a sighted world:
+  <span class="italic">Flying in the Dark</span> (2011), <span class="italic">Raising Stanley/Life with Tulia</span> (2018) and
+  <span class="italic">Dangerous Touch</span> (living through COVID when blind 2022). Kim is a featured artist with
+  <a target="_blank" href="http://www.ottawastorytellers.ca/">Ottawa Storytellers</a>,
+  <a target="_blank" href="http://www.masconline.ca/">MASC</a> and
+  <a target="_blank" href="http://www.radicalconnections.ca/">radical connections</a>. She shares her travels with her fifth guide dog
+  Ginger, who is a yellow lab and who walked the nature paths with her for this project.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">FIDES KRUCKER</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://www.fideskrucker.com/">Fides Krucker</a></span> has sung, produced and created
-    contemporary opera and interdisciplinary work in Canada and abroad for forty years. Her book
-    <span class="italic"
-      ><a target="_blank" href="https://www.penguinrandomhouse.ca/books/706315/reclaiming-calliope-by-fides-krucker/9781623177065"
-        >Reclaiming Calliope: Freeing the Female Voice through Undomesticated Singing</a
-      ></span
-    >
-    (North Atlantic Books) re-wilds the human voice through body-based emotional integration. In 1991 Fides founded the
-    interdisciplinary performance ensemble URGE; their final work received two Dora awards and was published by Playwrights Canada. In
-    2018 her company, Good Hair Day Productions --- known for groundbreaking lyric-theatre --- presented
-    <span class="italic">In This Body</span> at Canadian Stage with dancers Heidi Strauss, Laurence Lemieux and Peggy Baker. Her own
-    voice is noted for its "staggering range and control ... less an instrument than a force of nature." Fides taught voice at Humber
-    College for twenty years and facilitates a wide range of artists in Canada and the US. Her 2-year teacher training programme
-    launched in the summer of 2021.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://www.fideskrucker.com/">Fides Krucker</a></span> has sung, produced and created
+  contemporary opera and interdisciplinary work in Canada and abroad for forty years. Her book
+  <span class="italic"
+   ><a target="_blank" href="https://www.penguinrandomhouse.ca/books/706315/reclaiming-calliope-by-fides-krucker/9781623177065"
+    >Reclaiming Calliope: Freeing the Female Voice through Undomesticated Singing</a
+   ></span
+  >
+  (North Atlantic Books) re-wilds the human voice through body-based emotional integration. In 1991 Fides founded the
+  interdisciplinary performance ensemble URGE; their final work received two Dora awards and was published by Playwrights Canada. In
+  2018 her company, Good Hair Day Productions --- known for groundbreaking lyric-theatre --- presented
+  <span class="italic">In This Body</span> at Canadian Stage with dancers Heidi Strauss, Laurence Lemieux and Peggy Baker. Her own
+  voice is noted for its "staggering range and control... less an instrument than a force of nature." Fides taught voice at Humber
+  College for twenty years and facilitates a wide range of artists in Canada and the US. Her 2-year teacher training programme
+  launched in the summer of 2021.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">AMY MACPHERSON</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold">Amy MacPherson</span> is an environmental biologist working in the Natural Systems & Rural Affairs unit at the
-    City of Ottawa. In addition to working on subwatershed studies, environmental assessments and other planning initiatives, Amy
-    organises the City's Wildlife Speaker Series events. She also developed and maintains lists of several types of wildlife found in
-    the city, including a list of Species at Risk in Ottawa. Other recent projects include the development of Bird-Safe Design
-    Guidelines and the City Hall Pollinator Garden. Prior to joining the City in January 2006, Amy worked for seven years as an
-    environmental consultant. In her spare time, Amy enjoys nature photography and has lately been putting this hobby to good use by
-    contributing observations to iNaturalist.
-  </p>
+ <p>
+  <span class="bold">Amy MacPherson</span> is an environmental biologist working in the Natural Systems & Rural Affairs unit at the
+  City of Ottawa. In addition to working on subwatershed studies, environmental assessments and other planning initiatives, Amy
+  organises the City's Wildlife Speaker Series events. She also developed and maintains lists of several types of wildlife found in
+  the city, including a list of Species at Risk in Ottawa. Other recent projects include the development of Bird-Safe Design
+  Guidelines and the City Hall Pollinator Garden. Prior to joining the City in January 2006, Amy worked for seven years as an
+  environmental consultant. In her spare time, Amy enjoys nature photography and has lately been putting this hobby to good use by
+  contributing observations to iNaturalist.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">KIKO PACE</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://kikosounds.com/">Kiko Pace</a></span> creates portals for deeper listening
-    through installation, sound making, meditation and restorative practices. They currently facilitate private and group sound bath
-    experiences at their studio <a target="_blank" href="https://www.kikospace.ca/">Kiko Space</a> in Roncesvalles, Tkaronto, and offer
-    retreats, workshops and trainings that further explore the art and science of sound. Kiko is deeply devoted to communicating,
-    learning and honouring nature through personal ritual and study. All begins with acknowledging the privilege of getting to practice
-    on this land, the necessity of care, and the responsibility we have to ourselves, the earth and each other.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://kikosounds.com/">Kiko Pace</a></span> creates portals for deeper listening
+  through installation, sound making, meditation and restorative practices. They currently facilitate private and group sound bath
+  experiences at their studio <a target="_blank" href="https://www.kikospace.ca/">Kiko Space</a> in Roncesvalles, Tkaronto, and offer
+  retreats, workshops and trainings that further explore the art and science of sound. Kiko is deeply devoted to communicating,
+  learning and honouring nature through personal ritual and study. All begins with acknowledging the privilege of getting to practice
+  on this land, the necessity of care, and the responsibility we have to ourselves, the earth and each other.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">DEMETRIOS PETSALAKIS</span><span class="role"></span></summary>
 <article>
-  <p>
-    Originally from Athens Greece,
-    <span class="bold"><a target="_blank" href="https://soundcloud.com/dpetsalakis">Demetri Petsalakis</a></span> is a Toronto based
-    musician performing in a variety of styles with a focus on Greek and Middle Eastern lutes. Influenced by the rich cultural diversity
-    of Canada, Demetri incorporates musical elements from different traditions in order to create a contemporary sound that represents
-    both his heritage and the community that he is a part of. An active member of the Toronto world music scene Demetri has composed
-    for, recorded, and performed with many groups including Kune, Niyaz, Tafelmusik, Ventanas, Near East Trio, Zephyr, Turkwaz, Moneka
-    Arabic Jazz and Moskitto Bar. During his musical studies Demetri has been fortunate to learn from many great teachers including oud
-    masters Bassam Bishara, and Christos Tsiamoulis as well as master of the Cretan Lyra Astrinos Zaharioudakis and renowned jazz
-    guitarist Lorne Lofsky.
-  </p>
+ <p>
+  Originally from Athens Greece,
+  <span class="bold"><a target="_blank" href="https://soundcloud.com/dpetsalakis">Demetri Petsalakis</a></span> is a Toronto based
+  musician performing in a variety of styles with a focus on Greek and Middle Eastern lutes. Influenced by the rich cultural diversity
+  of Canada, Demetri incorporates musical elements from different traditions in order to create a contemporary sound that represents
+  both his heritage and the community that he is a part of. An active member of the Toronto world music scene Demetri has composed
+  for, recorded, and performed with many groups including Kune, Niyaz, Tafelmusik, Ventanas, Near East Trio, Zephyr, Turkwaz, Moneka
+  Arabic Jazz and Moskitto Bar. During his musical studies Demetri has been fortunate to learn from many great teachers including oud
+  masters Bassam Bishara, and Christos Tsiamoulis as well as master of the Cretan Lyra Astrinos Zaharioudakis and renowned jazz
+  guitarist Lorne Lofsky.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">NAMITHA RATHINAPPILLAI</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="http://namitharathinappillai.com/">Namitha Rathinappillai</a></span> is a fat, disabled,
-    queer, Tamil-Canadian spoken word poet, organizer, and workshop facilitator who entered the poetry community in 2017. She is
-    currently based in Toronto, and was the first female and youngest director of Ottawa's Urban Legends Poetry Collective (ULPC). They
-    are a two-time Canadian Festival of Spoken Word (CFSW) team member with ULPC, and they published their first chapbook titled
-    <span class="italic">Dirty Laundry</span> with Battleaxe Press in November of 2018. In 2019, she won the RBC Youth Ottawa Spirit of
-    the Capital Award for Arts and Culture. They enjoy crafting, writing letters to friends, and looking at the moon.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="http://namitharathinappillai.com/">Namitha Rathinappillai</a></span> is a fat, disabled,
+  queer, Tamil-Canadian spoken word poet, organizer, and workshop facilitator who entered the poetry community in 2017. She is
+  currently based in Toronto, and was the first female and youngest director of Ottawa's Urban Legends Poetry Collective (ULPC). They
+  are a two-time Canadian Festival of Spoken Word (CFSW) team member with ULPC, and they published their first chapbook titled
+  <span class="italic">Dirty Laundry</span> with Battleaxe Press in November of 2018. In 2019, she won the RBC Youth Ottawa Spirit of
+  the Capital Award for Arts and Culture. They enjoy crafting, writing letters to friends, and looking at the moon.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">PATRICIA REYNOLDS</span><span class="role"></span></summary>
 <article>
-  <p>
-    A teacher by profession,
-    <span class="bold"
-      ><a
-        target="_blank"
-        href="https://www.radicalconnections.ca/artistdirectory/v/patricia-reynolds-vocals-guitar-folk-gospel-swing-pop-wwii-country-campfire-quebecois"
-        >Patricia Reynolds</a
-      ></span
-    >
-    has been involved in Indigenous Education for over 30 years. She drums with the No Borders Drum Circle and on occasion joins the
-    Thunderbird Sisters Collective for drumming and other performances. Now retired, she sings with Just Voices: An Activist Choir, the
-    No Borders Community Voices, and also performs with Carmel Whittle. She recently participated in Beverley and Melody McKiver's
-    <span class="italic">Odaabaanag</span> as organizer, accompanist, and member of the No Borders Community Voices. Patricia is
-    currently working with Unmasked Connections, a project that brings the arts to residents in long-term care.
-  </p>
+ <p>
+  A teacher by profession,
+  <span class="bold"
+   ><a
+    target="_blank"
+    href="https://www.radicalconnections.ca/artistdirectory/v/patricia-reynolds-vocals-guitar-folk-gospel-swing-pop-wwii-country-campfire-quebecois"
+    >Patricia Reynolds</a
+   ></span
+  >
+  has been involved in Indigenous Education for over 30 years. She drums with the No Borders Drum Circle and on occasion joins the
+  Thunderbird Sisters Collective for drumming and other performances. Now retired, she sings with Just Voices: An Activist Choir, the
+  No Borders Community Voices, and also performs with Carmel Whittle. She recently participated in Beverley and Melody McKiver's
+  <span class="italic">Odaabaanag</span> as organizer, accompanist, and member of the No Borders Community Voices. Patricia is
+  currently working with Unmasked Connections, a project that brings the arts to residents in long-term care.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">JESSE STEWART</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://carleton.ca/music/people/stewart-jesse/">Jesse Stewart</a></span> is a composer,
-    percussionist, artist, and educator. His music has been documented on over twenty recordings including Stretch Orchestra's
-    self-titled debut album, which was honoured with the 2012 Instrumental Album of the Year Juno award. He has been widely commissioned
-    as a composer and artist. In 2012, he founded We Are All Musicians (WAAM), an organization dedicated to making music as broadly
-    accessible as possible. Through the WAAM initiative, he has conducted hundreds of inclusive music workshops and performances
-    throughout North America. He has received numerous awards and honours including the Ottawa Arts Council's Mid-Career Artist Award
-    (2017) and the Ottawa Arts Council Community Arts Educator Award (2023). In 2014, he was named to the Order of Ottawa. In 2022, he
-    was elected to the College of New Scholars of the Royal Society of Canada. He is a faculty member in Carleton University's School
-    for Studies in Art and Culture.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://carleton.ca/music/people/stewart-jesse/">Jesse Stewart</a></span> is a composer,
+  percussionist, artist, and educator. His music has been documented on over twenty recordings including Stretch Orchestra's
+  self-titled debut album, which was honoured with the 2012 Instrumental Album of the Year Juno award. He has been widely commissioned
+  as a composer and artist. In 2012, he founded We Are All Musicians (WAAM), an organization dedicated to making music as broadly
+  accessible as possible. Through the WAAM initiative, he has conducted hundreds of inclusive music workshops and performances
+  throughout North America. He has received numerous awards and honours including the Ottawa Arts Council's Mid-Career Artist Award
+  (2017) and the Ottawa Arts Council Community Arts Educator Award (2023). In 2014, he was named to the Order of Ottawa. In 2022, he
+  was elected to the College of New Scholars of the Royal Society of Canada. He is a faculty member in Carleton University's School
+  for Studies in Art and Culture.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">LOUELLA TOBIAS</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold">Louella Tobias</span> is Delaware Anishnabe Kwe from Moravian of the Thames First Nation. "My name is Phoenix
-    Thunderbird, I am inevitable, the devoted one from the Golden Eagle clan. My English name is Louella." A mother of three,
-    grandmother of seven and great grandmother of one, Louella has been following her traditions for more than half of her life. She
-    belongs to the Midewin Lodge on Manitoulin Island and is 3rd. Degree Midewin. Louella holds a Bachelor of Social Work from
-    Laurentian University and learned about traditional healing and medicines such as sweat lodges, cedar baths and pipe ceremonies from
-    Grandmothers in Sudbury.
-  </p>
+ <p>
+  <span class="bold">Louella Tobias</span> is Delaware Anishnabe Kwe from Moravian of the Thames First Nation. "My name is Phoenix
+  Thunderbird, I am inevitable, the devoted one from the Golden Eagle clan. My English name is Louella." A mother of three,
+  grandmother of seven and great grandmother of one, Louella has been following her traditions for more than half of her life. She
+  belongs to the Midewin Lodge on Manitoulin Island and is 3rd. Degree Midewin. Louella holds a Bachelor of Social Work from
+  Laurentian University and learned about traditional healing and medicines such as sweat lodges, cedar baths and pipe ceremonies from
+  Grandmothers in Sudbury.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">ELLEN WATERMAN</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="http://www.ellenwaterman.ca/">Ellen Waterman</a></span> is Professor in the School for
-    Studies in Art and Culture and holds the Helmut Kallmann Chair for Music in Canada at Carleton University. She is both a music
-    scholar and a flutist specializing in creative improvisation. Her work on acoustic ecology includes the books
-    <span class="italic">Sonic Geography Imagined and Remembered</span>, and
-    <span class="italic">The Art of Immersive Soundscapes</span>. With Gillian Siddall, she is co-editor of
-    <span class="italic">Negotiated Moments: Improvisation, Sound, and Subjectivity</span>, and she was a founding co-editor of the
-    journal
-    <span class="italic"
-      ><a target="_blank" href="http://www.criticalimprov.com/"
-        >Critical Studies in Improvisation/Etudes critiques en improvisation</a
-      ></span
-    >. In 2021 she founded the
-    <a target="_blank" href="http://www.carleton.ca/mssc">Research Centre for Music, Sound, and Society in Canada</a>, dedicated to
-    exploring the complex and diverse roles that music and sonic arts play in shaping Canadian society.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="http://www.ellenwaterman.ca/">Ellen Waterman</a></span> is Professor in the School for
+  Studies in Art and Culture and holds the Helmut Kallmann Chair for Music in Canada at Carleton University. She is both a music
+  scholar and a flutist specializing in creative improvisation. Her work on acoustic ecology includes the books
+  <span class="italic">Sonic Geography Imagined and Remembered</span>, and
+  <span class="italic">The Art of Immersive Soundscapes</span>. With Gillian Siddall, she is co-editor of
+  <span class="italic">Negotiated Moments: Improvisation, Sound, and Subjectivity</span>, and she was a founding co-editor of the
+  journal
+  <span class="italic"
+   ><a target="_blank" href="http://www.criticalimprov.com/"
+    >Critical Studies in Improvisation/Etudes critiques en improvisation</a
+   ></span
+  >. In 2021 she founded the
+  <a target="_blank" href="http://www.carleton.ca/mssc">Research Centre for Music, Sound, and Society in Canada</a>, dedicated to
+  exploring the complex and diverse roles that music and sonic arts play in shaping Canadian society.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">WRAY WELSH</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold">Wray Welsh</span> is a dedicated and experienced Zone Supervisor for West Parks in Ottawa. Going straight from
-    the school yard to the city yard in 1983, Wray has spent the past 40 plus years maintaining facilities and the beautiful outdoor
-    spaces of the City of Ottawa. Wray oversees all the park infrastructure ensuring their cleanliness, safety, and overall
-    functionality. Whether it's managing day-to-day park operations, motivating a team of staff, implementing conservation initiatives,
-    or fostering community engagement, Wray's dedication and expertise make him an exceptional Zone Supervisor. His tireless efforts
-    contribute to the well-being of both the parks and the communities they serve, ensuring that everyone can enjoy nature's beauty and
-    tranquillity. In his free time, Wray enjoys boating along serene waterways, embarking on thrilling motorcycle adventures, and
-    exploring the wonders of the underwater world through scuba diving.
-  </p>
+ <p>
+  <span class="bold">Wray Welsh</span> is a dedicated and experienced Zone Supervisor for West Parks in Ottawa. Going straight from
+  the school yard to the city yard in 1983, Wray has spent the past 40 plus years maintaining facilities and the beautiful outdoor
+  spaces of the City of Ottawa. Wray oversees all the park infrastructure ensuring their cleanliness, safety, and overall
+  functionality. Whether it's managing day-to-day park operations, motivating a team of staff, implementing conservation initiatives,
+  or fostering community engagement, Wray's dedication and expertise make him an exceptional Zone Supervisor. His tireless efforts
+  contribute to the well-being of both the parks and the communities they serve, ensuring that everyone can enjoy nature's beauty and
+  tranquillity. In his free time, Wray enjoys boating along serene waterways, embarking on thrilling motorcycle adventures, and
+  exploring the wonders of the underwater world through scuba diving.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">JAYNE YACK</span><span class="role"></span></summary>
 <article>
-  <p>
-    Professor of biology <span class="bold"><a target="_blank" href="https://www.yacklab.org/">Jayne Yack</a></span> is fascinated with
-    the unique sensory 'worlds' of animals, and in particular, how insects use sounds and vibrations beyond the sensory capabilities of
-    humans to survive. Jayne completed her PhD at the University of Toronto and a postdoctoral fellow at Cornell University. She
-    currently runs an active research lab at Carleton University in Ottawa, where she and her students use specialized instruments to
-    make neat discoveries, such as how butterflies use ears on their wings to detect predators, and how caterpillars communicate using
-    leaf vibrations to form social groups, or to perform 'rap battles' to win territories.
-  </p>
+ <p>
+  Professor of biology <span class="bold"><a target="_blank" href="https://www.yacklab.org/">Jayne Yack</a></span> is fascinated with
+  the unique sensory 'worlds' of animals, and in particular, how insects use sounds and vibrations beyond the sensory capabilities of
+  humans to survive. Jayne completed her PhD at the University of Toronto and a postdoctoral fellow at Cornell University. She
+  currently runs an active research lab at Carleton University in Ottawa, where she and her students use specialized instruments to
+  make neat discoveries, such as how butterflies use ears on their wings to detect predators, and how caterpillars communicate using
+  leaf vibrations to form social groups, or to perform 'rap battles' to win territories.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">SUTURE PARALLÈLES</span><span class="role">featuring</span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://transistor.media/balados/les-sutures-paralleles">Sutures parallèles</a></span>
-    is an uneasy chorus of earthly fabulations, gulch dirges and strained lullabies. Conceived by Marc A. Reinhardt, collectively
-    composed and performed by Eugénie Jobin, Marc A. Reinhardt and Frédérique Roy.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://transistor.media/balados/les-sutures-paralleles">Sutures parallèles</a></span>
+  is an uneasy chorus of earthly fabulations, gulch dirges and strained lullabies. Conceived by Marc A. Reinhardt, collectively
+  composed and performed by Eugénie Jobin, Marc A. Reinhardt and Frédérique Roy.
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content summary-indent">MARC A. REINHARDT</span><span class="role"></span></summary>
 <article>
-  <p class="summary-indent">
-    <span class="bold"><a target="_blank" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> is a comparatist working at
-    the intersection of sound, text, performance and installation. His practice develops compositional processes that investigate issues
-    of transduction, historicity and collective agency. He is interested in how we inhabit the contradictions, in language and beyond,
-    that emerge from these investigations. His work has been presented in Canada, Europe and South America.
-  </p>
+ <p class="summary-indent">
+  <span class="bold"><a target="_blank" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> is a comparatist working at
+  the intersection of sound, text, performance and installation. His practice develops compositional processes that investigate issues
+  of transduction, historicity and collective agency. He is interested in how we inhabit the contradictions, in language and beyond,
+  that emerge from these investigations. His work has been presented in Canada, Europe and South America.
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content summary-indent">FRÉDÉRIQUE ROY</span><span class="role"></span></summary>
 <article>
-  <p class="summary-indent">
-    <span class="bold">Frédérique Roy</span> is a musician, composer and writer. The debut album of her ensemble Lune très belle was
-    released by Wild Silence (France), and her first collection of poems was published by l'Oie de Cravan (Montréal). Her second album,
-    <span class="italic">Ovale</span>, came out on Boiled Records (Toronto) in 2023. She works as a composer and performer for
-    choreographers Catherine Lavoie-Marcus and Erin Hill. As a musician, she collaborates in different projects: with Philippe Lauzier;
-    House of Gold; the Air Contains Honey Orchestra amongst others. She has presented work in México, Toronto, Montréal (OFFTA, Dazibao,
-    Suoni per Il Popolo, Pop Montréal.) Frédérique is also involved in concert programming, zine publishing, feminist collective
-    mobilization, and vocal and somatic workshopping. She works in psycho-social accompaniment for Club Ami, a day center offering
-    alternative resources to psychiatrized people. She lives and works in Montréal.
-  </p>
+ <p class="summary-indent">
+  <span class="bold">Frédérique Roy</span> is a musician, composer and writer. The debut album of her ensemble Lune très belle was
+  released by Wild Silence (France), and her first collection of poems was published by l'Oie de Cravan (Montréal). Her second album,
+  <span class="italic">Ovale</span>, came out on Boiled Records (Toronto) in 2023. She works as a composer and performer for
+  choreographers Catherine Lavoie-Marcus and Erin Hill. As a musician, she collaborates in different projects: with Philippe Lauzier;
+  House of Gold; the Air Contains Honey Orchestra amongst others. She has presented work in México, Toronto, Montréal (OFFTA, Dazibao,
+  Suoni per Il Popolo, Pop Montréal.) Frédérique is also involved in concert programming, zine publishing, feminist collective
+  mobilization, and vocal and somatic workshopping. She works in psycho-social accompaniment for Club Ami, a day center offering
+  alternative resources to psychiatrized people. She lives and works in Montréal.
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content summary-indent">EUGÉNIE JOBIN</span><span class="role"></span></summary>
 <article>
-  <p class="summary-indent">
-    <span class="bold">Eugénie Jobin</span> is a musician, composer and director. She lives and works in Tio'tià:ke (Montréal). Her band
-    Ambroise released its first album, <span class="italic">À la tonalité préférable du ciel</span>, in November 2018 under the French
-    label Wild Silence. The album is inspired by the poems of Quebec author Paul-Marie Lapointe. Eugénie just launched her second album,
-    <span class="italic">Bienvenue</span>, a collection of eight pieces based on the poems of Quebec author Geneviève Desrosiers. In
-    addition to composing her own songs, Eugénie works on music for dance, theatre and film. She has presented her work in Montréal,
-    Toronto and Mexico City.
-  </p>
+ <p class="summary-indent">
+  <span class="bold">Eugénie Jobin</span> is a musician, composer and director. She lives and works in Tio'tià:ke (Montréal). Her band
+  Ambroise released its first album, <span class="italic">À la tonalité préférable du ciel</span>, in November 2018 under the French
+  label Wild Silence. The album is inspired by the poems of Quebec author Paul-Marie Lapointe. Eugénie just launched her second album,
+  <span class="italic">Bienvenue</span>, a collection of eight pieces based on the poems of Quebec author Geneviève Desrosiers. In
+  addition to composing her own songs, Eugénie works on music for dance, theatre and film. She has presented her work in Montréal,
+  Toronto and Mexico City.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">THE THUNDERBIRD SISTERS COLLECTIVE</span><span class="role">featuring</span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://thunderbirdsisterscollective.com/">The Thunderbird Sisters Collective</a></span>
-    was founded in 2017 by Metis artist, Patsea Griffin, following workshops where she would see some of her friends create the most
-    fabulous beadwork as well as other traditional and non-traditional artwork then tuck it away in a drawer, tin container, or ziplock
-    bag as was the case with her beadwork. Sometimes never to be seen again. "I decided that I wanted to show my work that took hours to
-    create and then I thought why not help others as well. There are so many talented people in the community that never get to show
-    their work. And it's amazing work." In 2021 The Thunderbird Sisters Collective became a not-for-profit organization whose goal is to
-    create youth-led safe spaces where it will be demonstrated that learning Indigenous knowledge is marketable and transferrable to
-    life experience, the workplace and the community. We're going to dream out loud.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://thunderbirdsisterscollective.com/">The Thunderbird Sisters Collective</a></span>
+  was founded in 2017 by Metis artist, Patsea Griffin, following workshops where she would see some of her friends create the most
+  fabulous beadwork as well as other traditional and non-traditional artwork then tuck it away in a drawer, tin container, or ziplock
+  bag as was the case with her beadwork. Sometimes never to be seen again. "I decided that I wanted to show my work that took hours to
+  create and then I thought why not help others as well. There are so many talented people in the community that never get to show
+  their work. And it's amazing work." In 2021 The Thunderbird Sisters Collective became a not-for-profit organization whose goal is to
+  create youth-led safe spaces where it will be demonstrated that learning Indigenous knowledge is marketable and transferrable to
+  life experience, the workplace and the community. We're going to dream out loud.
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content summary-indent">PATSEA GRIFFIN</span><span class="role"></span></summary>
 <article>
-  <p class="summary-indent">
-    Born and raised on her ancestral land along the Kichi Sibi (Ottawa River), on unceded and unsurrendered Algonquin territory,
-    <span class="bold">Patsea Griffin</span> is a mix-blood, a special blend of many bloodlines including Ontario Métis - a proud
-    Citizen of the Métis Nation of Ontario. Patsea is an Artist. Dreamer. Beadworker. Published poet. Quilt maker. Drummer. Singer.
-    Knowledge seeker. Community supporter. Roadkill adventurer (always looking to harvest porcupine quills). "My art is my way of
-    staying connected to all my relations in the spirit world." Patsea also loves to perform, sing, write, laugh and lives life to the
-    fullest!
-  </p>
+ <p class="summary-indent">
+  Born and raised on her ancestral land along the Kichi Sibi (Ottawa River), on unceded and unsurrendered Algonquin territory,
+  <span class="bold">Patsea Griffin</span> is a mix-blood, a special blend of many bloodlines including Ontario Métis - a proud
+  Citizen of the Métis Nation of Ontario. Patsea is an Artist. Dreamer. Beadworker. Published poet. Quilt maker. Drummer. Singer.
+  Knowledge seeker. Community supporter. Roadkill adventurer (always looking to harvest porcupine quills). "My art is my way of
+  staying connected to all my relations in the spirit world." Patsea also loves to perform, sing, write, laugh and lives life to the
+  fullest!
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content summary-indent">THÉO PARADIS</span><span class="role"></span></summary>
 <article>
-  <p class="summary-indent">
-    <span class="bold">Théo Paradis</span> is Indigenous, she grew up in Cornwall and currently lives on the unceded territory of the
-    Algonquin Anishnaabe Nation in Ottawa. Her family came from along the Ottawa and St. Lawrence Rivers in the territory of the
-    Algonquin and Kanien'kehá:ka ("People of the Flint"). She is Agokwe nini (2 Spirit) and Oshakbaywis (traditional helper) with elders
-    and knowledge keepers in the community. She is of the bear clan and parent to two amazing young men. In Théo's role as a traditional
-    helper of ceremony, drumming and singing provides her with a deep rooted connection of traditional and indigenous way of life.
-  </p>
+ <p class="summary-indent">
+  <span class="bold">Théo Paradis</span> is Indigenous, she grew up in Cornwall and currently lives on the unceded territory of the
+  Algonquin Anishnaabe Nation in Ottawa. Her family came from along the Ottawa and St. Lawrence Rivers in the territory of the
+  Algonquin and Kanien'kehá:ka ("People of the Flint"). She is Agokwe nini (2 Spirit) and Oshakbaywis (traditional helper) with elders
+  and knowledge keepers in the community. She is of the bear clan and parent to two amazing young men. In Théo's role as a traditional
+  helper of ceremony, drumming and singing provides her with a deep rooted connection of traditional and indigenous way of life.
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content summary-indent">CARMEL WHITTLE</span><span class="role"></span></summary>
 <article>
-  <p class="summary-indent">
-    <span class="bold"><a target="_blank" href="https://carmelwhittle.com/">Carmel Whittle</a></span> identifies as a 2SL/ Mi'kmaw/Irish
-    cultural community artist, activist, independent filmmaker, and musician/songwriter. In the practice of decolonized community arts
-    she develops, directs and curates the No Borders Art Festival and is program coordinator for the Thunderbird Sisters Collective. Her
-    documentary films include <span class="italic">There Is No Word</span>, for Greenpeace Canada;
-    <span class="italic">Bringing The Land To The City</span>, a film residency with Digital Art Resource Centre; and
-    <span class="italic">One Contrary 5 Agokwe Nini</span>, featuring members of the 2SLGBTQ community and collaborative co-creating of
-    Podcast #83. Her visual art is currently exhibited with Artvocate, UK. Soloist for <span class="italic">Odaabaanag</span> project.
-    Carmel's influences come from nature and culture with roots deeply connected to the ocean and to the community. She is also an
-    independent art educator, mentor, workshop leader and consultant with diverse artistic communities.
-  </p>
+ <p class="summary-indent">
+  <span class="bold"><a target="_blank" href="https://carmelwhittle.com/">Carmel Whittle</a></span> identifies as a 2SL/ Mi'kmaw/Irish
+  cultural community artist, activist, independent filmmaker, and musician/songwriter. In the practice of decolonized community arts
+  she develops, directs and curates the No Borders Art Festival and is program coordinator for the Thunderbird Sisters Collective. Her
+  documentary films include <span class="italic">There Is No Word</span>, for Greenpeace Canada;
+  <span class="italic">Bringing The Land To The City</span>, a film residency with Digital Art Resource Centre; and
+  <span class="italic">One Contrary 5 Agokwe Nini</span>, featuring members of the 2SLGBTQ community and collaborative co-creating of
+  Podcast #83. Her visual art is currently exhibited with Artvocate, UK. Soloist for <span class="italic">Odaabaanag</span> project.
+  Carmel's influences come from nature and culture with roots deeply connected to the ocean and to the community. She is also an
+  independent art educator, mentor, workshop leader and consultant with diverse artistic communities.
+ </p>
 </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
 <summary><span class="summary-content">TURKWAZ</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://turkwaz.ca/">Turkwaz</a></span> is Jayne Brown, Sophia Grigoriadis, Brenna
-    MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to the Toronto world music scene and beyond.
-    Their work together focuses on interpretations of songs primarily from Greek, Turkish, Arabic and Balkan traditions with forays into
-    other genres when the inspiration moves them. Qanun, tambura, ukulele and various forms of hand percussion provide gentle
-    accompaniment to their arrangements, allowing their voices to remain front and centre. They love singing in pure traditional styles
-    but are also equally comfortable adding harmonies where no harmonies existed before. They are all highly adaptable musicians and
-    enjoy collaborating across genres. Their debut album "Nazar" garnered both Juno and CFMA nominations on its release.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://turkwaz.ca/">Turkwaz</a></span> is Jayne Brown, Sophia Grigoriadis, Brenna
+  MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to the Toronto world music scene and beyond.
+  Their work together focuses on interpretations of songs primarily from Greek, Turkish, Arabic and Balkan traditions with forays into
+  other genres when the inspiration moves them. Qanun, tambura, ukulele and various forms of hand percussion provide gentle
+  accompaniment to their arrangements, allowing their voices to remain front and centre. They love singing in pure traditional styles
+  but are also equally comfortable adding harmonies where no harmonies existed before. They are all highly adaptable musicians and
+  enjoy collaborating across genres. Their debut album "Nazar" garnered both Juno and CFMA nominations on its release.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">JAYNE BROWN</span><span class="role"></span></summary>
 <article>
-  <p>
-    Since making the switch from classical to folkloric singing, <span class="bold">Jayne Brown</span> has been learning, performing,
-    travelling and recording with several ensembles, including Latin American ensembles, Nazka and Ilédé, Macedonian band Staro Selo,
-    and Mediterranean mash-up bands Maza Mezé and the Maryem Tollar ensemble. For the past two decades, Jayne has been concentrating her
-    efforts on Greek folkloric song, studying in both Greece and Toronto. Jayne balances her time between music and her psychotherapy
-    practice.
-  </p>
+ <p>
+  Since making the switch from classical to folkloric singing, <span class="bold">Jayne Brown</span> has been learning, performing,
+  travelling and recording with several ensembles, including Latin American ensembles, Nazka and Ilédé, Macedonian band Staro Selo,
+  and Mediterranean mash-up bands Maza Mezé and the Maryem Tollar ensemble. For the past two decades, Jayne has been concentrating her
+  efforts on Greek folkloric song, studying in both Greece and Toronto. Jayne balances her time between music and her psychotherapy
+  practice.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">SOPHIA GRIGORIADIS</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"
-      ><a target="_blank" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca"
-        >Sophia Grigoriadis</a
-      ></span
-    >
-    is a musician and teacher. Over the past 30 years her study of Greek, Balkan and Middle Eastern singing and percussion has led her
-    to compose, perform and tour with many Toronto world and fusion ensembles. Her love of teaching and sharing her musical passion
-    extends to all ages: as Choir Director of All Saints Greek Orthodox Church and City Choir in Toronto, as Music teacher from
-    Preschool to Grade 8 at Metamorphosis Greek Orthodox School, and to young children through her Clapping Land music studio, where her
-    compilation world music CD <span class="italic">Sound Adventures --- Global Music for Children</span> garnered the Parent's Choice
-    Foundation Silver Award.
-  </p>
+ <p>
+  <span class="bold"
+   ><a target="_blank" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca"
+    >Sophia Grigoriadis</a
+   ></span
+  >
+  is a musician and teacher. Over the past 30 years her study of Greek, Balkan and Middle Eastern singing and percussion has led her
+  to compose, perform and tour with many Toronto world and fusion ensembles. Her love of teaching and sharing her musical passion
+  extends to all ages: as Choir Director of All Saints Greek Orthodox Church and City Choir in Toronto, as Music teacher from
+  Preschool to Grade 8 at Metamorphosis Greek Orthodox School, and to young children through her Clapping Land music studio, where her
+  compilation world music CD <span class="italic">Sound Adventures --- Global Music for Children</span> garnered the Parent's Choice
+  Foundation Silver Award.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">BRENNA MACCRIMMON</span><span class="role"></span></summary>
 <article>
-  <p>
-    Based in Toronto, <span class="bold"><a target="_blank" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> has been
-    studying and performing the music of Turkey and the Balkans since the early 1980's. She has performed in Turkey and abroad with
-    Selim Sesler, Karsılama, Muammer Ketencoğlu, and experimental rock group Baba Zula. She has toured across Europe with Balkan beat DJ
-    Shantel and the Bucovina Club Orkestra. She is a featured performer in <span class="italic">Crossing the Bridge</span>, Fatih Akın's
-    2005 documentary of the Istanbul music scene. In 2010, she found herself in Moscow as a member of the cast of
-    <span class="italic">Bobble</span> with Bobby McFerrin. Theatre work includes musical direction of the award-winning Volcano
-    production of <span class="italic">Goodness</span> and music for the Soulpepper production of Sina Gilani's
-    <span class="italic">Wedding at Aulis</span>. In addition to singing with Turkwaz, she plays with Greco Turkish ensemble Meltemi,
-    travels widely to teach and perform and has much to do with ukuleles. Recent collaborations include musical direction for
-    MabelleArts <span class="italic">Walk with Amal</span> for Luminato 2023.
-  </p>
+ <p>
+  Based in Toronto, <span class="bold"><a target="_blank" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> has been
+  studying and performing the music of Turkey and the Balkans since the early 1980's. She has performed in Turkey and abroad with
+  Selim Sesler, Karsılama, Muammer Ketencoğlu, and experimental rock group Baba Zula. She has toured across Europe with Balkan beat DJ
+  Shantel and the Bucovina Club Orkestra. She is a featured performer in <span class="italic">Crossing the Bridge</span>, Fatih Akın's
+  2005 documentary of the Istanbul music scene. In 2010, she found herself in Moscow as a member of the cast of
+  <span class="italic">Bobble</span> with Bobby McFerrin. Theatre work includes musical direction of the award-winning Volcano
+  production of <span class="italic">Goodness</span> and music for the Soulpepper production of Sina Gilani's
+  <span class="italic">Wedding at Aulis</span>. In addition to singing with Turkwaz, she plays with Greco Turkish ensemble Meltemi,
+  travels widely to teach and perform and has much to do with ukuleles. Recent collaborations include musical direction for
+  MabelleArts <span class="italic">Walk with Amal</span> for Luminato 2023.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">MARYEM HASSAN TOLLAR</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> is a
-    renowned Egyptian-Canadian vocalist, known for her world music performances. Her voice has been heard on the theme of CBC's
-    <span class="italic">Little Mosque on the Prairie</span> and A.R. Rahman's Bollywood hit, <span class="italic">Mayya Mayya</span>.
-    Tollar has been a featured vocalist with Tafelmusik, The Winnipeg Symphony Orchestra, The Gryphon Trio and Patricia O'Callaghan. She
-    performs with several Toronto musical groups including Al Qahwa, Turkwaz, and with storyteller Dawne McFarlane. In the fall of 2022
-    she toured in <span class="italic">The Cave</span> (Libretto by Tomson Highway, Music by John Millard, Script by Martha Ross) and in
-    2023 with the stage adaptation of Ann-Marie MaDonald's book <span class="italic">Fall On Your Knees</span> (Directed by Alisa
-    Palmer, Script by Hannah Moscovitch). Maryem was awarded the inaugural Johanna Metcalf Prize for Performing Arts in 2019.
-  </p>
+ <p>
+  <span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> is a
+  renowned Egyptian-Canadian vocalist, known for her world music performances. Her voice has been heard on the theme of CBC's
+  <span class="italic">Little Mosque on the Prairie</span> and A.R. Rahman's Bollywood hit, <span class="italic">Mayya Mayya</span>.
+  Tollar has been a featured vocalist with Tafelmusik, The Winnipeg Symphony Orchestra, The Gryphon Trio and Patricia O'Callaghan. She
+  performs with several Toronto musical groups including Al Qahwa, Turkwaz, and with storyteller Dawne McFarlane. In the fall of 2022
+  she toured in <span class="italic">The Cave</span> (Libretto by Tomson Highway, Music by John Millard, Script by Martha Ross) and in
+  2023 with the stage adaptation of Ann-Marie MaDonald's book <span class="italic">Fall On Your Knees</span> (Directed by Alisa
+  Palmer, Script by Hannah Moscovitch). Maryem was awarded the inaugural Johanna Metcalf Prize for Performing Arts in 2019.
+ </p>
 </article>
 </details>
 <div class="svg-contributors"></div>
 <details>
 <summary><span class="summary-content">JORDAN BELL</span><span class="role"></span></summary>
 <article>
-  <p>
-    <span class="bold"
-      ><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span
-    >
-    is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks
-    Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope,
-    from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity
-    Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an
-    active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several
-    different groups.
-  </p>
+ <p>
+  <span class="bold"
+   ><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span
+  >
+  is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks
+  Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope,
+  from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity
+  Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an
+  active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several
+  different groups.
+ </p>
 </article>
 </details>
 `;
