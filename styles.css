@@ -165,7 +165,6 @@ body {
   font-size: var(--base-font-size, 2rem); /* Default to 16px if the variable is not set */
 }
 
-
 @media screen and (min-width: 900px) {
   body {
     box-sizing: border-box;
@@ -226,7 +225,7 @@ a:hover {
 
 #transcriptButton {
   padding: 15px;
-  width: 92vw;
+  width: 81vw;
   border-radius: 0.5625rem;
   border: 2px solid var(--darkgreen);
   background: var(--darkgreen);
@@ -239,7 +238,7 @@ a:hover {
   text-transform: uppercase;
 }
 
-#transcriptButton:hover {
+#tratButton:hover {
   background: var(--darkgreen);
   color: var(--lightgreen);
   border: 2px solid #000;
@@ -291,8 +290,6 @@ a:hover {
   align-items: center;
 }
 
-
-
 #contributorsPage,
 #productionTeamPage,
 #whereToFindUsPage,
@@ -325,9 +322,8 @@ a:hover {
 }
 
 #aboutPage .sideBySideTxtImage {
- /* position: relative; */
+  /* position: relative; */
 }
-
 
 #curiousEarsPage {
   /* display: flex; */
@@ -360,16 +356,13 @@ a:hover {
 }
 
 .pageInnerContent {
-  padding: 3rem 3rem;
+  padding: 3rem 2.1rem
 }
 
 @media screen and (min-width: 900px) {
-
-
-.pageInnerContent {
-  padding: 3rem 4rem;
-}
-
+  .pageInnerContent {
+    padding: 3rem 4rem;
+  }
 }
 
 .pageInnerContentNoPad {
@@ -378,6 +371,10 @@ a:hover {
 
 .pageInnerContent1Pad {
   padding: 0 1rem;
+}
+
+#cred {
+  margin-top: -3rem;
 }
 
 @media screen and (min-width: 900px) {
@@ -429,9 +426,7 @@ nav {
   nav {
     max-width: 100vw;
     padding: 20px 20px;
-
   }
-
 }
 
 .navButtons {
@@ -601,11 +596,14 @@ p {
   /* padding-top: 2rem; */
 }
 
+#soundForCurious, #experienceAnew, #delveInto {
+  margin-top: 2.2rem;
+
+}
+
 #visit {
   padding-top: 1rem;
 }
-
-
 
 .txtBoxDivPad {
   /* padding: 1rem; */
@@ -655,7 +653,6 @@ p {
 }
 
 @media screen and (min-width: 900px) {
-
   #centerLandingPageContent {
     padding: 0;
     margin: 0;
@@ -665,7 +662,7 @@ p {
     height: 80vh; /* Optional: Adjust the height to take full viewport height */
     width: 100%; /* Ensure the page takes full width */
     max-width: 1200px; /* Optional: Set a max width for your content */
-    margin: 0 auto; 
+    margin: 0 auto;
   }
 
   #landingPageContainer {
@@ -719,8 +716,7 @@ p {
     flex-direction: row;
     padding: 2rem 0;
     padding-right: 15px;
-    opacity: 70%
-
+    opacity: 70%;
   }
 
   #frLand {
@@ -729,7 +725,7 @@ p {
     align-self: start;
     padding: 2rem 0;
     padding-left: 15px;
-    opacity: 70%
+    opacity: 70%;
   }
 }
 
@@ -817,7 +813,6 @@ p {
   line-height: 98%;
   padding: 1rem;
   font-size: clamp(1rem, 3rem, 5rem);
-
 }
 
 @media screen and (min-width: 900px) {
@@ -826,7 +821,6 @@ p {
     font-weight: 300;
     max-width: 50vw;
     font-size: clamp(1rem, 6.6875rem, 5rem);
-
   }
 }
 
@@ -911,9 +905,12 @@ h2 {
   font-family: "DM Sans", sans-serif;
   font-size: 2rem;
   /* font-weight: 500; */
-  font-weight: 550;
+  font-weight: 400;
+
+  /* font-weight: 550; */
   letter-spacing: 0.075rem;
 }
+
 
 #artPubArt {
   color: var(--darkgreen);
@@ -934,10 +931,16 @@ h2 {
   margin: 0 0 1.75em 0;
 }
 
+
+#accessH2 {
+  margin-top: -3rem;
+}
+
+
 #monH2 {
   font-family: "DM Sans", sans-serif;
   font-size: 2.3rem;
-  margin: 0 0 0.75em 0;
+  margin: 6px 0 0.75em 0;
   letter-spacing: 0.075rem;
 }
 
@@ -950,8 +953,13 @@ h2 {
   h1 {
     font-size: 6.9vw;
     font-size: clamp(1rem, 6.9vw, 2rem);
-
   }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 550;
+  }
+  
 
   #aboutH2 {
     font-size: 2rem;
@@ -960,7 +968,6 @@ h2 {
   #monH2 {
     font-size: 3rem;
     margin: 0;
-
   }
 
   #howToListenH2,
@@ -1032,6 +1039,14 @@ li {
   max-width: 100%;
 }
 
+#skipBackwardButton {
+  margin-right: calc(1.8 * 15vw);
+}
+
+#skipForwardButton {
+  margin-left: calc(1.8 * 15vw);
+}
+
 .skip-button span {
   display: block;
   width: 12vw;
@@ -1071,7 +1086,7 @@ li {
   position: relative;
   background: transparent;
   border: none;
-  margin: 3vh 0;
+  margin: 6vh 0;
 }
 
 #play-button-svg-container {
@@ -1131,11 +1146,10 @@ li {
 
 #progress-container {
   position: relative;
-  width: 90%;
+  width: 80%;
   height: 2px;
   background-color: var(--grey);
-  margin: 8px auto 0 auto;
-  margin-top: 1.5rem;
+  margin: 30px auto 0 auto;
 }
 
 #progress-bar {
@@ -1146,7 +1160,6 @@ li {
   transform: translateY(-50%);
   background-color: var(--darkgreen);
 }
-
 
 #progress-dot {
   position: absolute;
@@ -1161,11 +1174,11 @@ li {
 .time-labels {
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  width: 80%;
   margin: 5px auto 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-family: "DM Sans", sans-serif;
-  font-weight: 500;
+  font-weight: 550;
   margin-top: 13px;
   height: 12.8px;
 }
@@ -1218,7 +1231,7 @@ input[type="range"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 85%;
   padding: 10px 0;
   margin: 22px 0;
 }
@@ -1227,7 +1240,7 @@ input[type="range"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 5px;
+  margin: 0 15px;
 }
 
 #volume-slider {
@@ -1310,7 +1323,7 @@ input[type="range"] {
   background-size: auto 61px;
   height: 66px;
   width: 100vw;
-  padding-bottom: 0.5rem;
+  /* padding-bottom: 0.5rem; */
   margin-top: 2rem;
 }
 
@@ -1320,13 +1333,13 @@ input[type="range"] {
 
 .svg-sideways {
   background-image: url(images/svg/svg-sideways.svg);
-    background-repeat: repeat-x;
-    background-size: auto 110px;
-    background-position: center; /* This centers the background vertically */
-    height: 110px;
-    width: 100vw;
-    padding-bottom: 0.5rem;
-    margin-top: 1rem;
+  background-repeat: repeat-x;
+  background-size: auto 110px;
+  background-position: center; /* This centers the background vertically */
+  height: 110px;
+  width: 100vw;
+  padding-bottom: 0.5rem;
+  margin-top: 1rem;
 }
 
 .svg-sideways-invert {
@@ -1340,7 +1353,7 @@ input[type="range"] {
   min-height: 12px;
   width: 80vw;
   margin-bottom: 0.8rem;
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .svg-contributors-invert {
@@ -1421,7 +1434,7 @@ input[type="range"] {
     background-repeat: repeat-x;
     background-size: 12px 12px;
     min-height: 12px;
-    /* height: 12px; this breaks everything?!! */ 
+    /* height: 12px; this breaks everything?!! */
     width: 90vw;
     box-sizing: border-box;
   }
@@ -1465,9 +1478,9 @@ input[type="range"] {
 }
 
 #transButtonContainer {
-  margin-bottom: 2rem;
+  margin-top: 0.7rem;
+  /* margin-bottom: 2rem; */
 }
-
 
 #transcriptContainer:hover {
   opacity: 0.6;
@@ -1475,7 +1488,7 @@ input[type="range"] {
 
 @media screen and (min-width: 900px) {
   #transcriptContainer {
-    margin: 20px 20vw
+    margin: 20px 20vw;
   }
 }
 
@@ -1637,9 +1650,8 @@ article > p {
 /***********************/
 
 #accessIcon {
-  display:flex;
+  display: flex;
 }
-
 
 #wrapperToggleDiv {
   z-index: 1;
@@ -1712,7 +1724,7 @@ article > p {
 
 #decreaseTextSizeBtn {
   /* margin-bottom: 5px; */
-  margin-right:  18px;
+  margin-right: 18px;
 }
 
 #resetBtn {
@@ -1758,14 +1770,13 @@ article > p {
   #settingsDropdown li {
     padding: 14px 19px 14px 19px;
     margin: 0;
-    margin-bottom: 18px
+    margin-bottom: 18px;
   }
 }
 
 .showDropdown {
   display: block;
 }
-
 
 .slide-in {
   z-index: 10;
@@ -1784,8 +1795,6 @@ article > p {
   margin-top: 5px;
   /* margin-right: 20px; */
   min-height: 90vh;
-
-
 }
 
 @media screen and (min-width: 900px) {
@@ -1800,7 +1809,6 @@ article > p {
     overflow-y: auto;
     margin-top: 5px;
     min-height: auto;
-
   }
 }
 
@@ -1811,22 +1819,16 @@ article > p {
   transition-delay: 0s;
 }
 
-
-
 @media screen and (min-width: 900px) {
   #slidein {
-    width: 30vw; 
+    width: 30vw;
     position: fixed;
-    right: 0; 
+    right: 0;
     top: 100px;
-      margin-right: 20px;
-
+    margin-right: 20px;
   }
 }
-
-
 
 .monochrome {
   filter: grayscale(100%);
 }
-
