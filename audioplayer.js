@@ -11,14 +11,9 @@ export class SimpleAudioPlayer {
     this.globalAudioElement = document.createElement("audio");
     this.isPlaying = false;
     this.firstPlayDone = false;
-    this.nextTrackIsReady = false; //not actually using this yet
-    this.currentRuntime = 0;
 
-    this.hasSkippedToEnd = false;
     this.cumulativeElapsedTime = 0;
     this.totalPlaylistDuration = 0; // Initialize with the sum of durations of all tracks in the playlist
-    this.isDebouncingBackwardSkip = false;
-    this.debounceTimeout = 500; // 500 milliseconds
     this.isUpdatingTime = false; // Flag to prevent rapid updates
     this.timerDuration = 0;
 
@@ -43,14 +38,13 @@ export class SimpleAudioPlayer {
     this.globalAudioElement.onplay = () => this.handlePlay();
     this.globalAudioElement.onpause = () => this.handlePause();
     this.globalAudioElement.onended = () => this.handleEnded();
-    // this.globalAudioElement.ontimeupdate = () => this.updateProgressUI(Math.floor(this.globalAudioElement.currentTime), this.timerDuration);
   }
 
   // TIMER
 
   calcDuration() {
     this.totalPlaylistDuration = this.tracklist.reduce((acc, track) => acc + Number(track.duration), 0);
-    console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
+    // console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
     return this.totalPlaylistDuration;
   }
 
@@ -58,6 +52,7 @@ export class SimpleAudioPlayer {
     try {
       const progressBar = document.getElementById("progress-bar");
       const progressDot = document.getElementById("progress-dot");
+
       const timePlayedElement = document.getElementById("time-played");
       const timeRemainingElement = document.getElementById("time-remaining");
 
@@ -78,20 +73,10 @@ export class SimpleAudioPlayer {
       // Handle errors that occur in the try block
       console.error("An error occurred in updateProgressUI:", error);
     } finally {
-      // Code here will run regardless of whether an error occurred
-      // This block is optional and can be omitted if not needed
+      // Code here will run whether an error has occurred or not
     }
   }
 
-  // handleTimerCompletion() {
-  //   const timeRemainingElement = document.getElementById("time-remaining");
-
-  //   if (!timeRemainingElement) {
-  //     console.error("Error: Missing element 'time-remaining'");
-  //     return; // Exit the function to prevent further errors
-  //   }
-  //   timeRemainingElement.innerHTML = "Done";
-  // }
 
   calculateMinutesAndSeconds(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -121,14 +106,6 @@ export class SimpleAudioPlayer {
     this.toggleButtonVisuals(false);
   }
 
-  // preloadNextTrack() {
-  //   if (this.currentIndex + 1 < this.tracklist.length) {
-  //     const nextTrack = this.tracklist[this.currentIndex + 1];
-  //     const audioPreload = new Audio(nextTrack.url);
-  //     audioPreload.preload = "auto";
-  //   }
-  // }
-
   // TRANSCRIPT
 
   // Helper function to create elements with attributes
@@ -153,7 +130,7 @@ export class SimpleAudioPlayer {
 
     const transBtnContainer = document.getElementById("transButtonContainer");
     transBtnContainer.appendChild(transcriptButton);
-    transcriptButton.addEventListener("click", this.toggleTranscript.bind(this));
+    transcriptButton.addEventListener("click", this.toggleTranscriptVisibiilty.bind(this));
     // Initialize transcriptContent here to avoid re-declaration later
     this.transcriptContent = this.createElement("div", { id: "transcriptContent", style: "display: none" });
     this.transcriptContainer.appendChild(this.transcriptContent); // Append to the container
@@ -193,8 +170,7 @@ export class SimpleAudioPlayer {
     return container;
   }
 
-  // Function to update the transcript based on the selected language
-  updateTranscript() {
+  updateTranscriptBasedOnLanguage() {
     if (!this.transcriptContainer) {
       console.error("Transcript container not found.");
       return;
@@ -219,13 +195,12 @@ export class SimpleAudioPlayer {
     this.transcriptContainer.style.display = "block";
   }
 
-  // Function to toggle the transcript visibility
-  toggleTranscript() {
+  toggleTranscriptVisibiilty() {
     const transcriptButton = document.getElementById("transcriptButton");
 
     this.transcriptVisible = !this.transcriptVisible; // Toggle the flag first for more predictable logic
     if (this.transcriptVisible) {
-      this.updateTranscript(); // Update before showing
+      this.updateTranscriptBasedOnLanguage(); // Update before showing
       this.transcriptContainer.style.display = "block";
       transcriptButton.textContent = "Hide Transcript";
     } else {
@@ -255,27 +230,31 @@ export class SimpleAudioPlayer {
   }
 
   createVolumeSlider() {
-    var volumeSlider = document.getElementById("volume-slider");
-    if (volumeSlider && volumeSlider instanceof HTMLInputElement) {
+    const volumeDot = document.getElementById("volume-dot");
+    var volumeBar = document.getElementById("volume-slider");
+    if (volumeBar && volumeBar instanceof HTMLInputElement) {
       // Runtime check
-      volumeSlider.type = "range";
-      volumeSlider.max = "100";
-      volumeSlider.min = "0";
-      volumeSlider.value = "75"; // Default volume
-      volumeSlider.addEventListener(
+      volumeBar.type = "range";
+      volumeBar.max = "100";
+      volumeBar.min = "0";
+      volumeBar.value = "75"; // Default volume
+      volumeBar.addEventListener(
         "change",
         function (event) {
           this.handleVolumeChange(event);
         }.bind(this)
       );
-      this.globalAudioElement.volume = parseFloat(volumeSlider.value) / 100;
+      this.globalAudioElement.volume = parseFloat(volumeBar.value) / 100;
     }
   }
 
   handleVolumeChange(event) {
     const newVolume = parseFloat(event.target.value) / 100;
     this.globalAudioElement.volume = newVolume;
-    // TODO any visual volume indicators in the UI here
+        // TODO visual volume indicators in the UI here
+
+        // volumeBar.style.width = `${volPercentage}%`;
+        // volumeDot.style.left = `calc(${volumePercentage}% - 5px)`; // Adjust based on the dot's size
   }
 
   handleSkipForward() {
@@ -286,7 +265,7 @@ export class SimpleAudioPlayer {
       setTimeout(() => {
         this.globalAudioElement.currentTime = newPlayerTime;
         this.isUpdatingTime = false;
-      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+      }, 20); // Adjust the delay as neede
     }
   }
 
@@ -311,7 +290,7 @@ export class SimpleAudioPlayer {
         this.createTranscriptContainer();
 
       } else {
-        // If not the first play, just resume
+        // If not the first play, just resume the player
         this.globalAudioElement.play();
       }
     } else {
@@ -329,7 +308,7 @@ export class SimpleAudioPlayer {
       }
 
       const track = this.tracklist[index];
-      console.log(`[playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
+      // console.log(`[playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
 
       this.globalAudioElement.src = track.url;
       // this.globalAudioElement.currentTime = 0; // Ensure track starts from the beginning
@@ -388,16 +367,26 @@ export class SimpleAudioPlayer {
   }
 
   handlePlay() {
-    console.log("handlePlay");
+    // console.log("handlePlay");
     this.isPlaying = true;
     this.toggleButtonVisuals(true);
   }
 
   handlePause() {
-    console.log("handlePause");
+    // console.log("handlePause");
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
   }
+
+    // handleTimerCompletion() {
+  //   const timeRemainingElement = document.getElementById("time-remaining");
+
+  //   if (!timeRemainingElement) {
+  //     console.error("Error: Missing element 'time-remaining'");
+  //     return; // Exit the function to prevent further errors
+  //   }
+  //   timeRemainingElement.innerHTML = "Done";
+  // }
 
   handleEnded() {
     console.log("handleEnded");
@@ -442,7 +431,7 @@ export class SimpleAudioPlayer {
       }
     }
     // Toggle these classes regardless of current state, as they control other visual aspects that may need to be updated
-    playButton.classList.toggle("playing", isPlaying);
-    playButton.classList.toggle("paused", !isPlaying);
+    // playButton.classList.toggle("playing", isPlaying);
+    // playButton.classList.toggle("paused", !isPlaying);
   }
 }

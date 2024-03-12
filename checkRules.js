@@ -206,7 +206,7 @@ export function checkPlaylistRules(playlist) {
     if (geeseTracksCount === 1) {
       console.log("❌❌❌ Rule c25 violated: Playlist contains exactly one track with the tag geese, which is not allowed.");
     } else if (geeseTracksCount === 0 || geeseTracksCount > 1) {
-      console.log(`🎉 Acceptable number of 'geese' tracks found: ${geeseTracksCount}.`);
+      // console.log(`🎉 Acceptable number of 'geese' tracks found: ${geeseTracksCount}.`);
     }
   }
 

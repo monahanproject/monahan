@@ -378,7 +378,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 
     if (!ruleMet) {
       if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
-        console.log("we're basically out of time");
+        console.log("we ran out of time before following all the ensure rules");
       }
 
       // console.log(`Rule ${ruleDescription} not yet met. Searching through tracklist.`);
