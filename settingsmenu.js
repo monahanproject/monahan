@@ -111,11 +111,9 @@ function changeTextSize(increase) {
 
   root.style.setProperty("--base-font-size-rem", `${currentSize}rem`);
 
-  // Update directly if you want to adjust the root font size
   root.style.fontSize = `${currentSize}rem`;
 }
 
-// Initialize the font size on page load
 document.addEventListener("DOMContentLoaded", () => {
   const userFontSize = localStorage.getItem("userFontSize");
   if (userFontSize) {
