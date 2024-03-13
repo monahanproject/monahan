@@ -498,12 +498,17 @@
 
           <audio id="music_player"></audio>
 
+     
+<!-- 
           <div id="volume-container">
             <span id="lower-vol" class="volume-icon">
               <svg width="13" height="24" viewBox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)" />
               </svg>
             </span>
+            <div id="volume-bar-background" style="width: 78vw; height: 5px; background-color: var(--grey); position: relative;">
+              <div id="volume-bar-filler" style="height: 100%; background-color: var(--darkgreen); width: 0%;"></div>
+            </div>
             <input type="range" id="volume-slider" max="100" min="0" />
             <span id="raise-vol" class="volume-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -512,7 +517,36 @@
                   fill="var(--darkgreen)" />
               </svg>
             </span>
+          </div> -->
+
+
+          <div id="volume-container">
+            <span id="lower-vol" class="volume-icon">
+              <svg width="13" height="24" viewBox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)" />
+              </svg>
+            </span>
+            
+            <div class="volume-bar-and-slider">
+              <div id="volume-bar-background">
+                  <div id="volume-bar-filler"></div>
+                  <div id="volume-bar-thinner"></div> <!-- New thinner filler -->
+              </div>
+              <input type="range" id="volume-slider" max="100" min="0" />
           </div>
+            
+            <span id="raise-vol" class="volume-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9.73965 0L5.84544 5.81224H0.0332031V17.4367H5.84544L9.73965 23.249H11.6577V0H9.73965ZM14.5638 2.90612V5.81224C15.0578 5.81224 15.5519 5.87036 16.0169 5.98661C18.5161 6.62596 20.376 8.89273 20.376 11.6245C20.376 14.3562 18.5452 16.623 16.0169 17.2624C15.5519 17.3786 15.0578 17.4367 14.5638 17.4367V20.3428C15.2903 20.3428 15.9587 20.2266 16.6562 20.0813H16.7434C20.5214 19.1223 23.2822 15.6931 23.2822 11.6245C23.2822 7.55591 20.5214 4.12669 16.7434 3.16767C16.075 2.9933 15.3194 2.90612 14.5638 2.90612ZM14.5638 8.71836V14.5306C14.8254 14.5306 15.0869 14.5015 15.2903 14.4434C16.54 14.1237 17.4699 12.9613 17.4699 11.6245C17.4699 10.2877 16.569 9.12522 15.2903 8.80555C15.0578 8.74742 14.7963 8.71836 14.5638 8.71836Z"
+                  fill="var(--darkgreen)" />
+              </svg>
+            </span>
+        </div>
+        
+
+
+
           <div id="transButtonContainer"></div>
           <div id="transcriptContainer"></div>
         </div>

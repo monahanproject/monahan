@@ -107,7 +107,9 @@ export class SimpleAudioPlayer {
   }
 
   initializeButtonVisuals() {
-    this.toggleButtonVisuals(false);
+    // this.toggleButtonVisuals(false);
+    console.log("init viz");
+
   }
 
   // TRANSCRIPT
@@ -234,32 +236,82 @@ export class SimpleAudioPlayer {
   }
 
   createVolumeSlider() {
-    const volumeDot = document.getElementById("volume-dot");
+    // Assuming 'volumeDot' is not used in the updated approach, so it can be removed or commented out
+    // const volumeDot = document.getElementById("volume-dot");
+
     var volumeBar = document.getElementById("volume-slider");
     if (volumeBar && volumeBar instanceof HTMLInputElement) {
-      // Runtime check
       volumeBar.type = "range";
       volumeBar.max = "100";
       volumeBar.min = "0";
-      volumeBar.value = "75"; // Default volume
-      volumeBar.addEventListener(
-        "change",
-        function (event) {
-          this.handleVolumeChange(event);
-        }.bind(this)
-      );
+      volumeBar.value = "75"; // Set default volume if needed, or adjust based on a saved setting
+
+      // Change this to 'input' to dynamically update as the slider moves
+      volumeBar.addEventListener("input", (event) => {
+        this.handleVolumeChange(event); // Ensure 'this' is correctly bound to your class or object
+      });
+
       this.globalAudioElement.volume = parseFloat(volumeBar.value) / 100;
     }
-  }
 
-  handleVolumeChange(event) {
-    const newVolume = parseFloat(event.target.value) / 100;
-    this.globalAudioElement.volume = newVolume;
-    // TODO visual volume indicators in the UI here
+    // Initial volume UI update for both filler and thinner elements
+    const initialVolume = this.globalAudioElement.volume * 100;
+    const volumeFiller = document.getElementById("volume-bar-filler");
+    const volumeThinner = document.getElementById("volume-bar-thinner");
 
-    // volumeBar.style.width = `${volPercentage}%`;
-    // volumeDot.style.left = `calc(${volumePercentage}% - 5px)`; // Adjust based on the dot's size
+    if (volumeFiller && volumeThinner) {
+      volumeFiller.style.width = `${initialVolume}%`;
+      volumeThinner.style.width = `${100 - initialVolume}%`;
+      volumeThinner.style.left = `${initialVolume}%`; // Correctly position the thinner part
+    }
+}
+
+
+  // createVolumeSlider() {
+  //   const volumeDot = document.getElementById("volume-dot");
+  //   var volumeBar = document.getElementById("volume-slider");
+  //   if (volumeBar && volumeBar instanceof HTMLInputElement) {
+  //     // Runtime check
+  //     volumeBar.type = "range";
+  //     volumeBar.max = "100";
+  //     volumeBar.min = "0";
+  //     volumeBar.value = "75"; // Default volume
+  //     volumeBar.addEventListener(
+  //       "change",
+  //       function (event) {
+  //         this.handleVolumeChange(event);
+  //       }.bind(this)
+  //     );
+  //     this.globalAudioElement.volume = parseFloat(volumeBar.value) / 100;
+  //   }
+  //   // Initial volume UI update
+  //   const initialVolume = this.globalAudioElement.volume * 100;
+  //   const volumeFiller = document.getElementById("volume-bar-filler");
+  //   if (volumeFiller) {
+  //     volumeFiller.style.width = `${initialVolume}%`;
+  //   }
+  // }
+
+   handleVolumeChange(event) {
+    const volumeLevel = parseFloat(event.target.value); // Range is 0 to 100, directly representing percentage
+    const globalAudioElement = document.querySelector('audio'); // Ensure you have a reference to your audio element
+    globalAudioElement.volume = volumeLevel / 100;
+  
+    const volumeFiller = document.getElementById('volume-bar-filler');
+    const volumeThinner = document.getElementById('volume-bar-thinner');
+  
+    if (volumeFiller) {
+      volumeFiller.style.width = `${volumeLevel}%`;
+    }
+  
+    if (volumeThinner) {
+      volumeThinner.style.width = `${100 - volumeLevel}%`;
+      volumeThinner.style.left = `${volumeLevel}%`; // Position it right at the end of the filler
+    }
   }
+  
+  
+
 
   handleSkipForward() {
     let newPlayerTime = this.globalAudioElement.currentTime + 20;
@@ -310,7 +362,7 @@ export class SimpleAudioPlayer {
         return;
       }
 
-      this.isTransitioningBetweenTracks = true;
+      // this.isTransitioningBetweenTracks = true;
 
       const track = this.tracklist[index];
       // console.log(`[playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
@@ -323,9 +375,11 @@ export class SimpleAudioPlayer {
         .play()
         .then(() => {
           this.isPlaying = true;
-          this.isTransitioningBetweenTracks = false; // Transition complete, new track is playing
+          // this.isTransitioningBetweenTracks = false; // Transition complete, new track is playing
           console.log(`[playTrack] Now playing. Index=${index}, URL=${track.url}`);
-          this.toggleButtonVisuals(true); // Make sure this line is uncommented or added if missing
+          console.log("starting player .play");
+
+          // this.toggleButtonVisuals(true); 
 
           // Preload the next track if applicable
           if (index + 1 < this.tracklist.length) {
@@ -362,8 +416,10 @@ export class SimpleAudioPlayer {
         } else {
           console.log("[playTrack] Finished playing all tracks. Playlist ended.");
           this.isPlaying = false;
-          this.isTransitioningBetweenTracks = false; // Ensure this flag is reset at playlist end
-          this.toggleButtonVisuals(false); // Update UI to reflect playback has stopped
+          // this.isTransitioningBetweenTracks = false; // Ensure this flag is reset at playlist end
+          console.log("stopping player else play");
+
+          // this.toggleButtonVisuals(false); // Update UI to reflect playback has stopped
 
           resolve(); // Resolve as playlist finished
         }
@@ -371,7 +427,7 @@ export class SimpleAudioPlayer {
 
       // If the promise chain above fails, ensure we reset the transitioning state
       this.globalAudioElement.onerror = () => {
-        this.isTransitioningBetweenTracks = false;
+        // this.isTransitioningBetweenTracks = false;
         reject(new Error("Error playing track"));
       };
     });
@@ -381,18 +437,22 @@ export class SimpleAudioPlayer {
     console.log("Pausing");
     this.globalAudioElement.pause();
     this.isPlaying = false;
-    this.toggleButtonVisuals(false);
+    console.log("stopping player");
+    // this.toggleButtonVisuals(false);
   }
 
   handlePlay() {
     // console.log("handlePlay");
     this.isPlaying = true;
+    console.log("starting player handleplay");
+
     this.toggleButtonVisuals(true);
   }
 
   handlePause() {
     // console.log("handlePause");
     this.isPlaying = false;
+    console.log("stopping player handlepause");
     this.toggleButtonVisuals(false);
   }
 
@@ -410,6 +470,8 @@ export class SimpleAudioPlayer {
     console.log("handleEnded");
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
+    console.log("stopping player handleended");
+
     // console.log(`Before End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}, Track Duration: ${Math.round(this.globalAudioElement.duration)}`);
     // this.cumulativeElapsedTime += Math.round(this.globalAudioElement.duration);
     // console.log(`After End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}`);
@@ -423,7 +485,8 @@ export class SimpleAudioPlayer {
   }
 
   toggleButtonVisuals(isPlaying) {
-    if (this.isTransitioningBetweenTracks) return;
+    // if (this.isTransitioningBetweenTracks) return;
+    console.log("enter funct togglebuttonviz");
 
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");

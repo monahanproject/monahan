@@ -1228,72 +1228,94 @@ li {
 /*************************************/
 /*** MUSIC PLAYER VOLUME SLIDER  ****/
 /*************************************/
+/* General styling for range inputs */
+/* General Styles */
 
+/* General styles for the slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
   cursor: pointer;
-  width: 15rem;
+  width: 80vw; 
 }
 
 #volume-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 85%;
   padding: 10px 0;
-  margin: 22px 0;
+  margin: auto;
+  width: 80vw; 
 }
 
-.volume-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 15px;
+/* Volume bar and slider container */
+.volume-bar-and-slider {
+  position: relative;
+  width: 100%; 
+  height: 20px; /* Adjusted height for thicker appearance on active part */
+  margin: 20px;
 }
 
+/* Background of the volume bar (thinner part) */
+#volume-bar-background {
+  width: 100%;
+  height: 2px; /* Keep thinner for the inactive volume part */
+  background-color: var(--grey);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+}
+
+#volume-bar-filler {
+  height: 100%; 
+  background-color: var(--darkgreen);
+  height: 3px;
+  width: 0%; /* Updated dynamically */
+  /* margin-bottom: 4px; */
+}
+
+/* Styling for the slider thumb */
 #volume-slider {
   -webkit-appearance: none;
-  width: 78vw;
-  height: 3px;
-  background: grey;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
+  appearance: none;
+  width: 100%;
+  height: 8px; /* Match the thicker part for consistency */
+  background: transparent;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+  z-index: 2;
 }
 
 #volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  appearance: none;
-  width: 9px;
-  height: 9px;
+  width: 9px; /* Adjust size as needed */
+  height: 9px; /* Adjust size as needed */
   border-radius: 50%;
-  background: darkgreen;
+  background: var(--darkgreen);
   cursor: pointer;
+  margin-top: -5px; /* Adjust if necessary to align with the bar */
 }
 
 #volume-slider::-moz-range-thumb {
-  width: 5px;
-  height: 5px;
+  width: 9px; /* Adjust size as needed */
+  height: 9px; /* Adjust size as needed */
   border-radius: 50%;
-  background: darkgreen;
+  background: var(--darkgreen);
   cursor: pointer;
 }
 
-/***** Thumb Styles *****/
-/***** Chrome, Safari, Opera, and Edge Chromium *****/
-
 @media screen and (min-width: 900px) {
-  #volume-slider {
-    width: 40vw;
+  #volume-slider, #volume-container {
+    width: 40vw; /* Adjust based on larger screens */
   }
 
   .volume-icon {
     margin: 0 10px;
   }
 }
+
 
 /****************************/
 /*********** SVG ************/
