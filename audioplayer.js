@@ -11,9 +11,14 @@ export class SimpleAudioPlayer {
     this.globalAudioElement = document.createElement("audio");
     this.isPlaying = false;
     this.firstPlayDone = false;
+    this.nextTrackIsReady = false; //not actually using this yet
+    this.currentRuntime = 0;
 
+    this.hasSkippedToEnd = false;
     this.cumulativeElapsedTime = 0;
     this.totalPlaylistDuration = 0; // Initialize with the sum of durations of all tracks in the playlist
+    this.isDebouncingBackwardSkip = false;
+    this.debounceTimeout = 500; // 500 milliseconds
     this.isUpdatingTime = false; // Flag to prevent rapid updates
     this.timerDuration = 0;
 
@@ -27,7 +32,6 @@ export class SimpleAudioPlayer {
     this.pausedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButton.svg" alt="Pause Icon">`;
     this.playingText = "PLAY";
     this.pausedText = "STOP";
-    this.isTransitioningBetweenTracks = false;
 
     this.createTimerLoopAndUpdateProgressTimer();
 
@@ -39,13 +43,14 @@ export class SimpleAudioPlayer {
     this.globalAudioElement.onplay = () => this.handlePlay();
     this.globalAudioElement.onpause = () => this.handlePause();
     this.globalAudioElement.onended = () => this.handleEnded();
+    // this.globalAudioElement.ontimeupdate = () => this.updateProgressUI(Math.floor(this.globalAudioElement.currentTime), this.timerDuration);
   }
 
   // TIMER
 
   calcDuration() {
     this.totalPlaylistDuration = this.tracklist.reduce((acc, track) => acc + Number(track.duration), 0);
-    // console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
+    console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
     return this.totalPlaylistDuration;
   }
 
@@ -56,31 +61,37 @@ export class SimpleAudioPlayer {
       const timePlayedElement = document.getElementById("time-played");
       const timeRemainingElement = document.getElementById("time-remaining");
 
-      const remainingDurationSeconds = Math.max(0, this.totalPlaylistDuration - (elapsedSeconds + previousDuration)); // Ensure remaining time doesn't go below 0
-      const playedPercentage = Math.min(100, ((elapsedSeconds + previousDuration) / this.totalPlaylistDuration) * 100); // Cap at 100%
+      const remainingDurationSeconds = this.totalPlaylistDuration - (elapsedSeconds + previousDuration);
+      // Calculate the percentage of the track that's been played
+      const playedPercentage = ((elapsedSeconds + previousDuration) / this.totalPlaylistDuration) * 100;
 
       // Update the progress bar and dot
       progressBar.style.width = `${playedPercentage}%`;
-      progressDot.style.left = `calc(${playedPercentage}% - 5px)`;
-
+      progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
+      // Update the time labels
       const playedTime = this.calculateMinutesAndSeconds(elapsedSeconds + previousDuration);
       const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
 
       timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
       timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
-
-      // Add logging if remainingDurationSeconds goes below 0
-      if (remainingDurationSeconds < 0) {
-        console.log(
-          `Discrepancy detected: Audio playtime exceeded expected duration by ${-remainingDurationSeconds} seconds at index ${this.currentIndex}.`
-        );
-      }
     } catch (error) {
+      // Handle errors that occur in the try block
       console.error("An error occurred in updateProgressUI:", error);
     } finally {
-      // Code here will run whether an error has occurred or not
+      // Code here will run regardless of whether an error occurred
+      // This block is optional and can be omitted if not needed
     }
   }
+
+  // handleTimerCompletion() {
+  //   const timeRemainingElement = document.getElementById("time-remaining");
+
+  //   if (!timeRemainingElement) {
+  //     console.error("Error: Missing element 'time-remaining'");
+  //     return; // Exit the function to prevent further errors
+  //   }
+  //   timeRemainingElement.innerHTML = "Done";
+  // }
 
   calculateMinutesAndSeconds(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -107,10 +118,16 @@ export class SimpleAudioPlayer {
   }
 
   initializeButtonVisuals() {
-    // this.toggleButtonVisuals(false);
-    console.log("init viz");
-
+    this.toggleButtonVisuals(false);
   }
+
+  // preloadNextTrack() {
+  //   if (this.currentIndex + 1 < this.tracklist.length) {
+  //     const nextTrack = this.tracklist[this.currentIndex + 1];
+  //     const audioPreload = new Audio(nextTrack.url);
+  //     audioPreload.preload = "auto";
+  //   }
+  // }
 
   // TRANSCRIPT
 
@@ -136,7 +153,7 @@ export class SimpleAudioPlayer {
 
     const transBtnContainer = document.getElementById("transButtonContainer");
     transBtnContainer.appendChild(transcriptButton);
-    transcriptButton.addEventListener("click", this.toggleTranscriptVisibiilty.bind(this));
+    transcriptButton.addEventListener("click", this.toggleTranscript.bind(this));
     // Initialize transcriptContent here to avoid re-declaration later
     this.transcriptContent = this.createElement("div", { id: "transcriptContent", style: "display: none" });
     this.transcriptContainer.appendChild(this.transcriptContent); // Append to the container
@@ -176,7 +193,8 @@ export class SimpleAudioPlayer {
     return container;
   }
 
-  updateTranscriptBasedOnLanguage() {
+  // Function to update the transcript based on the selected language
+  updateTranscript() {
     if (!this.transcriptContainer) {
       console.error("Transcript container not found.");
       return;
@@ -201,12 +219,13 @@ export class SimpleAudioPlayer {
     this.transcriptContainer.style.display = "block";
   }
 
-  toggleTranscriptVisibiilty() {
+  // Function to toggle the transcript visibility
+  toggleTranscript() {
     const transcriptButton = document.getElementById("transcriptButton");
 
     this.transcriptVisible = !this.transcriptVisible; // Toggle the flag first for more predictable logic
     if (this.transcriptVisible) {
-      this.updateTranscriptBasedOnLanguage(); // Update before showing
+      this.updateTranscript(); // Update before showing
       this.transcriptContainer.style.display = "block";
       transcriptButton.textContent = "Hide Transcript";
     } else {
@@ -310,8 +329,6 @@ export class SimpleAudioPlayer {
     }
   }
   
-  
-
 
   handleSkipForward() {
     let newPlayerTime = this.globalAudioElement.currentTime + 20;
@@ -321,7 +338,7 @@ export class SimpleAudioPlayer {
       setTimeout(() => {
         this.globalAudioElement.currentTime = newPlayerTime;
         this.isUpdatingTime = false;
-      }, 20); // Adjust the delay as neede
+      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
     }
   }
 
@@ -344,8 +361,9 @@ export class SimpleAudioPlayer {
         this.playTrack(this.currentIndex);
         this.firstPlayDone = true; // Mark that first play has occurred
         this.createTranscriptContainer();
+
       } else {
-        // If not the first play, just resume the player
+        // If not the first play, just resume
         this.globalAudioElement.play();
       }
     } else {
@@ -362,10 +380,8 @@ export class SimpleAudioPlayer {
         return;
       }
 
-      // this.isTransitioningBetweenTracks = true;
-
       const track = this.tracklist[index];
-      // console.log(`[playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
+      console.log(`[playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
 
       this.globalAudioElement.src = track.url;
       // this.globalAudioElement.currentTime = 0; // Ensure track starts from the beginning
@@ -375,11 +391,7 @@ export class SimpleAudioPlayer {
         .play()
         .then(() => {
           this.isPlaying = true;
-          // this.isTransitioningBetweenTracks = false; // Transition complete, new track is playing
           console.log(`[playTrack] Now playing. Index=${index}, URL=${track.url}`);
-          console.log("starting player .play");
-
-          // this.toggleButtonVisuals(true); 
 
           // Preload the next track if applicable
           if (index + 1 < this.tracklist.length) {
@@ -401,12 +413,10 @@ export class SimpleAudioPlayer {
 
       // Handle track end
       this.globalAudioElement.onended = () => {
-        // console.log(`[playTrack] Updated cumulativeElapsedTime after track end: ${this.cumulativeElapsedTime}s`);
-
         const duration = this.globalAudioElement.duration;
         this.timerDuration += Math.floor(duration);
 
-        // console.log(`[playTrack] Track ended. Index=${index}, URL=${track.url}`);
+        console.log(`[playTrack] Track ended. Index=${index}, URL=${track.url}`);
         this.cumulativeElapsedTime += Number(track.duration); // Update cumulative time with track duration
         console.log(`[playTrack] Updated cumulativeElapsedTime after track end: ${this.cumulativeElapsedTime}s`);
         this.currentIndex++; // Move to the next track
@@ -416,19 +426,8 @@ export class SimpleAudioPlayer {
         } else {
           console.log("[playTrack] Finished playing all tracks. Playlist ended.");
           this.isPlaying = false;
-          // this.isTransitioningBetweenTracks = false; // Ensure this flag is reset at playlist end
-          console.log("stopping player else play");
-
-          // this.toggleButtonVisuals(false); // Update UI to reflect playback has stopped
-
           resolve(); // Resolve as playlist finished
         }
-      };
-
-      // If the promise chain above fails, ensure we reset the transitioning state
-      this.globalAudioElement.onerror = () => {
-        // this.isTransitioningBetweenTracks = false;
-        reject(new Error("Error playing track"));
       };
     });
   }
@@ -437,41 +436,25 @@ export class SimpleAudioPlayer {
     console.log("Pausing");
     this.globalAudioElement.pause();
     this.isPlaying = false;
-    console.log("stopping player");
-    // this.toggleButtonVisuals(false);
+    this.toggleButtonVisuals(false);
   }
 
   handlePlay() {
-    // console.log("handlePlay");
+    console.log("handlePlay");
     this.isPlaying = true;
-    console.log("starting player handleplay");
-
     this.toggleButtonVisuals(true);
   }
 
   handlePause() {
-    // console.log("handlePause");
+    console.log("handlePause");
     this.isPlaying = false;
-    console.log("stopping player handlepause");
     this.toggleButtonVisuals(false);
   }
-
-  // handleTimerCompletion() {
-  //   const timeRemainingElement = document.getElementById("time-remaining");
-
-  //   if (!timeRemainingElement) {
-  //     console.error("Error: Missing element 'time-remaining'");
-  //     return; // Exit the function to prevent further errors
-  //   }
-  //   timeRemainingElement.innerHTML = "Done";
-  // }
 
   handleEnded() {
     console.log("handleEnded");
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
-    console.log("stopping player handleended");
-
     // console.log(`Before End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}, Track Duration: ${Math.round(this.globalAudioElement.duration)}`);
     // this.cumulativeElapsedTime += Math.round(this.globalAudioElement.duration);
     // console.log(`After End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}`);
@@ -485,9 +468,6 @@ export class SimpleAudioPlayer {
   }
 
   toggleButtonVisuals(isPlaying) {
-    // if (this.isTransitioningBetweenTracks) return;
-    console.log("enter funct togglebuttonviz");
-
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");
     const playButtonTextContainer = document.getElementById("play-button-text-container");
@@ -503,6 +483,7 @@ export class SimpleAudioPlayer {
     } else {
       if (!playButton.classList.contains("paused")) {
         if (!this.firstPlayDone) {
+
           // we're in a begin state
         } else {
           // Check to prevent redundant operations
@@ -513,7 +494,7 @@ export class SimpleAudioPlayer {
       }
     }
     // Toggle these classes regardless of current state, as they control other visual aspects that may need to be updated
-    // playButton.classList.toggle("playing", isPlaying);
-    // playButton.classList.toggle("paused", !isPlaying);
+    playButton.classList.toggle("playing", isPlaying);
+    playButton.classList.toggle("paused", !isPlaying);
   }
 }
