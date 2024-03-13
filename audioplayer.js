@@ -434,7 +434,7 @@ export class SimpleAudioPlayer {
 
   pausePlayback() {
     console.log("Pausing");
-    this.globalAudioElement.pause();
+    this.globalAudioElement.pause(); 
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
   }
