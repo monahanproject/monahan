@@ -243,15 +243,12 @@ export class SimpleAudioPlayer {
 
     if (playButton) {
       playButton.addEventListener("click", () => this.startPlayback());
-     // playButton.addEventListener("touchend", () => this.startPlayback(), false);
     }
     if (skipBackwardButton) {
       skipBackwardButton.addEventListener("click", () => this.handleSkipBackward());
-     // playButton.addEventListener("touchend", () => this.startPlayback(), false);
     }
     if (skipForwardButton) {
       skipForwardButton.addEventListener("click", () => this.handleSkipForward());
-      //playButton.addEventListener("touchend", () => this.startPlayback(), false);
     }
   }
 
@@ -285,32 +282,6 @@ export class SimpleAudioPlayer {
       volumeThinner.style.left = `${initialVolume}%`; // Correctly position the thinner part
     }
 }
-
-
-  // createVolumeSlider() {
-  //   const volumeDot = document.getElementById("volume-dot");
-  //   var volumeBar = document.getElementById("volume-slider");
-  //   if (volumeBar && volumeBar instanceof HTMLInputElement) {
-  //     // Runtime check
-  //     volumeBar.type = "range";
-  //     volumeBar.max = "100";
-  //     volumeBar.min = "0";
-  //     volumeBar.value = "75"; // Default volume
-  //     volumeBar.addEventListener(
-  //       "change",
-  //       function (event) {
-  //         this.handleVolumeChange(event);
-  //       }.bind(this)
-  //     );
-  //     this.globalAudioElement.volume = parseFloat(volumeBar.value) / 100;
-  //   }
-  //   // Initial volume UI update
-  //   const initialVolume = this.globalAudioElement.volume * 100;
-  //   const volumeFiller = document.getElementById("volume-bar-filler");
-  //   if (volumeFiller) {
-  //     volumeFiller.style.width = `${initialVolume}%`;
-  //   }
-  // }
 
    handleVolumeChange(event) {
     const volumeLevel = parseFloat(event.target.value); // Range is 0 to 100, directly representing percentage
@@ -440,36 +411,12 @@ export class SimpleAudioPlayer {
     });
   }
 
-
-
-
-
-
-
-
-
   pausePlayback() {
     console.log("calling pauseplayback");
     this.globalAudioElement.pause(); 
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
   }
-
-
-
-
-
-
-
-
-
-  /*
-
-
-    Events that global audio calls
-
-
-  */
 
   handlePlay() {
     console.log("calling handleplay");
@@ -519,7 +466,6 @@ export class SimpleAudioPlayer {
 
     if (isPlaying) {
       if (!playButton.classList.contains("playing")) {
-        // Check to prevent redundant operations
         playButtonTextContainer.style.left = "50%";
         svgContainer.innerHTML = this.pausedSVG;
         playButtonTextContainer.textContent = this.pausedText;
@@ -540,7 +486,6 @@ export class SimpleAudioPlayer {
 
     console.log( isPlaying );
     console.log( playButton.classList );
-    // Toggle these classes regardless of current state, as they control other visual aspects that may need to be updated
     playButton.classList.toggle("playing", isPlaying);
     playButton.classList.toggle("paused", !isPlaying);
   }
