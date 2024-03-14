@@ -7,24 +7,28 @@ let resetBtn = document.getElementById("resetBtn");
 let isInverted = false;
 
 
-
-
-function replaceSvgContent() {
+document.addEventListener("DOMContentLoaded", function() {
   if (window.matchMedia("(min-width: 900px)").matches) {
       console.log("Desktop version");
-      document.getElementById('titleText').innerHTML = '<img src="images/svg/MonohanLogoDesktop.svg" class="lettersBox" id="monSvg" alt="Monahan: Art, Public Art">';
-  } else {
-      console.log("Mobile version");
-      // Replace with mobile SVG or other content as needed
-      document.getElementById('titleText').innerHTML = '<img src="images/svg/MonohanLogoMobile.svg" class="lettersBox" id="monSvg" alt="Monahan: Art, Public Art"/>';
+      var svgContainer = document.getElementById('titleText');
+      svgContainer.innerHTML = '<img src="images/svg/monohanLogoDesktopInvert.svg" class="lettersBox" id="desktopSvg" alt="Monahan: Art, Public Art">';
   }
+});
+
+function replaceSvgContent() {
+  const isDesktop = window.matchMedia("(min-width: 900px)").matches; // Check if it's desktop
+  let logoPath; // Variable to hold the path for the logo
+
+  // Determine the correct logo path based on screen size and inversion state
+  if (isDesktop) {
+      logoPath = isInverted ? "images/svg/monohanLogoDesktopInvert.svg" : "images/svg/monohanLogoDesktop.svg";
+  } else {
+      logoPath = isInverted ? "images/svg/monohanLogoMobileInvert.svg" : "images/svg/monohanLogoMobile.svg";
+  }
+
+  let svgContainer = document.getElementById('titleText');
+  svgContainer.innerHTML = `<img src="${logoPath}" class="lettersBox" id="monSvg" alt="Monahan: Art, Public Art">`;
 }
-
-// Listen for DOMContentLoaded to initially replace content
-document.addEventListener("DOMContentLoaded", replaceSvgContent);
-
-// Listen for resize event to dynamically replace content as the window size changes
-window.addEventListener('resize', replaceSvgContent);
 
 
 let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
@@ -37,7 +41,7 @@ const imageSourceMap = {
   "images/svg/separator.svg": "images/svg/separatorInvert.svg",
   "images/svg/30.svg": "images/svg/30Invert.svg",
   "images/svg/15.svg": "images/svg/15Invert.svg",
-  "images/svg/-contributors1.svg": "images/svg/-contributors1Invert.svg",
+  // "images/svg/-contributors1.svg": "images/svg/-contributors1Invert.svg",
   "images/svg/cityOfOttawaLogo.svg": "images/svg/cityOfOttawaLogoInvert.svg",
   "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg",
 };
@@ -65,53 +69,59 @@ function toggleImageSources() {
 }
 
 function toggleSvgBackgrounds() {
-  // List of classes to toggle
   const svgClasses = [
     { original: "svg-about", invert: "svg-about-invert" },
     { original: "svg-upPlant", invert: "svg-upPlant-invert" },
     { original: "svg-works", invert: "svg-works-invert" },
     { original: "svg-sideways", invert: "svg-sideways-invert" },
-    { original: "svg-contributors", invert: "svg-contributors-invert" },
-    { original: "svg-contributors2", invert: "svg-contributors2-invert" },
   ];
 
-  svgClasses.forEach((svgClass) => {
-    const elements = document.querySelectorAll("." + svgClass.original + ", ." + svgClass.invert);
-    elements.forEach((element) => {
-      if (isInverted) {
-        if (!element.classList.contains(svgClass.invert)) {
-          element.classList.add(svgClass.invert);
-        }
-      } else {
-        if (element.classList.contains(svgClass.invert)) {
-          element.classList.remove(svgClass.invert);
-        }
+  svgClasses.forEach(({ original, invert }) => {
+    document.querySelectorAll(`.${original}, .${invert}`).forEach(element => {
+      element.classList.toggle(invert, isInverted); // Add if isInverted, remove if not
+      if (!isInverted) {
+        element.classList.remove(invert); // Ensure inverted class is removed if not inverted
       }
     });
   });
+
+  
+
+    // Select all divs with either class
+    const allDivs = document.querySelectorAll('.svg-contributors, .svg-contributors2');
+    
+    // Iterate through the NodeList
+    allDivs.forEach(div => {
+        // Check if the div has the 'svg-contributors2' class
+        if (div.classList.contains('svg-contributors2')) {
+            // It has 'svg-contributors2', so we remove it
+            div.classList.remove('svg-contributors2');
+        } else {
+            // It doesn't have 'svg-contributors2', so we add it
+            div.classList.add('svg-contributors2');
+        }
+    });
 }
+
+
+
 
 function swapColors() {
-  console.log("swapColors called"); // Initial log
-  requestAnimationFrame(() => {
-    console.log(`Before toggling, isInverted is: ${isInverted}`); // Log before toggle
-    isInverted = !isInverted;
-    console.log(`After toggling, isInverted is now: ${isInverted}`); // Log after toggle
+  isInverted = !isInverted; // Toggle the inversion state
 
-    const root = document.documentElement;
-    root.style.setProperty("--lightgreen", isInverted ? "rgb(35, 78, 68)" : "rgb(191, 255, 194)");
-    root.style.setProperty("--darkgreen", isInverted ? "rgb(191, 255, 194)" : "rgb(35, 78, 68)");
+  // Update CSS variables for color inversion
+  const root = document.documentElement;
+  root.style.setProperty("--lightgreen", isInverted ? "rgb(35, 78, 68)" : "rgb(191, 255, 194)");
+  root.style.setProperty("--darkgreen", isInverted ? "rgb(191, 255, 194)" : "rgb(35, 78, 68)");
+  root.style.setProperty("--black", isInverted ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)");
+  root.style.setProperty("--white", isInverted ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)");
+  root.style.setProperty("--grey", isInverted ? "rgb(122, 122, 122)" : "rgb(35, 78, 68)");
 
-    root.style.setProperty("--black", isInverted ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)");
-    root.style.setProperty("--white", isInverted ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)");
-
-    root.style.setProperty("--grey", isInverted ? "rgb(122, 122, 122)" : "rgb(35, 78, 68)");
-
-    // Apply the image source toggling within the same frame
-    toggleImageSources();
-    toggleSvgBackgrounds();
-  });
+  replaceSvgContent(); // Update the logo based on the new state
+  toggleImageSources(); // Update other images if needed
+  toggleSvgBackgrounds(); // Also, ensure SVG backgrounds are toggled if needed
 }
+
 
 invertColoursBtn.addEventListener("click", swapColors);
 
@@ -229,4 +239,9 @@ document.addEventListener("keydown", function (event) {
       console.log("hide div");
     }
   }
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  replaceSvgContent(); // This now handles setting the initial correct logo
 });
