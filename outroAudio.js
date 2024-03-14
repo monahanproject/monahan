@@ -26,8 +26,8 @@ export const prepareSongForPlayback = (song) => {
       tags: ["outro"],
       backgroundMusic: "",
       credit: "",
-      engTrans: "[TODO.]",
-      frTrans: "[TODO.]",
+      engTrans: "^Laura^^: In this version of MONAHAN you’ve heard from… ",
+      frTrans: "Dans cette version de MONAHAN, vous avez entendu…",
     },
   ].map(prepareSongForPlayback);
   
@@ -45,5 +45,7 @@ export const prepareSongForPlayback = (song) => {
       tags: ["outro"],
       backgroundMusic: "",
       credit: "",
+      engTrans: "^Laura^^: Please visit the MONAHAN website to find out more about each contributor. We hope you will come again for a different experience.  Thank you for listening.  ",
+      frTrans: "^Laura^^ : Rendez-vous sur le site Web de MONAHAN pour en savoir plus sur chaque personne qui a collaboré au projet. Nous espérons que vous reviendrez pour une autre expérience. Merci de votre écoute.",
     },
   ].map(prepareSongForPlayback);
