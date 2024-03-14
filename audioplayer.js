@@ -50,7 +50,7 @@ export class SimpleAudioPlayer {
 
   calcDuration() {
     this.totalPlaylistDuration = this.tracklist.reduce((acc, track) => acc + Number(track.duration), 0);
-    console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
+    // console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
     return this.totalPlaylistDuration;
   }
 
@@ -118,7 +118,7 @@ export class SimpleAudioPlayer {
   }
 
   initializeButtonVisuals() {
-    console.log( "intializing button visuals");
+    // console.log( "intializing button visuals");
     this.toggleButtonVisuals(false);
   }
 
@@ -253,41 +253,32 @@ export class SimpleAudioPlayer {
   }
 
   createVolumeSlider() {
-    // Assuming 'volumeDot' is not used in the updated approach, so it can be removed or commented out
-    // const volumeDot = document.getElementById("volume-dot");
-
-    var volumeBar = document.getElementById("volume-slider");
-    if (volumeBar && volumeBar instanceof HTMLInputElement) {
-      volumeBar.type = "range";
-      volumeBar.max = "100";
-      volumeBar.min = "0";
-      volumeBar.value = "75"; // Set default volume if needed, or adjust based on a saved setting
-
-      // Change this to 'input' to dynamically update as the slider moves
-      volumeBar.addEventListener("input", (event) => {
-        this.handleVolumeChange(event); // Ensure 'this' is correctly bound to your class or object
-      });
-
-      this.globalAudioElement.volume = parseFloat(volumeBar.value) / 100;
-    }
-
-    // Initial volume UI update for both filler and thinner elements
-    const initialVolume = this.globalAudioElement.volume * 100;
-    const volumeFiller = document.getElementById("volume-bar-filler");
-    const volumeThinner = document.getElementById("volume-bar-thinner");
-
-    if (volumeFiller && volumeThinner) {
-      volumeFiller.style.width = `${initialVolume}%`;
-      volumeThinner.style.width = `${100 - initialVolume}%`;
-      volumeThinner.style.left = `${initialVolume}%`; // Correctly position the thinner part
-    }
-}
-
-   handleVolumeChange(event) {
-    const volumeLevel = parseFloat(event.target.value); // Range is 0 to 100, directly representing percentage
-    const globalAudioElement = document.querySelector('audio'); // Ensure you have a reference to your audio element
-    globalAudioElement.volume = volumeLevel / 100;
+    var volumeSlider = document.getElementById("volume-slider");
+    if (volumeSlider && volumeSlider instanceof HTMLInputElement) {
+      volumeSlider.type = "range";
+      volumeSlider.max = "100";
+      volumeSlider.min = "0";
+      volumeSlider.value = "75"; // Set default volume
   
+      volumeSlider.addEventListener("input", (event) => {
+        this.handleVolumeChange(event); 
+      });
+  
+      // Immediately set the volume based on the slider's initial value
+      this.globalAudioElement.volume = parseFloat(volumeSlider.value) / 100;
+    }
+  
+    // Initial UI update for volume indicators if necessary
+    this.updateVolumeIndicator(parseFloat(volumeSlider.value));
+  }
+  
+  handleVolumeChange(event) {
+    const volumeLevel = parseFloat(event.target.value) / 100;
+    this.globalAudioElement.volume = volumeLevel;
+    this.updateVolumeIndicator(event.target.value); // Assuming this method exists to update the UI
+  }
+  
+  updateVolumeIndicator(volumeLevel) {
     const volumeFiller = document.getElementById('volume-bar-filler');
     const volumeThinner = document.getElementById('volume-bar-thinner');
   
@@ -297,7 +288,7 @@ export class SimpleAudioPlayer {
   
     if (volumeThinner) {
       volumeThinner.style.width = `${100 - volumeLevel}%`;
-      volumeThinner.style.left = `${volumeLevel}%`; // Position it right at the end of the filler
+      volumeThinner.style.left = `${volumeLevel}%`;
     }
   }
   
@@ -328,7 +319,7 @@ export class SimpleAudioPlayer {
 
   startPlayback() {
 
-    console.log("calling start playback");
+    // console.log("calling start playback");
     if (!this.isPlaying && this.currentIndex < this.tracklist.length) {
       if (!this.firstPlayDone) {
         // If it's the first play, start from the beginning
@@ -341,13 +332,13 @@ export class SimpleAudioPlayer {
         this.globalAudioElement.play();
       }
     } else {
-      console.log("calling paus playback from inside audioplayer");
+      // console.log("calling paus playback from inside audioplayer");
       this.pausePlayback(); // Pause playback if we're currently playing
     }
   }
 
   playTrack(index) {
-    console.log("calling playtrack");
+    // console.log("calling playtrack");
     return new Promise((resolve, reject) => {
       if (index >= this.tracklist.length) {
         console.log("all this tracklist length done");
@@ -358,26 +349,26 @@ export class SimpleAudioPlayer {
       }
 
       const track = this.tracklist[index];
-      console.log(`got a track! [playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
+      // console.log(`got a track! [playTrack] Starting. Index=${index}, Track URL=${track.url}, Expected Duration=${track.duration}s`);
 
       this.globalAudioElement.src = track.url;
-      console.log(`assigning track to global element ${track}`);
+      // console.log(`assigning track to global element ${track}`);
       // this.globalAudioElement.currentTime = 0; // Ensure track starts from the beginning
 
       // Attempt to play the track
       this.globalAudioElement.play()
         .then(() => {
           this.isPlaying = true;
-          console.log(`[playTrack] Now playing. Index=${index}, URL=${track.url}`);
+          // console.log(`[playTrack] Now playing. Index=${index}, URL=${track.url}`);
 
           // Preload the next track if applicable
           if (index + 1 < this.tracklist.length) {
-            console.log("preloading next track!");
+            // console.log("preloading next track!");
             const nextTrack = this.tracklist[index + 1];
             const audioPreload = new Audio(nextTrack.url);
             audioPreload.preload = "auto";
             audioPreload.addEventListener("canplaythrough", () => {
-              console.log(`[playTrack] Preloaded next track. Index=${index + 1}, URL=${nextTrack.url}`);
+              // console.log(`[playTrack] Preloaded next track. Index=${index + 1}, URL=${nextTrack.url}`);
             });
             audioPreload.load(); // Start loading the next track
           }
@@ -385,25 +376,25 @@ export class SimpleAudioPlayer {
           resolve();
         })
         .catch((error) => {
-          console.error(`error!! [playTrack] Playback initiation error for track index=${index}, URL=${track.url}:`, error);
+          // console.error(`error!! [playTrack] Playback initiation error for track index=${index}, URL=${track.url}:`, error);
           reject(error);
         });
 
       // Handle track end
       this.globalAudioElement.onended = () => {
-        console.log("handling track end");
+        // console.log("handling track end");
         const duration = this.globalAudioElement.duration;
         this.timerDuration += Math.floor(duration);
 
-        console.log(`[playTrack] Track ended. Index=${index}, URL=${track.url}`);
+        // console.log(`[playTrack] Track ended. Index=${index}, URL=${track.url}`);
         this.cumulativeElapsedTime += Number(track.duration); // Update cumulative time with track duration
-        console.log(`about to increment index [playTrack] Updated cumulativeElapsedTime after track end: ${this.cumulativeElapsedTime}s`);
+        // console.log(`about to increment index [playTrack] Updated cumulativeElapsedTime after track end: ${this.cumulativeElapsedTime}s`);
         this.currentIndex++; // Move to the next track
 
         if (this.currentIndex < this.tracklist.length) {
           this.playTrack(this.currentIndex).then(resolve).catch(reject); // Recursive call to play next track
         } else {
-          console.log("[playTrack] Finished playing all tracks. Playlist ended.");
+          // console.log("[playTrack] Finished playing all tracks. Playlist ended.");
           this.isPlaying = false;
           resolve(); // Resolve as playlist finished
         }
@@ -412,26 +403,26 @@ export class SimpleAudioPlayer {
   }
 
   pausePlayback() {
-    console.log("calling pauseplayback");
+    // console.log("calling pauseplayback");
     this.globalAudioElement.pause(); 
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
   }
 
   handlePlay() {
-    console.log("calling handleplay");
+    // console.log("calling handleplay");
     this.isPlaying = true;
     this.toggleButtonVisuals(true);
   }
 
   handlePause() {
-    console.log("calling handlePause");
+    // console.log("calling handlePause");
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
   }
 
   handleEnded() {
-    console.log("calling handleEnded");
+    // console.log("calling handleEnded");
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
     // console.log(`Before End - CumulativeElapsedTime: ${this.cumulativeElapsedTime}, Track Duration: ${Math.round(this.globalAudioElement.duration)}`);
@@ -456,9 +447,9 @@ export class SimpleAudioPlayer {
 
   toggleButtonVisuals(isPlaying) {
 
-    console.log("Visual button toggling");
+    // console.log("Visual button toggling");
 
-    console.log(isPlaying);
+    // console.log(isPlaying);
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");
     const playButtonTextContainer = document.getElementById("play-button-text-container");
@@ -484,8 +475,8 @@ export class SimpleAudioPlayer {
       }
     }
 
-    console.log( isPlaying );
-    console.log( playButton.classList );
+    // console.log( isPlaying );
+    // console.log( playButton.classList );
     playButton.classList.toggle("playing", isPlaying);
     playButton.classList.toggle("paused", !isPlaying);
   }

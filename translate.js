@@ -106,9 +106,9 @@ const strings = [
  { id: "langToggle", en: "FR", fr: "EN" },
  // { id: "engLand", en: "MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.", fr: "MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des millénaires." },
 //  { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
- { id: "curiousEarsTxt", en: "A Sound Piece for Curious Ears", fr: "Une pièce sonore pour oreilles curieuses " },
+ { id: "curiousEarsTxt", en: "A Sound Piece</br> for Curious Ears", fr: "Une pièce sonore </br> pour oreilles curieuses " },
  { id: "aboutH2", en: "ABOUT", fr: "À PROPOS" },
- { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
+ { id: "soundForCurious", en: "A sound piece</br>  for curious ears.", fr: "Une pièce sonore </br> pour les oreilles curieuses." },
  {
   id: "eachTimeYouClick",
   en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a diverse group of contributors. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",

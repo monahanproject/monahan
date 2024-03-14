@@ -127,6 +127,8 @@ section {
 
 body {
   line-height: 1;
+  touch-action: manipulation;
+
 }
 
 ol,
@@ -1298,7 +1300,7 @@ input[type="range"] {
   border-radius: 50%;
   background: var(--darkgreen);
   cursor: pointer;
-  margin-top: -5px; /* Adjust if necessary to align with the bar */
+  margin-top: -4px; /* Adjust if necessary to align with the bar */
 }
 
 #volume-slider::-moz-range-thumb {
@@ -1307,6 +1309,11 @@ input[type="range"] {
   border-radius: 50%;
   background: var(--darkgreen);
   cursor: pointer;
+}
+
+.volume-icon {
+  display: flex;
+
 }
 
 @media screen and (min-width: 900px) {
@@ -1536,7 +1543,7 @@ input[type="range"] {
 }
 
 #transcriptContainer:hover {
-  opacity: 0.6;
+  /* opacity: 0.6; */
 }
 
 @media screen and (min-width: 900px) {
@@ -1644,10 +1651,10 @@ article > p {
   }
 
   .role {
-    grid-row: 1;
+    /* grid-row: 1;
     grid-column: 2;
     margin-top: 0rem;
-    margin-left: -62.5vw;
+    margin-left: -62.5vw; */
 
   }
   summary::after {
