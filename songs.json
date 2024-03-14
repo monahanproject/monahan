@@ -644,7 +644,7 @@
     {
         "name": "P_ALBERT_01",
         "url": "./sounds/CONTENT/P_ALBERT_01.mp3",
-        "duration": 56,
+        "duration": 57,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -665,7 +665,7 @@
     {
         "name": "P_ALBERT_02",
         "url": "./sounds/CONTENT/P_ALBERT_02.mp3",
-        "duration": 267,
+        "duration": 268,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -687,7 +687,7 @@
     {
         "name": "P_ALBERT_03",
         "url": "./sounds/CONTENT/P_ALBERT_03.mp3",
-        "duration": 40,
+        "duration": 42,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -711,7 +711,7 @@
     {
         "name": "P_ALBERT_04",
         "url": "./sounds/CONTENT/P_ALBERT_04.mp3",
-        "duration": 52,
+        "duration": 54,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -734,7 +734,7 @@
     {
         "name": "P_ALBERT_05",
         "url": "./sounds/CONTENT/P_ALBERT_05.mp3",
-        "duration": 37,
+        "duration": 39,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -755,7 +755,7 @@
     {
         "name": "P_ALBERT_06",
         "url": "./sounds/CONTENT/P_ALBERT_06.mp3",
-        "duration": 44,
+        "duration": 45,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -777,7 +777,7 @@
     {
         "name": "P_ALBERT_07",
         "url": "./sounds/CONTENT/P_ALBERT_07.mp3",
-        "duration": 35,
+        "duration": 37,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -800,7 +800,7 @@
     {
         "name": "P_ALBERT_08",
         "url": "./sounds/CONTENT/P_ALBERT_08.mp3",
-        "duration": 49,
+        "duration": 51,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -821,7 +821,7 @@
     {
         "name": "P_ALBERT_09",
         "url": "./sounds/CONTENT/P_ALBERT_09.mp3",
-        "duration": 35,
+        "duration": 37,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -843,7 +843,7 @@
     {
         "name": "P_ALBERT_10",
         "url": "./sounds/CONTENT/P_ALBERT_10.mp3",
-        "duration": 22,
+        "duration": 23,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -864,7 +864,7 @@
     {
         "name": "P_ALBERT_11",
         "url": "./sounds/CONTENT/P_ALBERT_11.mp3",
-        "duration": 88,
+        "duration": 90,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -887,7 +887,7 @@
     {
         "name": "P_ALBERT_12",
         "url": "./sounds/CONTENT/P_ALBERT_12.mp3",
-        "duration": 47,
+        "duration": 48,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -908,7 +908,7 @@
     {
         "name": "P_ALBERT_13",
         "url": "./sounds/CONTENT/P_ALBERT_13.mp3",
-        "duration": 72,
+        "duration": 74,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -929,7 +929,7 @@
     {
         "name": "P_ALBERT_14",
         "url": "./sounds/CONTENT/P_ALBERT_14.mp3",
-        "duration": 126,
+        "duration": 128,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -950,7 +950,7 @@
     {
         "name": "P_ALBERT_15",
         "url": "./sounds/CONTENT/P_ALBERT_15.mp3",
-        "duration": 109,
+        "duration": 111,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -970,7 +970,7 @@
     {
         "name": "P_ALBERT_16",
         "url": "./sounds/CONTENT/P_ALBERT_16.mp3",
-        "duration": 26,
+        "duration": 28,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -993,7 +993,7 @@
     {
         "name": "P_ALBERT_17",
         "url": "./sounds/CONTENT/P_ALBERT_17.mp3",
-        "duration": 61,
+        "duration": 62,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -1017,7 +1017,7 @@
     {
         "name": "P_ALBERT_18",
         "url": "./sounds/CONTENT/P_ALBERT_18.mp3",
-        "duration": 63,
+        "duration": 65,
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
@@ -1040,7 +1040,7 @@
     {
         "name": "P_NAMITHA_01",
         "url": "./sounds/CONTENT/P_NAMITHA_01.mp3",
-        "duration": 46,
+        "duration": 48,
         "author": "NAMITHA",
         "form": "poetry",
         "placement": [
@@ -1060,7 +1060,7 @@
     {
         "name": "P_NAMITHA_02",
         "url": "./sounds/CONTENT/P_NAMITHA_02.mp3",
-        "duration": 54,
+        "duration": 55,
         "author": "NAMITHA",
         "form": "poetry",
         "placement": [
@@ -1082,7 +1082,7 @@
     {
         "name": "P_NAMITHA_03",
         "url": "./sounds/CONTENT/P_NAMITHA_03.mp3",
-        "duration": 29,
+        "duration": 30,
         "author": "NAMITHA",
         "form": "poetry",
         "placement": [
@@ -1103,7 +1103,7 @@
     {
         "name": "P_NAMITHA_04",
         "url": "./sounds/CONTENT/P_NAMITHA_04.mp3",
-        "duration": 25,
+        "duration": 27,
         "author": "NAMITHA",
         "form": "poetry",
         "placement": [
@@ -1125,7 +1125,7 @@
     {
         "name": "P_NAMITHA_05",
         "url": "./sounds/CONTENT/P_NAMITHA_05.mp3",
-        "duration": 28,
+        "duration": 30,
         "author": "NAMITHA",
         "form": "poetry",
         "placement": [
@@ -1148,7 +1148,7 @@
     {
         "name": "P_NAMITHA_06",
         "url": "./sounds/CONTENT/P_NAMITHA_06.mp3",
-        "duration": 10,
+        "duration": 11,
         "author": "NAMITHA",
         "form": "poetry",
         "placement": [
