@@ -210,7 +210,7 @@ a:hover {
 
 .btn,
 #langToggle {
-  background-color: var(--lightgreen);
+  /* background-color: var(--lightgreen); */
   color: var(--darkgreen);
   outline: none;
   border: none;
@@ -247,7 +247,7 @@ a:hover {
 }
 
 #langToggle {
-  background-color: var(--lightgreen);
+  background-color: transparent;
   font-family: var(--font-family-mono);
   font-size: 1.25rem; /* Adjusted to maintain consistency at larger screens */
   text-decoration: none;
@@ -412,15 +412,18 @@ a:hover {
 /************************/
 
 nav {
+  position: fixed; /* Add this line */
   display: flex;
   justify-content: space-between;
-  align-content: center;
-  align-items: center;
+  align-items: center; /* corrected 'align-content' to 'align-items' for consistency */
   margin: 0;
   max-width: 100vw;
-  /* background-color: var(--darkgreen); */
   padding: 15px;
+right: 0;
+  top: 0; /* This ensures the nav sticks to the top of the viewport */
+  z-index: 1000; /* This ensures the nav is above other content */
 }
+
 
 @media screen and (min-width: 900px) {
   nav {
@@ -640,7 +643,7 @@ p {
   height: 70vh;
   max-height: 100vh;
 
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 #centerLandingPageContent {
@@ -670,18 +673,16 @@ p {
   }
 }
 
-#lettersBox {
-  display: flex;
+.lettersBox {
+  /* display: flex;
   justify-content: center;
   flex-wrap: nowrap;
+  max-width: 90vw; */
 }
 
 @media screen and (min-width: 900px) {
-  #lettersBox {
-    display: flex;
-    justify-content: center;
-    justify-content: start;
-    margin: 0;
+  .lettersBox {
+
   }
 
   #artPubArt {
@@ -699,6 +700,8 @@ p {
     flex-direction: row;
     width: 100%;
     height: 100%;
+
+    
   }
 
   #engLand {

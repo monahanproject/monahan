@@ -6,6 +6,27 @@ let resetBtn = document.getElementById("resetBtn");
 
 let isInverted = false;
 
+
+
+
+function replaceSvgContent() {
+  if (window.matchMedia("(min-width: 900px)").matches) {
+      console.log("Desktop version");
+      document.getElementById('titleText').innerHTML = '<img src="images/svg/MonohanLogoDesktop.svg" class="lettersBox" id="monSvg" alt="Monahan: Art, Public Art">';
+  } else {
+      console.log("Mobile version");
+      // Replace with mobile SVG or other content as needed
+      document.getElementById('titleText').innerHTML = '<img src="images/svg/MonohanLogoMobile.svg" class="lettersBox" id="monSvg" alt="Monahan: Art, Public Art"/>';
+  }
+}
+
+// Listen for DOMContentLoaded to initially replace content
+document.addEventListener("DOMContentLoaded", replaceSvgContent);
+
+// Listen for resize event to dynamically replace content as the window size changes
+window.addEventListener('resize', replaceSvgContent);
+
+
 let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
 const imageSourceMap = {
   "images/svg/accessIconInvert.svg": "images/svg/accessIcon.svg",
