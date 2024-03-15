@@ -255,6 +255,23 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
+<summary><span class="summary-content">JORDAN BELL</span><span class="role"></span></summary>
+<article>
+ <p>
+  <span class="bold"
+   ><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span
+  >
+  is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks
+  Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope,
+  from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity
+  Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an
+  active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several
+  different groups.
+ </p>
+</article>
+</details>
+<div class="svg-contributors svg-contributors2"></div>
+<details>
  <summary>
   <span class="summary-content">BRANDON EDWARDS</span>
   <span class="role">Specify the role here</span>
@@ -423,6 +440,25 @@ const productionPageFR = `
    and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).
   </p>
  </article>
+</details>
+<div class="svg-contributors svg-contributors2"></div>
+
+
+<details>
+<summary><span class="summary-content">JORDAN BELL</span><span class="role"></span></summary>
+<article>
+ <p>
+  <span class="bold"
+   ><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span
+  >
+  is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks
+  Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope,
+  from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity
+  Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an
+  active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several
+  different groups.
+ </p>
+</article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
@@ -1089,22 +1125,6 @@ const contributorsPageEN = `
 </article>
 </details>
 <div class="svg-contributors"></div>
-<details>
-<summary><span class="summary-content">JORDAN BELL</span><span class="role"></span></summary>
-<article>
- <p>
-  <span class="bold"
-   ><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span
-  >
-  is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks
-  Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope,
-  from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity
-  Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an
-  active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several
-  different groups.
- </p>
-</article>
-</details>
 `;
 
 const contributorsPageFR = `
@@ -1144,7 +1164,6 @@ const contributorsPageFR = `
 <details><summary><span class="summary-content">SOPHIA GRIGORIADIS</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca">Sophia Grigoriadis</a></span> est musicienne et enseignante. Au cours des 30 dernières années, son étude du chant et des percussions grecs, balkaniques et moyen-orientaux l'a amenée à composer, à se produire et à partir en tournée avec de nombreux ensembles de musique du monde et de fusion de Toronto. Son amour pour l'enseignement et sa passion musicale s'étendent à tous les âges : elle est cheffe de chorale pour All Saints Greek Orthodox Church et pour la City Choir à Toronto, et professeure de musique de la maternelle à la huitième année à la Metamorphosis Greek Orthodox School. Elle tient également un studio de musique appelé Clapping Land, où elle accueille de jeunes enfants et compile de la musique du monde. Son disque <span class="italic">Sound Adventures -- Global Music for Children</span> a remporté le prix d'argent de la fondation Parent's Choice.</p></article></details><div class="svg-contributors"></div>
 <details><summary><span class="summary-content">BRENNA MACCRIMMON</span><span class="role">Specify the role here</span></summary><article><p>Basée à Toronto, <span class="bold"><a target="_blank" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> étudie et interprète des musiques turque et balkanique depuis le début des années 1980. Elle s'est produite en Turquie et à l'étranger avec Selim Sesler, Karsılama, Muammer Ketencoğlu et le groupe de rock expérimental Baba Zula. Elle a fait des tournées dans toute l'Europe avec le platiniste balkanique DJ Shantel et le Bucovina Club Orkestra. Brenna apparaît dans <span class="italic">Crossing the Bridge</span>, le documentaire de 2005 de Fatih Akın sur la scène musicale d'Istanbul. En 2010, Brenna a figuré dans la distribution de <span class="italic">Bobble</span> avec Bobby McFerri à Moscou. Au théâtre, elle a assuré la direction musicale de la production primée de Volcano, <span class="italic">Goodness</span>, et la musique d'une production de Soulpepper, <span class="italic">Wedding at Aulis</span>, de Sina Gilani. En plus de chanter avec Turkwaz, Brenna joue avec l'ensemble gréco-turc Meltemi, elle voyage beaucoup pour enseigner et se produire, et elle s'intéresse grandement aux ukulélés. Récemment, elle a été directrice de <span class="italic">Walk with Amal</span> de MabelleArts pour Luminato 2023.</p></article></details><div class="svg-contributors"></div>
 <details><summary><span class="summary-content">MARYEM HASSAN TOLLAR</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> est une chanteuse égypto-canadienne de renom, connue pour ses interprétations de musique du monde. Elle a prêté sa voix au générique de l'émission <span class="italic">La petite mosquée dans la prairie</span> sur CBC, et au tube bollywoodien d'A.R. Rahman intitulé <span class="italic">Mayya Mayya</span>. Mme Tollar s'est produite avec Tafelmusik, l'Orchestre symphonique de Winnipeg, le Gryphon Trio et Patricia O'Callaghan. Elle monte sur scène avec plusieurs groupes musicaux de Toronto, dont Al Qahwa et Turkwaz, ainsi qu'avec la conteuse Dawne McFarlane. À l'automne 2022, Mme Tollar est partie en tournée avec <span class="italic">The Cave</span> (livret de Tomson Highway, musique de John Millard, scénario de Martha Ross) et, en 2023, avec l'adaptation théâtrale du livre d'Ann-Marie MaDonald <span class="italic">Fall On Your Knees</span> (mise en scène d'Alisa Palmer, scénario d'Hannah Moscovitch). Mme Tollar a reçu le premier prix Johanna-Metcalf pour les arts de la scène en 2019.</p></article></details><div class="svg-contributors"></div>
-<details><summary><span class="summary-content">JORDAN BELL</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span> est un concepteur sonore, un ingénieur du son et un monteur sonore pour films d'Ottawa. En plus de sa formation d'ingénieur du son chez Metalworks Studios à Mississauga, Jordan détient un diplôme après quatre ans d'études en sociologie à l'Université Carleton. Son travail dans le monde de l'audio couvre un large éventail : de l'enregistrement vocal à la postsynchronisation, en passant par le montage et le mixage de longs métrages et de films d'animation. Il travaille avec de nombreuses entreprises, toutes au sein du groupe Affinity Production, où il est ingénieur depuis plus d'une dizaine d'années. Lorsqu'il ne travaille pas dans le monde de la postproduction, Jordan est un musicien prolifique. Depuis plus de 20 ans, il travaille dans l'industrie de la musique; il écrit, enregistre et joue ses chansons et fait des tournées avec une multitude de groupes.</p></article></details><div class="svg-contributors"></div>
 <details><summary><span class="summary-content">BRANDON EDWARDS</span><span class="role">Specify the role here</span></summary><article><p><a target="_blank" href="http://brandonedwards.ca/"><span class="bold">Brandon Edwards</a></span> est candidat au doctorat en biologie à l'Université Carleton d'Ottawa, en Ontario. Dans le cadre de sa thèse, il élabore des outils permettant à la communauté de la recherche de rassembler plusieurs types de données d'enquête sur les oiseaux dans un seul modèle statistique, ainsi que des techniques permettant de contrôler la capacité d'une personne à percevoir les oiseaux avec précision dans différents environnements, comme le bord de la route, la forêt, les prairies... Toute sa vie, Brandon a cultivé une grande passion pour la nature, qui se manifeste surtout dans la photographie. Sa passion pour les oiseaux lui a permis de découvrir de nombreux autres êtres vivants et non vivants qui composent cette planète. Dans ses projets, il amène sa curiosité et sa passion pour la nature.</p></article></details><div class="svg-contributors"></div>
 <details><summary><span class="summary-content">SIMON GUIBORD</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://simonguibord.com/">Simon Guibord</a></span> est un concepteur graphique qui travaille dans les milieux culturels, universitaires et commerciaux. Il a collaboré avec la Galerie SAW, Artengine, la Galerie d'art d'Ottawa, DAÏMÔN, AXENÉO7, le magazine HB et des artistes de toute la région. Il se spécialise dans les publications et l'élaboration d'identités graphiques. Son travail se caractérise par une approche rationnelle et sensible, ainsi qu'un processus favorisant la recherche et l'expérimentation. Depuis 2015, il enseigne la typographie à l'Université du Québec en Outaouais.</p></article></details><div class="svg-contributors"></div>
 <details><summary><span class="summary-content">RACHEL GRAY</span><span class="role">Specify the role here</span></summary><article><p><span class="bold"><a target="_blank" href="https://rachelgray.art/">Rachel Gray</a></span> est une artiste interdisciplinaire canadienne basée dans le territoire algonquin (Ottawa). Sa dyslexie dans un monde peu adapté l'a amenée à explorer l'art comme un moyen de créer un langage personnalisé. Grâce au dessin, au spectacle, à l'installation et à la narration, elle tente de parler dans ces lieux que le langage laisse vides. Son travail a été exposé au niveau national et international. Rachel est également auteure, animatrice et illustratrice. Son roman graphique <span class="italic">Jess</span> a été adapté en une œuvre musicale sur une commande de Pacific Opera Victoria. Rachel est profondément liée à la communauté artistique des personnes handicapées; elle défend les pratiques artistiques accessibles, organise des expositions et travaille avec des organisations et des institutions universitaires pour exploiter l'art et la narration. Elle est membre fondatrice de Ghost Rooster, un collectif d'artistes handicapés, et ne cesse de chercher des occasions de collaborer et de rejoindre la communauté à travers l'art.</p></article></details><div class="svg-contributors"></div>

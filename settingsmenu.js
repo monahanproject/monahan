@@ -1,35 +1,40 @@
+import { getState, setState } from "./state.js";
+let isInverted = getState(); // This will initialize isInverted based on localStorage
+
+
 let settingsBtn = document.getElementById("accessiblityNav");
 let monochromeBtn = document.getElementById("monochromeBtn");
 let increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
 let decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
 let resetBtn = document.getElementById("resetBtn");
 
-let isInverted = false;
-
-
-document.addEventListener("DOMContentLoaded", function() {
-  if (window.matchMedia("(min-width: 900px)").matches) {
-      console.log("Desktop version");
-      var svgContainer = document.getElementById('titleText');
-      svgContainer.innerHTML = '<img src="images/svg/monohanLogoDesktopInvert.svg" class="lettersBox" id="desktopSvg" alt="Monahan: Art, Public Art">';
-  }
-});
-
 function replaceSvgContent() {
   const isDesktop = window.matchMedia("(min-width: 900px)").matches; // Check if it's desktop
   let logoPath; // Variable to hold the path for the logo
 
-  // Determine the correct logo path based on screen size and inversion state
   if (isDesktop) {
-      logoPath = isInverted ? "images/svg/monohanLogoDesktopInvert.svg" : "images/svg/monohanLogoDesktop.svg";
+    logoPath = isInverted ? "images/svg/monohanLogoDesktopInvert.svg" : "images/svg/monohanLogoDesktop.svg";
   } else {
-      logoPath = isInverted ? "images/svg/monohanLogoMobileInvert.svg" : "images/svg/monohanLogoMobile.svg";
+    logoPath = isInverted ? "images/svg/monohanLogoMobileInvert.svg" : "images/svg/monohanLogoMobile.svg";
   }
+  console.log(`Selected logo path: ${logoPath}`);
 
-  let svgContainer = document.getElementById('titleText');
-  svgContainer.innerHTML = `<img src="${logoPath}" class="lettersBox" id="monSvg" alt="Monahan: Art, Public Art">`;
+  let svgContainer = document.getElementById("titleText");
+  // Check if the container already contains an <img> element
+  let imageElement = svgContainer.querySelector("img#monSvg");
+
+  if (imageElement) {
+    // If <img> exists, just update its src attribute
+    imageElement.src = logoPath;
+  } else {
+    imageElement = document.createElement("img");
+    imageElement.src = logoPath;
+    imageElement.className = "lettersBox";
+    imageElement.id = "monSvg";
+    imageElement.alt = "Monahan: Art, Public Art";
+    svgContainer.appendChild(imageElement);
+  }
 }
-
 
 let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
 const imageSourceMap = {
@@ -44,6 +49,8 @@ const imageSourceMap = {
   // "images/svg/-contributors1.svg": "images/svg/-contributors1Invert.svg",
   "images/svg/cityOfOttawaLogo.svg": "images/svg/cityOfOttawaLogoInvert.svg",
   "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg",
+  "images/svg/stopButton.svg": "images/svg/stopButtonInvert.svg",
+  "images/svg/playButton.svg": "images/svg/playButtonInvert.svg",
 };
 
 function toggleImageSources() {
@@ -77,7 +84,7 @@ function toggleSvgBackgrounds() {
   ];
 
   svgClasses.forEach(({ original, invert }) => {
-    document.querySelectorAll(`.${original}, .${invert}`).forEach(element => {
+    document.querySelectorAll(`.${original}, .${invert}`).forEach((element) => {
       element.classList.toggle(invert, isInverted); // Add if isInverted, remove if not
       if (!isInverted) {
         element.classList.remove(invert); // Ensure inverted class is removed if not inverted
@@ -85,29 +92,25 @@ function toggleSvgBackgrounds() {
     });
   });
 
-  
+  // Select all divs with either class
+  const allDivs = document.querySelectorAll(".svg-contributors, .svg-contributors2");
 
-    // Select all divs with either class
-    const allDivs = document.querySelectorAll('.svg-contributors, .svg-contributors2');
-    
-    // Iterate through the NodeList
-    allDivs.forEach(div => {
-        // Check if the div has the 'svg-contributors2' class
-        if (div.classList.contains('svg-contributors2')) {
-            // It has 'svg-contributors2', so we remove it
-            div.classList.remove('svg-contributors2');
-        } else {
-            // It doesn't have 'svg-contributors2', so we add it
-            div.classList.add('svg-contributors2');
-        }
-    });
+  // Iterate through the NodeList
+  allDivs.forEach((div) => {
+    // Check if the div has the 'svg-contributors2' class
+    if (div.classList.contains("svg-contributors2")) {
+      // It has 'svg-contributors2', so we remove it
+      div.classList.remove("svg-contributors2");
+    } else {
+      // It doesn't have 'svg-contributors2', so we add it
+      div.classList.add("svg-contributors2");
+    }
+  });
 }
-
-
-
 
 function swapColors() {
   isInverted = !isInverted; // Toggle the inversion state
+  setState(isInverted); // Update the state in localStorage and application state
 
   // Update CSS variables for color inversion
   const root = document.documentElement;
@@ -121,7 +124,6 @@ function swapColors() {
   toggleImageSources(); // Update other images if needed
   toggleSvgBackgrounds(); // Also, ensure SVG backgrounds are toggled if needed
 }
-
 
 invertColoursBtn.addEventListener("click", swapColors);
 
@@ -145,13 +147,6 @@ function changeTextSize(increase) {
   root.style.fontSize = `${currentSize}rem`;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const userFontSize = localStorage.getItem("userFontSize");
-  if (userFontSize) {
-    document.documentElement.style.setProperty("--base-font-size", `${userFontSize}px`);
-  }
-});
-
 settingsBtn.addEventListener("click", function () {
   document.getElementById("slidein").classList.toggle("show");
 });
@@ -161,28 +156,39 @@ increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
 decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
 resetBtn.addEventListener("click", resetSettings);
 
+document.addEventListener("DOMContentLoaded", function () {
+  replaceSvgContent(); // This now handles setting the initial correct logo
 
-document.addEventListener('DOMContentLoaded', function() {
+  //   if (window.matchMedia("(min-width: 900px)").matches) {
+  //     console.log("Desktop version");
+  //     var svgContainer = document.getElementById('titleText');
+  //     svgContainer.innerHTML = '<img src="images/svg/monohanLogoDesktopInvert.svg" class="lettersBox" id="desktopSvg" alt="Monahan: Art, Public Art">';
+  // }
+
+  const userFontSize = localStorage.getItem("userFontSize");
+  if (userFontSize) {
+    document.documentElement.style.setProperty("--base-font-size", `${userFontSize}px`);
+  }
+
   // Invert Colors Click Area Expansion
-  const invertColorsContainer = document.querySelector('.dropdownContainer.invertColors'); // Add a class or use an existing one
-  invertColorsContainer.addEventListener('click', function() {
-    document.getElementById('invertColoursBtn').click(); // Programmatically click the button
+  const invertColorsContainer = document.querySelector(".dropdownContainer.invertColors"); // Add a class or use an existing one
+  invertColorsContainer.addEventListener("click", function () {
+    document.getElementById("invertColoursBtn").click(); // Programmatically click the button
   });
 
   // Monochrome Click Area Expansion
-  const monochromeContainer = document.querySelector('.dropdownContainer.monochromee'); // Add a class or use an existing one
-  monochromeContainer.addEventListener('click', function() {
-    document.getElementById('monochromeBtn').click(); // Programmatically click the button
+  const monochromeContainer = document.querySelector(".dropdownContainer.monochromee"); // Add a class or use an existing one
+  monochromeContainer.addEventListener("click", function () {
+    document.getElementById("monochromeBtn").click(); // Programmatically click the button
   });
 
   // Make sure to prevent the event from firing twice if the button itself is clicked
-  document.querySelectorAll('.dropdownContainer button').forEach(button => {
-    button.addEventListener('click', function(e) {
+  document.querySelectorAll(".dropdownContainer button").forEach((button) => {
+    button.addEventListener("click", function (e) {
       e.stopPropagation(); // Prevent the li's click event from firing
     });
   });
 });
-
 
 // Close the menu by clicking outside
 window.addEventListener("click", function (e) {
@@ -218,8 +224,9 @@ function resetSettings() {
   // Ensure isInverted is reset correctly
   if (isInverted) {
     isInverted = false;
-    toggleImageSources(); // Resets images to their original sources
-    toggleSvgBackgrounds(); // Ensure SVG backgrounds are also reset
+    setState(isInverted); // This ensures the central state and localStorage are updated.
+    toggleImageSources(); // Ensure images are reset to their original sources
+    toggleSvgBackgrounds(); // Ensure SVG backgrounds are reset
   }
 
   let defaultRootFontSize = "1rem"; // Default root font size
@@ -241,7 +248,4 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-
-document.addEventListener("DOMContentLoaded", function() {
-  replaceSvgContent(); // This now handles setting the initial correct logo
-});
+document.addEventListener("DOMContentLoaded", function () {});

@@ -16,6 +16,9 @@ function displayDebugText(element, text, defaultText) {
   }
 }
 
+
+
+
 export function gatherAndPrintDebugInfo(song, index) {
   if (song) {
     // get debug ids so I can fill in debug info

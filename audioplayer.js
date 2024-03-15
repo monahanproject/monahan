@@ -1,4 +1,8 @@
 import { curatedTracklist } from "./play.js";
+import { getState, setState } from './state.js';
+// let isInverted = getState(); // This will initialize isInverted based on localStorage
+
+
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  SIMPLE AUDIO PLAYER class  XXXXXXXXXXXXX
@@ -25,7 +29,11 @@ export class SimpleAudioPlayer {
     this.transcriptContainer = document.getElementById("transcriptContainer");
 
     this.playingSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButton.svg" alt="Play Icon">`;
+    this.playingInvertedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButtonInvert.svg" alt="Play Icon">`;
+
     this.pausedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButton.svg" alt="Pause Icon">`;
+    this.pausedInvertedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButtonInvert.svg" alt="Pause Icon">`;
+
     this.playingText = "PLAY";
     this.pausedText = "STOP";
 
@@ -464,30 +472,42 @@ playTrack(index) {
 
 
   toggleButtonVisuals(isPlaying) {
+    const isThemeInverted = getState(); // Access the current theme state
+
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");
     const playButtonTextContainer = document.getElementById("play-button-text-container");
     const svgContainer = document.getElementById("play-button-svg-container");
 
+    // Determine which SVG to use based on isPlaying and isThemeInverted
+    let svgToUse;
     if (isPlaying) {
-      if (!playButton.classList.contains("playing")) {
-        playButtonTextContainer.style.left = "50%";
-        svgContainer.innerHTML = this.pausedSVG;
-        playButtonTextContainer.textContent = this.pausedText;
-      }
+        svgToUse = isThemeInverted ? this.pausedInvertedSVG : this.pausedSVG;
     } else {
-      if (!playButton.classList.contains("paused")) {
-        if (!this.firstPlayDone) {
-          // we're in a begin state
-        } else {
-          // Check to prevent redundant operations
-          playButtonTextContainer.style.left = "35%";
-          svgContainer.innerHTML = this.playingSVG;
-          playButtonTextContainer.textContent = this.playingText;
+        svgToUse = isThemeInverted ? this.playingInvertedSVG : this.playingSVG;
+    }
+
+    // Apply the determined SVG and text
+    if (isPlaying) {
+        if (!playButton.classList.contains("playing")) {
+            playButtonTextContainer.style.left = "50%";
+            svgContainer.innerHTML = svgToUse; // Use determined SVG
+            playButtonTextContainer.textContent = this.pausedText;
         }
-      }
+    } else {
+        if (!playButton.classList.contains("paused")) {
+            if (!this.firstPlayDone) {
+                // we're in a begin state
+            } else {
+                // Check to prevent redundant operations
+                playButtonTextContainer.style.left = "35%";
+                svgContainer.innerHTML = svgToUse; // Use determined SVG
+                playButtonTextContainer.textContent = this.playingText;
+            }
+        }
     }
     playButton.classList.toggle("playing", isPlaying);
     playButton.classList.toggle("paused", !isPlaying);
-  }
+}
+
 }
