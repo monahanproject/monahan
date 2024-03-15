@@ -1,7 +1,11 @@
 import { curatedTracklist } from "./play.js";
 import { getState, setState } from './state.js';
-// let isInverted = getState(); // This will initialize isInverted based on localStorage
+let isInverted = getState(); // This will initialize isInverted based on localStorage
 
+if (localStorage.getItem('themeInverted') === null) {
+    // If the key doesn't exist, initialize it to false
+    localStorage.setItem('themeInverted', 'false');
+}
 
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -472,7 +476,9 @@ playTrack(index) {
 
 
   toggleButtonVisuals(isPlaying) {
-    const isThemeInverted = getState(); // Access the current theme state
+    let isThemeInverted = getState(); // This will initialize isInverted based on localStorage
+
+    console.log(isThemeInverted);
 
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");
