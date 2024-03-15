@@ -45,21 +45,22 @@ function formatText(text) {
   };
 
   return text
-    .replace(formatPatterns.bold, '<span style="font-weight: bold;">$1</span>')
-    .replace(formatPatterns.center, '<span style="display: block; text-align: center;">$1</span>')
-    .replace(formatPatterns.italics, '<span style="font-style: italic;">$1</span>')
-    .replace(formatPatterns.lineBreak, "</br>")
-    .replace(formatPatterns.doubleLineBreak, "<p></br></br></p>");
+    .replace(formatPatterns.bold, '<span class="bold">$1</span>')
+    .replace(formatPatterns.center, '<span class="center">$1</span>')
+    .replace(formatPatterns.italics, '<span class="italics">$1</span>')
+    .replace(formatPatterns.lineBreak, "<br/>")
+    .replace(formatPatterns.doubleLineBreak, "<p><br/><br/></p>");
 }
+
 
 function createHTMLFromText(text) {
   const container = createElement("div", {});
   const currentParagraph = createElement("p", {
-    style: "margin-top: 3rem; margin-bottom: 1rem; padding: 1rem; background-color: #bfffc2; margin-left: 0; margin-right: 0;",
+    className: "paragraph",
   });
 
   try {
-    currentParagraph.innerHTML = formatText(text); // Refactored to formatText function
+    currentParagraph.innerHTML = formatText(text); // Use formatted text
     container.appendChild(currentParagraph);
   } catch (error) {
     console.error("Error while processing input text:", error);
@@ -67,6 +68,7 @@ function createHTMLFromText(text) {
 
   return container;
 }
+
 
 // Function to update the transcript based on the selected language
 function updateTranscript() {

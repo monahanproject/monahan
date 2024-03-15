@@ -1909,3 +1909,44 @@ article > p {
 .monochrome {
   filter: grayscale(100%);
 }
+
+/* transcript styles  */
+
+.bold {
+  font-weight: bold;
+}
+
+.center {
+  display: block;
+  text-align: center;
+}
+
+.italics {
+  font-style: italic;
+}
+
+.paragraph {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #bfffc2;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.invert-colors {
+  background-color: #234e44; /* Example: changing to black */
+  color: #fff; /* Example: changing text to white */
+}
+
+.invert-colors p, .invert-colors span {
+  background-color: #234e44; /* Invert background color for paragraphs and spans */
+  color: #bfffc2; /* Invert text color for paragraphs and spans */
+}
+
+.invert-colors p,
+.invert-colors span,
+.invert-colors p span {
+  background-color: #234e44 !important; /* Example: changing to black */
+  color: #bfffc2 !important; /* Example: changing text to white */
+}

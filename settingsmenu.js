@@ -120,6 +120,9 @@ function swapColors() {
   root.style.setProperty("--white", isInverted ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)");
   root.style.setProperty("--grey", isInverted ? "rgb(122, 122, 122)" : "rgb(35, 78, 68)");
 
+  const transcriptContainer = document.getElementById("transcriptContainer");
+  transcriptContainer.classList.toggle("invert-colors", isInverted);
+
   replaceSvgContent(); // Update the logo based on the new state
   toggleImageSources(); // Update other images if needed
   toggleSvgBackgrounds(); // Also, ensure SVG backgrounds are toggled if needed
@@ -212,6 +215,12 @@ function resetSettings() {
   let defaultFontSize = "6.9vw";
   document.documentElement.style.setProperty("--base-font-size", defaultFontSize);
   localStorage.removeItem("userFontSize"); // Clear stored font size
+
+    // Remove the invert-colors class from the transcript container
+    const transcriptContainer = document.getElementById("transcriptContainer");
+    if (transcriptContainer.classList.contains("invert-colors")) {
+      transcriptContainer.classList.remove("invert-colors");
+    }
 
   // Reset color theme variables
   const root = document.documentElement;
