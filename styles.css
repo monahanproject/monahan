@@ -188,11 +188,11 @@ main {
 
 /* a {
   color: var(--darkgreen);
-}
+} */
 
 a:hover {
-  color: var(--accentTwo);
-} */
+  opacity: 60%;
+} 
 
 /***********************/
 /******  BUTTONS  ******/
@@ -234,6 +234,10 @@ a:hover {
   font-weight: 700;
   line-height: 123.7%;
   text-transform: uppercase;
+}
+
+#transcriptButton:hover {
+  opacity: 70%;
 }
 
 #tratButton:hover {
@@ -441,6 +445,11 @@ right: 0;
   align-content: center;
   align-items: center;
 }
+
+#langToggle:hover, #accessiblityNav:hover  {
+  opacity: 60%;
+}
+
 
 .headerDiv {
   display: flex;
@@ -650,6 +659,7 @@ p {
 
 #centerLandingPageContent {
   padding: 2rem;
+  margin-top: 2rem;
 }
 
 @media screen and (min-width: 900px) {
@@ -957,7 +967,9 @@ h2 {
 
   #aboutH2 {
     font-size: 2rem;
+    font-weight: 200;
   }
+  
 
   #monH2 {
     font-size: 3rem;
@@ -1050,8 +1062,16 @@ li {
   margin-right: calc(1.8 * 15vw);
 }
 
+#skipBackwardButton:hover {
+  opacity: 60%;
+}
+
 #skipForwardButton {
   margin-left: calc(1.8 * 15vw);
+}
+
+#skipForwardButton:hover {
+  opacity: 60%;
 }
 
 .skip-button span {
@@ -1102,6 +1122,10 @@ li {
   background: transparent;
   border: none;
   margin: 6vh 0;
+}
+
+#play-button:hover {
+  opacity: 60%;
 }
 
 #play-button-svg-container {
@@ -1276,7 +1300,7 @@ input[type="range"] {
   height: 100%; 
   background-color: var(--darkgreen);
   height: 3px;
-  width: 0%; /* Updated dynamically */
+  width: 92%; /* Updated dynamically */
   /* margin-bottom: 4px; */
 }
 
@@ -1317,8 +1341,12 @@ input[type="range"] {
 }
 
 @media screen and (min-width: 900px) {
-  #volume-slider, #volume-container {
-    width: 40vw; /* Adjust based on larger screens */
+  #volume-slider {
+    width: 40vw;
+  }
+
+  #volume-container {
+    width: 40vw;
   }
 
   .volume-icon {
@@ -1621,6 +1649,10 @@ summary::after {
   transition: 0.2s;
   grid-row: 1;
   grid-column: 2;
+}
+
+summary::after:hover {
+  opacity: 60%;
 }
 
 summary::-webkit-details-marker {
@@ -1950,3 +1982,4 @@ article > p {
   background-color: #234e44 !important; /* Example: changing to black */
   color: #bfffc2 !important; /* Example: changing text to white */
 }
+
