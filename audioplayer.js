@@ -325,15 +325,19 @@ startPlayback() {
   } else if (!this.isPlaying && this.currentIndex >= this.tracklist.length) {
     // If playback is not active and there are no tracks left, stop playback entirely.
     // This could involve actions like resetting the player to its initial state.
-    this.stopPlayback(); // This is a hypothetical method. You'll need to implement it.
+    this.handleEnded(); // This is a hypothetical method. You'll need to implement it.
   } else {
     // If playback is active (music is playing), pause it.
     this.pausePlayback();
   }
 }
 
-// Hypothetical stopPlayback method - needs implementation
+
+  
+
 stopPlayback() {
+  console.log("stopplayback being called");
+
   // Pause the audio element and reset its current time to the start.
   this.globalAudioElement.pause();
   this.globalAudioElement.currentTime = 0;
@@ -341,45 +345,50 @@ stopPlayback() {
   // Reset playback state flags.
   this.isPlaying = false;
   this.firstPlayDone = false;
-  this.currentIndex = 0; // Optionally reset the current index if you want playback to restart from the beginning next time.
+  this.currentIndex = 0; // Reset the index to allow the playlist to start from the beginning.
+  this.cumulativeElapsedTime = 0; // Reset the cumulative elapsed time.
 
-  // Update UI elements to reflect that playback has stopped.
-  // Reset play/pause button to show "play" icon.
-  // const playPauseButton = document.getElementById('play-pause-button');
-  // if (playPauseButton) {
-  //   playPauseButton.classList.remove('pause-icon'); // Assuming you toggle icons with CSS classes.
-  //   playPauseButton.classList.add('play-icon');
-  // }
+  // Ensure the button visuals reflect the reset state.
+  this.toggleButtonVisuals(false); // This will switch the button visuals back to the "play" state.
 
-  // Reset the progress bar to 0.
-  // const progressBar = document.getElementById('progress-bar');
-  // if (progressBar) {
-  //   progressBar.value = 0; // Assuming it's an <input type="range"> element or similar.
-  // }
+  // Reset the progress UI elements to their initial state.
+  this.resetProgressUI();
 
-  // Reset any track time indicators to 0 or initial state.
-  const currentTimeIndicator = document.getElementById('current-time');
-  const totalTimeIndicator = document.getElementById('total-time');
-  if (currentTimeIndicator) {
-    currentTimeIndicator.textContent = '0:00';
-  }
-  if (totalTimeIndicator && this.tracklist.length > 0) {
-    // Assuming you have a way to calculate or store the total time of the playlist.
-    totalTimeIndicator.textContent = '0:00';
+  // Optionally hide the transcript container and reset its content if needed.
+  if (this.transcriptContainer && this.transcriptVisible) {
+    this.transcriptContainer.style.display = "none";
+    this.transcriptVisible = false; // Reset the visibility flag.
+    this.transcriptContainer.innerHTML = ""; // Clear the transcript content.
   }
 
-  // Clear any now-playing track information.
-  const nowPlayingTitle = document.getElementById('now-playing-title');
-  if (nowPlayingTitle) {
-    nowPlayingTitle.textContent = 'Select a track to play';
+  // Any other UI or state resets that are necessary for your application...
+}
+
+resetProgressUI() {
+  const progressBar = document.getElementById("progress-bar");
+  const progressDot = document.getElementById("progress-dot");
+  const timePlayedElement = document.getElementById("time-played");
+  const timeRemainingElement = document.getElementById("time-remaining");
+
+  // Reset progress bar and progress dot to initial state.
+  if (progressBar && progressDot) {
+    progressBar.style.width = `0%`;
+    progressDot.style.left = `-5px`; // Reset based on the initial position of your dot.
   }
 
-  // Additional UI resets as needed based on your application's design...
+  // Reset time played and time remaining to reflect the full duration of the playlist.
+  if (timePlayedElement && timeRemainingElement) {
+    timePlayedElement.innerText = `00:00`;
+    // Assuming `calculateMinutesAndSeconds` returns a zero-padded string of minutes and seconds.
+    const totalDuration = this.calculateMinutesAndSeconds(this.totalPlaylistDuration);
+    timeRemainingElement.innerText = `-${totalDuration.minutes}:${totalDuration.seconds}`;
+  }
 }
 
 
 
-  // Function to play a track from the tracklist at a given index.
+
+ // Function to play a track from the tracklist at a given index.
 playTrack(index) {
   // Return a new promise that will handle the play process.
   return new Promise((resolve, reject) => {
@@ -390,6 +399,8 @@ playTrack(index) {
       console.log(`[playTrack] End of playlist reached. Index=${index}`);
       // Set the isPlaying flag to false as nothing is playing now.
       this.isPlaying = false;
+      // Directly call handleEnded here to handle any necessary cleanup or UI updates
+      this.handleEnded();
       // Reject the promise indicating we've reached the end of the playlist.
       reject(new Error("End of playlist"));
       return; // Exit early since there's nothing to play.
@@ -397,60 +408,39 @@ playTrack(index) {
 
     // Retrieve the track object from the tracklist at the specified index.
     const track = this.tracklist[index];
-
-    // Set the source of the global audio element to the URL of the current track.
-    this.globalAudioElement.src = track.url;
+    this.globalAudioElement.src = track.url; // Set the source of the global audio element to the URL of the current track.
 
     // Attempt to play the current track.
-    this.globalAudioElement.play()
-      .then(() => {
-        // On success, set isPlaying flag to true.
-        this.isPlaying = true;
-
-        // Preload the next track if there is one.
-        if (index + 1 < this.tracklist.length) {
-          const nextTrack = this.tracklist[index + 1];
-          // Create a new audio element for preloading the next track.
-          const audioPreload = new Audio(nextTrack.url);
-          audioPreload.preload = "auto"; // Set preload attribute to auto.
-          audioPreload.addEventListener("canplaythrough", () => {
-            // This event listener is set up for preloading, no action needed here.
-          });
-          audioPreload.load(); // Start loading the next track.
-        }
-
-        // Resolve the promise as the track is successfully playing.
-        resolve();
-      })
-      .catch((error) => {
-        // If playing the track fails, reject the promise with the error.
-        reject(error);
-      });
+    this.globalAudioElement.play().then(() => {
+      this.isPlaying = true; // On success, set isPlaying flag to true.
+      if (index + 1 < this.tracklist.length) {
+        const nextTrack = this.tracklist[index + 1];
+        const audioPreload = new Audio(nextTrack.url); // Preload the next track if there is one.
+        audioPreload.preload = "auto";
+        audioPreload.load(); // Start loading the next track.
+      }
+      resolve(); // Resolve the promise as the track is successfully playing.
+    }).catch(error => {
+      reject(error); // If playing the track fails, reject the promise with the error.
+    });
 
     // Set up an event listener for when the track ends.
     this.globalAudioElement.onended = () => {
-      // Obtain the duration of the track that just finished playing.
-      const duration = this.globalAudioElement.duration;
-      // Update the timerDuration with the floor value of the track's duration.
-      this.timerDuration += Math.floor(duration);
-
-      // Update cumulativeElapsedTime with the track's duration.
-      this.cumulativeElapsedTime += Number(track.duration);
+      const duration = this.globalAudioElement.duration; // Obtain the duration of the track that just finished playing.
+      this.timerDuration += Math.floor(duration); // Update the timerDuration with the floor value of the track's duration.
+      this.cumulativeElapsedTime += Number(track.duration); // Update cumulativeElapsedTime with the track's duration.
+      this.currentIndex++; // Increment currentIndex to move to the next track.
       
-      // Increment currentIndex to move to the next track.
-      this.currentIndex++;
-
-      // If there are more tracks to play, recursively call playTrack to play the next one.
       if (this.currentIndex < this.tracklist.length) {
-        this.playTrack(this.currentIndex).then(resolve).catch(reject);
+        this.playTrack(this.currentIndex).then(resolve).catch(reject); // If there are more tracks to play, recursively call playTrack to play the next one.
       } else {
-        // If all tracks have been played, set isPlaying to false and resolve the promise.
-        this.isPlaying = false;
-        resolve(); // Indicate that the playlist has finished.
+        this.isPlaying = false; // If all tracks have been played, set isPlaying to false.
+        resolve(); // Resolve the promise, indicating that the playlist has finished.
       }
     };
   });
 }
+
 
 
   pausePlayback() {
@@ -470,8 +460,8 @@ playTrack(index) {
   }
 
   handleEnded() {
-    this.isPlaying = false;
-    this.toggleButtonVisuals(false);
+    console.log("handleEnded being called");
+      this.stopPlayback();
   }
 
 

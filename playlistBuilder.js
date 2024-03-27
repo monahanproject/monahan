@@ -29,9 +29,9 @@ import {
 // import { r25 } from "./geeseRule.js";
 import { shuffleTracklist, shuffleArrayOfRules } from "./shuffle.js";
 
-// let MAX_PLAYLIST_DURATION_SECONDS = 700; //(19m)
+let MAX_PLAYLIST_DURATION_SECONDS = 700; //(19m)
 
- let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+//  let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 let myTracklistDuration = 0;
 let CREDITSANDOUTROESTDUR = 44;
 let lastTrackEstDur = 150;
