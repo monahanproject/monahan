@@ -15,7 +15,7 @@ function replaceSvgContent() {
   if (isDesktop) {
     logoPath = isInverted ? "images/svg/monohanLogoDesktopInvert2.svg" : "images/svg/monohanLogoDesktop2.svg";
   } else {
-    logoPath = isInverted ? "images/svg/monohanLogoMobileInvert2.svg" : "images/svg/monohanLogoMobile2.svg";
+    logoPath = isInverted ? "images/svg/monohanLogoMobileInvert3.svg" : "images/svg/monohanLogoMobile2.svg";
   }
   console.log(`Selected logo path: ${logoPath}`);
 
