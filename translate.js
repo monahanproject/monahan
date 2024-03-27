@@ -173,8 +173,8 @@ const strings = [
  { id: "whereToFindUsH2", en: "WHERE TO FIND US", fr: "POUR NOUS TROUVER" },
  {
   id: "visit",
-  en: "Visit the <a href='https://goo.gl/maps/jjCqS3aNJphNgZaE9'>Monahan Wetlands</a> (or Monahan Drain) in Ottawa, Canada.",
-  fr: "Visitez le <a href='https://goo.gl/maps/jjCqS3aNJphNgZaE9'>milieu humide de Monahan</a> (ou drain Monahan) à Ottawa, Canada.",
+  en: "Visit the <a href='https://goo.gl/maps/jjCqS3aNJphNgZaE9' target='blank'>Monahan Wetlands</a> (or Monahan Drain) in Ottawa, Canada.",
+  fr: "Visitez le <a href='https://goo.gl/maps/jjCqS3aNJphNgZaE9' target='blank'>milieu humide de Monahan</a> (ou drain Monahan) à Ottawa, Canada.",
  },
  { id: "accessH2", en: "ACCESSIBILITY", fr: "ACCESSIBILITÉ" },
  {
@@ -190,8 +190,8 @@ const strings = [
  },
  {
   id: "thanksKomiku",
-  en: 'Thank you to Komiku for "The place that never get old", retrieved from <a href="https://citizen-dj.labs.loc.gov/">Citizen DJ</a>, Free Music Archive at the Library of Congress, Web Archives Division.',
-  fr: 'Merci à Komiku pour "The place that never get old", extrait de <a href="https://citizen-dj.labs.loc.gov/">Citizen DJ</a>, site Web archivé Free Music Archive de la Bibliothèque du Congrès, Division des archives Web.',
+  en: 'Thank you to Komiku for "The place that never get old", retrieved from <a href="https://citizen-dj.labs.loc.gov/" target="blank">Citizen DJ</a>, Free Music Archive at the Library of Congress, Web Archives Division.',
+  fr: 'Merci à Komiku pour "The place that never get old", extrait de <a href="https://citizen-dj.labs.loc.gov/ target="blank">Citizen DJ">Citizen DJ</a>, site Web archivé Free Music Archive de la Bibliothèque du Congrès, Division des archives Web.',
  },
  {
   id: "hugeThanks",
@@ -205,8 +205,8 @@ const strings = [
  // { id: "credits", en: "Credits:", fr: "Crédits :" },
  {
   id: "cred",
-  en: "MONAHAN was produced by Grimm Pictures and commissioned by the <a href='https://ottawa.ca/en/arts-heritage-and-events/public-art-and-city-ottawa-art-collection/public-art'>City of Ottawa’s Public Art Program</a>.",
-  fr: "MONAHAN a été produit par Grimm Pictures et commandé par le <a href='https://ottawa.ca/fr/arts-patrimoine-et-evenements/art-public-et-collection-dart-de-la-ville-dottawa/art-public'>Programme d’art public de la Ville d’Ottawa</a>.",
+  en: "MONAHAN was produced by Grimm Pictures and commissioned by the <a href='https://ottawa.ca/en/arts-heritage-and-events/public-art-and-city-ottawa-art-collection/public-art' target='blank'>City of Ottawa’s Public Art Program</a>.",
+  fr: "MONAHAN a été produit par Grimm Pictures et commandé par le <a href='https://ottawa.ca/fr/arts-patrimoine-et-evenements/art-public-et-collection-dart-de-la-ville-dottawa/art-public' target='blank'>Programme d’art public de la Ville d’Ottawa</a>.",
  },
  { id: "contact", en: "Contact: publicartprogram@ottawa.ca", fr: "Pour toutes questions : programmedartpublic@ottawa.ca" },
  { id: "copyright", en: "©2023 All Rights Reserved", fr: "©2023 Tous droits réservés" },
