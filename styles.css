@@ -467,7 +467,7 @@ header {
   .sideBySideTxtImage {
     display: flex;
     flex-direction: row;
-    min-height: 70vh;
+    /* min-height: 70vh; */
     justify-content: baseline;
     justify-content: space-between;
     /* height: auto; */
