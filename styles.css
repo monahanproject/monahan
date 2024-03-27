@@ -1344,7 +1344,8 @@ input[type="range"] {
 
 @media screen and (min-width: 900px) {
   #volume-slider {
-    width: 40vw;
+    width: 33vw;
+    
   }
 
   #volume-container {
