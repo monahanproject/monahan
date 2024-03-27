@@ -179,8 +179,8 @@ const strings = [
  { id: "accessH2", en: "ACCESSIBILITY", fr: "ACCESSIBILITÉ" },
  {
   id: "finalThanks",
-  en: "Thank you for visiting MONAHAN. We hope you will return for a different experience!",
-  fr: "Merci d’avoir visité MONAHAN. Nous espérons que vous reviendrez pour une expérience différente!",
+  en: "Thank you for visiting MONAHAN.<br>We hope you will return for a different experience!",
+  fr: "Merci d’avoir visité MONAHAN.<br>Nous espérons que vous reviendrez pour une expérience différente!",
  },
 
  {
