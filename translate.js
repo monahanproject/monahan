@@ -107,7 +107,7 @@ const strings = [
   // { id: "engLand", en: "MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.", fr: "MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des millénaires." },
   //  { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
   { id: "curiousEarsTxt", en: "A Sound Piece</br> for Curious Ears", fr: "Une pièce sonore </br> pour oreilles curieuses " },
-  { id: "aboutH2", en: "ABOUT", fr: "À PROPOS DE MONAHAN" },
+  { id: "aboutH2", en: "ABOUT", fr: "À PROPOS DE" },
   { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
   {
     id: "eachTimeYouClick",
@@ -322,7 +322,7 @@ const productionPageFR = `
     <span class="summary-content">SARAH ABBOTT</span> <span class="role">Écologie et défense des droits des non-humains</span>
   </summary>
   <article>
-    <p><span class="bold"><a target="_blank" href="https://sarahabbott.ca/">Sarah Abbott</a></span>'s research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at the University of Regina and teaches in the areas of film production, sentient ecologies, ethnographic practice, and climate change. She recently completed her interdisciplinary Doctorate of Social Sciences at Royal Roads University. She received her Master of Fine Arts in Media Arts from Syracuse University and her Bachelor of Arts Honours in Film Studies and Drama from Queen's University. Sarah is a recipient of a Vanier Canada Graduate Scholarship (2014-2017), the Saskatchewan Lieutenant Governor's Arts Award for Arts and Learning (2012), and the City of Regina's Mayor's Arts and Business Award for Innovation in the Arts (2009).</p>
+  <p>Dans ses recherches, <span class="bold"><a target="_blank" href="https://sarahabbott.ca/">Sarah Abbott</a></span> cherche à comprendre et à présenter les relations sentientes et sensorielles des arbres, des plantes et des non-humains dans leur ensemble, dans des cadres comprenant l'ethnographie publique ou multi-espèce, les systèmes de connaissance autochtones, la théorie de l'émergence d'un point de vue ontologique, la science des plantes, la communication interespèces et la cinématographie ethnographique. Sarah est professeure agrégée à la Faculté de cinéma de l'Université de Regina dans les domaines de la production cinématographique, l'écologie sensible, la pratique ethnographique et le changement climatique. Elle a récemment obtenu un doctorat interdisciplinaire en sciences sociales à la Royal Roads University. Elle est titulaire d'une maîtrise en arts visuels de l'Université de Syracuse et d'un baccalauréat en études cinématographiques et en art dramatique de l'Université Queen's. Sarah a décroché une bourse d'études supérieures du Canada Vanier (2014-2017), le Prix du lieutenant-gouverneur de la Saskatchewan pour les arts et l'apprentissage (2012) ainsi que le Prix des arts et des affaires du maire de Regina pour l'innovation dans les arts (2009).</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
@@ -331,8 +331,7 @@ const productionPageFR = `
     <span class="summary-content">JORDAN BELL</span><span class="role">ingénieur du son</span>
   </summary>
   <article>
-    <p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span> is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope, from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several different groups.</p>
-  </article>
+  <p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span> est un concepteur sonore, un ingénieur du son et un monteur sonore pour films d'Ottawa. En plus de sa formation d'ingénieur du son chez Metalworks Studios à Mississauga, Jordan détient un diplôme après quatre ans d'études en sociologie à l'Université Carleton. Son travail dans le monde de l'audio couvre un large éventail : de l'enregistrement vocal à la postsynchronisation, en passant par le montage et le mixage de longs métrages et de films d'animation. Il travaille avec de nombreuses entreprises, toutes au sein du groupe Affinity Production, où il est ingénieur depuis plus d'une dizaine d'années. Lorsqu'il ne travaille pas dans le monde de la postproduction, Jordan est un musicien prolifique. Depuis plus de 20 ans, il travaille dans l'industrie de la musique; il écrit, enregistre et joue ses chansons et fait des tournées avec une multitude de groupes.</p>  </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
@@ -1113,28 +1112,28 @@ const contributorsPageFR = `
 <div class="svg-contributors"></div>
 <details>
   <summary>
-    <span class="summary-content">MARC A. REINHARDT</span>
+    <span class="summary-content summary-indent">MARC A. REINHARDT</span>
   </summary>
   <article>
-    <p><span class="bold"><a target="_blank" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> est un comparatiste qui travaille à l'intersection du son, du texte, du spectacle et des installations. Sa pratique s'ancre dans les processus de composition étudiant les enjeux de transduction, d'historicité et d'agence collective. Il s'intéresse à la manière dont nous vivons en contradiction, dans le langage et au-delà, ce qu'il transpose dans ces recherches. Son travail a été présenté au Canada, en Europe et en Amérique du Sud.</p>
+    <p class="summary-indent"><span class="bold"><a target="_blank" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> est un comparatiste qui travaille à l'intersection du son, du texte, du spectacle et des installations. Sa pratique s'ancre dans les processus de composition étudiant les enjeux de transduction, d'historicité et d'agence collective. Il s'intéresse à la manière dont nous vivons en contradiction, dans le langage et au-delà, ce qu'il transpose dans ces recherches. Son travail a été présenté au Canada, en Europe et en Amérique du Sud.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
-    <span class="summary-content">FRÉDÉRIQUE ROY</span>
+    <span class="summary-content summary-indent">FRÉDÉRIQUE ROY</span>
   </summary>
   <article>
-    <p><span class="bold">Frédérique Roy</span> est musicienne, compositrice et écrivaine. Le premier album de son ensemble Lune très belle est sorti chez Wild Silence (France), et son premier recueil de poèmes a été publié par l'Oie de Cravan (Montréal). Son deuxième album, <span class="italic">Ovale</span>, est sorti chez Boiled Records (Toronto) en 2023. Frédérique travaille comme compositrice et interprète pour les chorégraphes Catherine Lavoie-Marcus et Erin Hill. En tant que musicienne, elle participe à différents projets : une initiative avec Philippe Lauzier, House of Gold, The Air Contains Honey Orchestra.... Elle a présenté son travail au Mexique, à Toronto et à Montréal (OFFTA, Dazibao, Suoni per Il Popolo, Pop Montréal). Frédérique prend part également à la programmation de concerts, l'édition de zines, la mobilisation de collectifs féministes et l'organisation d'ateliers vocaux et somatiques. Elle travaille en accompagnement psychosocial pour le Club Ami, un centre de jour offrant des ressources alternatives aux personnes en psychiatrie. Elle vit et travaille à Montréal.</p>
+    <p class="summary-indent"><span class="bold">Frédérique Roy</span> est musicienne, compositrice et écrivaine. Le premier album de son ensemble Lune très belle est sorti chez Wild Silence (France), et son premier recueil de poèmes a été publié par l'Oie de Cravan (Montréal). Son deuxième album, <span class="italic">Ovale</span>, est sorti chez Boiled Records (Toronto) en 2023. Frédérique travaille comme compositrice et interprète pour les chorégraphes Catherine Lavoie-Marcus et Erin Hill. En tant que musicienne, elle participe à différents projets : une initiative avec Philippe Lauzier, House of Gold, The Air Contains Honey Orchestra.... Elle a présenté son travail au Mexique, à Toronto et à Montréal (OFFTA, Dazibao, Suoni per Il Popolo, Pop Montréal). Frédérique prend part également à la programmation de concerts, l'édition de zines, la mobilisation de collectifs féministes et l'organisation d'ateliers vocaux et somatiques. Elle travaille en accompagnement psychosocial pour le Club Ami, un centre de jour offrant des ressources alternatives aux personnes en psychiatrie. Elle vit et travaille à Montréal.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
-    <span class="summary-content">EUGÉNIE JOBIN</span>
+    <span class="summary-content summary-indent">EUGÉNIE JOBIN</span>
   </summary>
   <article>
-    <p><span class="bold">Eugénie Jobin</span> est musicienne, compositrice et réalisatrice. Elle vit et travaille à Tio'tià:ke (Montréal). Le premier album de son groupe Ambroise, <span class="italic">À la tonalité préférable du ciel</span>, est paru en novembre 2018 sur l'étiquette française Wild Silence. Il est dédié aux textes du poète québécois Paul-Marie Lapointe. Elle vient tout juste de lancer un second album de chansons, <span class="italic">Bienvenue</span>, qui regroupe huit pièces composées sur des textes de la poète québécoise Geneviève Desrosiers. Parallèlement à sa pratique de composition de chansons, Eugénie participe à la création de musique pour la danse, pour le théâtre et pour le cinéma. Elle a présenté son travail à Montréal, Toronto et Mexico.</p>
+    <p class="summary-indent"><span class="bold">Eugénie Jobin</span> est musicienne, compositrice et réalisatrice. Elle vit et travaille à Tio'tià:ke (Montréal). Le premier album de son groupe Ambroise, <span class="italic">À la tonalité préférable du ciel</span>, est paru en novembre 2018 sur l'étiquette française Wild Silence. Il est dédié aux textes du poète québécois Paul-Marie Lapointe. Elle vient tout juste de lancer un second album de chansons, <span class="italic">Bienvenue</span>, qui regroupe huit pièces composées sur des textes de la poète québécoise Geneviève Desrosiers. Parallèlement à sa pratique de composition de chansons, Eugénie participe à la création de musique pour la danse, pour le théâtre et pour le cinéma. Elle a présenté son travail à Montréal, Toronto et Mexico.</p>
   </article>
 </details>
 <div class="svg-contributors"></div>
@@ -1149,28 +1148,28 @@ const contributorsPageFR = `
 <div class="svg-contributors"></div>
 <details>
   <summary>
-    <span class="summary-content">PATSEA GRIFFIN</span>
+    <span class="summary-content summary-indent">PATSEA GRIFFIN</span>
   </summary>
   <article>
-    <p>Née et élevée sur sa terre ancestrale le long de la Kichi Sibi (rivière des Outaouais), sur un territoire algonquin non cédé, <span class="bold">Patsea Griffin</span> est une métisse, descendante de plusieurs lignées, dont celle des Métis Nation of Ontario, à laquelle elle est fière d'appartenir. Patsea est une artiste. Rêveuse. Perleuse. Poète publiée. Créatrice de courtepointes. Batteuse. Chanteuse. Assoiffée de connaissances. Pilier communautaire. Aventurière de la route (toujours en quête de poils de porc-épic). « Mon art est ma façon de rester en contact avec toutes mes connaissances dans le monde des esprits. » Patsea aime aussi jouer, chanter, écrire, rire et vivre pleinement sa vie!</p>
+    <p class="summary-indent">Née et élevée sur sa terre ancestrale le long de la Kichi Sibi (rivière des Outaouais), sur un territoire algonquin non cédé, <span class="bold">Patsea Griffin</span> est une métisse, descendante de plusieurs lignées, dont celle des Métis Nation of Ontario, à laquelle elle est fière d'appartenir. Patsea est une artiste. Rêveuse. Perleuse. Poète publiée. Créatrice de courtepointes. Batteuse. Chanteuse. Assoiffée de connaissances. Pilier communautaire. Aventurière de la route (toujours en quête de poils de porc-épic). « Mon art est ma façon de rester en contact avec toutes mes connaissances dans le monde des esprits. » Patsea aime aussi jouer, chanter, écrire, rire et vivre pleinement sa vie!</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
-    <span class="summary-content">THÉO PARADIS</span>
+    <span class="summary-content summary-indent">THÉO PARADIS</span>
   </summary>
   <article>
-    <p><span class="bold">Théo Paradis</span> est autochtone. Elle a grandi à Cornwall et vit actuellement sur le territoire non cédé de la Nation Algonquine Anishnaabe à Ottawa. Sa famille vient de la rivière des Outaouais et du fleuve Saint-Laurent, sur le territoire des Algonquins et des Kanien'kehá:ka (« peuple des silex »). Elle est Agokwe nini (bispirituelle) et Oshakbaywis (assistante traditionnelle) auprès des aînés et des gardiens du savoir de la communauté. Elle appartient au clan de l'ours et a deux jeunes enfants extraordinaires. Le rôle de Théo en tant qu'assistante traditionnelle de la cérémonie, du tambour et du chant lui permet d'établir un lien profond avec le mode de vie traditionnel et indigène.</p>
+    <p class="summary-indent"><span class="bold">Théo Paradis</span> est autochtone. Elle a grandi à Cornwall et vit actuellement sur le territoire non cédé de la Nation Algonquine Anishnaabe à Ottawa. Sa famille vient de la rivière des Outaouais et du fleuve Saint-Laurent, sur le territoire des Algonquins et des Kanien'kehá:ka (« peuple des silex »). Elle est Agokwe nini (bispirituelle) et Oshakbaywis (assistante traditionnelle) auprès des aînés et des gardiens du savoir de la communauté. Elle appartient au clan de l'ours et a deux jeunes enfants extraordinaires. Le rôle de Théo en tant qu'assistante traditionnelle de la cérémonie, du tambour et du chant lui permet d'établir un lien profond avec le mode de vie traditionnel et indigène.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
-    <span class="summary-content">BARMEL WHITTLE</span>
+    <span class="summary-content summary-indent">CARMEL WHITTLE</span>
   </summary>
   <article>
-    <p><span class="bold"><a target="_blank" href="https://carmelwhittle.com/">Carmel Whittle</a></span> s'identifie comme une artiste, activiste, cinéaste indépendante, musicienne et compositrice de la communauté culturelle bispirituelle, lesbienne, Mi'kmaq et irlandaise. Dans la pratique des arts communautaires décolonisés, Carmel élabore, dirige et organise le No Borders Art Festival. Elle est aussi coordonnatrice de programme pour le Thunderbird Sisters Collective. Parmi ses films documentaires, on peut citer <span class="italic">There Is No Word</span>, réalisé pour Greenpeace Canada; <span class="italic">Bringing The Land To The City,</span> produit d'une résidence cinématographique avec Digital Art Resource Centre; et <span class="italic">One Contrary 5 Agokwe Nini</span>, qui met en vedette des membres de la communauté 2SLGBTQ et de l'équipe de cocréation collaborative du Podcast #83. Ses œuvres sont actuellement exposées chez Artvocate, au Royaume-Uni. Soliste pour le projet Odaabaanag, Carmel tire son inspiration de la nature et de la culture et se sent profondément liée à l'océan et à la communauté. Elle est également éducatrice en art indépendante, mentore, animatrice d'ateliers et experte-conseil auprès de diverses communautés artistiques.</p>
+    <p class="summary-indent"><span class="bold"><a target="_blank" href="https://carmelwhittle.com/">Carmel Whittle</a></span> s'identifie comme une artiste, activiste, cinéaste indépendante, musicienne et compositrice de la communauté culturelle bispirituelle, lesbienne, Mi'kmaq et irlandaise. Dans la pratique des arts communautaires décolonisés, Carmel élabore, dirige et organise le No Borders Art Festival. Elle est aussi coordonnatrice de programme pour le Thunderbird Sisters Collective. Parmi ses films documentaires, on peut citer <span class="italic">There Is No Word</span>, réalisé pour Greenpeace Canada; <span class="italic">Bringing The Land To The City,</span> produit d'une résidence cinématographique avec Digital Art Resource Centre; et <span class="italic">One Contrary 5 Agokwe Nini</span>, qui met en vedette des membres de la communauté 2SLGBTQ et de l'équipe de cocréation collaborative du Podcast #83. Ses œuvres sont actuellement exposées chez Artvocate, au Royaume-Uni. Soliste pour le projet Odaabaanag, Carmel tire son inspiration de la nature et de la culture et se sent profondément liée à l'océan et à la communauté. Elle est également éducatrice en art indépendante, mentore, animatrice d'ateliers et experte-conseil auprès de diverses communautés artistiques.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
