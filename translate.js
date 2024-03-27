@@ -108,7 +108,7 @@ const strings = [
 //  { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
  { id: "curiousEarsTxt", en: "A Sound Piece</br> for Curious Ears", fr: "Une pièce sonore </br> pour oreilles curieuses " },
  { id: "aboutH2", en: "ABOUT", fr: "À PROPOS DE MONAHAN" },
- { id: "soundForCurious", en: "A sound piece</br>  for curious ears.", fr: "Une pièce sonore </br> pour les oreilles curieuses." },
+ { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
  {
   id: "eachTimeYouClick",
   en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a group of <a href='#contributorsH2'>contributors</a>. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",
