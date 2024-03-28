@@ -38,7 +38,7 @@ function replaceSvgContent() {
 
 let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
 const imageSourceMap = {
-  "images/svg/accessIconInvert.svg": "images/svg/accessIcon.svg",
+  // "images/svg/accessIconInvert.svg": "images/svg/accessIcon.svg",
   "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
   "images/svg/monochrome1.svg": "images/svg/monochromeInvert.svg",
   "images/svg/firn.svg": "images/svg/firnInvert.svg",

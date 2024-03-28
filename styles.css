@@ -213,12 +213,12 @@ a:hover {
 .btn,
 #langToggle {
   /* background-color: var(--lightgreen); */
-  color: var(--darkgreen);
+  /* color: var(--darkgreen);
   outline: none;
   border: none;
   border-radius: 6px;
   padding: 10px;
-  font-family: var(--font-family-dm);
+  font-family: var(--font-family-dm); */
 }
 
 #transcriptButton {
@@ -253,12 +253,12 @@ a:hover {
 }
 
 #langToggle {
-  background-color: transparent;
+  /* background-color: transparent;
   font-family: var(--font-family-mono);
   font-size: 1.25rem; /* Adjusted to maintain consistency at larger screens */
   text-decoration: none;
   text-transform: uppercase;
-  cursor: pointer;
+  cursor: pointer; */
 }
 
 /************************/
@@ -1759,8 +1759,10 @@ article > p {
 /***** ACCESS MENU *****/
 /***********************/
 
-#accessIcon {
+#accessIcon, #langToggle {
   display: flex;
+  padding: 10px;
+
 }
 
 #wrapperToggleDiv {

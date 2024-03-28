@@ -11,11 +11,15 @@ export let curatedTracklist;
 export let curatedTracklistTotalTimeInSecs;
 curatedTracklistTotalTimeInSecs = 0;
 
-
-async function initializeApp() {
-  await loadSongs(); // This ensures songs are loaded before moving on
-  // Any other initialization code that depends on curatedTracklist being populated
+export async function initializeApp() {
+  await loadSongs();
+  // Any additional setup...
 }
+
+// async function initializeApp() {
+//   await loadSongs(); // This ensures songs are loaded before moving on
+//   // Any other initialization code that depends on curatedTracklist being populated
+// }
 
 initializeApp().catch(console.error);
 

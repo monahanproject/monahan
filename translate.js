@@ -2,20 +2,35 @@ let lang = "EN"; // Global variable to track current language state
 
 // Function to toggle the language
 function toggleLanguage() {
+  console.log("entering toggle lang");
+  console.log("[Before Toggle] Current lang: ", lang); // Log current language before toggling
   lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
+  console.log("[After Toggle] Updated lang: ", lang); // Log current language after toggle
 
   updateLanguageLabel();
   updatePageContent();
+  adjustFontSize("play-button-text-container");
+
   changeEachLangDiv(); // Update all dynamic strings to the current language
 }
 
-// Update the language toggle button label
 function updateLanguageLabel() {
-  const langLabel = document.getElementById("langToggle");
-  if (langLabel) {
-    langLabel.innerText = lang === "EN" ? "FR" : "EN"; // Switch label between FR and EN
+  var oldLangImage = document.getElementById("langToggle");
+  console.log("Old langImage DOM Object: ", oldLangImage); // Log the DOM object for more details
+
+  if (oldLangImage) {
+    // Create a new image element
+    var newLangImage = document.createElement("img");
+    newLangImage.id = oldLangImage.id; // Copy the id
+    newLangImage.alt = "lang new icon"; // Set alt text
+    newLangImage.src = "images/svg/" + lang + ".svg?" + new Date().getTime(); // Use a unique query string to prevent caching
+
+    // Replace the old image with the new one
+    oldLangImage.parentNode.replaceChild(newLangImage, oldLangImage);
+
+    console.log("Replaced lang image with new src: ", newLangImage.src); // Log new src
   } else {
-    console.error("langToggle element not found");
+    console.error("Language image element not found");
   }
 }
 
@@ -76,29 +91,34 @@ const originalFontSizes = {};
 
 // Function to adjust or revert font sizes for specific elements based on language
 function adjustFontSize(elementId) {
+  console.log("[adjustFontSize] Called for:", elementId);
+
   const sizeReductions = {
     curiousEarsTxt: 0.8, // 20% smaller for French
-    "play-button-text-container": 0.7, // 30% smaller for French
+    "play-button-text-container": 0.7, // Make 30% smaller for French, adjust value as needed
   };
 
   // Check if the current element's ID is in the sizeReductions object
-  if (sizeReductions[elementId]) {
+  if (sizeReductions.hasOwnProperty(elementId)) {
     const element = document.getElementById(elementId);
-    // If switching to French, adjust font size and store original
+    console.log("[adjustFontSize] Found element for ID:", elementId, element);
+
     if (lang === "FR") {
-      if (!originalFontSizes[elementId]) {
-        originalFontSizes[elementId] = window.getComputedStyle(element).fontSize;
+      if (!originalFontSizes.hasOwnProperty(elementId)) {
+        const computedStyle = window.getComputedStyle(element);
+        originalFontSizes[elementId] = computedStyle.fontSize;
       }
-      const currentFontSize = originalFontSizes[elementId];
-      const currentSize = parseFloat(currentFontSize);
-      const newSize = currentSize * sizeReductions[elementId];
+
+      const newSize = parseFloat(originalFontSizes[elementId]) * sizeReductions[elementId];
       element.style.fontSize = `${newSize}px`;
     } else {
       // If switching back to English, revert to original font size
-      if (originalFontSizes[elementId]) {
+      if (originalFontSizes.hasOwnProperty(elementId)) {
         element.style.fontSize = originalFontSizes[elementId];
       }
     }
+  } else {
+    console.log(`[adjustFontSize] No size reduction found for ID: ${elementId}, skipping.`);
   }
 }
 
@@ -1220,4 +1240,4 @@ const contributorsPageFR = `
 <div class="svg-contributors"></div>`;
 
 // Attach the toggleLanguage function to the langToggle element
-document.querySelector("#langToggle").addEventListener("click", toggleLanguage);
+document.querySelector("#toggleLanguage").addEventListener("click", toggleLanguage);
