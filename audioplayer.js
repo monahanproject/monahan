@@ -592,10 +592,16 @@ export class SimpleAudioPlayer {
     // Determine which SVG to use based on isPlaying and isThemeInverted
     let svgToUse;
     if (isPlaying) {
+      // playButton.style.backgroundColor = "#D3D3D3"; // Example playing state color
+
       svgToUse = isThemeInverted ? this.pausedInvertedSVG : this.pausedSVG;
     } else {
+      // playButton.style.backgroundColor = "#FFFFFF"; // Example paused state color
+
       svgToUse = isThemeInverted ? this.playingInvertedSVG : this.playingSVG;
     }
+
+    
 
     // Apply the determined SVG and text
     if (isPlaying) {
@@ -633,3 +639,4 @@ export class SimpleAudioPlayer {
     playButton.classList.toggle("paused", !isPlaying);
   }
 }
+

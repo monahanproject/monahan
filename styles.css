@@ -2028,6 +2028,26 @@ article > p {
 }
 
 
+#play-button {
+  transition: background-color 0.3s ease;
+}
+
+.playing #play-button-svg-container .svg-icon,
+.paused #play-button-svg-container .svg-icon {
+  transition: transform 0.3s ease;
+}
+
+.playing #play-button-svg-container .svg-icon {
+  transform: scale(1.1); /* Slightly enlarge for emphasis */
+}
+
+.paused #play-button-svg-container .svg-icon {
+  transform: scale(1); /* Return to normal size */
+}
+
+#play-button-text-container {
+  transition: transform 0.3s ease, left 0.3s ease;
+}
 
 
 
