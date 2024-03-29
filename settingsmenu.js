@@ -51,6 +51,8 @@ const imageSourceMap = {
   "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg",
   "images/svg/stopButton.svg": "images/svg/stopButtonInvert.svg",
   "images/svg/playButton.svg": "images/svg/playButtonInvert.svg",
+  "images/svg/pauseButton.svg": "images/svg/pauseButtonInvert.svg", // Ensure this is included for correct toggling
+
 };
 
 function toggleImageSources() {
@@ -241,6 +243,8 @@ function resetSettings() {
   let defaultRootFontSize = "1rem"; // Default root font size
   document.documentElement.style.setProperty("--base-font-size-rem", defaultRootFontSize);
   document.documentElement.style.fontSize = defaultRootFontSize;
+  replaceSvgContent();
+
 }
 
 document.addEventListener("keydown", function (event) {

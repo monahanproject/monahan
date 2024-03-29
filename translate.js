@@ -1,18 +1,36 @@
 let lang = "EN"; // Global variable to track current language state
 
-// Function to toggle the language
-function toggleLanguage() {
-  console.log("entering toggle lang");
-  console.log("[Before Toggle] Current lang: ", lang); // Log current language before toggling
+function toggleLanguageAndStorePref() {
   lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
-  console.log("[After Toggle] Updated lang: ", lang); // Log current language after toggle
-
+  localStorage.setItem('preferredLanguage', lang);
   updateLanguageLabel();
   updatePageContent();
   adjustFontSize("play-button-text-container");
-
   changeEachLangDiv(); // Update all dynamic strings to the current language
 }
+
+// Function to set language from local storage on page load
+function setLanguageFromLocalStorage() {
+  const savedLang = localStorage.getItem('preferredLanguage');
+  if (savedLang && (savedLang === 'EN' || savedLang === 'FR')) {
+    lang = savedLang; // Set the global language variable to the saved preference
+    updateLanguageLabel();
+    updatePageContent();
+    changeEachLangDiv();
+  }
+
+  if (savedLang === 'FR') {
+      const playButtonTextContainer = document.getElementById("play-button-text-container");
+      playButtonTextContainer.style.left = "45%";
+      adjustFontSize("play-button-text-container");
+  }
+}
+
+// Initialize the page with the correct language on load
+document.addEventListener("DOMContentLoaded", () => {
+  setLanguageFromLocalStorage();
+});
+
 
 function updateLanguageLabel() {
   var oldLangImage = document.getElementById("langToggle");
@@ -23,16 +41,24 @@ function updateLanguageLabel() {
     var newLangImage = document.createElement("img");
     newLangImage.id = oldLangImage.id; // Copy the id
     newLangImage.alt = "lang new icon"; // Set alt text
-    newLangImage.src = "images/svg/" + lang + ".svg?" + new Date().getTime(); // Use a unique query string to prevent caching
+
+    // Check the current language and set the SVG source accordingly
+    if (lang === "EN") {
+      newLangImage.src = "images/svg/FR.svg?" + new Date().getTime(); // Use a unique query string to prevent caching
+    } else {
+      newLangImage.src = "images/svg/EN.svg?" + new Date().getTime(); // Use a unique query string to prevent caching
+    }
 
     // Replace the old image with the new one
     oldLangImage.parentNode.replaceChild(newLangImage, oldLangImage);
 
-    console.log("Replaced lang image with new src: ", newLangImage.src); // Log new src
+    // Log new src for debugging
+    console.log("Replaced lang image with new src: ", newLangImage.src);
   } else {
     console.error("Language image element not found");
   }
 }
+
 
 // Update the main content of the page based on the current language
 function updatePageContent() {
@@ -79,19 +105,14 @@ function changeEachLangDiv() {
   buttonStrings.forEach(changeEachBtnString);
 }
 
-// Initialize the page with the correct language on load
-document.addEventListener("DOMContentLoaded", () => {
-  updateLanguageLabel();
-  updatePageContent();
-  changeEachLangDiv(); // Ensure strings are translated on load
-});
+
 
 // Object to store the original font sizes of elements that need to be resized
 const originalFontSizes = {};
 
 // Function to adjust or revert font sizes for specific elements based on language
 function adjustFontSize(elementId) {
-  console.log("[adjustFontSize] Called for:", elementId);
+  // console.log("[adjustFontSize] Called for:", elementId);
 
   const sizeReductions = {
     curiousEarsTxt: 0.8, // 20% smaller for French
@@ -101,7 +122,7 @@ function adjustFontSize(elementId) {
   // Check if the current element's ID is in the sizeReductions object
   if (sizeReductions.hasOwnProperty(elementId)) {
     const element = document.getElementById(elementId);
-    console.log("[adjustFontSize] Found element for ID:", elementId, element);
+    // console.log("[adjustFontSize] Found element for ID:", elementId, element);
 
     if (lang === "FR") {
       if (!originalFontSizes.hasOwnProperty(elementId)) {
@@ -118,7 +139,7 @@ function adjustFontSize(elementId) {
       }
     }
   } else {
-    console.log(`[adjustFontSize] No size reduction found for ID: ${elementId}, skipping.`);
+    // console.log(`[adjustFontSize] No size reduction found for ID: ${elementId}, skipping.`);
   }
 }
 
@@ -132,7 +153,7 @@ const strings = [
   {
     id: "eachTimeYouClick",
     en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a group of <a href='#contributorsH2'>contributors</a>. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",
-    fr: "Chaque fois que vous cliquez sur COMMENCER, vous découvrez une pièce sonore unique, composée par notre algorithme à partir de 173 chapitres sonores. Tous ces chapitres sont créés par un groupe diversifié de <a href='#contributorsH2'>contributrices et contributeurs</a>. Vous entendrez de tout : des chansons et des poèmes aux sons de la nature, en passant par des interviews et des histoires.",
+    fr: "Chaque fois que vous cliquez sur DÉBUTER, vous découvrez une pièce sonore unique, composée par notre algorithme à partir de 173 chapitres sonores. Tous ces chapitres sont créés par un groupe diversifié de <a href='#contributorsH2'>contributrices et contributeurs</a>. Vous entendrez de tout : des chansons et des poèmes aux sons de la nature, en passant par des interviews et des histoires.",
   },
   {
     id: "ByBringingTogether",
@@ -179,7 +200,7 @@ const strings = [
   { id: "scanQR", en: "Scan the QR code", fr: "Scannez le code QR" },
   { id: "arriveWebsite", en: "Arrive at the MONAHAN website", fr: "Accédez au site Web de MONAHAN" },
   { id: "putHeadphones", en: "Put on your HEADPHONES", fr: "Mets tes ÉCOUTEURS" },
-  { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur COMMENCER" },
+  { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur DÉBUTER" },
   // { id: "contributorsH2", en: "CONTRIBUTORS", fr: "CONTRIBUTORS" },
 
   { id: "listenSoundPiece", en: "LISTEN to a personalized sound piece", fr: "ÉCOUTEZ une pièce sonore personnalisée" },
@@ -241,7 +262,7 @@ const buttonStrings = [
   { id: "resetBtn", en: "Reset", fr: "Réinitialiser" },
   // { id: "transcriptButton", en: "TRANSCRIPT", fr: "TRANSCRIPTION" },
 
-  { id: "play-button-text-container", en: "BEGIN", fr: "COMMENCER" },
+  { id: "play-button-text-container", en: "BEGIN", fr: "DÉBUTER" },
   // { id: "skipBackwardButton", en: "Skip Backward", fr: "Reculer" },
   // { id: "skipForwardButton", en: "Skip Forward", fr: "Avancer" },
 ];
@@ -1240,4 +1261,9 @@ const contributorsPageFR = `
 <div class="svg-contributors"></div>`;
 
 // Attach the toggleLanguage function to the langToggle element
-document.querySelector("#toggleLanguage").addEventListener("click", toggleLanguage);
+document.querySelector("#toggleLanguage").addEventListener("click", toggleLanguageAndStorePref);
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   setLanguageFromLocalStorage();
+//   // Other initialization code here
+// });

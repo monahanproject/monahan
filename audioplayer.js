@@ -20,7 +20,13 @@ export class SimpleAudioPlayer {
     this.isPlaying = false;
     this.firstPlayDone = false;
     this.currentRuntime = 0;
-
+    // this.savedLanguage = localStorage.getItem('preferredLanguage');
+    // if (!this.savedLanguage) {
+    //     this.savedLanguage = "EN"; // Set to "EN" if not already set
+    //     // localStorage.setItem('preferredLanguage', "EN"); // Optionally, save it back to localStorage
+    // }
+    // console.log(this.savedLanguage);
+    
     this.cumulativeElapsedTime = 0;
     this.totalPlaylistDuration = 0; // Initialize with the sum of durations of all tracks in the playlist
     this.isUpdatingTime = false; // Flag to prevent rapid updates
@@ -38,9 +44,6 @@ export class SimpleAudioPlayer {
 
     this.pausedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButton.svg" alt="Pause Icon">`;
     this.pausedInvertedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/pauseButtonInvert.svg" alt="Pause Icon">`;
-
-    this.playingText = "PLAY";
-    this.pausedText = "STOP";
 
     this.playlistEnded = false; // Track whether the current playlist has ended
 
@@ -60,24 +63,16 @@ export class SimpleAudioPlayer {
 
   calcDuration() {
     this.totalPlaylistDuration = this.tracklist.reduce((acc, track) => acc + Number(track.duration), 0);
-    // console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
+    console.log(`xxx [calculateTotalPlaylistDuration] Total playlist duration: ${this.totalPlaylistDuration}s`);
     return this.totalPlaylistDuration;
   }
 
   updateProgressUI(elapsedSeconds, previousDuration) {
     if (!this.allowProgressUpdate || this.totalPlaylistDuration === 0) return; // Add totalPlaylistDuration check
-
     // console.log("updateProgressUI");
-    // console.log("updateProgressUI didn't exit out");
 
     //findme
     // console.log(`Updating UI: Elapsed ${elapsedSeconds}, Previous ${previousDuration}, Total Duration ${this.totalPlaylistDuration}`);
-
-    // Additional condition to ensure the UI update is relevant to the current playlist state
-    if (this.totalPlaylistDuration <= 0) {
-      console.error("Total playlist duration is not set correctly.");
-      return; // Early return if the total duration isn't calculated yet.
-    }
 
     try {
       const progressBar = document.getElementById("progress-bar");
@@ -92,14 +87,11 @@ export class SimpleAudioPlayer {
       // Calculate the percentage of the track that's been played
       const playedPercentage = ((elapsedSeconds + previousDuration) / this.totalPlaylistDuration) * 100;
 
-      // Update the progress bar and dot
+      // Update UI elements
       progressBar.style.width = `${playedPercentage}%`;
       progressDot.style.left = `calc(${playedPercentage}% - 5px)`; // Adjust based on the dot's size
-
-      // Update the time labels
       const playedTime = this.calculateMinutesAndSeconds(elapsedSeconds + previousDuration);
       const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
-
       timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
       timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
     } catch (error) {
@@ -136,7 +128,7 @@ export class SimpleAudioPlayer {
       let delta = Date.now() - start;
       let deltaSeconds = Math.floor(delta / 1000);
       // find me 
-      // console.log(Math.floor(this.globalAudioElement.currentTime) + this.timerDuration);
+      console.log(Math.floor(this.globalAudioElement.currentTime) + this.timerDuration);
 
       this.updateProgressUI(Math.floor(this.globalAudioElement.currentTime), this.timerDuration);
     }, 1000);
@@ -147,7 +139,9 @@ export class SimpleAudioPlayer {
     this.toggleButtonVisuals(false);
   }
 
-  // TRANSCRIPT
+/////////////////////////////////////////////
+/////////         TRANSCRIPT      ///////////
+////////////////////////////////////////////  
 
   // Helper function to create elements with attributes
   createElement(type, attributes) {
@@ -264,7 +258,10 @@ export class SimpleAudioPlayer {
     }
   }
 
-  // INTERACTIONS
+/////////////////////////////////////////////////////
+/////////         USER INTERACTIONS     ///////////
+/////////////////////////////////////////////////////
+
   setupInitialUserInteraction() {
     const playButton = document.getElementById("play-button");
     const skipBackwardButton = document.getElementById("skipBackwardButton");
@@ -280,6 +277,10 @@ export class SimpleAudioPlayer {
       skipForwardButton.addEventListener("click", () => this.handleSkipForward());
     }
   }
+
+/////////////////////////////////////////////////////
+/////////         HANDLE VOLUME     ///////////
+/////////////////////////////////////////////////////
 
   createVolumeSlider() {
     var volumeSlider = document.getElementById("volume-slider");
@@ -321,6 +322,11 @@ export class SimpleAudioPlayer {
     }
   }
 
+
+/////////////////////////////////////////////////////
+/////////         HANDLE PAUSE / PLAY     ///////////
+/////////////////////////////////////////////////////
+
   pausePlayback() {
     this.globalAudioElement.pause();
     this.isPlaying = false;
@@ -337,46 +343,50 @@ export class SimpleAudioPlayer {
     this.toggleButtonVisuals(false);
   }
 
+/////////////////////////////////////////////////////
+/////////         HANDLE THE END     ///////////////
+/////////////////////////////////////////////////////
+
   handleEnded() {
-    console.log("handleEnded");
+    this.handleEndedCalled = true;
+
+    const playButton = document.getElementById('play-button'); // Ensure this ID matches your play button's ID
+    if (playButton) {
+        // Remove the original event listener; might need a different approach if this is not directly accessible
+        playButton.removeEventListener("click", () => this.startPlayback());
+
+        // Add a new event listener for refreshing the page and scrolling to a specific part
+        playButton.addEventListener("click", function() {
+            localStorage.setItem('returnToSpot', 'playlistTop');
+            window.location.reload();
+        });
+    }
+    // localStorage.setItem('returnToSpot', 'audio-player-container');
+    
+    // Refresh the page
+    // window.location.reload();
+
+
+    // audio-player-container
+    console.log("handleEnded being called");
     console.log("Track ended. Current index:", this.currentIndex, "of", this.tracklist.length);
     this.playlistEnded = true;
-    console.log("Playlist ended flag set to true.");
-
     this.allowProgressUpdate = false;
-    // Log the end of playback
-    console.log("handleEnded being called");
-
     // Stop the interval that updates the progress UI, ensuring no further updates occur
     clearInterval(this.updateIntervalId);
-
-    // Immediately pause and reset the audio element to its initial state
     this.globalAudioElement.pause();
     this.globalAudioElement.currentTime = 0;
-
-    // Reset the player's internal state to ensure it's ready for a new session
     this.isPlaying = false;
     this.currentIndex = 0;
     this.cumulativeElapsedTime = 0;
     this.firstPlayDone = false;
     this.currentRuntime = 0;
-    this.totalPlaylistDuration = 0; // Ensure this is recalculated when a new playlist is loaded
+    this.totalPlaylistDuration = 0; 
     this.timerDuration = 0;
-
-    // Re-initialize the audio element for a fresh start
     this.globalAudioElement = document.createElement("audio");
-
-    // Reset progress UI elements to their initial state
     this.resetProgressUI();
-
-    // Optionally, hide and clear the transcript container if visible
     this.resetTranscriptUI();
-
-    // Update button visuals to reflect the reset state and re-enable progress updates
     this.toggleButtonVisuals(false);
-    // this.allowProgressUpdate = true;
-
-    // Update the play button text to indicate readiness for a new session
     this.updatePlayButtonText("BEGIN");
   }
 
@@ -408,14 +418,23 @@ export class SimpleAudioPlayer {
   handleSkipForward() {
     let newPlayerTime = this.globalAudioElement.currentTime + 20;
     newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
+    
     if (!this.isUpdatingTime) {
       this.isUpdatingTime = true; // Set a flag to prevent rapid updates
-      setTimeout(() => {
-        this.globalAudioElement.currentTime = newPlayerTime;
+      
+      // Immediately update currentTime without setTimeout
+      this.globalAudioElement.currentTime = newPlayerTime;
+  
+      // Use the 'seeked' event to know when the currentTime update is complete
+      const onTimeUpdate = () => {
         this.isUpdatingTime = false;
-      }, 20); // Adjust the delay as needed (100 milliseconds in this case)
+        this.globalAudioElement.removeEventListener('seeked', onTimeUpdate);
+      };
+  
+      this.globalAudioElement.addEventListener('seeked', onTimeUpdate);
     }
   }
+  
 
   handleSkipBackward() {
     let newPlayerTime = this.globalAudioElement.currentTime - 20;
@@ -429,28 +448,15 @@ export class SimpleAudioPlayer {
     }
   }
 
-  newPlaylist() {
-    console.log("newPlaylist() called");
-    this.tracklist = curatedTracklist; // Assuming this gets the new playlist tracks.
-    this.resetProgressUI(); // Reset UI elements to their initial states.
+/////////////////////////////////////////////////////
+/////////         START PLAYBACK     ///////////////
+/////////////////////////////////////////////////////
 
-    this.calcDuration(); // Recalculate total duration immediately
-    this.currentIndex = 0; // Reset to start of the new playlist.
-    this.allowProgressUpdate = false; // Allow UI updates.
-    // this.createTimerLoopAndUpdateProgressTimer(); // Reset and start the new update interval
-
-    // this.startPlayback(); // Begin playback of the new playlist.
-  }
-
-  // Function to start or resume playback of the tracklist.
   async startPlayback() {
     console.log("startPlayback called. Current index:", this.currentIndex, "Playlist ended:", this.playlistEnded, "Is playing:", this.isPlaying);
-
     // Prioritize checking if a new playlist needs to be started.
     if (this.playlistEnded && !this.isPlaying) {
-      console.log("End of playlist was detected. Preparing a new playlist...");
-      await initializeApp(); // Assuming this re-initializes your app or loads new tracks.
-      this.newPlaylist(); // Prepare and start a new playlist.
+      console.log("End of playlist was detected. here's where I'd make a new playlist...");
       return; // Exit early to avoid further execution.
     }
 
@@ -463,7 +469,7 @@ export class SimpleAudioPlayer {
           console.log("First play of the new playlist.");
           await this.playTrack(this.currentIndex);
           this.firstPlayDone = true; // Prevents re-initialization in future plays.
-          this.createTranscriptContainer(); // Setup UI for transcripts if needed.
+          this.createTranscriptContainer();
         } else {
           // Resume playback.
           console.log("Resuming playback.");
@@ -478,12 +484,14 @@ export class SimpleAudioPlayer {
     } else {
       // This condition might be redundant now but serves as a fallback.
       console.log("Fallback: Reached end of playlist, preparing new playlist...");
-      await initializeApp();
-      this.newPlaylist();
     }
   }
 
-  // Function to play a track from the tracklist at a given index.
+/////////////////////////////////////////////////////
+/////////          PLAY TRACK      ///////////////
+/////////////////////////////////////////////////////
+
+
   playTrack(index) {
     console.log("playTrack(index)");
 
@@ -492,7 +500,6 @@ export class SimpleAudioPlayer {
       // Check if the index is beyond the tracklist's length, indicating the end of the playlist.
       if (index >= this.tracklist.length) {
         // Log that the end of the playlist has been reached.
-        console.log("All tracks in the tracklist have been played.");
         console.log(`[playTrack] End of playlist reached. Index=${index}`);
         // Set the isPlaying flag to false as nothing is playing now.
         this.isPlaying = false;
@@ -560,6 +567,10 @@ export class SimpleAudioPlayer {
     });
   }
 
+/////////////////////////////////////////////////////
+/////////       PLAY BUTTON TEXT     ///////////////
+/////////////////////////////////////////////////////
+
   updatePlayButtonText(text) {
     const playButtonTextContainer = document.getElementById("play-button-text-container");
     if (playButtonTextContainer) playButtonTextContainer.textContent = text;
@@ -567,13 +578,16 @@ export class SimpleAudioPlayer {
 
   toggleButtonVisuals(isPlaying) {
     let isThemeInverted = getState(); // This will initialize isInverted based on localStorage
-
-    // console.log(isThemeInverted);
-
     const svgIcon = document.querySelector("#play-button-svg-container .svg-icon");
     const playButton = document.querySelector("#play-button");
     const playButtonTextContainer = document.getElementById("play-button-text-container");
     const svgContainer = document.getElementById("play-button-svg-container");
+
+    let currLang = localStorage.getItem('preferredLanguage');
+    if (!currLang) {
+      console.log(currLang);
+      currLang = "EN"; // Set to "EN" if not already set
+  }
 
     // Determine which SVG to use based on isPlaying and isThemeInverted
     let svgToUse;
@@ -588,7 +602,12 @@ export class SimpleAudioPlayer {
       if (!playButton.classList.contains("playing")) {
         playButtonTextContainer.style.left = "50%";
         svgContainer.innerHTML = svgToUse; // Use determined SVG
-        playButtonTextContainer.textContent = this.pausedText;
+        console.log(currLang);
+        if (currLang === 'EN') {
+          playButtonTextContainer.textContent = "STOP";
+        } else {
+          playButtonTextContainer.textContent = "ARRÊTER";
+        }
       }
     } else {
       if (!playButton.classList.contains("paused")) {
@@ -598,7 +617,15 @@ export class SimpleAudioPlayer {
           // Check to prevent redundant operations
           playButtonTextContainer.style.left = "35%";
           svgContainer.innerHTML = svgToUse; // Use determined SVG
-          playButtonTextContainer.textContent = this.playingText;
+          console.log(currLang);
+
+
+          if (currLang === 'EN') {
+            playButtonTextContainer.textContent = "PLAY";
+          } else {
+            playButtonTextContainer.style.left = "45%";
+            playButtonTextContainer.textContent = "DÉBUTER";
+          }
         }
       }
     }

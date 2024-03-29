@@ -1,7 +1,9 @@
 import { SimpleAudioPlayer } from "./audioplayer.js";
 import { gatherTheCreditSongs } from "./credits.js";
 import { checkPlaylistRules } from "./checkRules.js";
+// import { updateTranscript } from "./transcript.js";
 import { shuffleTracklist } from "./shuffle.js";
+
 import { printEntireTracklistDebug } from "./debug.js";
 import { followTracklistRules } from "./playlistBuilder.js";
 import { outroAudioSounds, finalOutroAudioSounds } from "./outroAudio.js";
@@ -75,6 +77,7 @@ function prepareCuratedTracklist(songs) {
   checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
   printEntireTracklistDebug(curatedTracklist);
+  // updateTranscript(curatedTracklist);
   const makeASimpleAudioPlayerAndPlayIt = new SimpleAudioPlayer(curatedTracklist);
 }
 
