@@ -81,5 +81,23 @@ function prepareCuratedTracklist(songs) {
   const makeASimpleAudioPlayerAndPlayIt = new SimpleAudioPlayer(curatedTracklist);
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelector('#fern').classList.add('grow');
+      } else {
+        document.querySelector('#fern').classList.remove('grow');
+      }
+    });
+  }, {threshold: 0.5}); // Adjust threshold for when the animation should start
+
+  const fern = document.querySelector('#fern');
+  if (fern) {
+    observer.observe(fern);
+  }
+});
+
+
 
 

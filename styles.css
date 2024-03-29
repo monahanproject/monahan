@@ -837,6 +837,8 @@ p {
 #arrow {
   width: 10vw;
   padding: 0 0 15px 0;
+  animation: bounce 5s infinite;
+
 }
 
 .arrow1 {
@@ -1987,4 +1989,31 @@ article > p {
   background-color: #234e44 !important; /* Example: changing to black */
   color: #bfffc2 !important; /* Example: changing text to white */
 }
+
+
+
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+
+#fern {
+  transform-origin: center;
+  transform: scale(.6); /* Initial scale */
+  transition: transform 1.5s ease-in-out;
+}
+
+#fern.grow {
+  transform: scale(1); /* Target scale when in view */
+}
+
 
