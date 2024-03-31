@@ -1205,13 +1205,13 @@ li {
 }
 
 #progress-dot {
-  position: absolute;
+  /* position: absolute;
   top: -3px;
   left: 0;
   width: 8px;
   height: 8px;
   background-color: var(--darkgreen);
-  border-radius: 50%;
+  border-radius: 50%; */
 }
 
 .time-labels {
@@ -1642,6 +1642,7 @@ details > summary {
   }
 }
 
+
 summary::after {
   content: "+";
   font-size: 2.2rem;
@@ -1654,6 +1655,12 @@ summary::after {
   transition: 0.2s;
   grid-row: 1;
   grid-column: 2;
+  opacity: 1; /* Ensure it's fully visible by default */
+  transition: opacity 0.6s ease; /* Smooth transition for opacity */
+}
+
+summary:hover::after {
+  opacity: 0.6; /* Change to 60% opacity on hover */
 }
 
 summary::after:hover {
@@ -2048,6 +2055,12 @@ article > p {
 #play-button-text-container {
   transition: transform 0.3s ease, left 0.3s ease;
 }
+#transcriptContainer {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  display: none;
+}
+
 
 
 

@@ -29,7 +29,7 @@
     const creditObj = {
       name: song.name,
       url: song.credit, // flip on purpose
-      duration: "2",
+      duration: song.creditDur,
       author: song.author,
       // Other properties as before
       credit: song.url,
