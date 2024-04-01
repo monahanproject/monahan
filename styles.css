@@ -604,6 +604,11 @@ p {
   /* padding-top: 2rem; */
 }
 
+.txtBoxDivLast {
+  /* padding: 1rem; */
+  padding-bottom: 2rem;
+}
+
 #soundForCurious, #experienceAnew, #delveInto {
   margin-top: 2.2rem;
 }
@@ -2084,7 +2089,7 @@ article > p {
   transform-origin: center;
 }
 
-#accessIcon:hover, #accessIcon:focus, #langToggle:hover, #langToggle:focus, #invertColoursBtn:hover, #invertColoursBtn:focus, #monochromeBtn:hover, #monochromeBtn:focus, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, volume-icon:focus, .volume-icon:hover, #transcriptButton:focus, #transcriptButton:hover {
+#accessIcon:hover, #accessIcon:focus, #langToggle:hover, #langToggle:focus, #invertColoursBtn:hover, #invertColoursBtn:focus, #monochromeBtn:hover, #monochromeBtn:focus, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, volume-icon:focus, .volume-icon:hover, #transcriptButton:hover {
   transform: scale(1.1); /* Gently increase size */
   fill: #28a745; /* Change color to a subtle green, or any color that suits your theme */
 }
