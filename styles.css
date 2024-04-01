@@ -2079,12 +2079,12 @@ article > p {
 }
 
 
-#accessIcon, #langToggle, #invertColoursBtn, #monochromeBtn, #decreaseTextSizeBtn, #increaseTextSizeBtn {
+#accessIcon, #langToggle, #invertColoursBtn, #monochromeBtn, #decreaseTextSizeBtn, #increaseTextSizeBtn, .volume-icon, #transcriptButton {
   transition: transform 0.3s ease-in-out, fill 0.3s ease-in-out;
   transform-origin: center;
 }
 
-#accessIcon:hover, #accessIcon:focus, #langToggle:hover, #langToggle:focus, #invertColoursBtn:hover, #invertColoursBtn:focus, #monochromeBtn:hover, #monochromeBtn:focus, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover {
+#accessIcon:hover, #accessIcon:focus, #langToggle:hover, #langToggle:focus, #invertColoursBtn:hover, #invertColoursBtn:focus, #monochromeBtn:hover, #monochromeBtn:focus, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, volume-icon:focus, .volume-icon:hover, #transcriptButton:focus, #transcriptButton:hover {
   transform: scale(1.1); /* Gently increase size */
   fill: #28a745; /* Change color to a subtle green, or any color that suits your theme */
 }
