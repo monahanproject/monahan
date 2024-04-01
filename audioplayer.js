@@ -122,10 +122,10 @@ export class SimpleAudioPlayer {
     const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
 
     // Detailed logging of calculation components
-    console.log(
-      `Updating Progress UI. Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}, Total Elapsed Seconds: ${totalElapsedSeconds}`
-    );
-    console.log(`Remaining Duration Seconds: ${remainingDurationSeconds}, Played Percentage: ${playedPercentage}`);
+    // console.log(
+    //   `Updating Progress UI. Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}, Total Elapsed Seconds: ${totalElapsedSeconds}`
+    // );
+    // console.log(`Remaining Duration Seconds: ${remainingDurationSeconds}, Played Percentage: ${playedPercentage}`);
 
     requestAnimationFrame(() => {
       try {
@@ -138,7 +138,7 @@ export class SimpleAudioPlayer {
         timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
 
         // Additional log to confirm UI update
-        console.log(`Progress Bar Updated: ${progressBar.style.width}`);
+        // console.log(`Progress Bar Updated: ${progressBar.style.width}`);
       } catch (error) {
         console.error("An error occurred in updateProgressUI:", error);
       }

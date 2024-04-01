@@ -1,5 +1,5 @@
 export const r10rule = "The current track must have a different author than the last track";
-export const r11rule = "No more than two tracks from the same author in a tracklist";
+export const r11rule = "No more than one track from the same author in a tracklist";
 export const r12rule = "Tracks with the form short and the language musical can never follow tracks with the form music";
 export const r13rule = "Tracks with the form music can never follow tracks with both the form short and the language musical";
 export const r14rule = "The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it";

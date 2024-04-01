@@ -16,7 +16,7 @@ export function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) 
     logRuleApplication(10, logMessage, true, ruleType);
     return true;
   }
-  // R11: No more than two tracks from the same author in a tracklist
+  // R11: No more than one track from the same author in a tracklist
   export function r11(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
     const trackName = track.name;
     const ruleType = `✉️ General rule:`;
@@ -26,17 +26,17 @@ export function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) 
     const authorCount = curatedTracklist.filter((t) => t.author.trim() === track.author.trim()).length + (isNewAddition ? 1 : 0);
 
     // If there are already 2 or more tracks from the same author before this track, log a rule violation
-    if (authorCount > 2) {
+    if (authorCount > 1) {
       const violatingTracks = curatedTracklist
         .filter((t) => t.author === track.author)
         .map((t) => t.name)
         .join(", ");
-      const logMessage = `No more than two tracks from the same author (${track.author}) allowed in a tracklist. Violating tracks are: ${violatingTracks}`;
+      const logMessage = `No more than one track from the same author (${track.author}) allowed in a tracklist. Violating tracks are: ${violatingTracks}`;
       logRuleApplication(11, track.name, logMessage, false, ruleType);
       return false;
     }
     // If the condition is met (no rule violation), log successful rule application
-    const logMessage = `No more than two tracks from the same author (${track.author}) allowed in a tracklist.`;
+    const logMessage = `No more than one track from the same author (${track.author}) allowed in a tracklist.`;
     logRuleApplication(11, logMessage, true, ruleType);
     return true;
   }

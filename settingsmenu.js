@@ -251,11 +251,11 @@ document.addEventListener("keydown", function (event) {
   if (event.key === "d" || event.key === "D") {
     // This makes it case-insensitive
     var debugDiv = document.getElementById("debugdiv");
-    if (debugDiv.style.display === "none") {
+    if (debugDiv.style.opacity === "0") {
       debugDiv.style.display = "block"; // Show the div
       console.log("show div");
     } else {
-      debugDiv.style.display = "none"; // Hide the div
+      debugDiv.style.opacity = "1"; // Hide the div
       console.log("hide div");
     }
   }

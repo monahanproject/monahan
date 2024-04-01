@@ -140,8 +140,8 @@ export function checkPlaylistRules(playlist) {
           console.log(`❌❌❌ R10 violated at Curated Track ${i + 1} (${track.name}): Same author as the previous track. ${r10rule}`);
         }
   
-        // CHECK R11: No more than two tracks from the same author in a tracklist
-        if (authorCounts[track.author] > 2) {
+        // CHECK R11: No more than one track from the same author in a tracklist
+        if (authorCounts[track.author] > 1) {
           console.log(`❌❌❌ R11 violated at Curated Track ${i + 1} (${track.name}): More than two tracks from the same author. ${r11rule}`);
         }
   
