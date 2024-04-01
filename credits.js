@@ -31,8 +31,8 @@
       url: song.credit, // flip on purpose
       duration: song.creditDur,
       author: song.author,
-      // Other properties as before
-      credit: song.url,
+      engTrans: song.authorCredit,
+      frTrans: song.authorCredit
     };
     // Directly push the credit object without creating an audio element
     arrayOfCreditSongs.push(creditObj);

@@ -1053,6 +1053,7 @@ li {
   justify-content: space-between;
   align-items: center;
   max-width: 100%;
+  opacity: 0.1;
 }
 
 .skip-button {
@@ -1060,22 +1061,33 @@ li {
   background: none;
   position: relative;
   max-width: 100%;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center;
+
 }
 
 #skipBackwardButton {
   margin-right: calc(1.8 * 15vw);
 }
 
-#skipBackwardButton:hover {
-  opacity: 60%;
-}
 
 #skipForwardButton {
   margin-left: calc(1.8 * 15vw);
 }
 
+#skipBackwardButton:hover {
+  opacity: 60%;
+  /* transform: translateX(-3px); Moves backward button to the left on hover */
+  transform: scale(1.1); 
+  filter: brightness(120%); 
+
+}
+
 #skipForwardButton:hover {
   opacity: 60%;
+  /* transform: translateX(3fr); Moves forward button to the right on hover */
+  transform: scale(1.1); 
+  filter: brightness(120%); 
 }
 
 .skip-button span {
@@ -1084,6 +1096,21 @@ li {
   padding-top: calc(1.2 * 15vw);
   position: relative;
 }
+
+@keyframes svgGlow {
+  0%, 100% {
+    filter: none; /* Original state */
+  }
+  50% {
+    filter: brightness(100%) saturate(200%) contrast(200%);
+  }
+}
+
+.svg-glow {
+  animation: svgGlow 0.5s ease-out forwards; /* Quick glow effect */
+}
+
+
 
 .svg-icon {
   position: absolute;
@@ -1126,29 +1153,20 @@ li {
   background: transparent;
   border: none;
   margin: 6vh 0;
+  transform-origin: center; /* Moved here for consistency */
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease, left 0.3s ease; /* Consolidated */
 }
 
 #play-button:hover {
-  opacity: 60%;
+  transform: scale(1.03); /* Removed duplicate transition declaration */
 }
 
 #play-button-svg-container {
   display: block;
   width: 75vw;
-  padding-top: calc((319 / 279) * 80vw);
+  padding-top: calc((319 / 279) * 75vw); /* Adjusted to 75vw to match width */
   position: relative;
 }
-
-@media screen and (min-width: 900px) {
-  #play-button-svg-container {
-    width: 30vw;
-    padding-top: calc((319 / 279) * 30vw);
-  }
-}
-
-/******************************************/
-/****** MUSIC PLAYER PLAY ICON  *******/
-/**************************************/
 
 #play-icon {
   position: absolute;
@@ -1163,11 +1181,11 @@ li {
   top: 50%;
   left: 35%;
   transform: translate(-50%, -50%);
-  pointer-events: none;
+  /* pointer-events: none; Consider if hover effects are desired */
   color: var(--lightgreen);
-
   font-family: "DM Sans";
   font-size: 2.25rem;
+  transition: transform 0.5s ease; /* Combined transitions */
 }
 
 @media screen and (min-width: 900px) {
@@ -1180,8 +1198,33 @@ li {
 }
 
 #play-button-text-container:hover {
-  opacity: 0.6;
+  opacity: 0.9;
 }
+
+.playing #play-button-svg-container .svg-icon,
+.paused #play-button-svg-container .svg-icon {
+  transition: transform 0.3s ease;
+}
+
+.playing #play-button-svg-container .svg-icon {
+  transform: scale(1.1); /* Slightly enlarge for emphasis */
+}
+
+.paused #play-button-svg-container .svg-icon {
+  transform: scale(1); /* Return to normal size */
+}
+
+#play-button-text-container {
+  transition: transform 0.3s ease, left 0.3s ease;
+}
+
+@media screen and (min-width: 900px) {
+  #play-button-svg-container {
+    width: 30vw;
+    padding-top: calc((319 / 279) * 30vw);
+  }
+}
+
 
 /******************************************/
 /****** MUSIC PLAYER PROGRESS BAR  *******/
@@ -1580,6 +1623,16 @@ input[type="range"] {
 #transcriptContainer:hover {
   /* opacity: 0.6; */
 }
+
+#transcriptContainer {
+  /* opacity: 0; */
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-in-out, transform 0.2s ease-in-out; /* Smooth transitions for both properties */
+  display: none;
+}
+
+
+
 
 @media screen and (min-width: 900px) {
   #transcriptContainer {
@@ -2035,34 +2088,6 @@ article > p {
   transform: scale(1.1); /* Gently increase size */
   fill: #28a745; /* Change color to a subtle green, or any color that suits your theme */
 }
-
-
-#play-button {
-  transition: background-color 0.3s ease;
-}
-
-.playing #play-button-svg-container .svg-icon,
-.paused #play-button-svg-container .svg-icon {
-  transition: transform 0.3s ease;
-}
-
-.playing #play-button-svg-container .svg-icon {
-  transform: scale(1.1); /* Slightly enlarge for emphasis */
-}
-
-.paused #play-button-svg-container .svg-icon {
-  transform: scale(1); /* Return to normal size */
-}
-
-#play-button-text-container {
-  transition: transform 0.3s ease, left 0.3s ease;
-}
-#transcriptContainer {
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  display: none;
-}
-
 
 
 

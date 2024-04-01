@@ -1,3 +1,11 @@
+// Lang Elliott
+// Jesse Stewart
+// Jayne Brown
+// Sophia Grigoriadis
+// Brenna MacCrimmon
+// Maryem Hassan Tollar
+
+
 import { curatedTracklist, initializeApp } from "./play.js";
 import { getState, setState } from "./state.js";
 let isInverted = getState(); // This will initialize isInverted based on localStorage
@@ -34,6 +42,9 @@ export class SimpleAudioPlayer {
     this.beginAgain = `<img id="begin-again" class="svg-icon" src="images/svg/beginAgain.svg" alt="Begin again">`;
     this.beginAgainInvert = `<img id="begin-again" class="svg-icon" src="images/svg/beginAgainInvert.svg" alt="Begin again">`;
 
+    this.skipBackwardButton = document.getElementById("skipBackwardButton");
+    this.skipForwardButton = document.getElementById("skipForwardButton");
+    this.skipBackwardsImpossible = true;
 
     this.playingSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButton.svg" alt="Play Icon">`;
     this.playingInvertedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButtonInvert.svg" alt="Play Icon">`;
@@ -47,7 +58,7 @@ export class SimpleAudioPlayer {
 
     this.setupInitialUserInteraction();
     this.createVolumeSlider();
-    this.initializeButtonVisuals();
+    // this.initializeButtonVisuals();
     this.calcTotalPlaylistDuration();
     this.calcTotalPlaylistRemainingTime();
 
@@ -146,18 +157,21 @@ export class SimpleAudioPlayer {
 
   createTimerLoopAndUpdateProgressTimer() {
     clearInterval(this.updateIntervalId);
-
     var start = Date.now(); // Record the start time of the loop
+    let checkCounter = 0; // Counter to track when to perform the skip backward check
+
     this.updateIntervalId = setInterval(() => {
-      // Store the interval ID
       let delta = Date.now() - start;
       let deltaSeconds = Math.floor(delta / 1000);
       this.updateProgressUI(Math.floor(this.globalAudioElement.currentTime), this.timerDuration);
-    }, 1000);
-  }
 
-  initializeButtonVisuals() {
-    this.toggleButtonVisuals(false);
+      checkCounter++;
+      if (checkCounter >= 15) {
+        // Perform the check every 15 seconds
+        this.checkAndEnableSkipBackward();
+        checkCounter = 0; // Reset counter after the check
+      }
+    }, 1000);
   }
 
   /////////////////////////////////////////////
@@ -258,15 +272,28 @@ export class SimpleAudioPlayer {
         ? "$All recordings and transcripts are copyright protected. All rights reserved.$$"
         : "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
 
-    this.tracklist.forEach((song) => {
+    // Logging the start of transcript update process
+    console.log("Starting to update transcript...");
+
+    this.tracklist.forEach((song, index) => {
       const inputString = song[langKey];
       if (inputString && inputString.trim() !== "") {
+        // Log each track name or identifier as its transcript is being processed
+        // Assuming 'song' has a 'name' property or similar identifier
+        console.log(`Processing transcript for track #${index + 1}: ${song.name || "Unnamed Track"}`);
+
         this.transcriptContainer.appendChild(this.createHTMLFromText(inputString));
       }
     });
 
+    // Log completion of adding tracks to the transcript
+    console.log("All track transcripts processed.");
+
     this.transcriptContainer.appendChild(this.createHTMLFromText(copyRightText));
     this.transcriptContainer.style.display = "block";
+
+    // Final log to indicate the entire update process is done
+    console.log("Transcript update completed.");
   }
 
   // Function to toggle the transcript visibility
@@ -277,14 +304,17 @@ export class SimpleAudioPlayer {
     if (this.transcriptVisible) {
       this.updateTranscript(); // Update before showing
       this.transcriptContainer.style.display = "block";
+      // Use double requestAnimationFrame to ensure the transition starts after the element is displayed
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           this.transcriptContainer.style.opacity = "1"; // Fade in
+          this.transcriptContainer.style.transform = "translateY(0px)"; // Move to final position
         });
       });
       transcriptButton.textContent = "Hide Transcript";
     } else {
       this.transcriptContainer.style.opacity = "0"; // Fade out
+      this.transcriptContainer.style.transform = "translateY(20px)"; // Start moving down
       // Wait for the fade-out transition before setting display to none
       setTimeout(() => {
         this.transcriptContainer.style.display = "none";
@@ -299,17 +329,38 @@ export class SimpleAudioPlayer {
 
   setupInitialUserInteraction() {
     const playButton = document.getElementById("play-button");
-    const skipBackwardButton = document.getElementById("skipBackwardButton");
-    const skipForwardButton = document.getElementById("skipForwardButton");
+
+    const applySvgGlowEffect = (buttonElement) => {
+      const svgImage = buttonElement.querySelector("img.svg-icon"); // Target the <img> with the SVG
+      if (svgImage) {
+        svgImage.classList.add("svg-glow");
+        setTimeout(() => {
+          svgImage.classList.remove("svg-glow");
+        }, 500); // Duration should match the CSS animation
+      }
+    };
+
+    const applyFlashEffect = (element) => {
+      element.classList.add("flash-red");
+      setTimeout(() => {
+        element.classList.remove("flash-red");
+      }, 500); // Duration should match the CSS animation
+    };
 
     if (playButton) {
       playButton.addEventListener("click", () => this.startPlayback());
     }
-    if (skipBackwardButton) {
-      skipBackwardButton.addEventListener("click", () => this.handleSkipBackward());
+    if (this.skipBackwardButton) {
+      this.skipBackwardButton.addEventListener("click", () => {
+        this.handleSkipBackward();
+        applySvgGlowEffect(this.skipBackwardButton); // Apply the SVG glow effect
+      });
     }
-    if (skipForwardButton) {
-      skipForwardButton.addEventListener("click", () => this.handleSkipForward());
+    if (this.skipForwardButton) {
+      this.skipForwardButton.addEventListener("click", () => {
+        this.handleSkipForward();
+        applySvgGlowEffect(this.skipForwardButton); // Apply the SVG glow effect
+      });
     }
   }
 
@@ -324,47 +375,47 @@ export class SimpleAudioPlayer {
       volumeSlider.max = "100";
       volumeSlider.min = "0";
       volumeSlider.value = "75"; // Set default volume
-  
+
       volumeSlider.addEventListener("input", (event) => {
         this.handleVolumeChange(event);
       });
-  
+
       // Immediately set the volume based on the slider's initial value
       this.globalAudioElement.volume = parseFloat(volumeSlider.value) / 100;
-  
+
       // Setup volume control buttons
       this.setupVolumeControlButtons();
     }
-  
+
     // Initial UI update for volume indicators if necessary
     this.updateVolumeIndicator(parseFloat(volumeSlider.value));
   }
-  
+
   handleVolumeChange(event) {
     const volumeLevel = parseFloat(event.target.value) / 100;
     this.globalAudioElement.volume = volumeLevel;
     this.updateVolumeIndicator(event.target.value); // Assuming this method exists to update the UI
   }
-  
+
   updateVolumeIndicator(volumeLevel) {
     const volumeFiller = document.getElementById("volume-bar-filler");
     const volumeThinner = document.getElementById("volume-bar-thinner");
-  
+
     if (volumeFiller) {
       volumeFiller.style.width = `${volumeLevel}%`;
     }
-  
+
     if (volumeThinner) {
       volumeThinner.style.width = `${100 - volumeLevel}%`;
       volumeThinner.style.left = `${volumeLevel}%`;
     }
   }
-  
+
   setupVolumeControlButtons() {
     const lowerVolumeBtn = document.getElementById("lower-vol");
     const raiseVolumeBtn = document.getElementById("raise-vol");
     const volumeSlider = document.getElementById("volume-slider"); // Get the volume slider
-  
+
     if (lowerVolumeBtn) {
       lowerVolumeBtn.addEventListener("click", () => {
         this.globalAudioElement.volume = 0;
@@ -372,7 +423,7 @@ export class SimpleAudioPlayer {
         this.updateVolumeIndicator("0"); // Update the UI to reflect the volume change
       });
     }
-  
+
     if (raiseVolumeBtn) {
       raiseVolumeBtn.addEventListener("click", () => {
         this.globalAudioElement.volume = 1;
@@ -381,8 +432,6 @@ export class SimpleAudioPlayer {
       });
     }
   }
-  
-  
 
   /////////////////////////////////////////////////////
   /////////         HANDLE PAUSE / PLAY     ///////////
@@ -418,33 +467,32 @@ export class SimpleAudioPlayer {
     this.updatePlayButtonText("");
 
     // Insert or update the overlay SVG
-   // Ensure the parent container is positioned relatively
-const existingOverlay = document.getElementById("play-button");
-existingOverlay.style.position = 'relative';
-// Check if the overlay SVG already exists to avoid duplicates
-let overlaySvgElement = existingOverlay.querySelector('.overlay-svg');
-if (!overlaySvgElement) {
-  // Create a new overlay SVG element if it does not exist
-  overlaySvgElement = document.createElement("div");
-  overlaySvgElement.className = "overlay-svg";
-  overlaySvgElement.style.position = 'absolute'; // Position it absolutely within the parent
-  overlaySvgElement.style.top = '25%'; // Adjust these values as needed
-  overlaySvgElement.style.left = '10%';
-  overlaySvgElement.style.width = '50%'; // Ensure it covers the parent
-  overlaySvgElement.style.height = '50%';
-  overlaySvgElement.style.zIndex = '10'; // Ensure it's on top
-  existingOverlay.appendChild(overlaySvgElement);
+    // Ensure the parent container is positioned relatively
+    const existingOverlay = document.getElementById("play-button");
+    existingOverlay.style.position = "relative";
+    // Check if the overlay SVG already exists to avoid duplicates
+    let overlaySvgElement = existingOverlay.querySelector(".overlay-svg");
+    if (!overlaySvgElement) {
+      // Create a new overlay SVG element if it does not exist
+      overlaySvgElement = document.createElement("div");
+      overlaySvgElement.className = "overlay-svg";
+      overlaySvgElement.style.position = "absolute"; // Position it absolutely within the parent
+      overlaySvgElement.style.top = "25%"; // Adjust these values as needed
+      overlaySvgElement.style.left = "10%";
+      overlaySvgElement.style.width = "50%"; // Ensure it covers the parent
+      overlaySvgElement.style.height = "50%";
+      overlaySvgElement.style.zIndex = "10"; // Ensure it's on top
+      existingOverlay.appendChild(overlaySvgElement);
 
-  let isThemeInverted = getState(); 
-  if (!isThemeInverted) {
-    console.log("theme not inverted");
-    overlaySvgElement.innerHTML = this.beginAgain;
-  } else {
-    console.log("theme inverted");
-    overlaySvgElement.innerHTML = this.beginAgainInvert; 
-  }
-}
-
+      let isThemeInverted = getState();
+      if (!isThemeInverted) {
+        console.log("theme not inverted");
+        overlaySvgElement.innerHTML = this.beginAgain;
+      } else {
+        console.log("theme inverted");
+        overlaySvgElement.innerHTML = this.beginAgainInvert;
+      }
+    }
 
     // Change the event listener on the play button to reload the page
     const playButton = document.getElementById("play-button");
@@ -486,52 +534,67 @@ if (!overlaySvgElement) {
     }
   }
 
-  updateSkipForwardButtonState() {
-    console.log("egad");
-    const skipForwardButton = document.getElementById("skip-forward-button-svg-container");
-    console.log(skipForwardButton);
-    skipForwardButton.style.opacity = "0.2"; // Very light grey
-  }
-
   handleSkipForward() {
-    console.log("Attempting to skip forward...");
-
-    if (this.remainingTime <= 45) {
-      this.updateSkipForwardButtonState();
-      return; // Prevent the skip forward action
+    if (this.remainingTime <= 40) {
+      console.log("Remaining time is less than 40 seconds.");
+      this.skipForwardButton.style.opacity = "0.1";
+      this.skipBackwardButton.style.opacity = "0.1";
+      return;
     }
 
-    let newPlayerTime = this.globalAudioElement.currentTime + 20;
+    this.skipBackwardButton.style.opacity = "1";
+    this.skipBackwardsImpossible = false;
 
+    let newPlayerTime = this.globalAudioElement.currentTime + 20;
     newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
 
     if (!this.isUpdatingTime) {
-      this.isUpdatingTime = true; // Set a flag to prevent rapid updates
-      // console.log("Updating player time...");
+      this.isUpdatingTime = true;
+      let initialTime = this.globalAudioElement.currentTime;
 
-      // Immediately update currentTime without setTimeout
+      // Attempt to update the time
       this.globalAudioElement.currentTime = newPlayerTime;
 
-      // Use the 'seeked' event to know when the currentTime update is complete
-      const onTimeUpdate = () => {
+      // Check if the currentTime was updated as expected
+      setTimeout(() => {
+        if (this.globalAudioElement.currentTime === initialTime) {
+          // If currentTime hasn't changed, likely at the end or unable to seek further
+          console.log("Unable to skip forward, possibly at the end of the track.");
+        }
         this.isUpdatingTime = false;
-        // console.log("Player time updated.");
-        this.globalAudioElement.removeEventListener("seeked", onTimeUpdate);
-      };
-
-      this.globalAudioElement.addEventListener("seeked", onTimeUpdate);
+      }, 100); // Adjust timeout as needed based on testing
     }
   }
 
   handleSkipBackward() {
+    if (this.globalAudioElement.currentTime < 16) {
+      console.log("lll this.globalAudioElement.currentTime is less than 20");
+
+      this.skipBackwardButton.style.opacity = "0.1";
+      this.skipBackwardsImpossible = true;
+      return; // Prevent the skip forward action
+    }
+
     let newPlayerTime = this.globalAudioElement.currentTime - 20;
+
     newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
     if (!this.isUpdatingTime) {
       this.isUpdatingTime = true; // Set a flag to prevent rapid updates
       setTimeout(() => {
-        this.globalAudioElement.currentTime = newPlayerTime;
+        // Ensure the time is not set to a negative value
+        this.globalAudioElement.currentTime = Math.max(0, newPlayerTime);
         this.isUpdatingTime = false;
       }, 20);
+    }
+  }
+
+  checkAndEnableSkipBackward() {
+    console.log("lll making skip backward solid");
+    console.log(`lll this.globalAudioElement.currentTime is ${this.globalAudioElement.currentTime}`);
+
+    if (this.globalAudioElement.currentTime > 16) {
+      this.skipBackwardButton.style.opacity = "1.0";
+      this.skipBackwardsImpossible = false;
     }
   }
 
@@ -540,6 +603,7 @@ if (!overlaySvgElement) {
   /////////////////////////////////////////////////////
 
   async startPlayback() {
+    document.getElementById("ffrw-button-container").style.opacity = "1";
     // check if there are tracks left in the playlist to play or resume.
     if (this.currentIndex < this.tracklist.length) {
       if (!this.isPlaying) {
@@ -579,22 +643,13 @@ if (!overlaySvgElement) {
       // Set the source of the global audio element to the URL of the current track.
       this.globalAudioElement.src = track.url;
 
-      //temp
-
-      this.globalAudioElement.load(); // Ensure the audio is loaded to accurately get the duration
-
-      this.globalAudioElement.onloadedmetadata = () => {
-        console.log(
-          `yyy name is ${track.name} and Actual duration of track ${index}: ${this.globalAudioElement.duration} and track.duration is ${track.duration}`
-        );
-      };
-
       // Attempt to play the current track.
       this.globalAudioElement
         .play()
         .then(() => {
           // On success, set isPlaying flag to true.
           this.isPlaying = true;
+
           // Preload the next track if there is one.
           if (index + 1 < this.tracklist.length) {
             const nextTrack = this.tracklist[index + 1];
@@ -623,23 +678,17 @@ if (!overlaySvgElement) {
         );
 
         // Update the timerDuration and log before and after values
-        console.log(`Before Update: timerDuration = ${this.timerDuration}, remainingTime = ${this.remainingTime}`);
         this.timerDuration += this.globalAudioElement.duration;
         this.remainingTime -= this.globalAudioElement.duration;
-        console.log(`After Update: timerDuration = ${this.timerDuration}, remainingTime = ${this.remainingTime}`);
 
         // Move to the next track
         this.currentIndex++;
 
         // If there are more tracks to play, recursively call playTrack to play the next one.
         if (this.currentIndex < this.tracklist.length) {
-          console.log(`Moving to track ${this.currentIndex}: ${this.tracklist[this.currentIndex].name}`);
-
           this.playTrack(this.currentIndex).then(resolve).catch(reject);
         } else {
           console.log("End of playlist reached.");
-
-          // When all tracks have been played, set isPlaying to false and resolve the promise.
           this.handleEnded();
           resolve(); // Indicate that the playlist has finished.
         }
