@@ -325,7 +325,7 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
         if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
           if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
             addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
-            tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
+            // tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             // console.log(`✅ Added ${track.name} to the curated tracklist using specific rule ${i + 61}.`);
             trackIndex++;
@@ -394,7 +394,7 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 
             // console.log(`Adding ${track.name} to meet the rule: ${ruleDescription}`);
             addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
-            tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
+            // tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             ruleMet = true;
             markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
