@@ -20,10 +20,10 @@ export class SimpleAudioPlayer {
     this.isPlaying = false;
     this.firstPlayDone = false;
 
-    this.cumulativeElapsedTimeInTotalPlaylist = 0;
-    this.totalPlaylistDuration = 0; 
+    this.totalPlaylistDuration = 0;
     this.isUpdatingTime = false; // Flag to prevent rapid updates
     this.timerDuration = 0;
+    this.remainingTime = 0;
     this.allowProgressUpdate = true;
 
     this.transcript = "";
@@ -31,6 +31,9 @@ export class SimpleAudioPlayer {
     this.transcriptVisible = false;
     this.transcriptContent = null;
     this.transcriptContainer = document.getElementById("transcriptContainer");
+    this.beginAgain = `<img id="begin-again" class="svg-icon" src="images/svg/beginAgain.svg" alt="Begin again">`;
+    this.beginAgainInvert = `<img id="begin-again" class="svg-icon" src="images/svg/beginAgainInvert.svg" alt="Begin again">`;
+
 
     this.playingSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButton.svg" alt="Play Icon">`;
     this.playingInvertedSVG = `<img id="play-icon" class="svg-icon" src="images/svg/playButtonInvert.svg" alt="Play Icon">`;
@@ -45,7 +48,8 @@ export class SimpleAudioPlayer {
     this.setupInitialUserInteraction();
     this.createVolumeSlider();
     this.initializeButtonVisuals();
-    this.calcDuration();
+    this.calcTotalPlaylistDuration();
+    this.calcTotalPlaylistRemainingTime();
 
     this.globalAudioElement.onplay = () => this.handlePlay();
     this.globalAudioElement.onpause = () => this.handlePause();
@@ -54,7 +58,7 @@ export class SimpleAudioPlayer {
 
   // TIMER
 
-  calcDuration() {
+  calcTotalPlaylistDuration() {
     this.totalPlaylistDuration = this.tracklist.reduce((acc, track, index) => {
       let durationToAdd = Number(track.duration);
       return acc + durationToAdd;
@@ -62,28 +66,73 @@ export class SimpleAudioPlayer {
     return this.totalPlaylistDuration;
   }
 
+  calcTotalPlaylistRemainingTime() {
+    this.remainingTime = this.totalPlaylistDuration;
+    return this.remainingTime;
+  }
+
+  // updateProgressUI(elapsedSeconds, previousDuration) {
+  //   const totalElapsedSeconds = elapsedSeconds + previousDuration;
+  //   const remainingDurationSeconds = Math.max(0, this.totalPlaylistDuration - totalElapsedSeconds);
+  //   const playedPercentage = (totalElapsedSeconds / this.totalPlaylistDuration) * 100;
+  //   console.log(`xxx seconds played according to totalelapsedseconds is ${totalElapsedSeconds}`);
+  //   const playedTime = this.calculateMinutesAndSeconds(totalElapsedSeconds);
+  //   const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
+
+  //   requestAnimationFrame(() => {
+  //     try {
+  //       const progressBar = document.getElementById("progress-bar");
+  //       const timePlayedElement = document.getElementById("time-played");
+  //       const timeRemainingElement = document.getElementById("time-remaining");
+
+  //       progressBar.style.width = `${playedPercentage}%`;
+  //       timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
+  //       timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
+  //     } catch (error) {
+  //       console.error("An error occurred in updateProgressUI:", error);
+  //     }
+  //   });
+  // }
+
   updateProgressUI(elapsedSeconds, previousDuration) {
+    if (this.playlistEnded) {
+      const timeRemainingElement = document.getElementById("time-remaining");
+      timeRemainingElement.innerText = `00:00`;
+
+      console.log("get me out of here!");
+      return;
+    }
+
     const totalElapsedSeconds = elapsedSeconds + previousDuration;
     const remainingDurationSeconds = Math.max(0, this.totalPlaylistDuration - totalElapsedSeconds);
     const playedPercentage = (totalElapsedSeconds / this.totalPlaylistDuration) * 100;
+
     const playedTime = this.calculateMinutesAndSeconds(totalElapsedSeconds);
     const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
-  
+
+    // Detailed logging of calculation components
+    console.log(
+      `Updating Progress UI. Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}, Total Elapsed Seconds: ${totalElapsedSeconds}`
+    );
+    console.log(`Remaining Duration Seconds: ${remainingDurationSeconds}, Played Percentage: ${playedPercentage}`);
+
     requestAnimationFrame(() => {
       try {
         const progressBar = document.getElementById("progress-bar");
         const timePlayedElement = document.getElementById("time-played");
         const timeRemainingElement = document.getElementById("time-remaining");
-  
+
         progressBar.style.width = `${playedPercentage}%`;
         timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
         timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
+
+        // Additional log to confirm UI update
+        console.log(`Progress Bar Updated: ${progressBar.style.width}`);
       } catch (error) {
         console.error("An error occurred in updateProgressUI:", error);
       }
     });
   }
-  
 
   calculateMinutesAndSeconds(seconds) {
     seconds = Math.max(0, seconds); // Clamp seconds to a minimum of 0 to prevent negative values
@@ -96,7 +145,6 @@ export class SimpleAudioPlayer {
   }
 
   createTimerLoopAndUpdateProgressTimer() {
-
     clearInterval(this.updateIntervalId);
 
     var start = Date.now(); // Record the start time of the loop
@@ -276,38 +324,65 @@ export class SimpleAudioPlayer {
       volumeSlider.max = "100";
       volumeSlider.min = "0";
       volumeSlider.value = "75"; // Set default volume
-
+  
       volumeSlider.addEventListener("input", (event) => {
         this.handleVolumeChange(event);
       });
-
+  
       // Immediately set the volume based on the slider's initial value
       this.globalAudioElement.volume = parseFloat(volumeSlider.value) / 100;
+  
+      // Setup volume control buttons
+      this.setupVolumeControlButtons();
     }
-
+  
     // Initial UI update for volume indicators if necessary
     this.updateVolumeIndicator(parseFloat(volumeSlider.value));
   }
-
+  
   handleVolumeChange(event) {
     const volumeLevel = parseFloat(event.target.value) / 100;
     this.globalAudioElement.volume = volumeLevel;
     this.updateVolumeIndicator(event.target.value); // Assuming this method exists to update the UI
   }
-
+  
   updateVolumeIndicator(volumeLevel) {
     const volumeFiller = document.getElementById("volume-bar-filler");
     const volumeThinner = document.getElementById("volume-bar-thinner");
-
+  
     if (volumeFiller) {
       volumeFiller.style.width = `${volumeLevel}%`;
     }
-
+  
     if (volumeThinner) {
       volumeThinner.style.width = `${100 - volumeLevel}%`;
       volumeThinner.style.left = `${volumeLevel}%`;
     }
   }
+  
+  setupVolumeControlButtons() {
+    const lowerVolumeBtn = document.getElementById("lower-vol");
+    const raiseVolumeBtn = document.getElementById("raise-vol");
+    const volumeSlider = document.getElementById("volume-slider"); // Get the volume slider
+  
+    if (lowerVolumeBtn) {
+      lowerVolumeBtn.addEventListener("click", () => {
+        this.globalAudioElement.volume = 0;
+        volumeSlider.value = "0"; // Update the slider position
+        this.updateVolumeIndicator("0"); // Update the UI to reflect the volume change
+      });
+    }
+  
+    if (raiseVolumeBtn) {
+      raiseVolumeBtn.addEventListener("click", () => {
+        this.globalAudioElement.volume = 1;
+        volumeSlider.value = "100"; // Update the slider position
+        this.updateVolumeIndicator("100"); // Update the UI to reflect the volume change
+      });
+    }
+  }
+  
+  
 
   /////////////////////////////////////////////////////
   /////////         HANDLE PAUSE / PLAY     ///////////
@@ -340,7 +415,36 @@ export class SimpleAudioPlayer {
     this.isPlaying = false; // Ensure isPlaying is set to false
 
     // Update the text of the play button to "Regenerate"
-    this.updatePlayButtonText("AGAIN?");
+    this.updatePlayButtonText("");
+
+    // Insert or update the overlay SVG
+   // Ensure the parent container is positioned relatively
+const existingOverlay = document.getElementById("play-button");
+existingOverlay.style.position = 'relative';
+// Check if the overlay SVG already exists to avoid duplicates
+let overlaySvgElement = existingOverlay.querySelector('.overlay-svg');
+if (!overlaySvgElement) {
+  // Create a new overlay SVG element if it does not exist
+  overlaySvgElement = document.createElement("div");
+  overlaySvgElement.className = "overlay-svg";
+  overlaySvgElement.style.position = 'absolute'; // Position it absolutely within the parent
+  overlaySvgElement.style.top = '25%'; // Adjust these values as needed
+  overlaySvgElement.style.left = '10%';
+  overlaySvgElement.style.width = '50%'; // Ensure it covers the parent
+  overlaySvgElement.style.height = '50%';
+  overlaySvgElement.style.zIndex = '10'; // Ensure it's on top
+  existingOverlay.appendChild(overlaySvgElement);
+
+  let isThemeInverted = getState(); 
+  if (!isThemeInverted) {
+    console.log("theme not inverted");
+    overlaySvgElement.innerHTML = this.beginAgain;
+  } else {
+    console.log("theme inverted");
+    overlaySvgElement.innerHTML = this.beginAgainInvert; 
+  }
+}
+
 
     // Change the event listener on the play button to reload the page
     const playButton = document.getElementById("play-button");
@@ -382,12 +486,28 @@ export class SimpleAudioPlayer {
     }
   }
 
+  updateSkipForwardButtonState() {
+    console.log("egad");
+    const skipForwardButton = document.getElementById("skip-forward-button-svg-container");
+    console.log(skipForwardButton);
+    skipForwardButton.style.opacity = "0.2"; // Very light grey
+  }
+
   handleSkipForward() {
+    console.log("Attempting to skip forward...");
+
+    if (this.remainingTime <= 45) {
+      this.updateSkipForwardButtonState();
+      return; // Prevent the skip forward action
+    }
+
     let newPlayerTime = this.globalAudioElement.currentTime + 20;
+
     newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
 
     if (!this.isUpdatingTime) {
       this.isUpdatingTime = true; // Set a flag to prevent rapid updates
+      // console.log("Updating player time...");
 
       // Immediately update currentTime without setTimeout
       this.globalAudioElement.currentTime = newPlayerTime;
@@ -395,6 +515,7 @@ export class SimpleAudioPlayer {
       // Use the 'seeked' event to know when the currentTime update is complete
       const onTimeUpdate = () => {
         this.isUpdatingTime = false;
+        // console.log("Player time updated.");
         this.globalAudioElement.removeEventListener("seeked", onTimeUpdate);
       };
 
@@ -419,14 +540,7 @@ export class SimpleAudioPlayer {
   /////////////////////////////////////////////////////
 
   async startPlayback() {
-    console.log("startPlayback called. Current index:", this.currentIndex, "Playlist ended:", this.playlistEnded, "Is playing:", this.isPlaying);
-    // Prioritize checking if a new playlist needs to be started.
-    if (this.playlistEnded && !this.isPlaying) {
-      console.log("End of playlist was detected. here's where I'd make a new playlist...");
-      return; // Exit early to avoid further execution.
-    }
-
-    // Then check if there are tracks left in the playlist to play or resume.
+    // check if there are tracks left in the playlist to play or resume.
     if (this.currentIndex < this.tracklist.length) {
       if (!this.isPlaying) {
         console.log("Playing or resuming track at index:", this.currentIndex);
@@ -458,32 +572,22 @@ export class SimpleAudioPlayer {
   /////////////////////////////////////////////////////
 
   playTrack(index) {
-    console.log("playTrack(index)");
-
-    if (index >= this.tracklist.length) {
-      console.log("handling ended, shouldn't do this so soon");
-      this.handleEnded();
-      return Promise.reject(new Error("Reached the end of the playlist"));
-    }
-
     // Return a new promise that will handle the play process.
     return new Promise((resolve, reject) => {
-      // Check if the index is beyond the tracklist's length, indicating the end of the playlist.
-      if (index >= this.tracklist.length) {
-        // Log that the end of the playlist has been reached.
-        console.log(`[playTrack] End of playlist reached. Index=${index}`);
-        // Set the isPlaying flag to false as nothing is playing now.
-        this.isPlaying = false;
-        // Reject the promise indicating we've reached the end of the playlist.
-        reject(new Error("End of playlist"));
-        return; // Exit early since there's nothing to play.
-      }
-
       // Retrieve the track object from the tracklist at the specified index.
       const track = this.tracklist[index];
-
       // Set the source of the global audio element to the URL of the current track.
       this.globalAudioElement.src = track.url;
+
+      //temp
+
+      this.globalAudioElement.load(); // Ensure the audio is loaded to accurately get the duration
+
+      this.globalAudioElement.onloadedmetadata = () => {
+        console.log(
+          `yyy name is ${track.name} and Actual duration of track ${index}: ${this.globalAudioElement.duration} and track.duration is ${track.duration}`
+        );
+      };
 
       // Attempt to play the current track.
       this.globalAudioElement
@@ -491,7 +595,6 @@ export class SimpleAudioPlayer {
         .then(() => {
           // On success, set isPlaying flag to true.
           this.isPlaying = true;
-
           // Preload the next track if there is one.
           if (index + 1 < this.tracklist.length) {
             const nextTrack = this.tracklist[index + 1];
@@ -512,50 +615,35 @@ export class SimpleAudioPlayer {
           reject(error);
         });
 
-      // Set up an event listener for when the track ends.
-
+      // every time any track ends...
       this.globalAudioElement.onended = () => {
-        // Obtain the duration of the track that just finished playing.
-        const duration = this.globalAudioElement.duration;
-        // Update the timerDuration with the floor value of the track's duration.
-        // this.timerDuration += Math.floor(duration); findme
+        // Log current track information and timing before updates
+        console.log(
+          `Track ${this.currentIndex} ended. Name: ${this.tracklist[this.currentIndex].name}. Duration: ${this.globalAudioElement.duration}`
+        );
+
+        // Update the timerDuration and log before and after values
+        console.log(`Before Update: timerDuration = ${this.timerDuration}, remainingTime = ${this.remainingTime}`);
         this.timerDuration += this.globalAudioElement.duration;
+        this.remainingTime -= this.globalAudioElement.duration;
+        console.log(`After Update: timerDuration = ${this.timerDuration}, remainingTime = ${this.remainingTime}`);
 
-        console.log(`[Track End] Current Index: ${this.currentIndex}, Track Duration: ${duration}, Updated Timer Duration: ${this.timerDuration}`);
-
-        // Update cumulativeElapsedTime with the track's duration.
-        this.cumulativeElapsedTimeInTotalPlaylist += Number(track.duration);
-
-        // Increment currentIndex to move to the next track.
+        // Move to the next track
         this.currentIndex++;
 
         // If there are more tracks to play, recursively call playTrack to play the next one.
         if (this.currentIndex < this.tracklist.length) {
+          console.log(`Moving to track ${this.currentIndex}: ${this.tracklist[this.currentIndex].name}`);
+
           this.playTrack(this.currentIndex).then(resolve).catch(reject);
         } else {
-          // If all tracks have been played, set isPlaying to false and resolve the promise.
-          // this.isPlaying = false;
+          console.log("End of playlist reached.");
+
+          // When all tracks have been played, set isPlaying to false and resolve the promise.
           this.handleEnded();
           resolve(); // Indicate that the playlist has finished.
         }
       };
-
-      // this.globalAudioElement.onended = () => {
-      //   const duration = this.globalAudioElement.duration;
-      //   this.timerDuration += duration;
-
-      //   console.log(`[Track End] Index: ${this.currentIndex}, Duration: ${duration}, Timer: ${this.timerDuration}`);
-      //   this.cumulativeElapsedTime += Number(track.duration);
-      //   this.currentIndex++;
-
-      //   if (this.currentIndex < this.tracklist.length) {
-      //     this.playTrack(this.currentIndex).then(resolve).catch(reject);
-      //   } else {
-      //     console.log("Truly at the end of playlist. Handling ending.");
-      //     this.handleEnded();
-      //     resolve(); // End of playlist
-      //   }
-      // };
     });
   }
 
@@ -598,7 +686,7 @@ export class SimpleAudioPlayer {
       if (!playButton.classList.contains("playing")) {
         playButtonTextContainer.style.left = "50%";
         svgContainer.innerHTML = svgToUse; // Use determined SVG
-        console.log(currLang);
+        // console.log(currLang);
         if (currLang === "EN") {
           playButtonTextContainer.textContent = "STOP";
         } else {

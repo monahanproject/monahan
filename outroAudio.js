@@ -16,7 +16,7 @@ export const prepareSongForPlayback = (song) => {
     {
       name: "OUTRO2PT1SOLO",
       url: "./sounds/INTRO_OUTRO_NAMES/OUTRO_2.1.mp3",
-      duration: 8.589875,
+      duration: 8.616,
       author: "",
       form: "",
       placement: [""],
@@ -35,7 +35,7 @@ export const prepareSongForPlayback = (song) => {
     {
       name: "OUTRO2PT2withMUSIC",
       url: "./sounds/INTRO_OUTRO_NAMES/OUTRO_2.2_MUSIC.mp3",
-      duration: 29.04975,
+      duration: 29.088,
       author: "",
       form: "",
       placement: [""],
