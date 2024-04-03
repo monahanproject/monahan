@@ -2,7 +2,7 @@ let lang = "EN"; // Global variable to track current language state
 
 function toggleLanguageAndStorePref() {
   lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
-  localStorage.setItem('preferredLanguage', lang);
+  localStorage.setItem("preferredLanguage", lang);
   updateLanguageLabel();
   updatePageContent();
   adjustFontSize("play-button-text-container");
@@ -11,18 +11,18 @@ function toggleLanguageAndStorePref() {
 
 // Function to set language from local storage on page load
 function setLanguageFromLocalStorage() {
-  const savedLang = localStorage.getItem('preferredLanguage');
-  if (savedLang && (savedLang === 'EN' || savedLang === 'FR')) {
+  const savedLang = localStorage.getItem("preferredLanguage");
+  if (savedLang && (savedLang === "EN" || savedLang === "FR")) {
     lang = savedLang; // Set the global language variable to the saved preference
     updateLanguageLabel();
     updatePageContent();
     changeEachLangDiv();
   }
 
-  if (savedLang === 'FR') {
-      const playButtonTextContainer = document.getElementById("play-button-text-container");
-      playButtonTextContainer.style.left = "45%";
-      adjustFontSize("play-button-text-container");
+  if (savedLang === "FR") {
+    const playButtonTextContainer = document.getElementById("play-button-text-container");
+    playButtonTextContainer.style.left = "45%";
+    adjustFontSize("play-button-text-container");
   }
 }
 
@@ -30,7 +30,6 @@ function setLanguageFromLocalStorage() {
 document.addEventListener("DOMContentLoaded", () => {
   setLanguageFromLocalStorage();
 });
-
 
 function updateLanguageLabel() {
   var oldLangImage = document.getElementById("langToggle");
@@ -58,7 +57,6 @@ function updateLanguageLabel() {
     console.error("Language image element not found");
   }
 }
-
 
 // Update the main content of the page based on the current language
 function updatePageContent() {
@@ -104,8 +102,6 @@ function changeEachLangDiv() {
   strings.forEach(changeEachString);
   buttonStrings.forEach(changeEachBtnString);
 }
-
-
 
 // Object to store the original font sizes of elements that need to be resized
 const originalFontSizes = {};
@@ -192,7 +188,7 @@ const strings = [
   {
     id: "benchQRCodes",
     en: "The QR codes on the benches are installed on the backrests.",
-    fr: "Les codes QR sur les bancs sont installés sur les dossiers.",
+    fr: "On trouve les codes QR sur le dossier des bancs.",
   },
   { id: "noWashrooms", en: "There are no washrooms on site.", fr: "Il n’y a pas de toilettes sur le site." },
 
@@ -201,7 +197,7 @@ const strings = [
   { id: "arriveWebsite", en: "Arrive at the MONAHAN website", fr: "Accédez au site Web de MONAHAN" },
   { id: "putHeadphones", en: "Put on your HEADPHONES", fr: "Mets tes ÉCOUTEURS" },
   { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur DÉBUTER" },
-  // { id: "contributorsH2", en: "CONTRIBUTORS", fr: "CONTRIBUTORS" },
+  { id: "contributorsH2", en: "CONTRIBUTORS", fr: "Contributrices et contributeurs" },
 
   { id: "listenSoundPiece", en: "LISTEN to a personalized sound piece", fr: "ÉCOUTEZ une pièce sonore personnalisée" },
   {
@@ -232,7 +228,7 @@ const strings = [
   {
     id: "thanksKomiku",
     en: 'Thank you to Komiku for "The place that never get old", retrieved from <a href="https://citizen-dj.labs.loc.gov/" target="blank">Citizen DJ</a>, Free Music Archive at the Library of Congress, Web Archives Division.',
-    fr: 'Merci à Komiku pour "The place that never get old", extrait de <a href="https://citizen-dj.labs.loc.gov/ target="blank">Citizen DJ">Citizen DJ</a>, site Web archivé Free Music Archive de la Bibliothèque du Congrès, Division des archives Web.',
+    fr: 'Merci à Komiku pour "The place that never get old", extrait de <a href="https://citizen-dj.labs.loc.gov/" target="blank">Citizen DJ</a>, site Web archivé Free Music Archive de la Bibliothèque du Congrès, Division des archives Web.',
   },
   {
     id: "hugeThanks",
@@ -301,19 +297,19 @@ const productionPageEN = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">SIMON GUIBORD</span><span class="role">graphic designer</span>
-  </summary>
-  <article>
-    <p><span class="bold"><a target="_blank" href="https://simonguibord.com/">Simon Guibord</a></span> is a graphic designer who works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN, AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities. His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since 2015, he has taught typography at the University of Quebec in Outaouais.</p>
-  </article>
-</details>
-<div class="svg-contributors svg-contributors2"></div>
-<details>
-  <summary>
     <span class="summary-content">RACHEL GRAY</span> <span class="role">content collaborator</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" href="https://rachelgray.art/">Rachel Gray</a></span> is a Canadian interdisciplinary artist based in Algonquin Territory/Ottawa. Navigating the world with Dyslexia has led her to explore art as a way to create customized language. Through drawing, performance, installation, and storytelling she tries to speak into the places language leaves blank. Her work has been exhibited nationally and internationally. Rachel is also an author, animator, and illustrator, with her graphic novel <span class="italic">Jess</span> adapted into a musical work commissioned by Pacific Opera Victoria. Rachel is deeply connected to the disability arts community, serving as an advocate for accessible art practices, curating exhibitions, and working with organizations and academic institutions to harness art and storytelling. She is a founding member of Ghost Rooster, a disability arts collective, and continues to seek opportunities for collaboration and community connection through art.</p>
+  </article>
+  <div class="svg-contributors svg-contributors2"></div>
+</details>
+<details>
+  <summary>
+    <span class="summary-content">SIMON GUIBORD</span><span class="role">graphic designer</span>
+  </summary>
+  <article>
+    <p><span class="bold"><a target="_blank" href="https://simonguibord.com/">Simon Guibord</a></span> is a graphic designer who works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN, AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities. His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since 2015, he has taught typography at the University of Quebec in Outaouais.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
@@ -386,20 +382,19 @@ const productionPageFR = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">SIMON GUIBORD</span><span class="role">concepteur graphique</span>
+    <span class="summary-content">RACHEL GRAY</span> <span class="role">collaboratrice de contenu</span>
   </summary>
   <article>
-    <p><span class="bold"><a target="_blank" href="https://simonguibord.com/">Simon Guibord</a></span> est un concepteur graphique qui travaille dans les milieux culturels, universitaires et commerciaux. Il a collaboré avec la Galerie SAW, Artengine, la Galerie d'art d'Ottawa, DAÏMÔN, AXENÉO7, le magazine HB et des artistes de toute la région. Il se spécialise dans les publications et l'élaboration d'identités graphiques. Son travail se caractérise par une approche rationnelle et sensible, ainsi qu'un processus favorisant la recherche et l'expérimentation. Depuis 2015, il enseigne la typographie à l'Université du Québec en Outaouais.</p>
+  <p><span class="bold"><a target="_blank" href="https://rachelgray.art/">Rachel Gray</a></span> est une artiste interdisciplinaire canadienne basée dans le territoire algonquin (Ottawa). Sa dyslexie dans un monde peu adapté l'a amenée à explorer l'art comme un moyen de créer un langage personnalisé. Grâce au dessin, au spectacle, à l'installation et à la narration, elle tente de parler dans ces lieux que le langage laisse vides. Son travail a été exposé au niveau national et international. Rachel est également auteure, animatrice et illustratrice. Son roman graphique <span class="italic">Jess</span> a été adapté en une œuvre musicale sur une commande de Pacific Opera Victoria. Rachel est profondément liée à la communauté artistique des personnes handicapées; elle défend les pratiques artistiques accessibles, organise des expositions et travaille avec des organisations et des institutions universitaires pour exploiter l'art et la narration. Elle est membre fondatrice de Ghost Rooster, un collectif d'artistes handicapés, et ne cesse de chercher des occasions de collaborer et de rejoindre la communauté à travers l'art.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">RACHEL GRAY</span> <span class="role">collaboratrice de contenu</span>
+    <span class="summary-content">SIMON GUIBORD</span><span class="role">concepteur graphique</span>
   </summary>
   <article>
-  <p><span class="bold"><a target="_blank" href="https://rachelgray.art/">Rachel Gray</a></span> est une artiste interdisciplinaire canadienne basée dans le territoire algonquin (Ottawa). Sa dyslexie dans un monde peu adapté l'a amenée à explorer l'art comme un moyen de créer un langage personnalisé. Grâce au dessin, au spectacle, à l'installation et à la narration, elle tente de parler dans ces lieux que le langage laisse vides. Son travail a été exposé au niveau national et international. Rachel est également auteure, animatrice et illustratrice. Son roman graphique <span class="italic">Jess</span> a été adapté en une œuvre musicale sur une commande de Pacific Opera Victoria. Rachel est profondément liée à la communauté artistique des personnes handicapées; elle défend les pratiques artistiques accessibles, organise des expositions et travaille avec des organisations et des institutions universitaires pour exploiter l'art et la narration. Elle est membre fondatrice de Ghost Rooster, un collectif d'artistes handicapés, et ne cesse de chercher des occasions de collaborer et de rejoindre la communauté à travers l'art.</p>
-
+    <p><span class="bold"><a target="_blank" href="https://simonguibord.com/">Simon Guibord</a></span> est un concepteur graphique qui travaille dans les milieux culturels, universitaires et commerciaux. Il a collaboré avec la Galerie SAW, Artengine, la Galerie d'art d'Ottawa, DAÏMÔN, AXENÉO7, le magazine HB et des artistes de toute la région. Il se spécialise dans les publications et l'élaboration d'identités graphiques. Son travail se caractérise par une approche rationnelle et sensible, ainsi qu'un processus favorisant la recherche et l'expérimentation. Depuis 2015, il enseigne la typographie à l'Université du Québec en Outaouais.</p>
   </article>
 </details>
 <div class="svg-contributors svg-contributors2"></div>
@@ -767,7 +762,7 @@ const contributorsPageEN = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">SUTURE PARALLÈLES</span><span class="role">featuring</span></summary>
+<summary><span class="summary-content">SUTURES PARALLÈLES</span><span class="role">featuring</span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" href="https://transistor.media/balados/les-sutures-paralleles">Sutures parallèles</a></span>
@@ -878,11 +873,11 @@ const contributorsPageEN = `
  </p>
 </article>
 </details>
-<div class="svg-contributors svg-contributors-indent"></div>
+<div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">TURKWAZ</span><span class="role"></span></summary>
+<summary><span class="summary-content">TURKWAZ</span><span class="role">featuring</span></summary>
 <article>
- <p>
+<p>
   <span class="bold"><a target="_blank" href="https://turkwaz.ca/">Turkwaz</a></span> is Jayne Brown, Sophia Grigoriadis, Brenna
   MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to the Toronto world music scene and beyond.
   Their work together focuses on interpretations of songs primarily from Greek, Turkish, Arabic and Balkan traditions with forays into
@@ -893,11 +888,11 @@ const contributorsPageEN = `
  </p>
 </article>
 </details>
-<div class="svg-contributors"></div>
+<div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content">JAYNE BROWN</span><span class="role"></span></summary>
+<summary><span class="summary-content summary-indent">JAYNE BROWN</span><span class="role"></span></summary>
 <article>
- <p>
+<p class="summary-indent">
   Since making the switch from classical to folkloric singing, <span class="bold">Jayne Brown</span> has been learning, performing,
   travelling and recording with several ensembles, including Latin American ensembles, Nazka and Ilédé, Macedonian band Staro Selo,
   and Mediterranean mash-up bands Maza Mezé and the Maryem Tollar ensemble. For the past two decades, Jayne has been concentrating her
@@ -906,11 +901,11 @@ const contributorsPageEN = `
  </p>
 </article>
 </details>
-<div class="svg-contributors"></div>
+<div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content">SOPHIA GRIGORIADIS</span><span class="role"></span></summary>
+<summary><span class="summary-content summary-indent">SOPHIA GRIGORIADIS</span><span class="role"></span></summary>
 <article>
- <p>
+<p class="summary-indent">
   <span class="bold"
    ><a target="_blank" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca"
     >Sophia Grigoriadis</a
@@ -925,11 +920,11 @@ const contributorsPageEN = `
  </p>
 </article>
 </details>
-<div class="svg-contributors"></div>
+<div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content">BRENNA MACCRIMMON</span><span class="role"></span></summary>
+<summary><span class="summary-content summary-indent">BRENNA MACCRIMMON</span><span class="role"></span></summary>
 <article>
- <p>
+<p class="summary-indent">
   Based in Toronto, <span class="bold"><a target="_blank" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> has been
   studying and performing the music of Turkey and the Balkans since the early 1980's. She has performed in Turkey and abroad with
   Selim Sesler, Karsılama, Muammer Ketencoğlu, and experimental rock group Baba Zula. She has toured across Europe with Balkan beat DJ
@@ -943,9 +938,9 @@ const contributorsPageEN = `
  </p>
 </article>
 </details>
-<div class="svg-contributors"></div>
+<div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content">MARYEM HASSAN TOLLAR</span><span class="role"></span></summary>
+<summary><span class="summary-content summary-indent">MARYEM HASSAN TOLLAR</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> is a
@@ -1144,13 +1139,13 @@ const contributorsPageFR = `
 <div class="svg-contributors"></div>
 <details>
   <summary>
-    <span class="summary-content">SUTURE PARALLÈLES</span><span class="role">featuring</span>
+    <span class="summary-content">SUTURES PARALLÈLES</span><span class="role">mettant en vedette</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" href="https://transistor.media/balados/les-sutures-paralleles">Sutures parallèles</a></span> est un chœur troublé de fabulations terrestres, de lamentations caverneuses et de berceuses bouleversées, conçu par Marc A. Reinhardt, composé et interprété par Eugénie Jobin, Marc A. Reinhardt et Frédérique Roy.</p>
   </article>
 </details>
-<div class="svg-contributors"></div>
+<div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
     <span class="summary-content summary-indent">MARC A. REINHARDT</span>
@@ -1180,13 +1175,13 @@ const contributorsPageFR = `
 <div class="svg-contributors"></div>
 <details>
   <summary>
-    <span class="summary-content">THE THUNDERBIRD SISTERS COLLECTIVE</span><span class="role">featuring</span>
+    <span class="summary-content">THE THUNDERBIRD SISTERS COLLECTIVE</span><span class="role">mettant en vedette</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" href="https://thunderbirdsisterscollective.com/">Le Thunderbird Sisters Collective</a></span> a été fondé en 2017 par l'artiste métisse Patsea Griffin, après avoir assisté à des ateliers où elle a vu certaines de ses amies créer les plus fabuleux ouvrages en perles ainsi que d'autres œuvres d'art traditionnelles et non traditionnelles, pour ensuite les ranger -- comme elle-même le faisait -- dans un tiroir, un contenant ou un sac à fermeture à glissière... dont les ouvrages ne ressortaient parfois jamais. « J'ai décidé de montrer mes créations, qui m'ont demandé des heures de travail. Alors je me suis dit que j'allais aider les autres à faire de même. Il y a tellement de talents dans la communauté qui n'ont jamais l'occasion de montrer leur travail. Et ce sont des ouvrages extraordinaires! » En 2021, le Thunderbird Sisters Collective est devenu une organisation sans but lucratif dont l'objectif est de créer des espaces bienveillants dirigés par des jeunes, où il sera démontré que l'apprentissage des connaissances autochtones a un intérêt commercial et se transpose dans l'expérience personnelle, professionnelle et communautaire. Nous allons rêver à voix haute.</p>
   </article>
 </details>
-<div class="svg-contributors"></div>
+<div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
     <span class="summary-content summary-indent">PATSEA GRIFFIN</span>
@@ -1213,52 +1208,55 @@ const contributorsPageFR = `
     <p class="summary-indent"><span class="bold"><a target="_blank" href="https://carmelwhittle.com/">Carmel Whittle</a></span> s'identifie comme une artiste, activiste, cinéaste indépendante, musicienne et compositrice de la communauté culturelle bispirituelle, lesbienne, Mi'kmaq et irlandaise. Dans la pratique des arts communautaires décolonisés, Carmel élabore, dirige et organise le No Borders Art Festival. Elle est aussi coordonnatrice de programme pour le Thunderbird Sisters Collective. Parmi ses films documentaires, on peut citer <span class="italic">There Is No Word</span>, réalisé pour Greenpeace Canada; <span class="italic">Bringing The Land To The City,</span> produit d'une résidence cinématographique avec Digital Art Resource Centre; et <span class="italic">One Contrary 5 Agokwe Nini</span>, qui met en vedette des membres de la communauté 2SLGBTQ et de l'équipe de cocréation collaborative du Podcast #83. Ses œuvres sont actuellement exposées chez Artvocate, au Royaume-Uni. Soliste pour le projet Odaabaanag, Carmel tire son inspiration de la nature et de la culture et se sent profondément liée à l'océan et à la communauté. Elle est également éducatrice en art indépendante, mentore, animatrice d'ateliers et experte-conseil auprès de diverses communautés artistiques.</p>
   </article>
 </details>
+<div class="svg-contributors"></div>
+<details>
+  <summary>
+    <span class="summary-content">TURKWAZ</span><span class="role">mettant en vedette</span>
+  </summary>
+  <article>
+    <p class="summary-indent"><span class="bold"><a target="_blank" href="https://turkwaz.ca/">Turkwaz</a></span>, c'est un groupe formé de Jayne Brown, Sophia Grigoriadis, Brenna MacCrimmon et Maryem Tollar, quatre chanteuses qui ont largement contribué à la scène de la musique du monde à Toronto et au-delà. Turkwaz se concentre sur l'interprétation de chansons issues principalement des répertoires traditionnels grecs, turques, arabes et balkaniques, avec des incursions dans d'autres genres quand l'inspiration s'en mêle. Le quanoûn, le tambûr, le ukulélé et divers instruments de percussion à main accompagnent en douceur les arrangements du groupe, ce qui permet aux voix des chanteuses de rester au premier plan. Elles adorent chanter dans des styles traditionnels purs, mais n'ont pas peur d'ajouter des harmonies là où il n'y en a jamais eu. Toutes des musiciennes agiles et aimant la collaboration entre les genres, Turkwaz a sorti un premier album, Nazar, qui a été mis en lice pour les prix Juno et les prix de musique folk canadienne dès sa parution.</p>
+  </article>
+</details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
   <summary>
-    <span class="summary-content">TURKWAZ</span>
+    <span class="summary-content summary-indent">JAYNE BROWN</span>
   </summary>
   <article>
-    <p><span class="bold"><a target="_blank" href="https://turkwaz.ca/">Turkwaz</a></span>, c'est un groupe formé de Jayne Brown, Sophia Grigoriadis, Brenna MacCrimmon et Maryem Tollar, quatre chanteuses qui ont largement contribué à la scène de la musique du monde à Toronto et au-delà. Turkwaz se concentre sur l'interprétation de chansons issues principalement des répertoires traditionnels grecs, turques, arabes et balkaniques, avec des incursions dans d'autres genres quand l'inspiration s'en mêle. Le quanoûn, le tambûr, le ukulélé et divers instruments de percussion à main accompagnent en douceur les arrangements du groupe, ce qui permet aux voix des chanteuses de rester au premier plan. Elles adorent chanter dans des styles traditionnels purs, mais n'ont pas peur d'ajouter des harmonies là où il n'y en a jamais eu. Toutes des musiciennes agiles et aimant la collaboration entre les genres, Turkwaz a sorti un premier album, Nazar, qui a été mis en lice pour les prix Juno et les prix de musique folk canadienne dès sa parution.</p>
+  <p class="summary-indent">Depuis qu'elle a troqué le chant classique contre le folklorique, <span class="bold">Jayne Brown</span> apprend, se produit, voyage et enregistre avec plusieurs ensembles, dont les ensembles latino-américains Nazka et Ilédé, le groupe macédonien Staro Selo et les groupes méditerranéens Maza Mezé et l'ensemble Maryem Tollar. Au cours des deux dernières décennies, Jayne s'est concentrée sur la chanson folklorique grecque, étudiant à la fois en Grèce et à Toronto. Jayne jongle entre la musique et sa pratique de la psychothérapie.</p>
+  </article>
+</details>
+<div class="svg-contributors svg-contributors-indent"></div>
+<details>
+  <summary>
+    <span class="summary-content summary-indent">SOPHIA GRIGORIADIS</span>
+  </summary>
+  <article>
+  <p class="summary-indent"><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca">Sophia Grigoriadis</a></span> est musicienne et enseignante. Au cours des 30 dernières années, son étude du chant et des percussions grecs, balkaniques et moyen-orientaux l'a amenée à composer, à se produire et à partir en tournée avec de nombreux ensembles de musique du monde et de fusion de Toronto. Son amour pour l'enseignement et sa passion musicale s'étendent à tous les âges : elle est cheffe de chorale pour All Saints Greek Orthodox Church et pour la City Choir à Toronto, et professeure de musique de la maternelle à la huitième année à la Metamorphosis Greek Orthodox School. Elle tient également un studio de musique appelé Clapping Land, où elle accueille de jeunes enfants et compile de la musique du monde. Son disque <span class="italic">Sound Adventures -- Global Music for Children</span> a remporté le prix d'argent de la fondation Parent's Choice.</p>
+  </article>
+</details>
+<div class="svg-contributors svg-contributors-indent"></div>
+<details>
+  <summary>
+    <span class="summary-content summary-indent">BRENNA MACCRIMMON</span>
+  </summary>
+  <article>
+  <p class="summary-indent">Basée à Toronto, <span class="bold"><a target="_blank" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> étudie et interprète des musiques turque et balkanique depuis le début des années 1980. Elle s'est produite en Turquie et à l'étranger avec Selim Sesler, Karsılama, Muammer Ketencoğlu et le groupe de rock expérimental Baba Zula. Elle a fait des tournées dans toute l'Europe avec le platiniste balkanique DJ Shantel et le Bucovina Club Orkestra. Brenna apparaît dans <span class="italic">Crossing the Bridge</span>, le documentaire de 2005 de Fatih Akın sur la scène musicale d'Istanbul. En 2010, Brenna a figuré dans la distribution de <span class="italic">Bobble</span> avec Bobby McFerri à Moscou. Au théâtre, elle a assuré la direction musicale de la production primée de Volcano, <span class="italic">Goodness</span>, et la musique d'une production de Soulpepper, <span class="italic">Wedding at Aulis</span>, de Sina Gilani. En plus de chanter avec Turkwaz, Brenna joue avec l'ensemble gréco-turc Meltemi, elle voyage beaucoup pour enseigner et se produire, et elle s'intéresse grandement aux ukulélés. Récemment, elle a été directrice de <span class="italic">Walk with Amal</span> de MabelleArts pour Luminato 2023.</p>
+  </article>
+</details>
+<div class="svg-contributors svg-contributors-indent"></div>
+<details>
+  <summary>
+    <span class="summary-content summary-indent">MARYEM HASSAN TOLLAR</span>
+  </summary>
+  <article>
+  <p class="summary-indent"><span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> est une chanteuse égypto-canadienne de renom, connue pour ses interprétations de musique du monde. Elle a prêté sa voix au générique de l'émission <span class="italic">La petite mosquée dans la prairie</span> sur CBC, et au tube bollywoodien d'A.R. Rahman intitulé <span class="italic">Mayya Mayya</span>. Mme Tollar s'est produite avec Tafelmusik, l'Orchestre symphonique de Winnipeg, le Gryphon Trio et Patricia O'Callaghan. Elle monte sur scène avec plusieurs groupes musicaux de Toronto, dont Al Qahwa et Turkwaz, ainsi qu'avec la conteuse Dawne McFarlane. À l'automne 2022, Mme Tollar est partie en tournée avec <span class="italic">The Cave</span> (livret de Tomson Highway, musique de John Millard, scénario de Martha Ross) et, en 2023, avec l'adaptation théâtrale du livre d'Ann-Marie MaDonald <span class="italic">Fall On Your Knees</span> (mise en scène d'Alisa Palmer, scénario d'Hannah Moscovitch). Mme Tollar a reçu le premier prix Johanna-Metcalf pour les arts de la scène en 2019.</p>
   </article>
 </details>
 <div class="svg-contributors"></div>
-<details>
-  <summary>
-    <span class="summary-content">JAYNE BROWN</span>
-  </summary>
-  <article>
-    <p>Depuis qu'elle a troqué le chant classique contre le folklorique, <span class="bold">Jayne Brown</span> apprend, se produit, voyage et enregistre avec plusieurs ensembles, dont les ensembles latino-américains Nazka et Ilédé, le groupe macédonien Staro Selo et les groupes méditerranéens Maza Mezé et l'ensemble Maryem Tollar. Au cours des deux dernières décennies, Jayne s'est concentrée sur la chanson folklorique grecque, étudiant à la fois en Grèce et à Toronto. Jayne jongle entre la musique et sa pratique de la psychothérapie.</p>
-  </article>
-</details>
-<div class="svg-contributors"></div>
-<details>
-  <summary>
-    <span class="summary-content">SOPHIA GRIGORIADIS</span>
-  </summary>
-  <article>
-    <p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca">Sophia Grigoriadis</a></span> est musicienne et enseignante. Au cours des 30 dernières années, son étude du chant et des percussions grecs, balkaniques et moyen-orientaux l'a amenée à composer, à se produire et à partir en tournée avec de nombreux ensembles de musique du monde et de fusion de Toronto. Son amour pour l'enseignement et sa passion musicale s'étendent à tous les âges : elle est cheffe de chorale pour All Saints Greek Orthodox Church et pour la City Choir à Toronto, et professeure de musique de la maternelle à la huitième année à la Metamorphosis Greek Orthodox School. Elle tient également un studio de musique appelé Clapping Land, où elle accueille de jeunes enfants et compile de la musique du monde. Son disque <span class="italic">Sound Adventures -- Global Music for Children</span> a remporté le prix d'argent de la fondation Parent's Choice.</p>
-  </article>
-</details>
-<div class="svg-contributors"></div>
-<details>
-  <summary>
-    <span class="summary-content">BRENNA MACCRIMMON</span>
-  </summary>
-  <article>
-    <p>Basée à Toronto, <span class="bold"><a target="_blank" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> étudie et interprète des musiques turque et balkanique depuis le début des années 1980. Elle s'est produite en Turquie et à l'étranger avec Selim Sesler, Karsılama, Muammer Ketencoğlu et le groupe de rock expérimental Baba Zula. Elle a fait des tournées dans toute l'Europe avec le platiniste balkanique DJ Shantel et le Bucovina Club Orkestra. Brenna apparaît dans <span class="italic">Crossing the Bridge</span>, le documentaire de 2005 de Fatih Akın sur la scène musicale d'Istanbul. En 2010, Brenna a figuré dans la distribution de <span class="italic">Bobble</span> avec Bobby McFerri à Moscou. Au théâtre, elle a assuré la direction musicale de la production primée de Volcano, <span class="italic">Goodness</span>, et la musique d'une production de Soulpepper, <span class="italic">Wedding at Aulis</span>, de Sina Gilani. En plus de chanter avec Turkwaz, Brenna joue avec l'ensemble gréco-turc Meltemi, elle voyage beaucoup pour enseigner et se produire, et elle s'intéresse grandement aux ukulélés. Récemment, elle a été directrice de <span class="italic">Walk with Amal</span> de MabelleArts pour Luminato 2023.</p>
-  </article>
-</details>
-<div class="svg-contributors"></div>
-<details>
-  <summary>
-    <span class="summary-content">MARYEM HASSAN TOLLAR</span>
-  </summary>
-  <article>
-    <p><span class="bold"><a target="_blank" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> est une chanteuse égypto-canadienne de renom, connue pour ses interprétations de musique du monde. Elle a prêté sa voix au générique de l'émission <span class="italic">La petite mosquée dans la prairie</span> sur CBC, et au tube bollywoodien d'A.R. Rahman intitulé <span class="italic">Mayya Mayya</span>. Mme Tollar s'est produite avec Tafelmusik, l'Orchestre symphonique de Winnipeg, le Gryphon Trio et Patricia O'Callaghan. Elle monte sur scène avec plusieurs groupes musicaux de Toronto, dont Al Qahwa et Turkwaz, ainsi qu'avec la conteuse Dawne McFarlane. À l'automne 2022, Mme Tollar est partie en tournée avec <span class="italic">The Cave</span> (livret de Tomson Highway, musique de John Millard, scénario de Martha Ross) et, en 2023, avec l'adaptation théâtrale du livre d'Ann-Marie MaDonald <span class="italic">Fall On Your Knees</span> (mise en scène d'Alisa Palmer, scénario d'Hannah Moscovitch). Mme Tollar a reçu le premier prix Johanna-Metcalf pour les arts de la scène en 2019.</p>
-  </article>
-</details>
-<div class="svg-contributors"></div>`;
+<p>+ tous les êtres non humains qui ont contribué à nos enregistrements sur le terrain. Pour voir toutes les espèces identifiées par les membres de la communauté dans le milieu humide de Monahan, veuillez consulter le site <a target="_blank" href="https://www.inaturalist.org/places/monaghan-drain-eagleson-ponds">iNaturalist</a>.</p>
+
+`;
 
 // Attach the toggleLanguage function to the langToggle element
 document.querySelector("#toggleLanguage").addEventListener("click", toggleLanguageAndStorePref);

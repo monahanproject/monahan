@@ -280,7 +280,7 @@ export class SimpleAudioPlayer {
       if (inputString && inputString.trim() !== "") {
         // Log each track name or identifier as its transcript is being processed
         // Assuming 'song' has a 'name' property or similar identifier
-        console.log(`Processing transcript for track #${index + 1}: ${song.name || "Unnamed Track"}`);
+        // console.log(`Processing transcript for track #${index + 1}: ${song.name || "Unnamed Track"}`);
 
         this.transcriptContainer.appendChild(this.createHTMLFromText(inputString));
       }
@@ -589,8 +589,8 @@ export class SimpleAudioPlayer {
   }
 
   checkAndEnableSkipBackward() {
-    console.log("lll making skip backward solid");
-    console.log(`lll this.globalAudioElement.currentTime is ${this.globalAudioElement.currentTime}`);
+    // console.log("lll making skip backward solid");
+    // console.log(`lll this.globalAudioElement.currentTime is ${this.globalAudioElement.currentTime}`);
 
     if (this.globalAudioElement.currentTime > 16) {
       this.skipBackwardButton.style.opacity = "1.0";
@@ -750,7 +750,7 @@ export class SimpleAudioPlayer {
           // Check to prevent redundant operations
           playButtonTextContainer.style.left = "35%";
           svgContainer.innerHTML = svgToUse; // Use determined SVG
-          console.log(currLang);
+          // console.log(currLang);
 
           if (currLang === "EN") {
             playButtonTextContainer.textContent = "PLAY";
