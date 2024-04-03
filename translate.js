@@ -302,8 +302,8 @@ const productionPageEN = `
   <article>
     <p><span class="bold"><a target="_blank" href="https://rachelgray.art/">Rachel Gray</a></span> is a Canadian interdisciplinary artist based in Algonquin Territory/Ottawa. Navigating the world with Dyslexia has led her to explore art as a way to create customized language. Through drawing, performance, installation, and storytelling she tries to speak into the places language leaves blank. Her work has been exhibited nationally and internationally. Rachel is also an author, animator, and illustrator, with her graphic novel <span class="italic">Jess</span> adapted into a musical work commissioned by Pacific Opera Victoria. Rachel is deeply connected to the disability arts community, serving as an advocate for accessible art practices, curating exhibitions, and working with organizations and academic institutions to harness art and storytelling. She is a founding member of Ghost Rooster, a disability arts collective, and continues to seek opportunities for collaboration and community connection through art.</p>
   </article>
-  <div class="svg-contributors svg-contributors2"></div>
 </details>
+<div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
     <span class="summary-content">SIMON GUIBORD</span><span class="role">graphic designer</span>
@@ -324,7 +324,7 @@ const productionPageEN = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">ALLISON O'CONNOR</span> <span class="role">City of Ottawa public art liaison</span>
+    <span class="summary-content">ALLISON O'CONNOR</span> <span class="role roleException">City of Ottawa public art liaison</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca">Allison O'Connor</a></span> is a Public Art Officer with the City of Ottawa's Public Art Program. She coordinates and commissions temporary and permanent artworks, as well as a variety of diverse cultural initiatives across the city. Allison is also an internationally touring installation artist who creates artworks that consider the environment and its other-than-human habitants. Allison is an MFA graduate from the School of Visual Arts of New York City, where she received the Paula Rhodes Memorial Award for her thesis writing on public art for ecological remediation.Allison is an apiarist, amateur archer, and mycology enthusiast. Her recent work focuses on the stewardship of seeds.</p>
@@ -409,7 +409,7 @@ const productionPageFR = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-  <span class="summary-content">ALLISON O'CONNOR</span> <span class="role">agente de liaison d’art public de la Ville d’Ottawa</span>  </summary>
+  <span class="summary-content">ALLISON O'CONNOR</span> <span class="role roleException">agente de liaison d’art public de la Ville d’Ottawa</span>  </summary>
   <article>
   <p><span class="bold"><a target="_blank" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca">Allison O'Connor</a></span> est agente d'art public au sein du Programme d'art public de la Ville d'Ottawa. Elle coordonne et commande des œuvres d'art temporaires et permanentes, ainsi que diverses initiatives culturelles dans toute la ville. Allison est également une artiste d'installations qui fait des tournées internationales et crée des œuvres d'art soucieuses de l'environnement et de ses habitants autres qu'humains. Allison est titulaire d'une maîtrise en beaux-arts de la School of Visual Arts de New York, où elle a reçu le Paula Rhodes Memorial Award pour sa thèse sur l'art public au service de la réhabilitation écologique. Allison est apicultrice, tireuse à l'arc amateur et passionnée de mycologie. Ses travaux récents portent sur l'intendance des semences.</p>
   </article>

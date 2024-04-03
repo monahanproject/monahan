@@ -1676,6 +1676,11 @@ details {
   margin-top: -0.5rem;
 }
 
+
+.roleException {
+  text-transform: none;
+}
+
 .summary-indent {
   margin-left: 1.5rem;
 }
