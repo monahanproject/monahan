@@ -197,7 +197,7 @@ const strings = [
   { id: "arriveWebsite", en: "Arrive at the MONAHAN website", fr: "Accédez au site Web de MONAHAN" },
   { id: "putHeadphones", en: "Put on your HEADPHONES", fr: "Mets tes ÉCOUTEURS" },
   { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur DÉBUTER" },
-  { id: "contributorsH2", en: "CONTRIBUTORS", fr: "Contributrices et contributeurs" },
+  { id: "contributorsH2", en: "CONTRIBUTORS", fr: "CONTRIBUTRICES ET CONTRIBUTEURS" },
 
   { id: "listenSoundPiece", en: "LISTEN to a personalized sound piece", fr: "ÉCOUTEZ une pièce sonore personnalisée" },
   {

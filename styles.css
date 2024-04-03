@@ -1362,7 +1362,7 @@ input[type="range"] {
   height: 100%; 
   background-color: var(--darkgreen);
   height: 3px;
-  width: 92%; /* Updated dynamically */
+  width: 93%; /* Updated dynamically */
   /* margin-bottom: 4px; */
 }
 

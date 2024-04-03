@@ -18,7 +18,7 @@
         "credit": "",
         "engTrans": "^Laura^^: Welcome to MONAHAN, a sound piece for curious ears. %\nYou are about to receive a collage of sounds and stories.  Because while you are listening to this introduction a personal sound piece is being generated for you from a basket full of chapters. MONAHAN is a collection of sounds created by a multitude of voices. Non-human and human beings have contributed to this audio experience, an experience that is inspired by these Monahan Wetlands.%\nMy name is Laura Taler. I was born in Romania. I am deeply grateful to be a guest on the traditional unceded territory of the Anishinaabe Algonquin Nation, custodians of these lands for millennia.%\nAlong with my voice you will hear the voices of many others who have joined in creating this experience for you. I thank each and every being for their contribution. You will hear their names at the end of your journey and can find more information about each contributor on our website.%\nIf you listen to MONAHAN more than once, which of course I encourage you to do, you may hear a chapter you\u2019ve heard before, but this time it\u2019s next to something different. Like the landscape around you MONAHAN is always changing, its parts continually forming new relationships.%\nLet's begin.\n\n",
         "frTrans": "^Laura^^ : Bienvenue \u00e0 MONAHAN, une exp\u00e9rience sonore pour les oreilles en qu\u00eate de nouveaut\u00e9. Vous allez entendre un collage de sons et d\u2019histoires. Car pendant que vous \u00e9coutez cette introduction, une pi\u00e8ce sonore est g\u00e9n\u00e9r\u00e9e sp\u00e9cialement pour vous \u00e0 partir d\u2019un panier truff\u00e9 de chapitres. MONAHAN est une collection de sons cr\u00e9\u00e9s par une multitude de voix. Des \u00eatres humains et non humains ont contribu\u00e9 \u00e0 cette exp\u00e9rience sonore, une exp\u00e9rience inspir\u00e9e par le milieu humide de Monahan.%\nJe m\u2019appelle Laura Taler. Je suis n\u00e9e en Roumanie. Je suis profond\u00e9ment reconnaissante d\u2019\u00eatre invit\u00e9e sur le territoire traditionnel non c\u00e9d\u00e9 de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des mill\u00e9naires.%\nEn plus de ma voix, vous entendrez celles de nombreuses autres personnes qui se sont unies pour vous offrir cette exp\u00e9rience unique. Je remercie chacune d\u2019entre elles pour sa contribution. Vous d\u00e9couvrirez leur nom \u00e0 la fin de votre voyage et pourrez trouver plus d\u2019information sur chacune d\u2019elle sur notre site Web.%\nSi vous \u00e9coutez MONAHAN plus d\u2019une fois, ce que je vous encourage bien s\u00fbr \u00e0 faire, vous entendrez peut-\u00eatre un chapitre que vous avez d\u00e9j\u00e0 \u00e9cout\u00e9, mais cette fois-ci \u00e0 la suite de quelque chose de diff\u00e9rent. Tout comme le paysage qui vous entoure, MONAHAN est en constante \u00e9volution, ses parties cr\u00e9ant continuellement de nouvelles relations.%\nAllons-y!",
-        "authorCredit": "lauraCredit",
+        "authorCredit": "",
         "creditDur": 0
     },
     {
@@ -1677,7 +1677,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1700,7 +1700,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1723,7 +1723,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1746,7 +1746,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1769,7 +1769,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1792,7 +1792,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1815,7 +1815,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1838,7 +1838,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1861,7 +1861,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1884,7 +1884,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1907,7 +1907,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1930,7 +1930,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1953,7 +1953,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1976,7 +1976,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -1999,7 +1999,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -2022,7 +2022,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -2045,7 +2045,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -2069,7 +2069,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_PIERREELLIOTT.mp3",
         "engTrans": "[Various birds sing and call.  Together, the rhythm of their vocalizations make a song.]",
         "frTrans": "[Divers oiseaux chantent et crient. Ensemble, les rythmes de leurs vocalisations forment une chanson.]",
-        "authorCredit": "Pierre-Luc Clément and Lang Elliott",
+        "authorCredit": "Pierre-Luc Clément <br> Lang Elliott",
         "creditDur": 4.344
     },
     {
@@ -2607,7 +2607,7 @@
         "credit": "",
         "engTrans": "[Babies giggling and laughing.]",
         "frTrans": "[Des b\u00e9b\u00e9s gloussent et rigolent.]",
-        "authorCredit": "babiesCredit",
+        "authorCredit": "",
         "creditDur": 0
     },
     {
@@ -3619,7 +3619,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_KIMRACHEL.mp3",
         "engTrans": "^Kim^^: I love the Cardinal. %\n^Rachel^^:  I love the Cardinal %\n[Kim and Rachel overlap each other while speaking]  %\n^Kim^^: and they sound so happy. They're, and their whistle is so loud, they must have some sort of projection. I heard one the other day and it was like near my house. It was like [Kim makes a whistling sound] %\n^Rachel^^:  You know, if you think of the size of their bodies, it's incredible.%\n^Kim^^: So loud.%\n[The sound of footsteps on a gravel path]  %\n^Kim^^: Are we on the path?  %\n^Laura^^: We are on the path. %\n^Kim^^:  It smells good. It smells like pine. And there's nice birds. So now we're in the sun. Laura: There's a woman coming towards us with a baby in a carriage. It looks very cute. Hello, hello -%\n^Kim^^:  Hello -%\n^Lady pushing carriage^^: Hello  -%\n^Laura^^: to our right there's a bunch of pine trees. %\n^Kim^^: It's nice to have the quiet, and the birds, and the smell is nice. Is that a frog? Rachel: Yeah, that's a frog. %\n^Kim^^: But it's like a continuous frog. Like, you know, they don't stop. %\n^Rachel^^: Yeah. I think it's because there's so many of them that they make their sound and then another one is there to pick it up - %\n^Kim^^: and now you can smell the water. But yeah, those frogs are cool. %\n[Sound of frogs croaking together] %\n^Kim^^:  I love it. Like it kind of starts up, it's almost like a, it's like the old... You know, the old modem sound? Rachel might not remember that. %\n^Rachel^^:  I do remember it. %\n^Kim^^: You know, they go doh doh doh doh and then wreeeee, they sound a bit like that. That one -%\n [The ring of a bike bell]  %\n^Kim^^: Oh there's a bike?  %\n^Laura^^: And there's a man with another baby carriage. Good morning. %\n^Kim^^: Hello. How big would those frogs be, do you think, those kind? They wouldn't be like the biggest -%\n^Rachel^^:  I think -  %\n^Kim^^: Would they be little? %\n^Rachel^^: A little longer than the size of your thumb.%\n^Kim^^: Oh, that's all? %\n^Rachel^^: That's what I think. Like wider, but like that length. %\n^Kim^^: Wow. %\n^Laura^^: Rachel, you know a lot of things about frogs, don't you? %\n^Rachel^^: I love frogs. I wish I knew more. %\n^Kim^^: Frogs are very cool. %\n^Rachel^^: If you watch a frog, like when you listen, you just hear like one frog voice. %\n^Kim^^:  Yeah. Yeah.  %\n^Rachel^^: But when you are watching the frogs, you can see when they inflate and when you have the visual to cue you, you can actually hear the individual frog voice. You can track it like in the sound. %\n^Kim^^: You know what I like too is now the breeze, the cooler breeze is coming off that water. I can feel Ginger sniffing the air. You like it Ginger? Nice and relaxing eh? You don't have to worry about cars or anything. Ginger's my guide dog. Ginger is a yellow Labrador Retriever. She's three and a half.% [In the background there are voices of other people on the path] %\n^Laura^^: Is that old for a guide dog or not?  %\n^Kim^^:  No. I've only had, well, I got her when she was about two. So no, that's young still. There's people, and there's people walking on the path. You can hear their feet.  Nice bird, close by. Nice bird. %\n^Laura^^: Oh, we're gonna turn to the right. %\n^Kim^^:  Turn to right?  %\n^Laura^^: So now there's a path and it's leading us to a bridge.  %\n^Kim^^: Oh, nice. %\n^Laura^^: And the bridge will, separates the one side of the pond from the other.  %\n^Kim^^: We're going to a bridge. That bird must be close 'cause it's pretty loud. Can you see it? I guess not eh?  %\n^Laura^^: Not right now. %\n^Kim^^: There's one up on a tree.  %\n^Rachel^^:  Oh, it's like a yellow house finch.%\n^Kim^^: It's nice when you hear birds call and answer too. When you hear them do the same sort of notes, then you think they're talking to each other. We're so lucky that we can be close to nature when we're in a big city like this. You know?",
         "frTrans": "^Kim^^ : J\u2019aime le cardinal.%\n^Rachel^^ : J\u2019aime le cardinal.%\n[Les paroles de Kim et Rachel s\u2019entrecoupent.]%\n^Kim^^ : Il a l\u2019air si heureux. Et\u2026 son sifflement est si puissant, il doit avoir une sorte de porte-voix. J\u2019en ai entendu un l\u2019autre jour, pr\u00e8s de chez moi. C\u2019\u00e9tait comme\u2026 [Kim \u00e9met un sifflement.]%\n^Rachel^^ : Tu sais, si l\u2019on songe \u00e0 la taille de son corps, c\u2019est incroyable.%\n^Kim^^ : Si puissant.%\n[Bruit de pas sur un chemin de gravier]%\n^Kim^^ : Sommes-nous sur le sentier?%\n^Laura^^ : Nous sommes sur le sentier.%\n^Kim^^ : \u00c7a sent bon. \u00c7a sent le pin. Et il y a de jolis oiseaux. Nous sommes maintenant au soleil.%\n^Laura^^ : Il y a une femme qui vient vers nous avec un b\u00e9b\u00e9 dans une poussette. Il a l\u2019air tr\u00e8s mignon. Bonjour, bonjour\u2026%\n^Kim^^ : Bonjour\u2026%\n^La femme pousse la voiture d\u2019enfant^^ : Bonjour\u2026%\n^Laura^^ : \u00c0 notre droite, il y a un bouquet de pins.%\n^Kim^^ : C\u2019est agr\u00e9able d\u2019avoir le calme, les oiseaux et les parfums. Est-ce que c\u2019est une grenouille?%\n^Rachel^^ : Oui, c\u2019est une grenouille.%\n^Kim^^ : Mais c\u2019est une grenouille \u00ab perp\u00e9tuelle \u00bb. Genre, elles n\u2019arr\u00eatent pas de chanter.%\n^Rachel^^ : Oui. Je pense que c\u2019est parce qu\u2019il y en a tellement qu\u2019elles se relaient pour produire ce son\u2026%\n^Kim^^ : Et maintenant, on peut sentir l\u2019odeur de l\u2019eau. Mais oui, ces grenouilles sont cool.%\n[Bruit de grenouilles coassant ensemble]%\n^Kim^^ : J\u2019adore \u00e7a. Comme si \u00e7a d\u00e9marrait, c\u2019est presque comme un, c\u2019est comme le vieux\u2026 Tu sais, le son d\u2019un vieux modem? Rachel ne s\u2019en souvient peut-\u00eatre pas.%\n^Rachel^^ : Je m\u2019en souviens.%\n^Kim^^ : Vous savez, ils font doh doh doh doh et puis wreeeee, ils sonnent un peu comme \u00e7a. Celui-l\u00e0\u2026%\n[Son d\u2019une sonnette de v\u00e9lo]%\n^Kim^^ : Oh, il y a un v\u00e9lo?%\n^Laura^^ : Et il y a un homme avec une autre poussette. Bonjour.%\n^Kim^^ : Bonjour. Quelle taille ont ces grenouilles, d\u2019apr\u00e8s vous, ce genre de grenouilles? Elles ne seraient pas comme les plus grosses\u2026%\n^Rachel^^ : Je pense\u2026%\n^Kim^^ : Elles sont petites?%\n^Rachel^^ : Un peu plus longues que la taille de ton pouce.%\n^Kim^^ : Oh, c\u2019est tout?%\n^Rachel^^ : C\u2019est ce que je pense. Plus larges, mais de cette longueur.%\n^Kim^^ : Wow.%\n^Laura^^ : Rachel, tu sais beaucoup de choses sur les grenouilles, n\u2019est-ce pas?%\n^Rachel^^ : J\u2019adore les grenouilles. J\u2019aimerais en savoir plus.%\n^Kim^^ : Les grenouilles sont tr\u00e8s cool.%\n^Rachel^^ : Si on observe une grenouille, qu\u2019on l\u2019\u00e9coute, on n\u2019entend qu\u2019une seule voix de grenouille.%\n^Kim^^ : Oui, c\u2019est \u00e7a.%\n^Rachel^^ : Quand on observe les grenouilles, on peut voir quand elles se gonflent, et lorsqu\u2019on a un rep\u00e8re visuel, on peut vraiment entendre la voix individuelle de la grenouille. On peut la suivre au son.%\n^Kim^^ : Vous savez, ce que j\u2019aime aussi pr\u00e9sentement, c\u2019est la brise, la brise plus fra\u00eeche qui vient de l\u2019eau. Je peux sentir Ginger renifler l\u2019air. Tu aimes \u00e7a, Ginger? C\u2019est agr\u00e9able et relaxant, hein? Tu n\u2019as pas \u00e0 t\u2019inqui\u00e9ter des voitures ou de quoi que ce soit d\u2019autre. Ginger est mon chien-guide. Ginger est un labrador retriever jaune. Elle a trois ans et demi. [En arri\u00e8re-plan, on entend les voix d\u2019autres personnes sur le sentier.]%\n^Laura^^ : C\u2019est vieux pour un chien-guide ou pas?%\n^Kim^^ : Non. Je n\u2019ai eu que, enfin, je l\u2019ai eue quand elle avait environ deux ans. Donc non, c\u2019est encore jeune. Il y a des gens, et il y a des gens qui marchent sur le sentier. On entend leurs pas. Bel oiseau, tout pr\u00e8s. Bel oiseau.%\n^Laura^^ : Oh, on va tourner \u00e0 droite.%\n^Kim^^ : Tourner \u00e0 droite?%\n^Laura^^ : Il y a maintenant un sentier qui nous m\u00e8ne \u00e0 un pont.%\n^Kim^^ : Oh, joli.%\n^Laura^^ : Et le pont s\u00e9pare un c\u00f4t\u00e9 de l\u2019\u00e9tang de l\u2019autre.%\n^Kim^^ : Nous allons vers un pont. Cet oiseau doit \u00eatre proche parce qu\u2019il est assez bruyant. Est-ce que tu peux le voir? Je suppose que non, hein?%\n^Laura^^ : Pas pour l\u2019instant.%\n^Kim^^ : Il y en a un sur un arbre.%\n^Rachel^^ : Oh, c\u2019est comme un roselin familier jaune.%\n^Kim^^ : C\u2019est agr\u00e9able aussi d\u2019entendre les oiseaux appeler et r\u00e9pondre. Quand on les entend faire le m\u00eame genre de notes, on pense qu\u2019ils se parlent. Nous avons tellement de chance de pouvoir \u00eatre proches de la nature quand nous sommes dans une grande ville comme celle-ci. N\u2019est-ce pas?",
-        "authorCredit": "Kim Kilpatrick and Rachel Gray",
+        "authorCredit": "Kim Kilpatrick <br> Rachel Gray",
         "creditDur": 3.096
     },
     {
@@ -3646,36 +3646,6 @@
         "authorCredit": "Kim Kilpatrick",
         "creditDur": 1.632
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {
         "name": "I_KIM_04",
         "url": "./sounds/CONTENT/I_KIM_04.mp3",
@@ -3765,7 +3735,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_KIMRACHEL.mp3",
         "engTrans": "^Kim^^: I think the thing that I miss about not having sight, um, is that you can see things at a glance. Or you could look around the room and say, oka, Kim's here. Hi Kim. Okay. You know, zero in on me and come and find me. And the other thing, I think that sighted people, that amazes me what sighted people can see is, from a distance. So I've been with people and they say, oh, I see so and so, you know, coming towards us. And I'd say, well, where are they? Oh, about a block and a half away or something. And for me, you know, like I, they need to be pretty close, you know, close enough that they can say something to me or I can hear footsteps or something. So I'm just ... you can see that far? Like I'm just amazed at the quickness of a glance, like of around an area. And you can orient yourself to an area that, and you can see who's around quickly. You know, so and so's there, this person. Those are strengths I think of vision. %\n%\nThe weaknesses, I think, are that people use their vision to the exclusion of, you know, other senses. So sometimes you'll be so focused on looking at something that you miss what someone said or you, um -%\n[Bird chirps loudly] %\nThat bird is really close. How close is it? Sounds close.  %\n%\n^Rachel^^:  Uh, like three meters.  %\n^Kim^^: Wow. %\n^Rachel^^:  Four. Yeah.  %\n^Kim^^: What is it anyway, do you know?  %\n^Rachel^^:  I think it's ar ed-wingedblackbird, also.  %\n^Kim^^: Is it walking? %\n^Rachel^^:  It is. It's walking in the grass. %\n^Kim^^: I guess it would walk, look for bugs or something, worms or something, maybe. %\n%\nYeah. Um, I don't know, some people tell me, and now maybe it's 'cause I'm a social person or maybe it's 'cause I'm blind, I don't know, but a lot of times I know things about people say that are working in coffee shops or the bank, or the grocery store because I have to get help from them. Or I go up and I say, oh, excuse me like, do you think you could tell me if there's an empty table? So you end up knowing them a little bit, and they know your name. They might know your dog's name. And so they're talking, it's like, oh, what'd you do on the weekend? And they're like, and you know, I, my sighted friends say, you know, they never say anything like that to me. Or they never even said, oh, we had cookies out of the oven, or we have something, right? Because they kind of know you a little bit and you've sort of broken the ice on that conversation. So you're not just one person in the coffee line up. You're more memorable to them. And I like that. Now, I know blind people who don't like that, they would rather be anonymous. They would rather be not noticed like that. And I don't mind, 'cause I'm social. I like talking to people. So I like knowing about people and finding out how they are and all of that. But on the flip side of that, if you are late for something, like a meeting. I can't walk in late because then everyone notices me and they go, oh, hi Kim oh, there's a chair or there's a space. And I'm like, no, it's so embarrassing. %\n%\nLike one time in high school I tried to skip a class and I couldn't even do it because I left the school and then this teacher saw me and goes, oh, are you lost? %\n[Rachel laughs really loudly] %\nLike, it's like, gosh! I can't even skip school like, like everyone else. Like, you know what I mean? Like you just don't have, um, like you, you're always noticed, which is good and bad. Like sometimes it's a bit tiring. But sometimes it's good, you know, because you meet people and people are interesting and nice and Ooh, there's a lot of birds over there.  %\n%\n^Rachel^^: Mm-hmm. I can't see them. I don\u2019t know - %\n^Kim^^: It's like a flock of birds over there.  %\n^Rachel^^: Yeah. Maybe in the bushes.",
         "frTrans": "^Kim^^ : Je pense que ce qui me manque dans le fait de ne pas voir, c\u2019est de ne pas pouvoir englober les choses d\u2019un seul regard. La personne peut regarder dans la pi\u00e8ce et dire \u00ab OK, Kim est l\u00e0. Bonjour Kim. \u00bb, me rep\u00e9rer et venir me trouver. Aussi, je pense que les personnes voyantes\u2026 ce qui m\u2019\u00e9tonne, c\u2019est ce que ces personnes peuvent voir au loin. Il m\u2019est arriv\u00e9 d\u2019\u00eatre avec des gens qui me disent : \u00ab Oh, je vois untel ou untel, qui vient vers nous \u00bb. Et je leur r\u00e9ponds : \u00ab O\u00f9 sont-ils? \u00bb \u00ab Oh, \u00e0 environ un p\u00e2t\u00e9 de maisons et demi \u00bb, ou quelque chose comme \u00e7a. Et pour moi, tu vois, il faut qu\u2019ils soient assez proches pour pouvoir me dire quelque chose ou que j\u2019entende des bruits de pas ou autre chose. Alors je me dis simplement, tu peux voir aussi loin? Je suis stup\u00e9faite de la rapidit\u00e9 avec laquelle on peut jeter un coup d\u2019\u0153il pour explorer une zone. Les gens peuvent s\u2019y orienter et voir rapidement ce qui s\u2019y trouve. Tu sais, untel est l\u00e0, unetelle est l\u00e0. Ce sont les points forts de la vision.%\n %\nLes faiblesses, je pense, c\u2019est que les gens utilisent leur vision \u00e0 l\u2019exclusion, tu sais, des autres sens. Parfois, on est tellement concentr\u00e9 sur la vue qu\u2019on rate ce que quelqu\u2019un a dit ou, euh.%\n[Un oiseau piaille bruyamment.]%\nCet oiseau est vraiment proche. Il est proche comment? On dirait qu\u2019il est tout pr\u00e8s.%\n %\n^Rachel^^ : Euh, environ trois m\u00e8tres.%\n^Kim^^ : Wow.%\n^Rachel^^ : Quatre. Ouais.%\n^Kim^^ : Qu\u2019est-ce que c\u2019est en fait, tu le sais?%\n^Rachel^^ : Je pense que c\u2019est aussi un carouge \u00e0 \u00e9paulettes.%\n^Kim^^ : Est-ce qu\u2019il marche?%\n^Rachel^^ : Oui. Il marche dans l\u2019herbe.%\n^Kim^^ : J\u2019imagine qu\u2019il cherche des insectes ou quelque chose comme \u00e7a, des vers peut-\u00eatre.%\n %\nBon, euh. Je ne sais pas, certaines personnes me disent, et peut-\u00eatre que c\u2019est parce que je suis une personne sociable ou peut-\u00eatre parce que je suis aveugle, je ne sais pas, mais souvent je sais des choses sur les gens qui travaillent dans les caf\u00e9s, \u00e0 la banque ou \u00e0 l\u2019\u00e9picerie, parce que je dois leur demander de l\u2019aide. Ou bien je m\u2019approche et je dis \u00ab Oh, excusez-moi, pourriez-vous me dire s\u2019il y a une table de libre? \u00bb On finit donc par les conna\u00eetre un peu, et ils connaissent notre nom. Ils connaissent peut-\u00eatre le nom de notre chien. Et ils discutent, c\u2019est comme \u00ab Oh, qu\u2019est-ce que tu as fait pendant la fin de semaine? \u00bb Ils font \u00e7a, tu sais, et \u00e0 mes amis qui ont l\u2019usage de la vue, ils ne demandent pas ce genre de choses. Ou ils ne disent pas \u00ab Oh, on a sorti des biscuits du four \u00bb ou \u00ab On a une nouveaut\u00e9 \u00bb, vous voyez? Parce qu\u2019ils nous connaissent un peu et qu\u2019on a en quelque sorte bris\u00e9 la glace. On n\u2019est donc plus une simple personne dans la file d\u2019attente du caf\u00e9. Ils se souviennent plus facilement de nous. Et j\u2019aime bien \u00e7a. Je connais des aveugles qui n\u2019aiment pas \u00e7a, ils pr\u00e9f\u00e8rent \u00eatre anonymes. Ils pr\u00e9f\u00e8rent passer inaper\u00e7us. Moi, \u00e7a ne me d\u00e9range pas, parce que je suis sociable. J\u2019aime parler aux gens. J\u2019aime conna\u00eetre les gens, savoir comment ils vont, etc. Mais le revers de la m\u00e9daille, c\u2019est que si vous \u00eates en retard pour quelque chose, comme une r\u00e9union\u2026 je ne peux pas arriver en retard parce que tout le monde va le remarquer, et ils vont dire \u00ab Oh, salut Kim, il y a une chaise l\u00e0, il y a une place de libre. \u00bb Et je me dis, non, c\u2019est tellement g\u00eanant.%\n %\nUne fois, \u00e0 l\u2019\u00e9cole secondaire, j\u2019ai essay\u00e9 de s\u00e9cher un cours et je n\u2019ai m\u00eame pas r\u00e9ussi, parce que lorsque j\u2019ai quitt\u00e9 l\u2019\u00e9cole, ce professeur m\u2019a vue et m\u2019a dit : \u00ab Oh, tu es perdue? \u00bb%\n[Rachel rit tr\u00e8s fort.]%\nSeigneur! Je ne peux m\u00eame pas s\u00e9cher les cours comme tout le monde. Tu vois ce que je veux dire? On n\u2019a pas, euh, on se fait toujours remarquer, ce qui est bon et mauvais. Parfois, c\u2019est un peu fatigant. Mais parfois c\u2019est bien, tu sais, parce qu\u2019on rencontre des gens qui sont int\u00e9ressants et gentils et\u2026 Oh, il y a beaucoup d\u2019oiseaux l\u00e0-bas!%\n %\n^Rachel^^ : Mm-hmm. Je ne les vois pas. Je ne sais pas\u2026%\n^Kim^^ : C\u2019est comme une vol\u00e9e d\u2019oiseaux l\u00e0-bas.%\n^Rachel^^ : Oui. Peut-\u00eatre dans les buissons.",
-        "authorCredit": "Kim Kilpatrick and Rachel Gray",
+        "authorCredit": "Kim Kilpatrick <br> Rachel Gray",
         "creditDur": 3.096
     },
     {
@@ -3788,7 +3758,7 @@
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_KIMRACHEL.mp3",
         "engTrans": "^Kim^^: Well, I think I might say that hearing is my favourite sense. They're all important, but I think because I'm so, I love language and words and I love communicating with people and listening to people's stories and their viewpoints and, and I know I could probably do that with braille over texting or something like that, but also it helps me get around and know when the light changes and where I am in space and all of these things. So, I would say hearing is probably the one. %\n%\nThe second one would be touch, because I use braille and, and just I touch things to know what they are. So it's sort of an interesting question in, in terms of what we go for first, like what we reach for first when we're experiencing an environment, then. Like if you reach for vision first and then hearing, or like I'll go for hearing first and then touch and then smell.%\n%\n'Cause I use my ears so much. But it is a weird question. I mean, that was a game as kids, right? You'd play.  %\n%\n^Rachel^^: Yeah.  %\n^Kim^^: Like if you could be blind or deaf or lose one leg or be - %\n^Rachel^^: Yes!  %\n^Kim^^: You know, and it's like, which one would you have? %\n^Rachel^^: I think one thing that it lets you do is just talk about the differences between senses, or kind of what they bring into your life. And you know, in, accurately, like you can't really pull them apart. They're, they're all kind of tangled together.  %\n^Kim^^:  Yeah, yeah.  %\n^Rachel^^: You know - %\n^Kim^^:  I think the other thing is if people sit and close their eyes for a while, and not just a second, if they sat here, in this place, and they close their eyes and then they realize how much more they can hear than they thought. Because the vision is sort of blanketing that hearing, right? That [birds chirp] I think.%\n%\nI often close my eyes at music concerts. I don't know why, because my eyes don't work anyway. It's like I can concentrate better if they are, for some reason, like I'm not quite sure. But I will close my eyes for classical music. And some people are like, oh, you're going to sleep or something. But I just concentrate, like it's just that I, for some reason it helps me think and just absorb it better.%\n%\n^Rachel^^: I think it can sometimes help you open up space. Like that's what happens for me, if I close my eyes is I feel like, um, there is a space inside me that's opening. I'm somehow more receptive. I am able to take in whatever it is in a larger, kind of more present way because of that. %\n^Kim^^:  It's too bad you feel that you can't close your eyes and listen to someone, because if that helps you to really listen, then it's too bad that you can't. %\n^Rachel^^: Yeah. It's like, um, a monitoring thing, like, and I, I don't know how accurate it is. But, there's always the sense that you're being like, looked, looked at when you're talking to people. That's how I feel.  %\n^Kim^^: Yeah. %\n^Rachel^^: And so it's both. I have to listen, but I also have to look like I'm listening. %\n^Kim^^:  Yeah. %\n^Rachel^^: And we have kind of ideas around what that - %\n^Kim^^:  What that is - %\n^Rachel^^: looks like. So it's a kind of performance in a sense. I think that's another thing about a visual world, is that we are often visually performing, kind of for one another. %\n^Kim^^: Well the thing I I know is that I will talk to someone from another room sometimes and they'll say, come in here and say, you know, 'cause it's like, and I'm like, well, I heard what you said, I'm right here like, I don't have to go in there. But I, I realized that that visual, um, I mean my brother is a visual artist and he's a very visual person. And when I would be somewhere else talking to him, he needs to see my face or you know, like to be able to, um, interact with me in the space, but I just need to hear his voice, I don't need to be, you know, exactly right there. So I would have to really think, oh, but if this is what this person needs, then that's important, like I'll go and do that.",
         "frTrans": "^Kim^^ : Eh bien, je pense que je peux affirmer que l\u2019ou\u00efe est mon sens pr\u00e9f\u00e9r\u00e9. Ils sont tous importants, mais je pense que c\u2019est parce que j\u2019aime tellement le langage et les mots, et j\u2019aime communiquer avec les gens et \u00e9couter leurs histoires et leurs points de vue et, et je sais que je pourrais probablement le faire avec le braille par texto ou quelque chose comme \u00e7a, mais aussi \u00e7a m\u2019aide \u00e0 me d\u00e9placer et \u00e0 savoir quand la lumi\u00e8re change et o\u00f9 je me trouve dans l\u2019espace et toutes ces choses. Je dirais donc que l\u2019ou\u00efe est probablement le sens le plus important pour moi.%\n%\nLe deuxi\u00e8me serait le toucher, parce que j\u2019utilise le braille et que je touche les choses pour savoir de quoi il s\u2019agit. C\u2019est donc une question int\u00e9ressante, savoir ce que nous utilisons en premier, ce que nous cherchons \u00e0 atteindre lorsque nous faisons l\u2019exp\u00e9rience d\u2019un environnement. Par exemple, si on s\u2019int\u00e9resse d\u2019abord \u00e0 la vue, puis \u00e0 l\u2019ou\u00efe, ou si je m\u2019int\u00e9resse d\u2019abord \u00e0 l\u2019ou\u00efe, puis au toucher, puis \u00e0 l\u2019odorat.%\n %\nParce que j\u2019utilise beaucoup mes oreilles. Mais c\u2019est une question \u00e9trange. Je veux dire, c\u2019\u00e9tait un jeu pour les enfants, n\u2019est-ce pas? Tu y as peut-\u00eatre jou\u00e9.%\n %\n^Rachel^^ : Oui.%\n^Kim^^ : Comme si on pouvait \u00eatre aveugle ou sourd ou perdre une jambe ou \u00eatre\u2026%\n^Rachel^^ : Oui!%\n^Kim^^ : Tu sais, et c\u2019est comme, lequel tu choisis?%\n^Rachel^^ : Je pense qu\u2019une chose que \u00e7a permet de faire, c\u2019est de parler des diff\u00e9rences entre les sens, ou de ce qu\u2019ils apportent dans notre vie. Et tu sais, en fait, on ne peut pas vraiment les distinguer. Ils sont\u2026 ils sont tous un peu emm\u00eal\u00e9s.%\n^Kim^^ : Oui, oui.%\n^Rachel^^ : Tu vois\u2026%\n^Kim^^ : Je pense que l\u2019autre chose, c\u2019est que si les gens s\u2019assoient et ferment les yeux pendant un moment, et pas juste une seconde, s\u2019ils s\u2019assoient ici, \u00e0 cet endroit, et qu\u2019ils ferment les yeux, ils se rendent compte \u00e0 quel point ils peuvent entendre plus de choses qu\u2019ils ne le pensaient. Parce que la vision recouvre en quelque sorte l\u2019ou\u00efe, n\u2019est-ce pas? \u00c7a [gazouillis d\u2019oiseaux], par exemple.%\n %\nJe ferme souvent les yeux lors des concerts. Je ne sais pas pourquoi, parce que mes yeux ne fonctionnent pas de toute fa\u00e7on. C\u2019est comme si j\u2019arrivais \u00e0 mieux me concentrer lorsqu\u2019ils sont ferm\u00e9s, pour une raison que j\u2019ignore. Mais je ferme les yeux pour la musique classique. Et certaines personnes pensent que je vais dormir ou quelque chose comme \u00e7a. Mais je me concentre, c\u2019est juste que, pour une raison quelconque, \u00e7a m\u2019aide \u00e0 penser et \u00e0 mieux assimiler.%\n %\n^Rachel^^ : Je pense que \u00e7a peut parfois aider \u00e0 ouvrir l\u2019espace. C\u2019est ce qui se passe pour moi : si je ferme les yeux, j\u2019ai l\u2019impression qu\u2019il y a un espace en moi qui s\u2019ouvre. Je suis en quelque sorte plus r\u00e9ceptive. Je suis capable d\u2019assimiler ce qui se passe d\u2019une mani\u00e8re plus ample et plus pr\u00e9sente gr\u00e2ce \u00e0 \u00e7a.%\n^Kim^^ : C\u2019est dommage d\u2019avoir l\u2019impression de ne pas pouvoir fermer les yeux pour \u00e9couter quelqu\u2019un, parce que si cela aide \u00e0 vraiment \u00e9couter, alors c\u2019est dommage qu\u2019on ne puisse pas le faire.%\n^Rachel^^ : Oui. C\u2019est comme, euh, un truc de surveillance, comme, et je ne sais pas \u00e0 quel point c\u2019est exact. Mais on a toujours l\u2019impression d\u2019\u00eatre observ\u00e9 quand on parle aux gens. C\u2019est ce que je ressens.%\n^Kim^^ : Oui.%\n^Rachel^^ : Et donc, c\u2019est les deux. Je dois \u00e9couter, mais je dois aussi avoir l\u2019air d\u2019\u00e9couter.%\n^Kim^^ : Oui.%\n^Rachel^^ : Et nous avons des id\u00e9es sur ce que\u2026%\n^Kim^^ : Ce que c\u2019est\u2026%\n^Rachel^^ : \u00c0 quoi \u00e7a ressemble. C\u2019est donc une sorte de performance dans un sens. Je pense que c\u2019est un autre aspect du monde visuel : c\u2019est que nous sommes souvent en train de performer visuellement, en quelque sorte les uns pour les autres.%\n^Kim^^ : Ce que je sais, c\u2019est que je parle parfois \u00e0 quelqu\u2019un d\u2019une autre pi\u00e8ce et qu\u2019il me dit \u00ab Viens me parler ici \u00bb, tu sais, parce que c\u2019est comme tu le d\u00e9cris, et je r\u00e9ponds \u00ab Eh bien, j\u2019ai entendu ce que tu as dit, je suis ici, je n\u2019ai pas besoin d\u2019aller l\u00e0 \u00bb. Mais je me suis rendu compte que ce contact visuel, euh, je veux dire que mon fr\u00e8re est un artiste visuel et c\u2019est une personne tr\u00e8s visuelle. Et quand je suis ailleurs en train de lui parler, il a besoin de voir mon visage ou, euh, de pouvoir interagir avec moi dans l\u2019espace, alors que moi, j\u2019ai juste besoin d\u2019entendre sa voix, je n\u2019ai pas besoin d\u2019\u00eatre, tu vois, exactement l\u00e0. Il faut donc que je me dise que si c\u2019est ce dont cette personne a besoin, c\u2019est important, et que je le fasse.",
-        "authorCredit": "Kim Kilpatrick and Rachel Gray",
+        "authorCredit": "Kim Kilpatrick <br> Rachel Gray",
         "creditDur": 3.096
     },
     {
