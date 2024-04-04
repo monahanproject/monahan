@@ -35,7 +35,8 @@ export class SimpleAudioPlayer {
     this.allowProgressUpdate = true;
 
     this.transcript = "";
-    this.language = "english";
+    // this.language = localStorage.getItem("preferredLanguage");
+
     this.transcriptVisible = false;
     this.transcriptContent = null;
     this.transcriptContainer = document.getElementById("transcriptContainer");
@@ -215,6 +216,9 @@ export class SimpleAudioPlayer {
 
     // Initialize or clear transcriptContent as needed
     if (!this.transcriptContent) {
+
+      this.language = localStorage.getItem("preferredLanguage");
+
       this.transcriptContent = this.createElement("div", { id: "transcriptContent", style: "display: none" });
       this.transcriptContainer.appendChild(this.transcriptContent);
     } else {
@@ -265,10 +269,13 @@ export class SimpleAudioPlayer {
     }
 
     this.transcriptContainer.innerHTML = ""; // Clear previous content
+    let language = localStorage.getItem("preferredLanguage");
+    console.log(`lang is ${language}`);
+    const langKey = language === "EN" ? "engTrans" : "frTrans";
+    console.log(`langKey is ${langKey}`);
 
-    const langKey = this.language === "english" ? "engTrans" : "frTrans";
     const copyRightText =
-      this.language === "english"
+      language === "EN"
         ? "$All recordings and transcripts are copyright protected. All rights reserved.$$"
         : "$Les enregistrements et les transcriptions sont protégés par le droit d’auteur. Tous droits réservés.$$";
 
