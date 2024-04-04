@@ -59,7 +59,7 @@ async function loadSongs() {
       const response = await fetch("songs.json");
       const data = await response.json();
       songs = data.map(prepareSongForPlayback);
-      console.log("Songs loaded successfully.");
+      // console.log("Songs loaded successfully.");
   
       // Now call prepareAndQueueTracks here to ensure it happens after songs are loaded
       curatedTracklist = prepareCuratedTracklist(songs);

@@ -1453,7 +1453,7 @@ input[type="range"] {
 }
 
 .svg-works {
-  background-image: url("images/svg/svg-works.svg");
+  /* background-image: url("images/svg/svg-works.svg"); */
   background-repeat: repeat-x;
   background-size: auto 61px;
   height: 66px;
@@ -1463,7 +1463,7 @@ input[type="range"] {
 }
 
 .svg-works-invert {
-  background-image: url("images/svg/svg-worksInvert.svg");
+  /* background-image: url("images/svg/svg-worksInvert.svg"); */
 }
 
 .svg-sideways {

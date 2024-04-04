@@ -17,7 +17,7 @@ function replaceSvgContent() {
   } else {
     logoPath = isInverted ? "images/svg/monohanLogoMobileInvert3.svg" : "images/svg/monohanLogoMobile2.svg";
   }
-  console.log(`Selected logo path: ${logoPath}`);
+  // console.log(`Selected logo path: ${logoPath}`);
 
   let svgContainer = document.getElementById("titleText");
   // Check if the container already contains an <img> element

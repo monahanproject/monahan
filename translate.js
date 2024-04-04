@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function updateLanguageLabel() {
   var oldLangImage = document.getElementById("langToggle");
-  console.log("Old langImage DOM Object: ", oldLangImage); // Log the DOM object for more details
+  // console.log("Old langImage DOM Object: ", oldLangImage); // Log the DOM object for more details
 
   if (oldLangImage) {
     // Create a new image element
@@ -52,7 +52,7 @@ function updateLanguageLabel() {
     oldLangImage.parentNode.replaceChild(newLangImage, oldLangImage);
 
     // Log new src for debugging
-    console.log("Replaced lang image with new src: ", newLangImage.src);
+    // console.log("Replaced lang image with new src: ", newLangImage.src);
   } else {
     console.error("Language image element not found");
   }

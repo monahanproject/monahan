@@ -21,7 +21,7 @@ if (localStorage.getItem("themeInverted") === null) {
 
 export class SimpleAudioPlayer {
   constructor(tracklist) {
-    console.log("SimpleAudioPlayer initialized with tracklist:", tracklist);
+    // console.log("SimpleAudioPlayer initialized with tracklist:", tracklist);
     this.tracklist = tracklist;
     this.currentIndex = 0;
     this.globalAudioElement = document.createElement("audio");

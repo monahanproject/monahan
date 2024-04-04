@@ -18,4 +18,4 @@ export const r21rule = "minimum one track with the author ALBERT";
 export const r22rule = "minimum one track with the author PIERREELLIOTT";
 export const r23rule = "minimum one track with the form interview";
 export const r24rule = "minimum one track with the form music";
-// export const r25rule = "The tracklist cannot contain one track with the tag 'geese'";
+export const r25rule = "The tracklist cannot contain one track with the tag 'geese'";
