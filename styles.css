@@ -12,7 +12,7 @@
   font-style: normal;
   font-weight: 400 700; /* Example range */
   src: local('DM Sans'), local('DMSans'),
-       url('/fonts/DMSans-VariableFont_opsz,wght.woff2') format('woff2');
+       url('/fonts/DMSans-VariableFont_opsz,wght.ttf') format('woff2');
 }
 
 
