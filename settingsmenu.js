@@ -46,7 +46,6 @@ const imageSourceMap = {
   "images/svg/separator.svg": "images/svg/separatorInvert.svg",
   "images/svg/30.svg": "images/svg/30Invert.svg",
   "images/svg/15.svg": "images/svg/15Invert.svg",
-  // "images/svg/-contributors1.svg": "images/svg/-contributors1Invert.svg",
   "images/svg/cityOfOttawaLogo.svg": "images/svg/cityOfOttawaLogoInvert.svg",
   "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg",
   "images/svg/stopButton.svg": "images/svg/stopButtonInvert.svg",

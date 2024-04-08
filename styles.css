@@ -643,6 +643,12 @@ p {
   }
 }
 
+@media screen and (min-width: 1400px) {
+  .txtBoxDiv {
+    max-width: 30vw;
+  }
+}
+
 /*************************/
 /******** DEBUG **********/
 /*************************/
@@ -891,10 +897,21 @@ img {
   width: 23vw;
 }
 
+#map {
+  display: flex;
+  margin: 2rem auto 0 auto;
+  width: 70vw;
+}
+
 @media screen and (min-width: 900px) {
   #fern {
     padding: 1rem;
     width: 15vw;
+  }
+
+  #map {
+    padding-bottom: 2rem;
+    width: 23vw;
   }
 }
 
@@ -1499,17 +1516,10 @@ input[type="range"] {
 
 }
 
-.svg-contributors-invert {
-  background-image: url("images/svg/svg-contributors1Invert.svg");
-}
-
 .svg-contributors2 {
   background-image: url(images/svg/-contributors2.svg);
 }
 
-.svg-contributors2-invert {
-  background-image: url("images/svg/svg-contributors2Invert.svg");
-}
 
 @media screen and (min-width: 900px) {
   .svg-about,

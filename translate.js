@@ -333,7 +333,7 @@ const productionPageEN = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">LAURA TALER</span> <span class="role">producer/director</span>
+    <span class="summary-content">LAURA TALER</span> <span class="role">producer / director</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" href="https://laurataler.ca/">Laura Taler</a></span> is a Romanian-born, award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience with public art ranges from large-scale performance works, to projections and screen-based works, to permanent installations. She expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura has worked collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in 1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to provide a clear vision to the team of experts that she gathers around each project and to guide that vision with precision and flexibility.</p>
