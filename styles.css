@@ -2098,15 +2098,7 @@ article > p {
 }
 
 
-#fern {
-  transform-origin: center;
-  transform: scale(.6); /* Initial scale */
-  transition: transform 1.5s ease-in-out;
-}
 
-#fern.grow {
-  transform: scale(1); /* Target scale when in view */
-}
 
 
 #accessIcon, #langToggle, #invertColoursBtn, #monochromeBtn, #decreaseTextSizeBtn, #increaseTextSizeBtn, .volume-icon, #transcriptButton {

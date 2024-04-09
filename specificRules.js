@@ -147,3 +147,33 @@ export function r68(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex)
   logRuleApplication(68, logMessage, true, ruleType);
   return true;
 }
+
+
+
+// R69: Rule 9 (only for Track 9): The 9th track must have a different form than previous track
+export function r69(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  const trackName = track.name;
+  const ruleType = `📙 Base track rule:`;
+  const logMessage = `${track.name} The track's index is ${trackIndex}. The 9th track must have a different form (track's form is ${track.form}) vs the 8th track (the 8th track's form is ${prevTrack1.form})`;
+
+  if (trackIndex === 9 && track.form === prevTrack1.form) {
+    logRuleApplication(69, track.name, logMessage, false, ruleType);
+    return false;
+  }
+  logRuleApplication(69, logMessage, true, ruleType);
+  return true;
+}
+
+// R70: Rule 10 (only for Track 10): The 10th track must have a different form than previous track
+export function r70(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
+  const trackName = track.name;
+  const ruleType = `📙 Base track rule:`;
+  const logMessage = `${track.name} The track's index is ${trackIndex}. The 10th track must have a different form (track's form is ${track.form}) vs the 9th track (the 9th track's form is ${prevTrack1.form})`;
+
+  if (trackIndex === 10 && track.form === prevTrack1.form) {
+    logRuleApplication(70, track.name, logMessage, false, ruleType);
+    return false;
+  }
+  logRuleApplication(70, logMessage, true, ruleType);
+  return true;
+}

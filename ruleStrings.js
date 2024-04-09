@@ -14,6 +14,9 @@ export const r65rule = "the 5th track must have the length 'short'; must have th
 export const r66rule = "the 6th track must have the placement 'middle' and a different form than the 5th track";
 export const r67rule = "the 7th track must have the placement 'middle' and a different form than the 6th track";
 export const r68rule = "the 8th track must have the placement 'middle', a different form than previous track";
+export const r69rule = "the 9th track must have a different form than the previous track";
+export const r70rule = "the 10th track must have a different form than the previous track";
+
 export const r21rule = "minimum one track with the author ALBERT";
 export const r22rule = "minimum one track with the author PIERREELLIOTT";
 export const r23rule = "minimum one track with the form interview";

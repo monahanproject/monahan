@@ -21,7 +21,7 @@ function setLanguageFromLocalStorage() {
 
   if (savedLang === "FR") {
     const playButtonTextContainer = document.getElementById("play-button-text-container");
-    playButtonTextContainer.style.left = "45%";
+    playButtonTextContainer.style.left = "40%";
     adjustFontSize("play-button-text-container");
   }
 }
@@ -112,7 +112,12 @@ function adjustFontSize(elementId) {
 
   const sizeReductions = {
     curiousEarsTxt: 0.8, // 20% smaller for French
-    "play-button-text-container": 0.7, // Make 30% smaller for French, adjust value as needed
+    //findme "if phone"
+    // if () {
+    //   "play-button-text-container": 0.6, 
+    // } else {
+    //   "play-button-text-container": 0.6, 
+    // }
   };
 
   // Check if the current element's ID is in the sizeReductions object
@@ -149,7 +154,7 @@ const strings = [
   {
     id: "eachTimeYouClick",
     en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a group of <a href='#contributorsH2'>contributors</a>. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",
-    fr: "Chaque fois que vous cliquez sur DÉBUTER, vous découvrez une pièce sonore unique, composée par notre algorithme à partir de 173 chapitres sonores. Tous ces chapitres sont créés par un groupe diversifié de <a href='#contributorsH2'>contributrices et contributeurs</a>. Vous entendrez de tout : des chansons et des poèmes aux sons de la nature, en passant par des interviews et des histoires.",
+    fr: "Chaque fois que vous cliquez sur COMMENCER, vous découvrez une pièce sonore unique, composée par notre algorithme à partir de 173 chapitres sonores. Tous ces chapitres sont créés par un groupe diversifié de <a href='#contributorsH2'>contributrices et contributeurs</a>. Vous entendrez de tout : des chansons et des poèmes aux sons de la nature, en passant par des interviews et des histoires.",
   },
   {
     id: "ByBringingTogether",
@@ -163,7 +168,7 @@ const strings = [
   },
   {
     id: "delveInto",
-    en: "Delve into sounds that explore movement, migration, story as medicine, non-human beings, plants as healers, voice, translation, and place.",
+    en: "Delve into sounds that explore movement, migration, story as medicine, plants as healers, voice, translation, and place.",
     fr: "Plongez-vous dans une ambiance sonore qui explore le mouvement, la migration, les récits qui soulagent, les êtres non humains, les plantes qui guérissent, la voix, la traduction et le lieu.",
   },
 
@@ -196,7 +201,7 @@ const strings = [
   { id: "scanQR", en: "Scan the QR code", fr: "Scannez le code QR" },
   { id: "arriveWebsite", en: "Arrive at the MONAHAN website", fr: "Accédez au site Web de MONAHAN" },
   { id: "putHeadphones", en: "Put on your HEADPHONES", fr: "Mets tes ÉCOUTEURS" },
-  { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur DÉBUTER" },
+  { id: "clickBegin", en: "Click BEGIN", fr: "Cliquez sur COMMENCER" },
   { id: "contributorsH2", en: "CONTRIBUTORS", fr: "CONTRIBUTRICES ET CONTRIBUTEURS" },
 
   { id: "listenSoundPiece", en: "LISTEN to a personalized sound piece", fr: "ÉCOUTEZ une pièce sonore personnalisée" },
@@ -258,7 +263,7 @@ const buttonStrings = [
   { id: "resetBtn", en: "Reset", fr: "Réinitialiser" },
   // { id: "transcriptButton", en: "TRANSCRIPT", fr: "TRANSCRIPTION" },
 
-  { id: "play-button-text-container", en: "BEGIN", fr: "DÉBUTER" },
+  { id: "play-button-text-container", en: "BEGIN", fr: "COMMENCER" },
   // { id: "skipBackwardButton", en: "Skip Backward", fr: "Reculer" },
   // { id: "skipForwardButton", en: "Skip Forward", fr: "Avancer" },
 ];
@@ -333,7 +338,7 @@ const productionPageEN = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">LAURA TALER</span> <span class="role">producer / director</span>
+    <span class="summary-content">LAURA TALER</span> <span class="role">concept & realization</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" href="https://laurataler.ca/">Laura Taler</a></span> is a Romanian-born, award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience with public art ranges from large-scale performance works, to projections and screen-based works, to permanent installations. She expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura has worked collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in 1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to provide a clear vision to the team of experts that she gathers around each project and to guide that vision with precision and flexibility.</p>
@@ -417,7 +422,7 @@ const productionPageFR = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary>
-    <span class="summary-content">LAURA TALER</span> <span class="role">productrice/réalisatrice</span>
+    <span class="summary-content">LAURA TALER</span> <span class="role">conception et réalisation</span>
   </summary>
   <article>
   <p><span class="bold"><a target="_blank" href="https://laurataler.ca/">Laura Taler</a></span> est une artiste, cinéaste, chorégraphe et interprète de spectacle née en Roumanie maintes fois primée. Forte d'une carrière de 30 ans dans les pratiques artistiques collaboratives, Laura a une expérience de l'art public qui va des spectacles à grande échelle aux installations permanentes, en passant par les projections et les œuvres sur écran. Elle sait varier les médiums, repousser les limites et utiliser la technologie de manière simple et innovante. Depuis le début de sa carrière, Laura travaille en collaboration en tant que directrice d'une équipe d'artistes et de techniciens et techniciennes. Par l'intermédiaire de sa société Grimm Pictures, fondée en 1994, elle a produit des œuvres pour diverses petites et grandes organisations. En tant qu'artiste, elle tire sa force de sa capacité à donner une vision claire à l'équipe chevronnée qu'elle rassemble autour de chaque projet et à concrétiser cette vision avec précision et souplesse.</p>

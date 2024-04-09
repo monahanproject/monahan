@@ -762,8 +762,8 @@ export class SimpleAudioPlayer {
           if (currLang === "EN") {
             playButtonTextContainer.textContent = "PLAY";
           } else {
-            playButtonTextContainer.style.left = "45%";
-            playButtonTextContainer.textContent = "DÉBUTER";
+            playButtonTextContainer.style.left = "40%";
+            playButtonTextContainer.textContent = "COMMENCER";
           }
         }
       }

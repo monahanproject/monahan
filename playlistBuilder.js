@@ -2,7 +2,7 @@
 
 import { r10, r11, r12, r13, r14, r15, r16 } from "./generalRules.js";
 import { r21, r22, r23, r24 } from "./ensureRules.js";
-import { r61, r62, r63, r64, r65, r66, r67, r68 } from "./specificRules.js";
+import { r61, r62, r63, r64, r65, r66, r67, r68, r69, r70 } from "./specificRules.js";
 import {
   r10rule,
   r11rule,
@@ -24,6 +24,8 @@ import {
   r66rule,
   r67rule,
   r68rule,
+  r69rule,
+  r70rule
 } from "./ruleStrings.js";
 
 // import { r25 } from "./geeseRule.js";
@@ -311,7 +313,7 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
     let tracksTried = 0; // Initialize counter for the number of tracks tried
 
     let specificRuleDescription = eval(`r${61 + i}rule`); // Dynamic evaluation of rule descriptions
-    // console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
+    console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
 
     while (!ruleMet && tracksTried < tracklist.length) {
       if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
@@ -319,7 +321,7 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
       }
 
       let track = tracklist[tracksTried];
-      // console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
+      console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
 
       if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration)) {
         if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
