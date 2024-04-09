@@ -234,7 +234,7 @@ export class SimpleAudioPlayer {
       center: /@([^]+?)@@/g,
       italics: /\$([^]+?)\$\$/g,
       lineBreak: /%/g,
-      doubleLineBreak: /\*/g,
+      // doubleLineBreak: /\*/g,
     };
 
     return text
