@@ -106,19 +106,24 @@ function changeEachLangDiv() {
 // Object to store the original font sizes of elements that need to be resized
 const originalFontSizes = {};
 
-// Function to adjust or revert font sizes for specific elements based on language
+
 function adjustFontSize(elementId) {
   // console.log("[adjustFontSize] Called for:", elementId);
 
   const sizeReductions = {
-    curiousEarsTxt: 0.8, // 20% smaller for French
-    //findme "if phone"
-    // if () {
-    //   "play-button-text-container": 0.6, 
-    // } else {
-    //   "play-button-text-container": 0.6, 
-    // }
+    curiousEarsTxt: 0.6, // 20% smaller for French
   };
+
+  if (!window.matchMedia("(min-width: 900px)").matches) {
+    console.log("Viewport is less than 900px wide");
+    // Additional or modified size reductions can be added here
+    sizeReductions["play-button-text-container"] = 0.9;
+  } else {
+    console.log("Viewport is 900px wide or wider");
+    // Adjustments for wider viewports can be applied here
+    sizeReductions["play-button-text-container"] = 0.6;
+
+  }
 
   // Check if the current element's ID is in the sizeReductions object
   if (sizeReductions.hasOwnProperty(elementId)) {

@@ -1216,7 +1216,7 @@ li {
   /* pointer-events: none; Consider if hover effects are desired */
   color: var(--lightgreen);
   font-family: "DM Sans";
-  font-size: 2.25rem;
+  font-size: 9vw;
   transition: transform 0.5s ease; /* Combined transitions */
 }
 
