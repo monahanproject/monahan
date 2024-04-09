@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 300;
   src: local('Zilla Slab Light'), local('ZillaSlab-Light'),
-       url('/fonts/ZillaSlab-Light.ttf') format('truetype');
+       url('fonts/ZillaSlab-Light.ttf') format('truetype');
 }
 
 
@@ -12,7 +12,7 @@
   font-style: normal;
   font-weight: 400 700; 
   src: local('DM Sans'), local('DMSans'),
-       url('/fonts/DMSans-VariableFont_opsz,wght.ttf') format('truetype'); 
+       url('fonts/DMSans-VariableFont_opsz,wght.ttf') format('truetype'); 
 }
 
 
