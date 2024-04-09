@@ -1,6 +1,6 @@
 // import { trackExistsWithAttributes, addAudioFromUrl } from './play.js';
 
-import { r10, r11, r12, r13, r14, r15, r16 } from "./generalRules.js";
+import { r10, r11, r12, r13, r14, r15, r16, r17 } from "./generalRules.js";
 import { r21, r22, r23, r24 } from "./ensureRules.js";
 import { r61, r62, r63, r64, r65, r66, r67, r68, r69, r70 } from "./specificRules.js";
 import {
@@ -11,6 +11,8 @@ import {
   r14rule,
   r15rule,
   r16rule,
+  r17rule,
+
   r21rule,
   r22rule,
   r23rule,
@@ -129,7 +131,7 @@ function initializecuratedTracklist() {
 }
 
 function initializeGeneralRules() {
-  return [r10, r11, r12, r13, r14, r15, r16];
+  return [r10, r11, r12, r13, r14, r15, r16, r17];
 }
 
 function initializeEnsureRules(rules, fixedRules = []) {
@@ -313,15 +315,15 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
     let tracksTried = 0; // Initialize counter for the number of tracks tried
 
     let specificRuleDescription = eval(`r${61 + i}rule`); // Dynamic evaluation of rule descriptions
-    console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
+    // console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
 
     while (!ruleMet && tracksTried < tracklist.length) {
       if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
-        console.log("we're basically out of time");
+        // console.log("we're basically out of time");
       }
 
       let track = tracklist[tracksTried];
-      console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
+      // console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
 
       if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration)) {
         if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {

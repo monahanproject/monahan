@@ -5,6 +5,8 @@ export const r13rule = "Tracks with the form music can never follow tracks with 
 export const r14rule = "The value for backgroundMusic should never match the author of the track right before it, and the author of the track should never match the backgroundMusic of the track right before it";
 export const r15rule = "If the previous track has the sentiment heavy, this track cannot have the the laughter tag";
 export const r16rule = "If the previous track has length long and form music, this track must have the form interview or poetry";
+export const r17rule = "This track must have a different form than the previous track";
+
 // export const r60rule = "the 0th track must have the placement end (we'll be moving this to the end)";
 export const r61rule = "the 1st track must have the tag 'intro'";
 export const r62rule = "the 2nd track must have the placement 'beginning'";

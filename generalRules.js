@@ -128,3 +128,19 @@ export function r10(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) 
     logRuleApplication(16, logMessage, true, ruleType);
     return true;
   }
+
+    // R17: The current track must have a different form than previous track
+    export function r17(track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
+      const trackName = track.name;
+      const ruleType = `✉️ General rule:`;
+      const logMessage = `${track.name} The current track must have a different form (track's form is ${track.form}) than the previous track (the previous track's form is ${prevTrack1.form})`;
+    
+      if (track.form && track.form === prevTrack1.form) {
+        logRuleApplication(r17, track.name, logMessage, false, ruleType);
+        return false;
+      }
+      logRuleApplication(r17, logMessage, true, ruleType);
+      return true;
+    }
+
+

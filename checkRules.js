@@ -6,6 +6,7 @@ import {
   r14rule,
   r15rule,
   r16rule,
+  r17rule,
   r21rule,
   r22rule,
   r23rule,
@@ -190,6 +191,11 @@ export function checkPlaylistRules(playlist) {
         if (track.form !== "interview" && track.form !== "poetry") {
           console.log(`❌❌❌ R16 violated! (${track.name}): Long music track not followed by an interview or poetry.`);
         }
+      }
+
+      // CHECK R17: The current track must have a different form than the previous track`;
+      if (track.form && playlist[i - 1].form && track.form === playlist[i - 1].form) {
+        console.log(`❌❌❌ R17 violated! (${track.name}): has ${track.form} and the previous track ${playlist[i - 1].form}. This does not meet the criteria of ${r17rule}`);
       }
     }
 
