@@ -119,7 +119,7 @@ function adjustFontSize(elementId) {
     // Additional or modified size reductions can be added here
     sizeReductions["play-button-text-container"] = 0.9;
   } else {
-    console.log("Viewport is 900px wide or wider");
+    // console.log("Viewport is 900px wide or wider");
     // Adjustments for wider viewports can be applied here
     sizeReductions["play-button-text-container"] = 0.6;
 

@@ -10,9 +10,9 @@
 @font-face {
   font-family: 'DM Sans';
   font-style: normal;
-  font-weight: 400 700; /* Example range */
+  font-weight: 400 700; 
   src: local('DM Sans'), local('DMSans'),
-       url('/fonts/DMSans-VariableFont_opsz,wght.ttf') format('woff2');
+       url('/fonts/DMSans-VariableFont_opsz,wght.ttf') format('truetype'); 
 }
 
 
