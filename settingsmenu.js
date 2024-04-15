@@ -83,7 +83,7 @@ function toggleSvgBackgrounds() {
   const svgClasses = [
     { original: "svg-about", invert: "svg-about-invert" },
     { original: "svg-upPlant", invert: "svg-upPlant-invert" },
-    // { original: "svg-map", invert: "svg-about-invert" },
+    { original: "svg-map", invert: "svg-map-invert" },
     { original: "svg-works", invert: "svg-works-invert" },
     { original: "svg-sideways", invert: "svg-sideways-invert" },
   ];
