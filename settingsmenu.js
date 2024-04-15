@@ -43,6 +43,8 @@ const imageSourceMap = {
   "images/svg/monochrome1.svg": "images/svg/monochromeInvert.svg",
   "images/svg/firn.svg": "images/svg/firnInvert.svg",
   "images/svg/svg-upPlant.svg": "images/svg/svg-upPlantInvert.svg",
+  // "images/svg/map-fill.svg": "images/svg/map-fillInvert.svg",
+
   "images/svg/separator.svg": "images/svg/separatorInvert.svg",
   "images/svg/30.svg": "images/svg/30Invert.svg",
   "images/svg/15.svg": "images/svg/15Invert.svg",
@@ -77,9 +79,11 @@ function toggleImageSources() {
 }
 
 function toggleSvgBackgrounds() {
+  console.log("toggleSvgBackgrounds");
   const svgClasses = [
     { original: "svg-about", invert: "svg-about-invert" },
     { original: "svg-upPlant", invert: "svg-upPlant-invert" },
+    // { original: "svg-map", invert: "svg-about-invert" },
     { original: "svg-works", invert: "svg-works-invert" },
     { original: "svg-sideways", invert: "svg-sideways-invert" },
   ];
@@ -88,6 +92,8 @@ function toggleSvgBackgrounds() {
     document.querySelectorAll(`.${original}, .${invert}`).forEach((element) => {
       element.classList.toggle(invert, isInverted); // Add if isInverted, remove if not
       if (!isInverted) {
+            console.log(element);
+
         element.classList.remove(invert); // Ensure inverted class is removed if not inverted
       }
     });

@@ -899,19 +899,14 @@ img {
 
 #map {
   display: flex;
-  margin: 2rem auto 0 auto;
-  width: 70vw;
+  /* margin: 2rem auto 0 auto; */
+  width: 100vw;
 }
 
 @media screen and (min-width: 900px) {
   #fern {
     padding: 1rem;
     width: 15vw;
-  }
-
-  #map {
-    padding-bottom: 2rem;
-    width: 23vw;
   }
 }
 
@@ -973,7 +968,7 @@ h2 {
 
 
 #accessH2 {
-  margin-top: -3rem;
+  /* margin-top: -3rem; */
 }
 
 
@@ -1470,7 +1465,7 @@ input[type="range"] {
 }
 
 .svg-works {
-  /* background-image: url("images/svg/svg-works.svg"); */
+  /* background-image: url("images/svg/svg-upPlantInvert.svg"); */
   background-repeat: repeat-x;
   background-size: auto 61px;
   height: 66px;
@@ -1481,6 +1476,13 @@ input[type="range"] {
 
 .svg-works-invert {
   /* background-image: url("images/svg/svg-worksInvert.svg"); */
+}
+
+.svg-map {
+  background-image: url(images/svg/map-fill.svg);
+  background-repeat: repeat-x;
+  background-size: 100% 100%;
+  height: 100vw;
 }
 
 .svg-sideways {
@@ -1524,7 +1526,7 @@ input[type="range"] {
 @media screen and (min-width: 900px) {
   .svg-about,
   .svg-upPlant,
-  .svg-works {
+  .svg-works, .svg-map {
     background-repeat: repeat;
     height: auto;
     margin: 0;
@@ -1549,6 +1551,7 @@ input[type="range"] {
 
   .svg-about-invert {
     background-image: url("images/svg/svg-sidewaysBigInvert.svg");
+    background-position: center;
   }
 
   .svg-upPlant {
@@ -1562,11 +1565,20 @@ input[type="range"] {
 
   .svg-works {
     background-image: url("images/svg/svg-upBigInvert.svg");
-    background-position: left center;
+    /* background-position: left center; */
+  }
+
+  .svg-map {
+    background-position: center;
   }
 
   .svg-works-invert {
     background-image: url("images/svg/svg-upBig.svg");
+  }
+
+  .svg-map-invert {
+    background-image: url("images/svg/upDownBigInvert.svg");
+    background-position: center;
   }
 
   .svg-sideways {
@@ -2110,6 +2122,3 @@ article > p {
   transform: scale(1.1); /* Gently increase size */
   fill: #28a745; /* Change color to a subtle green, or any color that suits your theme */
 }
-
-
-
