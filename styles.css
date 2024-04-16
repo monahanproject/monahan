@@ -1581,11 +1581,6 @@ input[type="range"] {
     background-image: url("images/svg/svg-upBig.svg");
   }
 
-  .svg-map-invert {
-    background-image: url("images/svg/m.svg");
-    background-position: center;
-  }
-
   .svg-sideways {
     background-image: url("images/svg/svg-sideways.svg");
     background-repeat: repeat-x;

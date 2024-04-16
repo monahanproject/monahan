@@ -477,11 +477,12 @@ const contributorsPageEN = `
   unique combination of western scientific training and an understanding of the knowledge and methods of a wide variety of traditional
   and alternative sources. Beresford-Kroeger's concept of bioplanning challenges ordinary people to develop a new relationship with
   the natural world, to view the environment as a biological system and to perform the ecological task of replanting the global
-  forest. Her books include <span class="italic">The Sweetness of a Simple Life</span>,
+  forest. <span class="italic">Her books include To
+Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life</span>,
   <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>,
   <span class="italic">Arboretum America: A Philosophy of the Forest</span>, and <span class="italic">A Garden for Life</span>. A
   feature documentary about her work, the Canadian Screen Awards-nominated
-  <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, appeared in 2017. Her latest book is
+  <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, appeared in 2017. Her latest book, <span class="italic">OurGreen Heart: The Soul and Science of Forests</span>, will be published in September 2024.  is
   <span class="italic">To Speak for the Trees: My Life's Journey From Ancient Celtic Wisdom To a Healing Vision of the Forest</span>.
  </p>
 </article>
@@ -990,7 +991,7 @@ const contributorsPageFR = `
     <span class="summary-content">DIANA BERESFORD-KROEGER</span>
   </summary>
   <article>
-    <p>Botaniste, biochimiste médicale et auteure, <span class="bold"><a target="_blank" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> conjugue de façon unique une formation scientifique occidentale à une connaissance des savoirs et des méthodes d'une grande variété de sources traditionnelles et non conventionnelles. Le concept de bioplanification de Beresford-Kroeger incite monsieur et madame tout le monde à tisser une nouvelle relation avec la nature, à considérer l'environnement comme un système biologique et à accomplir la tâche écologique de reboiser la forêt mondiale. Elle est l'auteure, entre autres, de <span class="italic">The Sweetness of a Simple Life</span>, <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>, <span class="italic">Arboretum America: A Philosophy of the Forest</span> et <span class="italic">A Garden for Life</span>. Un long métrage documentaire sur son travail, <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, est paru en 2017. Son dernier livre s'intitule <span class="italic">To Speak for the Trees: My Life's Journey From Ancient Celtic Wisdom To a Healing Vision of the Forest</span>.</p>
+    <p>Botaniste, biochimiste médicale et auteure, <span class="bold"><a target="_blank" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> conjugue de façon unique une formation scientifique occidentale à une connaissance des savoirs et des méthodes d'une grande variété de sources traditionnelles et non conventionnelles. Le concept de bioplanification de Beresford-Kroeger incite monsieur et madame tout le monde à tisser une nouvelle relation avec la nature, à considérer l'environnement comme un système biologique et à accomplir la tâche écologique de reboiser la forêt mondiale. Elle est l'auteure, entre autres, de <span class="italic">To Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life</span>, <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>, <span class="italic">Arboretum America: A Philosophy of the Forest</span> et <span class="italic">A Garden for Life</span>. Un long métrage documentaire sur son travail, <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, est paru en 2017. Son dernier livre <span class="italic">Our Green Heart</span> sera publié en Septembre 2024.</p>
   </article>
 </details>
 <div class="svg-contributors"></div>
