@@ -221,11 +221,7 @@ const strings = [
 
 const buttonStrings = [
   { id: "invertColorsTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
-  // { id: "monochromeTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
   { id: "textSizeTxt", en: "Text Size", fr: "Taille du Texte" },
-  // { id: "transcriptButton", en: "Transcript", fr: "Transcription" },
-
-
   // { id: "textSizeDecreaseBtn", en: "Decrease Text Size", fr: "Diminuer la taille du texte" },
   // { id: "textSizeIncreaseBtn", en: "Increase Text Size", fr: "Augmenter la taille du texte" },
   { id: "resetBtn", en: "Reset", fr: "Réinitialiser" },
@@ -276,8 +272,6 @@ function adjustFontSize(elementId) {
   } else {
   }
 }
-
-
 
 const productionPageEN = `
 <div class="headerDiv">
