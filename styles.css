@@ -1144,10 +1144,28 @@ li {
   animation: svgGlow 0.5s ease-out forwards;
 }
 
-#skip-links {
-  visibility: none;
-  opacity: 0;
+#skiplinks {
+  position: absolute;
+  left: -9999px;  /* Move off-screen */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);  /* Further ensure content isn't visible */
 }
+
+#skiplinks:focus, #skiplinks:active {  /* Make visible when focused */
+  position: static;
+  left: auto;
+  width: auto;
+  height: auto;
+  clip: auto;
+  z-index: 1000;  /* Ensure it is above other content */
+  background: #FFF;  /* Background color for visibility */
+  padding: 10px;  /* Add some padding */
+  text-align: center;  /* Center the text */
+  border: 1px solid #000;  /* Add border for visibility */
+}
+
 
 .disabled-button {
   opacity: 0.1; 
