@@ -1,3 +1,9 @@
+export function updateAriaStatusMessage(message) {
+  console.log("aria log + ", message);
+  document.getElementById('statusMessage').textContent = message;
+}
+
+
 // Initialize a variable to hold the initial state of 'isInverted' directly.
 let initialState = false; // Default to false, as you're not loading from localStorage anymore.
 

@@ -1090,7 +1090,7 @@ li {
   max-width: 100%;
   transition: transform 0.3s ease-in-out;
   transform-origin: center;
-
+  transition: opacity 0.3s ease-in-out;
 }
 
 #skipBackwardButton {
@@ -1105,7 +1105,7 @@ li {
 #skipBackwardButton:hover {
   opacity: 60%;
   /* transform: translateX(-3px); Moves backward button to the left on hover */
-  transform: scale(1.1); 
+  /* transform: scale(1.1);  */
   filter: brightness(120%); 
 
 }
@@ -1113,7 +1113,7 @@ li {
 #skipForwardButton:hover {
   opacity: 60%;
   /* transform: translateX(3fr); Moves forward button to the right on hover */
-  transform: scale(1.1); 
+  /* transform: scale(1.1);  */
   filter: brightness(120%); 
 }
 
@@ -1126,17 +1126,44 @@ li {
 
 @keyframes svgGlow {
   0%, 100% {
-    filter: none; /* Original state */
+    filter: none;
+    color: white;
+    /* background-color: white; */
+    stroke-width: 0px; /* No stroke initially */
   }
   50% {
     filter: brightness(100%) saturate(200%) contrast(200%);
+    color: red;
+    /* background-color: red; */
+    stroke: white; /* Ensure stroke is simply the color */
+    stroke-width: 2px; /* Define stroke width */
   }
 }
 
 .svg-glow {
-  animation: svgGlow 0.5s ease-out forwards; /* Quick glow effect */
+  animation: svgGlow 0.5s ease-out forwards;
 }
 
+
+.disabled-button {
+  opacity: 0.1; 
+  color: #ccc;   
+  cursor: not-allowed; 
+  pointer-events: none; 
+}
+
+@keyframes svgDisappear {
+  0%, 100% {
+    opacity: 0.1;  // Start and end at low opacity
+  }
+  90% {
+    opacity: 1;  // Peak at full opacity
+  }
+}
+
+.svg-disappear {
+  animation: svgDisappear 1s ease-out forwards;  // Duration set to 2 seconds
+}
 
 
 .svg-icon {

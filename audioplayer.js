@@ -1,20 +1,12 @@
-// Lang Elliott
-// Jesse Stewart
-// Jayne Brown
-// Sophia Grigoriadis
-// Brenna MacCrimmon
-// Maryem Hassan Tollar
-
 import { curatedTracklist, initializeApp } from "./play.js";
-import { getState, setState } from "./state.js";
+import { getState, setState, getLangState, setLangState, updateAriaStatusMessage } from "./state.js";
+
 let isInverted = getState(); // This will initialize isInverted based on localStorage
 
 if (localStorage.getItem("themeInverted") === null) {
   // If the key doesn't exist, initialize it to false
   localStorage.setItem("themeInverted", "false");
 }
-
-import { getLangState, setLangState } from "./state.js";
 
 // let lang = localStorage.getItem("lang") || "EN"; // Retrieve initial language setting
 // console.log(lang);
@@ -87,29 +79,6 @@ export class SimpleAudioPlayer {
     return this.remainingTime;
   }
 
-  // updateProgressUI(elapsedSeconds, previousDuration) {
-  //   const totalElapsedSeconds = elapsedSeconds + previousDuration;
-  //   const remainingDurationSeconds = Math.max(0, this.totalPlaylistDuration - totalElapsedSeconds);
-  //   const playedPercentage = (totalElapsedSeconds / this.totalPlaylistDuration) * 100;
-  //   console.log(`xxx seconds played according to totalelapsedseconds is ${totalElapsedSeconds}`);
-  //   const playedTime = this.calculateMinutesAndSeconds(totalElapsedSeconds);
-  //   const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
-
-  //   requestAnimationFrame(() => {
-  //     try {
-  //       const progressBar = document.getElementById("progress-bar");
-  //       const timePlayedElement = document.getElementById("time-played");
-  //       const timeRemainingElement = document.getElementById("time-remaining");
-
-  //       progressBar.style.width = `${playedPercentage}%`;
-  //       timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
-  //       timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
-  //     } catch (error) {
-  //       console.error("An error occurred in updateProgressUI:", error);
-  //     }
-  //   });
-  // }
-
   updateProgressUI(elapsedSeconds, previousDuration) {
     if (this.playlistEnded) {
       const timeRemainingElement = document.getElementById("time-remaining");
@@ -126,12 +95,6 @@ export class SimpleAudioPlayer {
     const playedTime = this.calculateMinutesAndSeconds(totalElapsedSeconds);
     const remainingTime = this.calculateMinutesAndSeconds(remainingDurationSeconds);
 
-    // Detailed logging of calculation components
-    // console.log(
-    //   `Updating Progress UI. Elapsed Seconds: ${elapsedSeconds}, Previous Duration: ${previousDuration}, Total Elapsed Seconds: ${totalElapsedSeconds}`
-    // );
-    // console.log(`Remaining Duration Seconds: ${remainingDurationSeconds}, Played Percentage: ${playedPercentage}`);
-
     requestAnimationFrame(() => {
       try {
         const progressBar = document.getElementById("progress-bar");
@@ -139,10 +102,11 @@ export class SimpleAudioPlayer {
         const timeRemainingElement = document.getElementById("time-remaining");
 
         progressBar.style.width = `${playedPercentage}%`;
+        progressBar.setAttribute("aria-valuenow", playedPercentage.toFixed(0));
+
         timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
         timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
 
-        // Additional log to confirm UI update
         // console.log(`Progress Bar Updated: ${progressBar.style.width}`);
       } catch (error) {
         console.error("An error occurred in updateProgressUI:", error);
@@ -207,10 +171,10 @@ export class SimpleAudioPlayer {
     if (!transcriptButton) {
       // Only create and append the button if it doesn't exist
 
-      this.lang = getLangState()
+      this.lang = getLangState();
 
       if (this.lang == "EN") {
-        console.log("yooooo");
+        // updateAriaStatusMessage("Created a transcript");
         transcriptButton = this.createElement("button", {
           type: "button",
           className: "btn",
@@ -334,7 +298,7 @@ export class SimpleAudioPlayer {
           this.transcriptContainer.style.transform = "translateY(0px)"; // Move to final position
         });
       });
-// findme
+      // findme
       // let currLang = localStorage.getItem("lang");
       // console.log(currLang);
       // if (!currLang) {
@@ -342,19 +306,16 @@ export class SimpleAudioPlayer {
       //   currLang = "EN"; // Set to "EN" if not already set
       // }
 
-      this.lang = getLangState()
+      this.lang = getLangState();
 
       if (this.lang == "EN") {
         transcriptButton.textContent = "Hide Transcript";
-
       } else {
         transcriptButton.textContent = "Masquer la Transcription";
 
+        // { id: "transcriptButton", en: "Show Transcript", fr: "Afficher la Transcription" },
 
-          // { id: "transcriptButton", en: "Show Transcript", fr: "Afficher la Transcription" },
-
-  // { id: "transcriptButton", en: "Hide Transcript", fr: "Masquer la Transcription" },
-
+        // { id: "transcriptButton", en: "Hide Transcript", fr: "Masquer la Transcription" },
       }
 
       // if ((currLang = "EN")) {
@@ -377,11 +338,10 @@ export class SimpleAudioPlayer {
       //   // currLang = "EN"; // Set to "EN" if not already set
       // }
 
-      this.lang = getLangState()
+      this.lang = getLangState();
       console.log(this.lang);
 
-
-      if ((this.lang == "EN")) {
+      if (this.lang == "EN") {
         transcriptButton.textContent = "Show Transcript";
         console.log("should be en");
       } else {
@@ -397,37 +357,17 @@ export class SimpleAudioPlayer {
 
   setupInitialUserInteraction() {
     const playButton = document.getElementById("play-button");
-
-    const applySvgGlowEffect = (buttonElement) => {
-      const svgImage = buttonElement.querySelector("img.svg-icon"); // Target the <img> with the SVG
-      if (svgImage) {
-        svgImage.classList.add("svg-glow");
-        setTimeout(() => {
-          svgImage.classList.remove("svg-glow");
-        }, 500); // Duration should match the CSS animation
-      }
-    };
-
-    const applyFlashEffect = (element) => {
-      element.classList.add("flash-red");
-      setTimeout(() => {
-        element.classList.remove("flash-red");
-      }, 500); // Duration should match the CSS animation
-    };
-
     if (playButton) {
       playButton.addEventListener("click", () => this.startPlayback());
     }
     if (this.skipBackwardButton) {
       this.skipBackwardButton.addEventListener("click", () => {
         this.handleSkipBackward();
-        applySvgGlowEffect(this.skipBackwardButton); // Apply the SVG glow effect
       });
     }
     if (this.skipForwardButton) {
       this.skipForwardButton.addEventListener("click", () => {
         this.handleSkipForward();
-        applySvgGlowEffect(this.skipForwardButton); // Apply the SVG glow effect
       });
     }
   }
@@ -462,6 +402,8 @@ export class SimpleAudioPlayer {
   handleVolumeChange(event) {
     const volumeLevel = parseFloat(event.target.value) / 100;
     this.globalAudioElement.volume = volumeLevel;
+    event.target.setAttribute("aria-valuenow", event.target.value);
+
     this.updateVolumeIndicator(event.target.value); // Assuming this method exists to update the UI
   }
 
@@ -471,6 +413,7 @@ export class SimpleAudioPlayer {
 
     if (volumeFiller) {
       volumeFiller.style.width = `${volumeLevel}%`;
+      document.getElementById("volume-slider").setAttribute("aria-valuenow", volumeLevel);
     }
 
     if (volumeThinner) {
@@ -505,18 +448,15 @@ export class SimpleAudioPlayer {
   /////////         HANDLE PAUSE / PLAY     ///////////
   /////////////////////////////////////////////////////
 
-  pausePlayback() {
-    this.globalAudioElement.pause();
-    this.isPlaying = false;
-    // this.toggleButtonVisuals(false);
-  }
-
   handlePlay() {
+    updateAriaStatusMessage("Starting playback");
     this.isPlaying = true;
     this.toggleButtonVisuals(true);
   }
 
   handlePause() {
+    updateAriaStatusMessage("Pausing playback");
+    // this.globalAudioElement.pause();
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
   }
@@ -602,64 +542,100 @@ export class SimpleAudioPlayer {
     }
   }
 
+  ///////////////////////////////////
+  ////// skip forward and back /////
+  ///////////////////////////////////
+
+  applySvgGlowEffect = (buttonElement) => {
+    buttonElement.classList.add("svg-glow");
+    if (buttonElement) {
+      setTimeout(() => {
+        buttonElement.classList.remove("svg-glow");
+      }, 500); // Match the duration with CSS
+    }
+  };
+
   handleSkipForward() {
-    if (this.remainingTime <= 40) {
-      console.log("Remaining time is less than 40 seconds.");
-      this.skipForwardButton.style.opacity = "0.1";
-      this.skipBackwardButton.style.opacity = "0.1";
+    console.log("Attempting to skip forward. Remaining time:", this.remainingTime);
+    if (!this.isSkipForwardAllowed()) {
+      this.skipForwardButton.style.opacity = ".1";
       return;
     }
-
-    this.skipBackwardButton.style.opacity = "1";
-    this.skipBackwardsImpossible = false;
-
-    let newPlayerTime = this.globalAudioElement.currentTime + 20;
-    newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
-
-    if (!this.isUpdatingTime) {
-      this.isUpdatingTime = true;
-      let initialTime = this.globalAudioElement.currentTime;
-
-      // Attempt to update the time
-      this.globalAudioElement.currentTime = newPlayerTime;
-
-      // Check if the currentTime was updated as expected
-      setTimeout(() => {
-        if (this.globalAudioElement.currentTime === initialTime) {
-          // If currentTime hasn't changed, likely at the end or unable to seek further
-          console.log("Unable to skip forward, possibly at the end of the track.");
-        }
-        this.isUpdatingTime = false;
-      }, 100); // Adjust timeout as needed based on testing
-    }
+    this.updateUIForSkip("forward");
+    this.calculateAndAdjustTime(20, "forward");
   }
 
   handleSkipBackward() {
+    console.log("Attempting to skip backward. Current time:", this.globalAudioElement.currentTime);
+    if (!this.isSkipBackwardAllowed()) {
+      this.skipBackwardButton.style.opacity = ".1";
+      return;
+    }
+    this.updateUIForSkip("backward");
+    this.calculateAndAdjustTime(-15, "backward");
+  }
+
+  isSkipForwardAllowed() {
+    if (this.remainingTime <= 80) {
+      console.log("Skip forward blocked: Not enough remaining time.");
+      updateAriaStatusMessage("Can't skip forwards, we're near the end of the playlist");
+      return false;
+    }
+    return true;
+  }
+
+  isSkipBackwardAllowed() {
     if (this.globalAudioElement.currentTime < 16) {
-      console.log("lll this.globalAudioElement.currentTime is less than 20");
-
-      this.skipBackwardButton.style.opacity = "0.1";
-      this.skipBackwardsImpossible = true;
-      return; // Prevent the skip forward action
+      updateAriaStatusMessage("Can't skip backwards, have reached the beginning of this track");
+      return false;
     }
+    return true;
+  }
 
-    let newPlayerTime = this.globalAudioElement.currentTime - 20;
+  // Time adjustment
+  calculateAndAdjustTime(timeChange, direction) {
+    if (this.isUpdatingTime) {
+        console.log(`Skip ${direction} is currently updating, request ignored.`);
+        return;
+    }
+    this.isUpdatingTime = true;
+    const disableDuration = 10;  
 
-    newPlayerTime = Math.min(newPlayerTime, this.totalPlaylistDuration);
-    if (!this.isUpdatingTime) {
-      this.isUpdatingTime = true; // Set a flag to prevent rapid updates
-      setTimeout(() => {
-        // Ensure the time is not set to a negative value
-        this.globalAudioElement.currentTime = Math.max(0, newPlayerTime);
+    const targetButton = direction === "forward" ? this.skipForwardButton : this.skipBackwardButton;
+    targetButton.classList.add("disabled-button");
+    // targetButton.disabled = true;  // Disable the button
+
+    const initialTime = this.globalAudioElement.currentTime;
+    const newPlayerTime = Math.max(0, Math.min(initialTime + timeChange, this.totalPlaylistDuration));
+    console.log(`Initial time: ${initialTime}, Calculated new player time: ${newPlayerTime}`);
+
+    this.globalAudioElement.currentTime = newPlayerTime;
+    setTimeout(() => {
+        this.checkIfTimeUpdated(initialTime);
+        targetButton.classList.remove("disabled-button");
+        // targetButton.disabled = false;  // Re-enable the button after 2 seconds
         this.isUpdatingTime = false;
-      }, 20);
+    }, disableDuration);  // Match the timeout to the animation duration
+}
+
+
+  // UI updates
+  updateUIForSkip(direction) {
+    console.log(direction);
+    const targetButton = direction === "forward" ? this.skipForwardButton : this.skipBackwardButton;
+    console.log(targetButton);
+    this.applySvgGlowEffect(targetButton);
+  }
+
+  checkIfTimeUpdated(initialTime) {
+    console.log("Timeout check: Current time after attempt:", this.globalAudioElement.currentTime);
+    if (this.globalAudioElement.currentTime === initialTime) {
+      updateAriaStatusMessage("Unable to skip, possibly at the end or beginning of the track");
     }
+    this.isUpdatingTime = false;
   }
 
   checkAndEnableSkipBackward() {
-    // console.log("lll making skip backward solid");
-    // console.log(`lll this.globalAudioElement.currentTime is ${this.globalAudioElement.currentTime}`);
-
     if (this.globalAudioElement.currentTime > 16) {
       this.skipBackwardButton.style.opacity = "1.0";
       this.skipBackwardsImpossible = false;
@@ -690,8 +666,10 @@ export class SimpleAudioPlayer {
         this.toggleButtonVisuals(true); // Update UI to show playing state.
       } else {
         // Currently playing, so pause.
-        console.log("Playback is currently active. Pausing playback.");
-        this.pausePlayback();
+        console.log("double pause.");
+        this.globalAudioElement.pause();
+
+        // this.handlePause();
       }
     } else {
       // This condition might be redundant now but serves as a fallback.

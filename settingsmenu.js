@@ -1,4 +1,5 @@
-import { getState, setState } from "./state.js";
+import { getState, setState, getLangState, setLangState, updateAriaStatusMessage } from "./state.js";
+
 let isInverted = getState(); // This will initialize isInverted based on localStorage
 
 
