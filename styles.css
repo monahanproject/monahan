@@ -1144,6 +1144,10 @@ li {
   animation: svgGlow 0.5s ease-out forwards;
 }
 
+#skip-links {
+  visibility: none;
+  opacity: 0;
+}
 
 .disabled-button {
   opacity: 0.1; 
