@@ -16,6 +16,12 @@ function updateTexts() {
   updatePageContent();
   adjustFontSize("play-button-text-container");
   changeEachLangDiv(); // Update all dynamic strings to the current language
+
+  if (lang === "FR") {
+    const playButtonTextContainer = document.getElementById("play-button-text-container");
+    playButtonTextContainer.style.left = "40%";
+    adjustFontSize("play-button-text-container");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -203,9 +209,6 @@ const strings = [
   },
   // { id: "volumeLower", en: "Lower Volume", fr: "Baisser le volume" },
   // { id: "volumeRaise", en: "Raise Volume", fr: "Augmenter le volume" },
-  // { id: "trackDuration", en: "Track duration (seconds):", fr: "Durée du morceau (secondes) :" },
-  // { id: "currentTrackName", en: "Track name:", fr: "Nom du morceau :" },
-  // { id: "credits", en: "Credits:", fr: "Crédits :" },
   {
     id: "cred",
     en: "MONAHAN was produced by Grimm Pictures and commissioned by the <a href='https://ottawa.ca/en/arts-heritage-and-events/public-art-and-city-ottawa-art-collection/public-art' target='blank'>City of Ottawa’s Public Art Program</a>.",
@@ -234,11 +237,9 @@ const buttonStrings = [
 ];
 
 
-// Object to store the original font sizes of elements that need to be resized
 const originalFontSizes = {};
 
 function adjustFontSize(elementId) {
-  // console.log("[adjustFontSize] Called for:", elementId);
 
   const sizeReductions = {
     curiousEarsTxt: 0.6, // 20% smaller for French
@@ -257,7 +258,6 @@ function adjustFontSize(elementId) {
   // Check if the current element's ID is in the sizeReductions object
   if (sizeReductions.hasOwnProperty(elementId)) {
     const element = document.getElementById(elementId);
-    // console.log("[adjustFontSize] Found element for ID:", elementId, element);
 
     if (lang === "FR") {
       if (!originalFontSizes.hasOwnProperty(elementId)) {
@@ -274,7 +274,6 @@ function adjustFontSize(elementId) {
       }
     }
   } else {
-    // console.log(`[adjustFontSize] No size reduction found for ID: ${elementId}, skipping.`);
   }
 }
 

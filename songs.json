@@ -2829,7 +2829,8 @@
        "author": "DEMETRI",
        "form": "music",
        "placement": [
-           "middle, beginning"
+           "middle", 
+           "beginning"
        ],
        "length": "short",
        "language": "nonVerbal",
