@@ -220,7 +220,7 @@ const strings = [
 ];
 
 const buttonStrings = [
-  { id: "invertColoursTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
+  { id: "invertColorsTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
   // { id: "monochromeTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
   { id: "textSizeTxt", en: "Text Size", fr: "Taille du Texte" },
   // { id: "transcriptButton", en: "Transcript", fr: "Transcription" },
