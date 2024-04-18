@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="EN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,18 +43,18 @@
           </nav>
           <div id="slidein" class="slide-in from-left">
             <ul id="settingsDropdown" class="slide-in-content">
-              <li class="dropdownContainer invertColors">
-                Invert Colours
+              <li class="dropdownContainer invertColors" >
+                <span id="invertColorsTxt">Invert Colours</span>
                 <button id="invertColoursBtn">
                   <img src="images/svg/invertColors.svg" alt="Invert Colors settings icon" style="width: 24px; height: 24px" />
                 </button>
               </li>
               <li class="dropdownContainer monochromee">
-                Monochrome
+                <span id="monochromeTxt">Monochrome</span>
                 <button id="monochromeBtn"><img src="images/svg/monochrome1.svg" alt="Monochrome" style="width: 24px; height: 24px" /></button>
               </li>
-              <li class="dropdownContainer">
-                Text Size
+              <li class="dropdownContainer textSize" >
+                <span id="textSizeTxt">Text Size</span>
                 <div id="btnDiv"><button id="decreaseTextSizeBtn">-</button> <button id="increaseTextSizeBtn">+</button></div>
               </li>
               <li class="dropdownContainer"><button id="resetBtn">Reset</button></li>
@@ -144,8 +144,7 @@
           <div id="volume-container">
             <span id="lower-vol" class="volume-icon"
               ><svg width="13" height="24" viewbox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)"></path></svg
-            ></span>
+                <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)"></path></svg></span>
             <div class="volume-bar-and-slider">
               <div id="volume-bar-background">
                 <div id="volume-bar-filler"></div>
@@ -158,8 +157,7 @@
               ><svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M9.73965 0L5.84544 5.81224H0.0332031V17.4367H5.84544L9.73965 23.249H11.6577V0H9.73965ZM14.5638 2.90612V5.81224C15.0578 5.81224 15.5519 5.87036 16.0169 5.98661C18.5161 6.62596 20.376 8.89273 20.376 11.6245C20.376 14.3562 18.5452 16.623 16.0169 17.2624C15.5519 17.3786 15.0578 17.4367 14.5638 17.4367V20.3428C15.2903 20.3428 15.9587 20.2266 16.6562 20.0813H16.7434C20.5214 19.1223 23.2822 15.6931 23.2822 11.6245C23.2822 7.55591 20.5214 4.12669 16.7434 3.16767C16.075 2.9933 15.3194 2.90612 14.5638 2.90612ZM14.5638 8.71836V14.5306C14.8254 14.5306 15.0869 14.5015 15.2903 14.4434C16.54 14.1237 17.4699 12.9613 17.4699 11.6245C17.4699 10.2877 16.569 9.12522 15.2903 8.80555C15.0578 8.74742 14.7963 8.71836 14.5638 8.71836Z"
-                  fill="var(--darkgreen)"></path></svg
-            ></span>
+                  fill="var(--darkgreen)"></path></svg></span>
           </div>
           <div id="transButtonContainer"></div>
           <div id="transcriptContainer"></div>
@@ -280,7 +278,9 @@
               </ul>
             </div>
           </div>
-          <div class="svg-map"></div>
+          <div class="svg-map">
+            <span id="PondAltImg" role="img" aria-label="Outline of Monahan Pond / Contour de l'étang de Monahan"></span>
+          </div>
         </div>
       </section>
 
@@ -341,7 +341,8 @@
                   <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>,
                   <span class="italic">Arboretum America: A Philosophy of the Forest</span>, and <span class="italic">A Garden for Life</span>. A
                   feature documentary about her work, the Canadian Screen Awards-nominated
-                  <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, appeared in 2017. Her latest book, <span class="italic">OurGreen Heart: The Soul and Science of Forests</span>, will be published in September 2024.  is
+                  <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, appeared in 2017. Her latest book,
+                  <span class="italic">OurGreen Heart: The Soul and Science of Forests</span>, will be published in September 2024. is
                   <span class="italic">To Speak for the Trees: My Life's Journey From Ancient Celtic Wisdom To a Healing Vision of the Forest</span>.
                 </p>
               </article>
@@ -1089,8 +1090,8 @@
             <p id="finalThanks">Thank you for visiting MONAHAN.<br />We hope you will return for a different experience!</p>
           </div>
           <div id="logoBox">
-            <img src="images/svg/cityOfOttawaLogo.svg" alt="the city Of Ottawa Logo" class="decorativeImage logo" />
-            <img src="images/svg/PublicArtLogo.svg" class="decorativeImage logo" />
+            <img src="images/svg/cityOfOttawaLogo.svg" alt="The City of Ottawa Logo" class="decorativeImage logo" />
+            <img src="images/svg/PublicArtLogo.svg" alt="The City of Ottawa Public Art Logo" class="decorativeImage logo" />
           </div>
         </div>
       </section>
@@ -1112,7 +1113,7 @@
     <script type="module" src="settingsmenu.js"></script>
     <script type="module" src="shuffle.js"></script>
     <script type="module" src="specificRules.js"></script>
-    <script src="translate.js"></script>
+    <script type="module" src="translate.js"></script>
     <script type="module" src="transcript.js"></script>
   </body>
 </html>

@@ -5,7 +5,6 @@
 // Brenna MacCrimmon
 // Maryem Hassan Tollar
 
-
 import { curatedTracklist, initializeApp } from "./play.js";
 import { getState, setState } from "./state.js";
 let isInverted = getState(); // This will initialize isInverted based on localStorage
@@ -14,6 +13,11 @@ if (localStorage.getItem("themeInverted") === null) {
   // If the key doesn't exist, initialize it to false
   localStorage.setItem("themeInverted", "false");
 }
+
+import { getLangState, setLangState } from "./state.js";
+
+// let lang = localStorage.getItem("lang") || "EN"; // Retrieve initial language setting
+// console.log(lang);
 
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX  SIMPLE AUDIO PLAYER class  XXXXXXXXXXXXX
@@ -35,7 +39,7 @@ export class SimpleAudioPlayer {
     this.allowProgressUpdate = true;
 
     this.transcript = "";
-    // this.language = localStorage.getItem("preferredLanguage");
+    this.lang = localStorage.getItem("lang") || "EN";
 
     this.transcriptVisible = false;
     this.transcriptContent = null;
@@ -202,12 +206,25 @@ export class SimpleAudioPlayer {
     let transcriptButton = document.getElementById("transcriptButton");
     if (!transcriptButton) {
       // Only create and append the button if it doesn't exist
-      transcriptButton = this.createElement("button", {
-        type: "button",
-        className: "btn",
-        id: "transcriptButton",
-        textContent: "TRANSCRIPT",
-      });
+
+      this.lang = getLangState()
+
+      if (this.lang == "EN") {
+        console.log("yooooo");
+        transcriptButton = this.createElement("button", {
+          type: "button",
+          className: "btn",
+          id: "transcriptButton",
+          textContent: "Show Transcript",
+        });
+      } else {
+        transcriptButton = this.createElement("button", {
+          type: "button",
+          className: "btn",
+          id: "transcriptButton",
+          textContent: "Afficher la Transcription",
+        });
+      }
 
       const transBtnContainer = document.getElementById("transButtonContainer");
       transBtnContainer.appendChild(transcriptButton);
@@ -216,8 +233,7 @@ export class SimpleAudioPlayer {
 
     // Initialize or clear transcriptContent as needed
     if (!this.transcriptContent) {
-
-      this.language = localStorage.getItem("preferredLanguage");
+      this.language = localStorage.getItem("lang");
 
       this.transcriptContent = this.createElement("div", { id: "transcriptContent", style: "display: none" });
       this.transcriptContainer.appendChild(this.transcriptContent);
@@ -269,7 +285,7 @@ export class SimpleAudioPlayer {
     }
 
     this.transcriptContainer.innerHTML = ""; // Clear previous content
-    let language = localStorage.getItem("preferredLanguage");
+    let language = localStorage.getItem("lang");
     console.log(`lang is ${language}`);
     const langKey = language === "EN" ? "engTrans" : "frTrans";
     console.log(`langKey is ${langKey}`);
@@ -318,7 +334,35 @@ export class SimpleAudioPlayer {
           this.transcriptContainer.style.transform = "translateY(0px)"; // Move to final position
         });
       });
-      transcriptButton.textContent = "Hide Transcript";
+// findme
+      // let currLang = localStorage.getItem("lang");
+      // console.log(currLang);
+      // if (!currLang) {
+      //   console.log(currLang);
+      //   currLang = "EN"; // Set to "EN" if not already set
+      // }
+
+      this.lang = getLangState()
+
+      if (this.lang == "EN") {
+        transcriptButton.textContent = "Hide Transcript";
+
+      } else {
+        transcriptButton.textContent = "Masquer la Transcription";
+
+
+          // { id: "transcriptButton", en: "Show Transcript", fr: "Afficher la Transcription" },
+
+  // { id: "transcriptButton", en: "Hide Transcript", fr: "Masquer la Transcription" },
+
+      }
+
+      // if ((currLang = "EN")) {
+      //   transcriptButton.textContent = "Hide Transcript";
+      // } else {
+      //   transcriptButton.textContent = "Masquer la Transcription";
+      //   console.log("should be french");
+      // }
     } else {
       this.transcriptContainer.style.opacity = "0"; // Fade out
       this.transcriptContainer.style.transform = "translateY(20px)"; // Start moving down
@@ -326,7 +370,24 @@ export class SimpleAudioPlayer {
       setTimeout(() => {
         this.transcriptContainer.style.display = "none";
       }, 500); // The timeout duration should match the CSS transition duration
-      transcriptButton.textContent = "Show Transcript";
+
+      // let currLang = localStorage.getItem("lang");
+      // if (!currLang) {
+      //   console.log(currLang);
+      //   // currLang = "EN"; // Set to "EN" if not already set
+      // }
+
+      this.lang = getLangState()
+      console.log(this.lang);
+
+
+      if ((this.lang == "EN")) {
+        transcriptButton.textContent = "Show Transcript";
+        console.log("should be en");
+      } else {
+        transcriptButton.textContent = "Afficher la Transcription";
+        console.log("should be french");
+      }
     }
   }
 
@@ -719,7 +780,7 @@ export class SimpleAudioPlayer {
     const playButtonTextContainer = document.getElementById("play-button-text-container");
     const svgContainer = document.getElementById("play-button-svg-container");
 
-    let currLang = localStorage.getItem("preferredLanguage");
+    let currLang = localStorage.getItem("lang");
     if (!currLang) {
       console.log(currLang);
       currLang = "EN"; // Set to "EN" if not already set

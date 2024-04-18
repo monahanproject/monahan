@@ -1,35 +1,37 @@
-let lang = "EN"; // Global variable to track current language state
+// Assuming state.js still contains these functions:
+import { getLangState, setLangState } from "./state.js";
+
+let lang = localStorage.getItem("lang") || "EN"; // Retrieve initial language setting
+console.log(lang);
 
 function toggleLanguageAndStorePref() {
-  lang = lang === "EN" ? "FR" : "EN"; // Toggle language value
-  localStorage.setItem("preferredLanguage", lang);
+  lang = getLangState() === "EN" ? "FR" : "EN"; // Toggle the language
+  setLangState(lang); // Update language in localStorage
+  updateTexts(); // Update the UI to reflect the new language
+}
+
+function updateTexts() {
+  // Example function calls that would need to be updated to support dynamic language change
   updateLanguageLabel();
   updatePageContent();
   adjustFontSize("play-button-text-container");
   changeEachLangDiv(); // Update all dynamic strings to the current language
 }
 
-// Function to set language from local storage on page load
-function setLanguageFromLocalStorage() {
-  const savedLang = localStorage.getItem("preferredLanguage");
-  if (savedLang && (savedLang === "EN" || savedLang === "FR")) {
-    lang = savedLang; // Set the global language variable to the saved preference
-    updateLanguageLabel();
-    updatePageContent();
-    changeEachLangDiv();
-  }
-
-  if (savedLang === "FR") {
-    const playButtonTextContainer = document.getElementById("play-button-text-container");
-    playButtonTextContainer.style.left = "40%";
-    adjustFontSize("play-button-text-container");
-  }
-}
-
-// Initialize the page with the correct language on load
 document.addEventListener("DOMContentLoaded", () => {
-  setLanguageFromLocalStorage();
+  updateTexts(); // Initialize texts based on the stored language
 });
+
+document.querySelector("#langToggle").addEventListener("click", toggleLanguageAndStorePref);
+
+// function updateLanguageLabel() {
+//   // Updates the language toggle button's display
+//   const langToggleButton = document.getElementById("langToggle");
+//   if (langToggleButton) {
+//     langToggleButton.textContent = lang === "EN" ? "Switch to French" : "Switch to English";
+//   }
+// }
+
 
 function updateLanguageLabel() {
   var oldLangImage = document.getElementById("langToggle");
@@ -58,7 +60,7 @@ function updateLanguageLabel() {
   }
 }
 
-// Update the main content of the page based on the current language
+
 function updatePageContent() {
   const contributorsPage = document.getElementById("contributorsTeamPageInner");
   const productionPage = document.getElementById("productionTeamPageInner");
@@ -74,6 +76,11 @@ function updatePageContent() {
   } else {
     console.error("productionTeamPage element not found");
   }
+}
+
+function changeEachLangDiv() {
+  strings.forEach(changeEachString);
+  buttonStrings.forEach(changeEachBtnString);
 }
 
 // Update individual strings to the current language and adjust font sizes for specific elements
@@ -93,59 +100,7 @@ function changeEachBtnString(string) {
   if (element) {
     element.innerHTML = lang === "FR" ? string.fr : string.en;
   } else {
-    console.error(`Button element with ID '${string.id}' not found.`);
-  }
-}
-
-// Apply translations for all registered strings and button strings
-function changeEachLangDiv() {
-  strings.forEach(changeEachString);
-  buttonStrings.forEach(changeEachBtnString);
-}
-
-// Object to store the original font sizes of elements that need to be resized
-const originalFontSizes = {};
-
-
-function adjustFontSize(elementId) {
-  // console.log("[adjustFontSize] Called for:", elementId);
-
-  const sizeReductions = {
-    curiousEarsTxt: 0.6, // 20% smaller for French
-  };
-
-  if (!window.matchMedia("(min-width: 900px)").matches) {
-    console.log("Viewport is less than 900px wide");
-    // Additional or modified size reductions can be added here
-    sizeReductions["play-button-text-container"] = 0.9;
-  } else {
-    // console.log("Viewport is 900px wide or wider");
-    // Adjustments for wider viewports can be applied here
-    sizeReductions["play-button-text-container"] = 0.6;
-
-  }
-
-  // Check if the current element's ID is in the sizeReductions object
-  if (sizeReductions.hasOwnProperty(elementId)) {
-    const element = document.getElementById(elementId);
-    // console.log("[adjustFontSize] Found element for ID:", elementId, element);
-
-    if (lang === "FR") {
-      if (!originalFontSizes.hasOwnProperty(elementId)) {
-        const computedStyle = window.getComputedStyle(element);
-        originalFontSizes[elementId] = computedStyle.fontSize;
-      }
-
-      const newSize = parseFloat(originalFontSizes[elementId]) * sizeReductions[elementId];
-      element.style.fontSize = `${newSize}px`;
-    } else {
-      // If switching back to English, revert to original font size
-      if (originalFontSizes.hasOwnProperty(elementId)) {
-        element.style.fontSize = originalFontSizes[elementId];
-      }
-    }
-  } else {
-    // console.log(`[adjustFontSize] No size reduction found for ID: ${elementId}, skipping.`);
+    // console.error(`Button element with ID '${string.id}' not found.`);
   }
 }
 
@@ -155,6 +110,7 @@ const strings = [
   //  { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
   { id: "curiousEarsTxt", en: "A Sound Piece</br> for Curious Ears", fr: "Une pièce sonore </br> pour oreilles curieuses " },
   { id: "aboutH2", en: "ABOUT", fr: "À PROPOS DE" },
+  // { id: "PondAltImg", en: "outline of Monahan Pond", fr: "Schéma de l'étang de Monahan" },
   { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
   {
     id: "eachTimeYouClick",
@@ -261,17 +217,68 @@ const strings = [
 ];
 
 const buttonStrings = [
-  // { id: "invertColoursBtn", en: "Invert Colours", fr: "Inverser les couleurs" },
-  // { id: "monochromeBtn", en: "Monochrome", fr: "Monochrome" },
+  { id: "invertColoursTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
+  // { id: "monochromeTxt", en: "Invert Colours", fr: "Inverser les couleurs" },
+  { id: "textSizeTxt", en: "Text Size", fr: "Taille du Texte" },
+  // { id: "transcriptButton", en: "Transcript", fr: "Transcription" },
+
+
   // { id: "textSizeDecreaseBtn", en: "Decrease Text Size", fr: "Diminuer la taille du texte" },
   // { id: "textSizeIncreaseBtn", en: "Increase Text Size", fr: "Augmenter la taille du texte" },
   { id: "resetBtn", en: "Reset", fr: "Réinitialiser" },
-  // { id: "transcriptButton", en: "TRANSCRIPT", fr: "TRANSCRIPTION" },
+  { id: "transcriptButton", en: "TRANSCRIPT", fr: "TRANSCRIPTION" },
 
   { id: "play-button-text-container", en: "BEGIN", fr: "COMMENCER" },
   // { id: "skipBackwardButton", en: "Skip Backward", fr: "Reculer" },
   // { id: "skipForwardButton", en: "Skip Forward", fr: "Avancer" },
 ];
+
+
+// Object to store the original font sizes of elements that need to be resized
+const originalFontSizes = {};
+
+function adjustFontSize(elementId) {
+  // console.log("[adjustFontSize] Called for:", elementId);
+
+  const sizeReductions = {
+    curiousEarsTxt: 0.6, // 20% smaller for French
+  };
+
+  if (!window.matchMedia("(min-width: 900px)").matches) {
+    console.log("Viewport is less than 900px wide");
+    // Additional or modified size reductions can be added here
+    sizeReductions["play-button-text-container"] = 0.9;
+  } else {
+    // console.log("Viewport is 900px wide or wider");
+    // Adjustments for wider viewports can be applied here
+    sizeReductions["play-button-text-container"] = 0.6;
+  }
+
+  // Check if the current element's ID is in the sizeReductions object
+  if (sizeReductions.hasOwnProperty(elementId)) {
+    const element = document.getElementById(elementId);
+    // console.log("[adjustFontSize] Found element for ID:", elementId, element);
+
+    if (lang === "FR") {
+      if (!originalFontSizes.hasOwnProperty(elementId)) {
+        const computedStyle = window.getComputedStyle(element);
+        originalFontSizes[elementId] = computedStyle.fontSize;
+      }
+
+      const newSize = parseFloat(originalFontSizes[elementId]) * sizeReductions[elementId];
+      element.style.fontSize = `${newSize}px`;
+    } else {
+      // If switching back to English, revert to original font size
+      if (originalFontSizes.hasOwnProperty(elementId)) {
+        element.style.fontSize = originalFontSizes[elementId];
+      }
+    }
+  } else {
+    // console.log(`[adjustFontSize] No size reduction found for ID: ${elementId}, skipping.`);
+  }
+}
+
+
 
 const productionPageEN = `
 <div class="headerDiv">
@@ -991,7 +998,7 @@ const contributorsPageFR = `
     <span class="summary-content">DIANA BERESFORD-KROEGER</span>
   </summary>
   <article>
-    <p>Botaniste, biochimiste médicale et auteure, <span class="bold"><a target="_blank" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> conjugue de façon unique une formation scientifique occidentale à une connaissance des savoirs et des méthodes d'une grande variété de sources traditionnelles et non conventionnelles. Le concept de bioplanification de Beresford-Kroeger incite monsieur et madame tout le monde à tisser une nouvelle relation avec la nature, à considérer l'environnement comme un système biologique et à accomplir la tâche écologique de reboiser la forêt mondiale. Elle est l'auteure, entre autres, de <span class="italic">To Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life</span>, <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>, <span class="italic">Arboretum America: A Philosophy of the Forest</span> et <span class="italic">A Garden for Life</span>. Un long métrage documentaire sur son travail, <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, est paru en 2017. Son dernier livre <span class="italic">Our Green Heart</span> sera publié en Septembre 2024.</p>
+    <p>Botaniste, biochimiste médicale et auteure, <span class="bold"><a target="_blank" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> conjugue de façon unique une formation scientifique occidentale à une connaissance des savoirs et des méthodes d'une grande variété de sources traditionnelles et non conventionnelles. Le concept de bioplanification de Beresford-Kroeger incite monsieur et madame tout le monde à tisser une nouvelle relation avec la nature, à considérer l'environnement comme un système biologique et à accomplir la tâche écologique de reboiser la forêt mondiale. Elle est l'auteure, entre autres, de <span class="italic">To Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life</span>, <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>, <span class="italic">Arboretum America: A Philosophy of the Forest</span> et <span class="italic">A Garden for Life</span>. Un long métrage documentaire sur son travail, <span class="italic">Call of the Forest: The Forgotten Wisdom of Trees</span>, est paru en 2017. Son dernier livre <span class="italic">Our Green Heart</span> sera publié en septembre 2024.</p>
   </article>
 </details>
 <div class="svg-contributors"></div>
@@ -1269,10 +1276,5 @@ const contributorsPageFR = `
 
 `;
 
-// Attach the toggleLanguage function to the langToggle element
-document.querySelector("#toggleLanguage").addEventListener("click", toggleLanguageAndStorePref);
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   setLanguageFromLocalStorage();
-//   // Other initialization code here
-// });
+document.querySelector("#toggleLanguage").addEventListener("click", toggleLanguageAndStorePref);

@@ -14,3 +14,23 @@ export const getState = () => state.isInverted;
 export const setState = (isInverted) => {
   state.isInverted = isInverted; // Update the state object with the new value.
 };
+
+
+// state.js
+
+// Initialize the language state based on localStorage or default to "EN"
+export let lang = localStorage.getItem("lang") || "EN";
+
+// Function to get the current language
+export function getLangState() {
+  return lang;
+}
+
+// Function to set the current language and update localStorage
+export function setLangState(newLang) {
+  lang = newLang;
+  localStorage.setItem("lang", newLang);
+}
+
+// Export the language state directly (not necessary but can be useful if direct access is needed elsewhere)
+export default lang;
