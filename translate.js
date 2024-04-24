@@ -48,6 +48,8 @@ function updateLanguageLabel() {
     var newLangImage = document.createElement("img");
     newLangImage.id = oldLangImage.id; // Copy the id
     newLangImage.alt = "lang new icon"; // Set alt text
+    newLangImage.role = "role"; // role
+
 
     // Check the current language and set the SVG source accordingly
     if (lang === "EN") {

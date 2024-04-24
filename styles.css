@@ -2113,9 +2113,9 @@ article > p {
   text-align: center;
 }
 
-.italics {
+/* .italics {
   font-style: italic;
-}
+} */
 
 .paragraph {
   margin-top: 3rem;
