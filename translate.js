@@ -281,7 +281,7 @@ const productionPageEN = `
 </div>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SARAH ABBOTT</span> <span class="role">ecology & non-human advocacy</span>
   </summary>
   <article>
@@ -290,7 +290,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">JORDAN BELL</span><span class="role">audio engineer</span>
   </summary>
   <article>
@@ -299,7 +299,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">BRANDON EDWARDS</span> <span class="role">research assistant</span>
   </summary>
   <article>
@@ -308,7 +308,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">RACHEL GRAY</span> <span class="role">content collaborator</span>
   </summary>
   <article>
@@ -317,7 +317,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SIMON GUIBORD</span><span class="role">graphic designer</span>
   </summary>
   <article>
@@ -326,7 +326,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">MARIE LEBLANC FLANAGAN</span> <span class="role">creative technologist / developer</span>
   </summary>
   <article>
@@ -335,7 +335,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">ALLISON O'CONNOR</span> <span class="role roleException">City of Ottawa public art liaison</span>
   </summary>
   <article>
@@ -344,7 +344,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">LAURA TALER</span> <span class="role">concept & realization</span>
   </summary>
   <article>
@@ -353,7 +353,7 @@ const productionPageEN = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
   <span class="summary-content">JOCELYN TODD</span> <span class="role">production manager</span>
   </summary>
   <article>
@@ -367,7 +367,7 @@ const productionPageFR = `
 </div>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SARAH ABBOTT</span> <span class="role">Écologie et défense des droits des non-humains</span>
   </summary>
   <article>
@@ -376,7 +376,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">JORDAN BELL</span><span class="role">ingénieur du son</span>
   </summary>
   <article>
@@ -384,7 +384,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">BRANDON EDWARDS</span> <span class="role">assistant à la recherche</span>
   </summary>
   <article>
@@ -393,7 +393,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">RACHEL GRAY</span> <span class="role">collaboratrice de contenu</span>
   </summary>
   <article>
@@ -402,7 +402,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SIMON GUIBORD</span><span class="role">concepteur graphique</span>
   </summary>
   <article>
@@ -411,7 +411,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">MARIE LEBLANC FLANAGAN</span> <span class="role">technologue créatif / développeur</span>
   </summary>
   <article>
@@ -420,7 +420,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
   <span class="summary-content">ALLISON O'CONNOR</span> <span class="role roleException">agente de liaison d’art public de la Ville d’Ottawa</span>  </summary>
   <article>
   <p><span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca">Allison O'Connor</a></span> est agente d'art public au sein du Programme d'art public de la Ville d'Ottawa. Elle coordonne et commande des œuvres d'art temporaires et permanentes, ainsi que diverses initiatives culturelles dans toute la ville. Allison est également une artiste d'installations qui fait des tournées internationales et crée des œuvres d'art soucieuses de l'environnement et de ses habitants autres qu'humains. Allison est titulaire d'une maîtrise en beaux-arts de la School of Visual Arts de New York, où elle a reçu le Paula Rhodes Memorial Award pour sa thèse sur l'art public au service de la réhabilitation écologique. Allison est apicultrice, tireuse à l'arc amateur et passionnée de mycologie. Ses travaux récents portent sur l'intendance des semences.</p>
@@ -428,7 +428,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">LAURA TALER</span> <span class="role">conception et réalisation</span>
   </summary>
   <article>
@@ -437,7 +437,7 @@ const productionPageFR = `
 </details>
 <div class="svg-contributors svg-contributors2"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">JOCELYN TODD</span><span class="role">directrice de la production</span>
   </summary>
   <article>
@@ -452,7 +452,7 @@ const contributorsPageEN = `
 </div>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SARAH ABBOTT</span> 
   </summary>
   <article>
@@ -471,7 +471,7 @@ const contributorsPageEN = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">DIANA BERESFORD-KROEGER</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">DIANA BERESFORD-KROEGER</span><span class="role"></span></summary>
 <article>
  <p>
   Botanist, medical biochemist and author
@@ -491,7 +491,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">PIERRE-LUC CLÉMENT</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">PIERRE-LUC CLÉMENT</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://pierrelucclement.xyz/">Pierre-Luc Clément</a></span> is a self-taught
@@ -508,7 +508,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">ALBERT DUMONT</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">ALBERT DUMONT</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://albertdumont.com/about/">Albert Dumont</a></span> is an Algonquin spiritual
@@ -525,7 +525,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">LANG ELLIOTT</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">LANG ELLIOTT</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold">Lang Elliott</span> is a well-known nature recordist currently specializing in spacious 3D-binaural soundscapes
@@ -543,7 +543,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">SAM ESSER</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">SAM ESSER</span><span class="role"></span></summary>
 <article>
  <p>
   As a Storm Water Field Technician for the City of Ottawa's Stormwater Management Branch, <span class="bold">Sam Esser</span> is part
@@ -559,7 +559,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">CHARLOTTE FRANK</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">CHARLOTTE FRANK</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold">Charlotte Frank</span> is a singer and songwriter trained in bel canto, choral music, and creative writing. She
@@ -573,7 +573,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">KIM KILPATRICK</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">KIM KILPATRICK</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold">Kim Kilpatrick</span> is a professional storyteller, music therapist, accessibility consultant, and lover of
@@ -589,7 +589,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">FIDES KRUCKER</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">FIDES KRUCKER</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.fideskrucker.com/">Fides Krucker</a></span> has sung, produced and created
@@ -611,7 +611,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">AMY MACPHERSON</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">AMY MACPHERSON</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold">Amy MacPherson</span> is an environmental biologist working in the Natural Systems & Rural Affairs unit at the
@@ -626,7 +626,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">KIKO PACE</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">KIKO PACE</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://kikosounds.com/">Kiko Pace</a></span> creates portals for deeper listening
@@ -640,7 +640,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">DEMETRIOS PETSALAKIS</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">DEMETRIOS PETSALAKIS</span><span class="role"></span></summary>
 <article>
  <p>
   Originally from Athens Greece,
@@ -657,7 +657,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">NAMITHA RATHINAPPILLAI</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">NAMITHA RATHINAPPILLAI</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://namitharathinappillai.com/">Namitha Rathinappillai</a></span> is a fat, disabled,
@@ -671,7 +671,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">PATRICIA REYNOLDS</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">PATRICIA REYNOLDS</span><span class="role"></span></summary>
 <article>
  <p>
   A teacher by profession,
@@ -692,7 +692,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">JESSE STEWART</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">JESSE STEWART</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://carleton.ca/music/people/stewart-jesse/">Jesse Stewart</a></span> is a composer,
@@ -709,7 +709,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">LOUELLA TOBIAS</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">LOUELLA TOBIAS</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold">Louella Tobias</span> is Delaware Anishnabe Kwe from Moravian of the Thames First Nation. "My name is Phoenix
@@ -723,7 +723,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">ELLEN WATERMAN</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">ELLEN WATERMAN</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.ellenwaterman.ca/">Ellen Waterman</a></span> is Professor in the School for
@@ -745,7 +745,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">WRAY WELSH</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">WRAY WELSH</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold">Wray Welsh</span> is a dedicated and experienced Zone Supervisor for West Parks in Ottawa. Going straight from
@@ -761,7 +761,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">JAYNE YACK</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content">JAYNE YACK</span><span class="role"></span></summary>
 <article>
  <p>
   Professor of biology <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.yacklab.org/">Jayne Yack</a></span> is fascinated with
@@ -775,7 +775,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">SUTURES PARALLÈLES</span><span class="role">featuring</span></summary>
+<summary tabindex="0"><span class="summary-content">SUTURES PARALLÈLES</span><span class="role">featuring</span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://transistor.media/balados/les-sutures-paralleles">Sutures parallèles</a></span>
@@ -786,7 +786,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">MARC A. REINHARDT</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">MARC A. REINHARDT</span><span class="role"></span></summary>
 <article>
  <p class="summary-indent">
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> is a comparatist working at
@@ -798,7 +798,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">FRÉDÉRIQUE ROY</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">FRÉDÉRIQUE ROY</span><span class="role"></span></summary>
 <article>
  <p class="summary-indent">
   <span class="bold">Frédérique Roy</span> is a musician, composer and writer. The debut album of her ensemble Lune très belle was
@@ -814,7 +814,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">EUGÉNIE JOBIN</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">EUGÉNIE JOBIN</span><span class="role"></span></summary>
 <article>
  <p class="summary-indent">
   <span class="bold">Eugénie Jobin</span> is a musician, composer and director. She lives and works in Tio'tià:ke (Montréal). Her band
@@ -828,7 +828,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">THE THUNDERBIRD SISTERS COLLECTIVE</span><span class="role">featuring</span></summary>
+<summary tabindex="0"><span class="summary-content">THE THUNDERBIRD SISTERS COLLECTIVE</span><span class="role">featuring</span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://thunderbirdsisterscollective.com/">The Thunderbird Sisters Collective</a></span>
@@ -844,7 +844,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">PATSEA GRIFFIN</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">PATSEA GRIFFIN</span><span class="role"></span></summary>
 <article>
  <p class="summary-indent">
   Born and raised on her ancestral land along the Kichi Sibi (Ottawa River), on unceded and unsurrendered Algonquin territory,
@@ -858,7 +858,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">THÉO PARADIS</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">THÉO PARADIS</span><span class="role"></span></summary>
 <article>
  <p class="summary-indent">
   <span class="bold">Théo Paradis</span> is Indigenous, she grew up in Cornwall and currently lives on the unceded territory of the
@@ -871,7 +871,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">CARMEL WHITTLE</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">CARMEL WHITTLE</span><span class="role"></span></summary>
 <article>
  <p class="summary-indent">
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://carmelwhittle.com/">Carmel Whittle</a></span> identifies as a 2SL/ Mi'kmaw/Irish
@@ -888,7 +888,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors"></div>
 <details>
-<summary><span class="summary-content">TURKWAZ</span><span class="role">featuring</span></summary>
+<summary tabindex="0"><span class="summary-content">TURKWAZ</span><span class="role">featuring</span></summary>
 <article>
 <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://turkwaz.ca/">Turkwaz</a></span> is Jayne Brown, Sophia Grigoriadis, Brenna
@@ -903,7 +903,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">JAYNE BROWN</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">JAYNE BROWN</span><span class="role"></span></summary>
 <article>
 <p class="summary-indent">
   Since making the switch from classical to folkloric singing, <span class="bold">Jayne Brown</span> has been learning, performing,
@@ -916,7 +916,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">SOPHIA GRIGORIADIS</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">SOPHIA GRIGORIADIS</span><span class="role"></span></summary>
 <article>
 <p class="summary-indent">
   <span class="bold"
@@ -935,7 +935,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">BRENNA MACCRIMMON</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">BRENNA MACCRIMMON</span><span class="role"></span></summary>
 <article>
 <p class="summary-indent">
   Based in Toronto, <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> has been
@@ -953,7 +953,7 @@ Speak for the Trees</span>, <span class="italic">The Sweetness of a Simple Life<
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-<summary><span class="summary-content summary-indent">MARYEM HASSAN TOLLAR</span><span class="role"></span></summary>
+<summary tabindex="0"><span class="summary-content summary-indent">MARYEM HASSAN TOLLAR</span><span class="role"></span></summary>
 <article>
  <p>
   <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> is a
@@ -980,7 +980,7 @@ const contributorsPageFR = `
 </div>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SARAH ABBOTT</span> 
   </summary>
   <article>
@@ -989,7 +989,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">DIANA BERESFORD-KROEGER</span>
   </summary>
   <article>
@@ -998,7 +998,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">PIERRE-LUC CLÉMENT</span>
   </summary>
   <article>
@@ -1007,7 +1007,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">ALBERT DUMONT</span>
   </summary>
   <article>
@@ -1016,7 +1016,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">LANG ELLIOTT</span>
   </summary>
   <article>
@@ -1025,7 +1025,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SAM ESSER</span>
   </summary>
   <article>
@@ -1034,7 +1034,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">CHARLOTTE FRANK</span>
   </summary>
   <article>
@@ -1043,7 +1043,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">KIM KILPATRICK</span>
   </summary>
   <article>
@@ -1052,7 +1052,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">FIDES KRUCKER</span>
   </summary>
   <article>
@@ -1061,7 +1061,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">AMY MACPHERSON</span>
   </summary>
   <article>
@@ -1070,7 +1070,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">KIKO PACE</span>
   </summary>
   <article>
@@ -1079,7 +1079,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">DEMETRIOS PETSALAKIS</span>
   </summary>
   <article>
@@ -1088,7 +1088,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">NAMITHA RATHINAPPILLAI</span>
   </summary>
   <article>
@@ -1097,7 +1097,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">PATRICIA REYNOLDS</span>
   </summary>
   <article>
@@ -1106,7 +1106,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">JESSE STEWART</span>
   </summary>
   <article>
@@ -1115,7 +1115,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">LOUELLA TOBIAS</span>
   </summary>
   <article>
@@ -1124,7 +1124,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">ELLEN WATERMAN</span>
   </summary>
   <article>
@@ -1133,7 +1133,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">WARY WELSH</span>
   </summary>
   <article>
@@ -1142,7 +1142,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">JAYNE YACK</span>
   </summary>
   <article>
@@ -1151,7 +1151,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">SUTURES PARALLÈLES</span><span class="role">mettant en vedette</span>
   </summary>
   <article>
@@ -1160,7 +1160,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">MARC A. REINHARDT</span>
   </summary>
   <article>
@@ -1169,7 +1169,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">FRÉDÉRIQUE ROY</span>
   </summary>
   <article>
@@ -1178,7 +1178,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">EUGÉNIE JOBIN</span>
   </summary>
   <article>
@@ -1187,7 +1187,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">THE THUNDERBIRD SISTERS COLLECTIVE</span><span class="role">mettant en vedette</span>
   </summary>
   <article>
@@ -1196,7 +1196,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">PATSEA GRIFFIN</span>
   </summary>
   <article>
@@ -1205,7 +1205,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">THÉO PARADIS</span>
   </summary>
   <article>
@@ -1214,7 +1214,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">CARMEL WHITTLE</span>
   </summary>
   <article>
@@ -1223,7 +1223,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content">TURKWAZ</span><span class="role">mettant en vedette</span>
   </summary>
   <article>
@@ -1232,7 +1232,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">JAYNE BROWN</span>
   </summary>
   <article>
@@ -1241,7 +1241,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">SOPHIA GRIGORIADIS</span>
   </summary>
   <article>
@@ -1250,7 +1250,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">BRENNA MACCRIMMON</span>
   </summary>
   <article>
@@ -1259,7 +1259,7 @@ const contributorsPageFR = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary>
+  <summary tabindex="0">
     <span class="summary-content summary-indent">MARYEM HASSAN TOLLAR</span>
   </summary>
   <article>
