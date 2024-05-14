@@ -64,6 +64,11 @@ export class SimpleAudioPlayer {
     this.globalAudioElement.onended = () => this.handleEnded();
   }
 
+  toggleAriaPressed(element) {
+    let isPressed = element.getAttribute('aria-pressed') === 'true';
+    element.setAttribute('aria-pressed', !isPressed);
+  }
+
   // TIMER
 
   calcTotalPlaylistDuration() {
@@ -452,6 +457,8 @@ export class SimpleAudioPlayer {
     updateAriaStatusMessage("Starting playback");
     this.isPlaying = true;
     this.toggleButtonVisuals(true);
+    this.toggleAriaPressed(document.getElementById("play-button"));
+
   }
 
   handlePause() {
@@ -459,6 +466,8 @@ export class SimpleAudioPlayer {
     // this.globalAudioElement.pause();
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
+    this.toggleAriaPressed(document.getElementById("play-button"));
+
   }
 
   /////////////////////////////////////////////////////
@@ -563,6 +572,8 @@ export class SimpleAudioPlayer {
     }
     this.updateUIForSkip("forward");
     this.calculateAndAdjustTime(20, "forward");
+    this.toggleAriaPressed(this.skipForwardButton);
+
   }
 
   handleSkipBackward() {
@@ -573,6 +584,8 @@ export class SimpleAudioPlayer {
     }
     this.updateUIForSkip("backward");
     this.calculateAndAdjustTime(-15, "backward");
+    this.toggleAriaPressed(this.skipBackwardButton);
+
   }
 
   isSkipForwardAllowed() {
@@ -647,6 +660,7 @@ export class SimpleAudioPlayer {
   /////////////////////////////////////////////////////
 
   async startPlayback() {
+    console.log("PLATINGGG");
     document.getElementById("ffrw-button-container").style.opacity = "1";
     // check if there are tracks left in the playlist to play or resume.
     if (this.currentIndex < this.tracklist.length) {

@@ -601,6 +601,14 @@ p {
   line-height: 2rem;
 }
 
+.land {
+  font-family: "Zilla Slab";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 2rem;
+}
+
 .italic {
   font-style: italic;
 }
@@ -1167,6 +1175,30 @@ li {
 }
 
 
+#skiplinks a {
+  position: absolute;
+  left: -9999px; /* Move off-screen */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0); /* Further ensure content isn't visible */
+}
+
+#skiplinks a:focus {
+  position: static;
+  left: auto;
+  width: auto;
+  height: auto;
+  clip: auto;
+  z-index: 1000; /* Ensure it is above other content */
+  background: #FFF; /* Background color for visibility */
+  padding: 10px; /* Add some padding */
+  text-align: center; /* Center the text */
+  border: 1px solid #000; /* Add border for visibility */
+}
+
+
+
 .disabled-button {
   opacity: 0.1; 
   color: #ccc;   
@@ -1460,9 +1492,19 @@ input[type="range"] {
 }
 
 .volume-icon {
-  display: flex;
-
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.volume-icon svg {
+  display: block;
+}
+
 
 @media screen and (min-width: 900px) {
   #volume-slider {
@@ -2170,4 +2212,41 @@ article > p {
 #accessIcon:hover, #accessIcon:focus, #langToggle:hover, #langToggle:focus, #invertColoursBtn:hover, #invertColoursBtn:focus, #monochromeBtn:hover, #monochromeBtn:focus, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, #decreaseTextSizeBtn:focus, #increaseTextSizeBtn:hover, volume-icon:focus, .volume-icon:hover, #transcriptButton:hover {
   transform: scale(1.1); /* Gently increase size */
   fill: #28a745; /* Change color to a subtle green, or any color that suits your theme */
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ~~~~~~~~~~~~~~~~~~ */
+/* focus elements  */
+/* ~~~~~~~~~~~~~~~~~~ */
+
+/* Apply a common focus style to all interactive elements */
+button:focus, 
+a:focus, 
+input:focus, 
+select:focus, 
+textarea:focus {
+  outline: 3px solid #00f; /* Change color and width to suit your design */
+  outline-offset: 2px; /* Adjust as needed */
+}
+
+/* Specific styles for the skip links */
+.skip-link:focus {
+  outline: 3px solid #00f; /* Same color as other elements for consistency */
+  outline-offset: 2px; /* Adjust as needed */
+}
+
+/* Optional: Add a class for more specific styling */
+.focus-visible {
+  outline: 3px solid #00f; /* Adjust the color as needed */
+  outline-offset: 2px; /* Adjust as needed */
 }

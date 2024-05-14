@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="EN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +29,11 @@
     </script>
   </head>
   <body class="preload">
-    <div aria-live="polite" aria-atomic="true" id="statusMessage" style="position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden;"></div>
+    <div
+      aria-live="polite"
+      aria-atomic="true"
+      id="statusMessage"
+      style="position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden"></div>
 
     <div id="skiplinks">
       <a href="#landingPage" class="skip-link">Skip to Main Content</a>
@@ -42,55 +46,64 @@
       <a href="#thanksPage" class="skip-link">Skip to Thanks and Acknowledgements</a>
     </div>
     
-    
+
     <main id="playerPageMain">
       <section id="landingPage" class="page">
         <header>
+          <h1 class="visually-hidden">Monahan</h1>
+          <!-- Hidden but accessible main title for screen readers -->
+
           <nav>
-            <p class="siteName"></p>
-            <div class="navButtons">
-              <div id="toggleLanguage" class="navIcons btn noselect"><img src="images/svg/FR.svg" alt="language toggle icon" id="langToggle" tabindex="0" role="button"></div>
-              <div id="accessiblityNav" class="navIcons btn noselect wrapperBtn wrapperBtnClosed" role="button">
-                <img src="images/svg/accessIconInvert.svg" alt="accessibility settings icon" id="accessIcon" tabindex="0" />
-              </div>
+            <div id="toggleLanguage" class="navIcons btn noselect" tabindex="0">
+              <img src="images/svg/FR.svg" alt="language toggle icon" id="langToggle" tabindex="0" role="button" aria-pressed="false" />
             </div>
+
+            <div id="accessiblityNav" class="navIcons btn noselect wrapperBtn wrapperBtnClosed" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="settingsDropdown" aria-label="Open accessibility settings menu">
+              <img src="images/svg/accessIconInvert.svg" alt="accessibility settings icon" id="accessIcon" />
+            </div>
+                   
           </nav>
-          <div id="slidein" class="slide-in from-left">
+          <div id="slidein" class="slide-in from-left" role="menu" aria-hidden="true">
             <ul id="settingsDropdown" class="slide-in-content">
-              <li class="dropdownContainer invertColors" >
+              <li class="dropdownContainer invertColors" role="menuitem">
                 <span id="invertColorsTxt">Invert Colours</span>
-                <button id="invertColoursBtn">
+                <button id="invertColoursBtn" aria-pressed="false">
                   <img src="images/svg/invertColors.svg" alt="Invert Colors settings icon" style="width: 24px; height: 24px" />
                 </button>
               </li>
-              <li class="dropdownContainer monochromee">
+              <li class="dropdownContainer monochromee" role="menuitem">
                 <span id="monochromeTxt">Monochrome</span>
-                <button id="monochromeBtn"><img src="images/svg/monochrome1.svg" alt="Monochrome" style="width: 24px; height: 24px" /></button>
+                <button id="monochromeBtn" aria-pressed="false">
+                  <img src="images/svg/monochrome1.svg" alt="Monochrome" style="width: 24px; height: 24px" />
+                </button>
               </li>
-              <li class="dropdownContainer textSize" >
+              <li class="dropdownContainer textSize" role="menuitem">
                 <span id="textSizeTxt">Text Size</span>
-                <div id="btnDiv"><button id="decreaseTextSizeBtn">-</button> <button id="increaseTextSizeBtn">+</button></div>
+                <button id="decreaseTextSizeBtn" aria-pressed="false" aria-label="Decrease text size">-</button>
+                <button id="increaseTextSizeBtn" aria-pressed="false" aria-label="Increase text size">+</button>
               </li>
-              <li class="dropdownContainer"><button id="resetBtn">Reset</button></li>
+              <li class="dropdownContainer" role="menuitem">
+                <button id="resetBtn">Reset</button>
+              </li>
             </ul>
           </div>
           <div id="wrapperToggleDiv" class="settingsMenu"></div>
         </header>
         <div id="centerLandingPageContent">
           <div id="landingPageContainer">
-            <p class="txtBoxDiv" id="engLand" role="heading">
+            <h3 class="txtBoxDiv land" id="engLand">
               MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.
-            </p>
+            </h3>
             <div id="titleText">
-              <!-- <img src="images/svg/MonohanLogoMobile.svg" class="lettersBox" id="logoImg" alt="Monahan: Art, Public Art"/> -->
+              <h2 class="visually-hidden">Monahan: Art, Public Art</h2>
             </div>
-
-            <p class="txtBoxDiv" id="frLand" role="heading">
+            <h3 class="txtBoxDiv land" id="frLand">
               MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des
               millénaires.
-            </p>
+            </h3>
           </div>
         </div>
+
         <div class="arrow1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -126,32 +139,35 @@
       <section id="curiousEarsPage" class="page">
         <div class="pageContent">
           <img src="images/svg/firn.svg" alt="decorative fern made of small dashes" class="decorativeImage" id="fern" />
-          <h1 id="curiousEarsTxt">
+          <h2 id="curiousEarsTxt">
             A Sound Piece<br />
             for Curious Ears
-          </h1>
+          </h2>
         </div>
       </section>
       <section id="playerPage" class="page">
         <div id="audio-player-container">
-          <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Button to play and pause audio">
-            <span id="play-button-svg-container"><img src="images/svg/playButton.svg" alt="a simple triangular button" aria-hidden="true" class="svg-icon" /></span>
+          <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Button to play and pause audio" aria-pressed="false">
+            <span id="play-button-svg-container">
+              <img src="images/svg/playButton.svg" alt="a simple triangular button" aria-hidden="true" class="svg-icon" />
+            </span>
             <span id="play-button-text-container">BEGIN</span>
           </button>
           <div id="ffrw-button-container">
             <button type="button" id="skipBackwardButton" class="skip-button" aria-label="Skip backwards 15 seconds">
               <span id="skip-backward-button-svg-container">
-                <img src="images/svg/15.svg" alt="15" aria-hidden="true" class="svg-icon"/>
+                <img src="images/svg/15.svg" alt="15 seconds" aria-hidden="true" class="svg-icon" />
               </span>
             </button>
             <button type="button" id="skipForwardButton" class="skip-button" aria-label="Skip forward 30 seconds">
               <span id="skip-forward-button-svg-container">
-                <img src="images/svg/30.svg" alt="30" aria-hidden="true" class="svg-icon"/>
+                <img src="images/svg/30.svg" alt="30 seconds" aria-hidden="true" class="svg-icon" />
               </span>
             </button>
           </div>
-          <div id="progress-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Playback progress">
-            <div id="progress-bar"></div>
+      
+          <div id="progress-container" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" aria-label="Playback progress">
+            <div id="progress-bar" style="width: 6.61621%"></div>
             <div id="progress-dot" tabindex="0"></div>
           </div>
           <div class="time-labels">
@@ -159,26 +175,43 @@
             <span id="time-remaining" class="time-label" aria-live="polite"></span>
           </div>
           <audio id="music_player" aria-label="Audio player"></audio>
-          
+      
           <div id="volume-container" aria-label="Volume control">
-            <span id="lower-vol" class="volume-icon" aria-label="Lower volume"><svg width="13" height="24" viewbox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)"></path></svg></span>
+            <button id="lower-vol" class="volume-icon" aria-label="Lower volume" aria-pressed="false">
+              <svg width="13" height="24" viewbox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)"></path>
+              </svg>
+            </button>
             <div class="volume-bar-and-slider">
               <div id="volume-bar-background">
                 <div id="volume-bar-filler"></div>
-                <div id="volume-bar-thinner"></div><!-- New thinner filler -->
+                <div id="volume-bar-thinner"></div>
+                <!-- New thinner filler -->
               </div>
-              <input type="range" id="volume-slider" max="100" min="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" role="slider" aria-label="Volume slider">
-            </div><span id="raise-vol" aria-label="Raise volume" class="volume-icon"><svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9.73965 0L5.84544 5.81224H0.0332031V17.4367H5.84544L9.73965 23.249H11.6577V0H9.73965ZM14.5638 2.90612V5.81224C15.0578 5.81224 15.5519 5.87036 16.0169 5.98661C18.5161 6.62596 20.376 8.89273 20.376 11.6245C20.376 14.3562 18.5452 16.623 16.0169 17.2624C15.5519 17.3786 15.0578 17.4367 14.5638 17.4367V20.3428C15.2903 20.3428 15.9587 20.2266 16.6562 20.0813H16.7434C20.5214 19.1223 23.2822 15.6931 23.2822 11.6245C23.2822 7.55591 20.5214 4.12669 16.7434 3.16767C16.075 2.9933 15.3194 2.90612 14.5638 2.90612ZM14.5638 8.71836V14.5306C14.8254 14.5306 15.0869 14.5015 15.2903 14.4434C16.54 14.1237 17.4699 12.9613 17.4699 11.6245C17.4699 10.2877 16.569 9.12522 15.2903 8.80555C15.0578 8.74742 14.7963 8.71836 14.5638 8.71836Z" fill="var(--darkgreen)"></path></svg></span>
+              <input
+                type="range"
+                id="volume-slider"
+                max="100"
+                min="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="50"
+                role="slider"
+                aria-label="Volume slider" />
+            </div>
+            <button id="raise-vol" aria-label="Raise volume" class="volume-icon" aria-pressed="false">
+              <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9.73965 0L5.84544 5.81224H0.0332031V17.4367H5.84544L9.73965 23.249H11.6577V0H9.73965ZM14.5638 2.90612V5.81224C15.0578 5.81224 15.5519 5.87036 16.0169 5.98661C18.5161 6.62596 20.376 8.89273 20.376 11.6245C20.376 14.3562 18.5452 16.623 16.0169 17.2624C15.5519 17.3786 15.0578 17.4367 14.5638 17.4367V20.3428C15.2903 20.3428 15.9587 20.2266 16.6562 20.0813H16.7434C20.5214 19.1223 23.2822 15.6931 23.2822 11.6245C23.2822 7.55591 20.5214 4.12669 16.7434 3.16767C16.075 2.9933 15.3194 2.90612 14.5638 2.90612ZM14.5638 8.71836V14.5306C14.8254 14.5306 15.0869 14.5015 15.2903 14.4434C16.54 14.1237 17.4699 12.9613 17.4699 11.6245C17.4699 10.2877 16.569 9.12522 15.2903 8.80555C15.0578 8.74742 14.7963 8.71836 14.5638 8.71836Z"
+                  fill="var(--darkgreen)"></path>
+              </svg>
+            </button>
           </div>
-
-
-
+      
           <div id="transButtonContainer"></div>
           <div id="transcriptContainer"></div>
         </div>
-        
+
         <div id="debugdiv">
           <div id="debug">
             <p><span class="debugHead">Track name:</span><span id="currTrackName"></span></p>
@@ -210,14 +243,14 @@
                 <h3 id="monH2">MONAHAN</h3>
               </div>
               <div class="txtBoxDiv">
-                <p class="txtBoxDiv" id="soundForCurious" role="heading">
+                <p class="txtBoxDiv" id="soundForCurious">
                   A sound piece<br />
                   for curious ears.
                 </p>
-                <p class="txtBoxDiv" id="experienceAnew" role="heading">
+                <p class="txtBoxDiv" id="experienceAnew">
                   Experience the site anew with each visit through dozens of sounds and stories gathered for the Monahan wetlands.
                 </p>
-                <p class="txtBoxDiv txtBoxDivLast" id="delveInto" role="heading">
+                <p class="txtBoxDiv txtBoxDivLast" id="delveInto">
                   Delve into sounds that explore movement, migration, story as medicine, plants as healers, voice, translation, and place.
                 </p>
               </div>
@@ -232,7 +265,6 @@
             <div class="pageInnerContent">
               <div class="headerDiv">
                 <h2 id="howToListenH2">HOW TO LISTEN</h2>
-                <!-- This already has an ID -->
               </div>
               <ul class="access">
                 <li id="scanQR">Scan the QR code&nbsp;</li>
@@ -241,7 +273,7 @@
                 <li id="clickBegin">Click BEGIN</li>
                 <li id="listenSoundPiece">LISTEN to a personalized sound piece</li>
               </ul>
-              <p id="listenAnywhere" class="txtBoxDiv txtBoxDivLast" role="heading">
+              <p id="listenAnywhere" class="txtBoxDiv txtBoxDivLast">
                 You can listen to MONAHAN wherever you are. We suggest spending time outside while listening.
               </p>
             </div>
@@ -262,7 +294,7 @@
                 interviews and stories.
               </p>
               <!-- <img src="images/svg/separator.svg" alt="" class="decorativeImage" id="spacer" /> -->
-              <p class="txtBoxDiv txtBoxDivPad txtBoxDivLast" id="ByBringingTogether" role="heading">
+              <p class="txtBoxDiv txtBoxDivPad txtBoxDivLast" id="ByBringingTogether">
                 By bringing together sounds by human and non-human beings MONAHAN creates an ever-evolving experience. You may hear a chapter you’ve
                 heard before, but this time it’s next to something new. Like the landscape around you, MONAHAN is always changing. 
               </p>
@@ -310,7 +342,10 @@
               <summary tabindex="0"><span class="summary-content">SARAH ABBOTT</span> <span class="role">ecology & non-human advocacy</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://sarahabbott.ca/">Sarah Abbott</a></span
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://sarahabbott.ca/"
+                      >Sarah Abbott</a
+                    ></span
                   >'s research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
                   though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
                   science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
@@ -328,7 +363,13 @@
               <article>
                 <p>
                   <span class="bold"
-                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca"
+                      >Jordan Bell</a
+                    ></span
                   >
                   is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks
                   Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope,
@@ -347,11 +388,15 @@
               <article>
                 <p>
                   Botanist, medical biochemist and author
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://dianaberesford-kroeger.com/">Diana Beresford-Kroeger</a></span> possesses a
-                  unique combination of western scientific training and an understanding of the knowledge and methods of a wide variety of traditional
-                  and alternative sources. Beresford-Kroeger's concept of bioplanning challenges ordinary people to develop a new relationship with
-                  the natural world, to view the environment as a biological system and to perform the ecological task of replanting the global
-                  forest. <span class="italic">Her books include To Speak for the Trees</span>,
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://dianaberesford-kroeger.com/"
+                      >Diana Beresford-Kroeger</a
+                    ></span
+                  >
+                  possesses a unique combination of western scientific training and an understanding of the knowledge and methods of a wide variety of
+                  traditional and alternative sources. Beresford-Kroeger's concept of bioplanning challenges ordinary people to develop a new
+                  relationship with the natural world, to view the environment as a biological system and to perform the ecological task of replanting
+                  the global forest. <span class="italic">Her books include To Speak for the Trees</span>,
                   <span class="italic">The Sweetness of a Simple Life</span>,
                   <span class="italic">The Global Forest, Arboretum Borealis: A Lifeline of the Planet</span>,
                   <span class="italic">Arboretum America: A Philosophy of the Forest</span>, and <span class="italic">A Garden for Life</span>. A
@@ -369,10 +414,14 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://pierrelucclement.xyz/">Pierre-Luc Clément</a></span> is a self-taught
-                  multi-disciplinary artist, sound designer, composer and producer who is actively involved in the artistic community in
-                  Ottawa/Gatineau. Founding member of the groups FET.NAT, KAY-fayb, Or and others, he also works as a percussionist and composer for
-                  renowned artists and contemporary dance and theatre companies across Canada. He has been listed on the prestigious Polaris short
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://pierrelucclement.xyz/"
+                      >Pierre-Luc Clément</a
+                    ></span
+                  >
+                  is a self-taught multi-disciplinary artist, sound designer, composer and producer who is actively involved in the artistic community
+                  in Ottawa/Gatineau. Founding member of the groups FET.NAT, KAY-fayb, Or and others, he also works as a percussionist and composer
+                  for renowned artists and contemporary dance and theatre companies across Canada. He has been listed on the prestigious Polaris short
                   list for the album Le mal in 2019, and nominated at l'ADISQ for the producing of
                   <span class="italic">Message texte à Nelligan</span> in 2016. He also co-fabricated three children. Prizes include SAW Gallery's New
                   work prize in 2020 and two Rideau Prizes for best theatre sound design in 2014 and 2019. Pierre-Luc's work is characterized by the
@@ -388,15 +437,20 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://albertdumont.com/about/">Albert Dumont</a></span> is an Algonquin spiritual
-                  advisor, poet, and storyteller from Kitigan Zibi Anishinabeg. His artistic talents touch many areas of the arts community. He was
-                  the English Poet Laureate for Ottawa from April 2021 to April 2023. He is also a pen & ink artist, actor, and playwright. Albert has
-                  performed his play <span class="italic">Bloodline</span> several times and has acted in fire prevention videos, TV commercials, and
-                  plays. Albert has written six books of poetry and short stories, and two children's books. He is the founder of Turtle Moons
-                  Contemplations, featuring his artwork and poems. Albert was presented with a Human Rights Award by the Public Service Alliance of
-                  Canada in 2010. In January 2017 he received the DreamKEEPERS Citation for Outstanding Leadership. Albert has dedicated his life to
-                  promoting Aboriginal spirituality and healing and to protecting the rights of Aboriginal Peoples particularly those of the young. He
-                  is the father of three daughters, grandfather of five grandchildren and has one great-grandchild.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://albertdumont.com/about/"
+                      >Albert Dumont</a
+                    ></span
+                  >
+                  is an Algonquin spiritual advisor, poet, and storyteller from Kitigan Zibi Anishinabeg. His artistic talents touch many areas of the
+                  arts community. He was the English Poet Laureate for Ottawa from April 2021 to April 2023. He is also a pen & ink artist, actor, and
+                  playwright. Albert has performed his play <span class="italic">Bloodline</span> several times and has acted in fire prevention
+                  videos, TV commercials, and plays. Albert has written six books of poetry and short stories, and two children's books. He is the
+                  founder of Turtle Moons Contemplations, featuring his artwork and poems. Albert was presented with a Human Rights Award by the
+                  Public Service Alliance of Canada in 2010. In January 2017 he received the DreamKEEPERS Citation for Outstanding Leadership. Albert
+                  has dedicated his life to promoting Aboriginal spirituality and healing and to protecting the rights of Aboriginal Peoples
+                  particularly those of the young. He is the father of three daughters, grandfather of five grandchildren and has one
+                  great-grandchild.
                 </p>
               </article>
             </details>
@@ -409,14 +463,28 @@
                 <p>
                   <span class="bold">Lang Elliott</span> is a well-known nature recordist currently specializing in spacious 3D-binaural soundscapes
                   gathered in wild areas across North America. To learn more about his work visit
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://musicofnature.com/">Music of Nature</a> . Many of Lang's best and most immersive soundscapes are
-                  featured in his popular mobile application
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://apps.apple.com/us/app/pure-nature-3d-soundscapes/id1357380255">Pure Nature 3D Soundscapes</a> ,
-                  which effortlessly transports the listener into the wilds, each recording accompanied by an informative essay describing the habitat
-                  and what is heard. Lang is also the co-developer of
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://apps.apple.com/us/app/hear-birds-again/id6444369779?platform=iphone;">Hear Birds Again</a> , a
-                  unique new mobile app aimed at birders suffering from high frequency hearing loss. The app works by lowering the pitch of high bird
-                  songs to bring them into a frequency range where they can once again be heard.
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://musicofnature.com/"
+                    >Music of Nature</a
+                  >
+                  . Many of Lang's best and most immersive soundscapes are featured in his popular mobile application
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Link opens in a new tab"
+                    href="https://apps.apple.com/us/app/pure-nature-3d-soundscapes/id1357380255"
+                    >Pure Nature 3D Soundscapes</a
+                  >
+                  , which effortlessly transports the listener into the wilds, each recording accompanied by an informative essay describing the
+                  habitat and what is heard. Lang is also the co-developer of
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Link opens in a new tab"
+                    href="https://apps.apple.com/us/app/hear-birds-again/id6444369779?platform=iphone;"
+                    >Hear Birds Again</a
+                  >
+                  , a unique new mobile app aimed at birders suffering from high frequency hearing loss. The app works by lowering the pitch of high
+                  bird songs to bring them into a frequency range where they can once again be heard.
                 </p>
               </article>
             </details>
@@ -465,10 +533,15 @@
                   nature. She has three one woman shows about living as a blind person in a sighted world:
                   <span class="italic">Flying in the Dark</span> (2011), <span class="italic">Raising Stanley/Life with Tulia</span> (2018) and
                   <span class="italic">Dangerous Touch</span> (living through COVID when blind 2022). Kim is a featured artist with
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.ottawastorytellers.ca/">Ottawa Storytellers</a> ,
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.masconline.ca/">MASC</a> and
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.radicalconnections.ca/">radical connections</a> . She shares her travels with her fifth guide
-                  dog Ginger, who is a yellow lab and who walked the nature paths with her for this project.
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.ottawastorytellers.ca/"
+                    >Ottawa Storytellers</a
+                  >
+                  , <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.masconline.ca/">MASC</a> and
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.radicalconnections.ca/"
+                    >radical connections</a
+                  >
+                  . She shares her travels with her fifth guide dog Ginger, who is a yellow lab and who walked the nature paths with her for this
+                  project.
                 </p>
               </article>
             </details>
@@ -479,10 +552,18 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.fideskrucker.com/">Fides Krucker</a></span> has sung, produced and created
-                  contemporary opera and interdisciplinary work in Canada and abroad for forty years. Her book
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.fideskrucker.com/"
+                      >Fides Krucker</a
+                    ></span
+                  >
+                  has sung, produced and created contemporary opera and interdisciplinary work in Canada and abroad for forty years. Her book
                   <span class="italic"
-                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.penguinrandomhouse.ca/books/706315/reclaiming-calliope-by-fides-krucker/9781623177065"
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://www.penguinrandomhouse.ca/books/706315/reclaiming-calliope-by-fides-krucker/9781623177065"
                       >Reclaiming Calliope: Freeing the Female Voice through Undomesticated Singing</a
                     ></span
                   >
@@ -520,12 +601,18 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://kikosounds.com/">Kiko Pace</a></span> creates portals for deeper listening
-                  through installation, sound making, meditation and restorative practices. They currently facilitate private and group sound bath
-                  experiences at their studio <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.kikospace.ca/">Kiko Space</a> in Roncesvalles, Tkaronto, and offer
-                  retreats, workshops and trainings that further explore the art and science of sound. Kiko is deeply devoted to communicating,
-                  learning and honouring nature through personal ritual and study. All begins with acknowledging the privilege of getting to practice
-                  on this land, the necessity of care, and the responsibility we have to ourselves, the earth and each other.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://kikosounds.com/"
+                      >Kiko Pace</a
+                    ></span
+                  >
+                  creates portals for deeper listening through installation, sound making, meditation and restorative practices. They currently
+                  facilitate private and group sound bath experiences at their studio
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.kikospace.ca/">Kiko Space</a> in
+                  Roncesvalles, Tkaronto, and offer retreats, workshops and trainings that further explore the art and science of sound. Kiko is
+                  deeply devoted to communicating, learning and honouring nature through personal ritual and study. All begins with acknowledging the
+                  privilege of getting to practice on this land, the necessity of care, and the responsibility we have to ourselves, the earth and
+                  each other.
                 </p>
               </article>
             </details>
@@ -537,14 +624,18 @@
               <article>
                 <p>
                   Originally from Athens Greece,
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://soundcloud.com/dpetsalakis">Demetri Petsalakis</a></span> is a Toronto based
-                  musician performing in a variety of styles with a focus on Greek and Middle Eastern lutes. Influenced by the rich cultural diversity
-                  of Canada, Demetri incorporates musical elements from different traditions in order to create a contemporary sound that represents
-                  both his heritage and the community that he is a part of. An active member of the Toronto world music scene Demetri has composed
-                  for, recorded, and performed with many groups including Kune, Niyaz, Tafelmusik, Ventanas, Near East Trio, Zephyr, Turkwaz, Moneka
-                  Arabic Jazz and Moskitto Bar. During his musical studies Demetri has been fortunate to learn from many great teachers including oud
-                  masters Bassam Bishara, and Christos Tsiamoulis as well as master of the Cretan Lyra Astrinos Zaharioudakis and renowned jazz
-                  guitarist Lorne Lofsky.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://soundcloud.com/dpetsalakis"
+                      >Demetri Petsalakis</a
+                    ></span
+                  >
+                  is a Toronto based musician performing in a variety of styles with a focus on Greek and Middle Eastern lutes. Influenced by the rich
+                  cultural diversity of Canada, Demetri incorporates musical elements from different traditions in order to create a contemporary
+                  sound that represents both his heritage and the community that he is a part of. An active member of the Toronto world music scene
+                  Demetri has composed for, recorded, and performed with many groups including Kune, Niyaz, Tafelmusik, Ventanas, Near East Trio,
+                  Zephyr, Turkwaz, Moneka Arabic Jazz and Moskitto Bar. During his musical studies Demetri has been fortunate to learn from many great
+                  teachers including oud masters Bassam Bishara, and Christos Tsiamoulis as well as master of the Cretan Lyra Astrinos Zaharioudakis
+                  and renowned jazz guitarist Lorne Lofsky.
                 </p>
               </article>
             </details>
@@ -555,12 +646,16 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://namitharathinappillai.com/">Namitha Rathinappillai</a></span> is a fat, disabled,
-                  queer, Tamil-Canadian spoken word poet, organizer, and workshop facilitator who entered the poetry community in 2017. She is
-                  currently based in Toronto, and was the first female and youngest director of Ottawa's Urban Legends Poetry Collective (ULPC). They
-                  are a two-time Canadian Festival of Spoken Word (CFSW) team member with ULPC, and they published their first chapbook titled
-                  <span class="italic">Dirty Laundry</span> with Battleaxe Press in November of 2018. In 2019, she won the RBC Youth Ottawa Spirit of
-                  the Capital Award for Arts and Culture. They enjoy crafting, writing letters to friends, and looking at the moon.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://namitharathinappillai.com/"
+                      >Namitha Rathinappillai</a
+                    ></span
+                  >
+                  is a fat, disabled, queer, Tamil-Canadian spoken word poet, organizer, and workshop facilitator who entered the poetry community in
+                  2017. She is currently based in Toronto, and was the first female and youngest director of Ottawa's Urban Legends Poetry Collective
+                  (ULPC). They are a two-time Canadian Festival of Spoken Word (CFSW) team member with ULPC, and they published their first chapbook
+                  titled <span class="italic">Dirty Laundry</span> with Battleaxe Press in November of 2018. In 2019, she won the RBC Youth Ottawa
+                  Spirit of the Capital Award for Arts and Culture. They enjoy crafting, writing letters to friends, and looking at the moon.
                 </p>
               </article>
             </details>
@@ -574,7 +669,9 @@
                   A teacher by profession,
                   <span class="bold"
                     ><a
-                      target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
                       href="https://www.radicalconnections.ca/artistdirectory/v/patricia-reynolds-vocals-guitar-folk-gospel-swing-pop-wwii-country-campfire-quebecois"
                       >Patricia Reynolds</a
                     ></span
@@ -594,11 +691,19 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://carleton.ca/music/people/stewart-jesse/">Jesse Stewart</a></span> is a composer,
-                  percussionist, artist, and educator. His music has been documented on over twenty recordings including Stretch Orchestra's
-                  self-titled debut album, which was honoured with the 2012 Instrumental Album of the Year Juno award. He has been widely commissioned
-                  as a composer and artist. In 2012, he founded We Are All Musicians (WAAM), an organization dedicated to making music as broadly
-                  accessible as possible. Through the WAAM initiative, he has conducted hundreds of inclusive music workshops and performances
+                  <span class="bold"
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://carleton.ca/music/people/stewart-jesse/"
+                      >Jesse Stewart</a
+                    ></span
+                  >
+                  is a composer, percussionist, artist, and educator. His music has been documented on over twenty recordings including Stretch
+                  Orchestra's self-titled debut album, which was honoured with the 2012 Instrumental Album of the Year Juno award. He has been widely
+                  commissioned as a composer and artist. In 2012, he founded We Are All Musicians (WAAM), an organization dedicated to making music as
+                  broadly accessible as possible. Through the WAAM initiative, he has conducted hundreds of inclusive music workshops and performances
                   throughout North America. He has received numerous awards and honours including the Ottawa Arts Council's Mid-Career Artist Award
                   (2017) and the Ottawa Arts Council Community Arts Educator Award (2023). In 2014, he was named to the Order of Ottawa. In 2022, he
                   was elected to the College of New Scholars of the Royal Society of Canada. He is a faculty member in Carleton University's School
@@ -629,10 +734,14 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.ellenwaterman.ca/">Ellen Waterman</a></span> is Professor in the School for
-                  Studies in Art and Culture and holds the Helmut Kallmann Chair for Music in Canada at Carleton University. She is both a music
-                  scholar and a flutist specializing in creative improvisation. Her work on acoustic ecology includes the books
-                  <span class="italic">Sonic Geography Imagined and Remembered</span>, and
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.ellenwaterman.ca/"
+                      >Ellen Waterman</a
+                    ></span
+                  >
+                  is Professor in the School for Studies in Art and Culture and holds the Helmut Kallmann Chair for Music in Canada at Carleton
+                  University. She is both a music scholar and a flutist specializing in creative improvisation. Her work on acoustic ecology includes
+                  the books <span class="italic">Sonic Geography Imagined and Remembered</span>, and
                   <span class="italic">The Art of Immersive Soundscapes</span>. With Gillian Siddall, she is co-editor of
                   <span class="italic">Negotiated Moments: Improvisation, Sound, and Subjectivity</span>, and she was a founding co-editor of the
                   journal
@@ -642,8 +751,10 @@
                     ></span
                   >
                   . In 2021 she founded the
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.carleton.ca/mssc">Research Centre for Music, Sound, and Society in Canada</a> , dedicated to
-                  exploring the complex and diverse roles that music and sonic arts play in shaping Canadian society.
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://www.carleton.ca/mssc"
+                    >Research Centre for Music, Sound, and Society in Canada</a
+                  >
+                  , dedicated to exploring the complex and diverse roles that music and sonic arts play in shaping Canadian society.
                 </p>
               </article>
             </details>
@@ -672,12 +783,17 @@
               </summary>
               <article>
                 <p>
-                  Professor of biology <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.yacklab.org/">Jayne Yack</a></span> is fascinated with
-                  the unique sensory 'worlds' of animals, and in particular, how insects use sounds and vibrations beyond the sensory capabilities of
-                  humans to survive. Jayne completed her PhD at the University of Toronto and a postdoctoral fellow at Cornell University. She
-                  currently runs an active research lab at Carleton University in Ottawa, where she and her students use specialized instruments to
-                  make neat discoveries, such as how butterflies use ears on their wings to detect predators, and how caterpillars communicate using
-                  leaf vibrations to form social groups, or to perform 'rap battles' to win territories.
+                  Professor of biology
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.yacklab.org/"
+                      >Jayne Yack</a
+                    ></span
+                  >
+                  is fascinated with the unique sensory 'worlds' of animals, and in particular, how insects use sounds and vibrations beyond the
+                  sensory capabilities of humans to survive. Jayne completed her PhD at the University of Toronto and a postdoctoral fellow at Cornell
+                  University. She currently runs an active research lab at Carleton University in Ottawa, where she and her students use specialized
+                  instruments to make neat discoveries, such as how butterflies use ears on their wings to detect predators, and how caterpillars
+                  communicate using leaf vibrations to form social groups, or to perform 'rap battles' to win territories.
                 </p>
               </article>
             </details>
@@ -686,7 +802,15 @@
               <summary tabindex="0"><span class="summary-content">SUTURES PARALLÈLES</span> <span class="role">Featuring</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://transistor.media/balados/les-sutures-paralleles">Sutures parallèles</a></span>
+                  <span class="bold"
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://transistor.media/balados/les-sutures-paralleles"
+                      >Sutures parallèles</a
+                    ></span
+                  >
                   is an uneasy chorus of earthly fabulations, gulch dirges and strained lullabies. Conceived by Marc A. Reinhardt, collectively
                   composed and performed by Eugénie Jobin, Marc A. Reinhardt and Frédérique Roy.
                 </p>
@@ -699,10 +823,15 @@
               </summary>
               <article>
                 <p class="summary-indent">
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> is a comparatist working at
-                  the intersection of sound, text, performance and installation. His practice develops compositional processes that investigate issues
-                  of transduction, historicity and collective agency. He is interested in how we inhabit the contradictions, in language and beyond,
-                  that emerge from these investigations. His work has been presented in Canada, Europe and South America.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://marcareinhardt.com/"
+                      >Marc A. Reinhardt</a
+                    ></span
+                  >
+                  is a comparatist working at the intersection of sound, text, performance and installation. His practice develops compositional
+                  processes that investigate issues of transduction, historicity and collective agency. He is interested in how we inhabit the
+                  contradictions, in language and beyond, that emerge from these investigations. His work has been presented in Canada, Europe and
+                  South America.
                 </p>
               </article>
             </details>
@@ -747,7 +876,15 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://thunderbirdsisterscollective.com/">The Thunderbird Sisters Collective</a></span>
+                  <span class="bold"
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://thunderbirdsisterscollective.com/"
+                      >The Thunderbird Sisters Collective</a
+                    ></span
+                  >
                   was founded in 2017 by Metis artist, Patsea Griffin, following workshops where she would see some of her friends create the most
                   fabulous beadwork as well as other traditional and non-traditional artwork then tuck it away in a drawer, tin container, or ziplock
                   bag as was the case with her beadwork. Sometimes never to be seen again. "I decided that I wanted to show my work that took hours to
@@ -796,11 +933,15 @@
               </summary>
               <article>
                 <p class="summary-indent">
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://carmelwhittle.com/">Carmel Whittle</a></span> identifies as a 2SL/ Mi'kmaw/Irish
-                  cultural community artist, activist, independent filmmaker, and musician/songwriter. In the practice of decolonized community arts
-                  she develops, directs and curates the No Borders Art Festival and is program coordinator for the Thunderbird Sisters Collective. Her
-                  documentary films include <span class="italic">There Is No Word</span>, for Greenpeace Canada;
-                  <span class="italic">Bringing The Land To The City</span>, a film residency with Digital Art Resource Centre; and
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://carmelwhittle.com/"
+                      >Carmel Whittle</a
+                    ></span
+                  >
+                  identifies as a 2SL/ Mi'kmaw/Irish cultural community artist, activist, independent filmmaker, and musician/songwriter. In the
+                  practice of decolonized community arts she develops, directs and curates the No Borders Art Festival and is program coordinator for
+                  the Thunderbird Sisters Collective. Her documentary films include <span class="italic">There Is No Word</span>, for Greenpeace
+                  Canada; <span class="italic">Bringing The Land To The City</span>, a film residency with Digital Art Resource Centre; and
                   <span class="italic">One Contrary 5 Agokwe Nini</span>, featuring members of the 2SLGBTQ community and collaborative co-creating of
                   Podcast #83. Her visual art is currently exhibited with Artvocate, UK. Soloist for <span class="italic">Odaabaanag</span> project.
                   Carmel's influences come from nature and culture with roots deeply connected to the ocean and to the community. She is also an
@@ -813,13 +954,18 @@
               <summary tabindex="0"><span class="summary-content">TURKWAZ</span><span class="role">featuring</span></summary>
               <article>
                 <p class="summary-indent">
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://turkwaz.ca/">Turkwaz featuring</a></span> Jayne Brown, Sophia Grigoriadis,
-                  Brenna MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to the Toronto world music scene and
-                  beyond. Their work together focuses on interpretations of songs primarily from Greek, Turkish, Arabic and Balkan traditions with
-                  forays into other genres when the inspiration moves them. Qanun, tambura, ukulele and various forms of hand percussion provide
-                  gentle accompaniment to their arrangements, allowing their voices to remain front and centre. They love singing in pure traditional
-                  styles but are also equally comfortable adding harmonies where no harmonies existed before. They are all highly adaptable musicians
-                  and enjoy collaborating across genres. Their debut album "Nazar" garnered both Juno and CFMA nominations on its release.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://turkwaz.ca/"
+                      >Turkwaz featuring</a
+                    ></span
+                  >
+                  Jayne Brown, Sophia Grigoriadis, Brenna MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to
+                  the Toronto world music scene and beyond. Their work together focuses on interpretations of songs primarily from Greek, Turkish,
+                  Arabic and Balkan traditions with forays into other genres when the inspiration moves them. Qanun, tambura, ukulele and various
+                  forms of hand percussion provide gentle accompaniment to their arrangements, allowing their voices to remain front and centre. They
+                  love singing in pure traditional styles but are also equally comfortable adding harmonies where no harmonies existed before. They
+                  are all highly adaptable musicians and enjoy collaborating across genres. Their debut album "Nazar" garnered both Juno and CFMA
+                  nominations on its release.
                 </p>
               </article>
             </details>
@@ -846,7 +992,11 @@
               <article>
                 <p class="summary-indent">
                   <span class="bold"
-                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca"
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://www.linkedin.com/in/sophia-grigoriadis-52015911/?originalSubdomain=ca"
                       >Sophia Grigoriadis</a
                     ></span
                   >
@@ -866,11 +1016,16 @@
               </summary>
               <article>
                 <p class="summary-indent">
-                  Based in Toronto, <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://greengoatmusic.ca/">Brenna MacCrimmon</a></span> has been
-                  studying and performing the music of Turkey and the Balkans since the early 1980's. She has performed in Turkey and abroad with
-                  Selim Sesler, Karsılama, Muammer Ketencoğlu, and experimental rock group Baba Zula. She has toured across Europe with Balkan beat DJ
-                  Shantel and the Bucovina Club Orkestra. She is a featured performer in <span class="italic">Crossing the Bridge</span>, Fatih Akın's
-                  2005 documentary of the Istanbul music scene. In 2010, she found herself in Moscow as a member of the cast of
+                  Based in Toronto,
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://greengoatmusic.ca/"
+                      >Brenna MacCrimmon</a
+                    ></span
+                  >
+                  has been studying and performing the music of Turkey and the Balkans since the early 1980's. She has performed in Turkey and abroad
+                  with Selim Sesler, Karsılama, Muammer Ketencoğlu, and experimental rock group Baba Zula. She has toured across Europe with Balkan
+                  beat DJ Shantel and the Bucovina Club Orkestra. She is a featured performer in <span class="italic">Crossing the Bridge</span>,
+                  Fatih Akın's 2005 documentary of the Istanbul music scene. In 2010, she found herself in Moscow as a member of the cast of
                   <span class="italic">Bobble</span> with Bobby McFerrin. Theatre work includes musical direction of the award-winning Volcano
                   production of <span class="italic">Goodness</span> and music for the Soulpepper production of Sina Gilani's
                   <span class="italic">Wedding at Aulis</span>. In addition to singing with Turkwaz, she plays with Greco Turkish ensemble Meltemi,
@@ -886,8 +1041,16 @@
               </summary>
               <article>
                 <p class="summary-indent">
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://en.wikipedia.org/wiki/Maryem_Tollar">Maryem Hassan Tollar</a></span> is a
-                  renowned Egyptian-Canadian vocalist, known for her world music performances. Her voice has been heard on the theme of CBC's
+                  <span class="bold"
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://en.wikipedia.org/wiki/Maryem_Tollar"
+                      >Maryem Hassan Tollar</a
+                    ></span
+                  >
+                  is a renowned Egyptian-Canadian vocalist, known for her world music performances. Her voice has been heard on the theme of CBC's
                   <span class="italic">Little Mosque on the Prairie</span> and A.R. Rahman's Bollywood hit, <span class="italic">Mayya Mayya</span>.
                   Tollar has been a featured vocalist with Tafelmusik, The Winnipeg Symphony Orchestra, The Gryphon Trio and Patricia O'Callaghan. She
                   performs with several Toronto musical groups including Al Qahwa, Turkwaz, and with storyteller Dawne McFarlane. In the fall of 2022
@@ -901,7 +1064,13 @@
             <p>
               + all the non-human beings who contributed to our on-site recordings. To view all the species identified at the Monahan Wetlands by
               community members please visit
-              <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.inaturalist.org/places/monaghan-drain-eagleson-ponds">iNaturalist</a>.
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Link opens in a new tab"
+                href="https://www.inaturalist.org/places/monaghan-drain-eagleson-ponds"
+                >iNaturalist</a
+              >.
             </p>
           </div>
           <!-- end pageInnerContent -->
@@ -919,7 +1088,10 @@
               <summary tabindex="0"><span class="summary-content">SARAH ABBOTT</span> <span class="role">ecology & non-human advocacy</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://sarahabbott.ca/">Sarah Abbott</a></span
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://sarahabbott.ca/"
+                      >Sarah Abbott</a
+                    ></span
                   >'s research aims to understand and share knowledge of the sentient, sensory relations of trees, plants and nonhumans in general
                   though frameworks that include public/multispecies ethnography, Indigenous ways of knowing, ontological emergence theory, plant
                   science, interspecies communication, and ethnographic filmmaking. Sarah is an associate professor based in the Department of Film at
@@ -936,13 +1108,17 @@
               <summary tabindex="0"><span class="summary-content">BRANDON EDWARDS</span> <span class="role">research assistant</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://brandonedwards.ca/">Brandon Edwards</a></span> is a PhD Candidate in Biology at
-                  Carleton University in Ottawa, Ontario. For his thesis, he is developing tools to allow researchers to bring together multiple
-                  different types of bird survey data into one statistical model, as well as techniques to control for a person's ability to
-                  accurately perceive birds in different environments such as roadsides, forests, open grasslands, etc. He has had a keen interest in
-                  nature his entire life, particularly in photographing the world around us. His passion for birds has allowed him to discover many of
-                  the other living and non-living things that make up this planet. He brings curiosity and passion for the natural world to his
-                  projects.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://brandonedwards.ca/"
+                      >Brandon Edwards</a
+                    ></span
+                  >
+                  is a PhD Candidate in Biology at Carleton University in Ottawa, Ontario. For his thesis, he is developing tools to allow researchers
+                  to bring together multiple different types of bird survey data into one statistical model, as well as techniques to control for a
+                  person's ability to accurately perceive birds in different environments such as roadsides, forests, open grasslands, etc. He has had
+                  a keen interest in nature his entire life, particularly in photographing the world around us. His passion for birds has allowed him
+                  to discover many of the other living and non-living things that make up this planet. He brings curiosity and passion for the natural
+                  world to his projects.
                 </p>
               </article>
             </details>
@@ -951,11 +1127,16 @@
               <summary tabindex="0"><span class="summary-content">SIMON GUIBORD</span><span class="role">graphic designer</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://simonguibord.com/">Simon Guibord</a></span> est un concepteur graphique qui
-                  travaille dans les milieux culturels, universitaires et commerciaux. Il a collaboré avec la Galerie SAW, Artengine, la Galerie d'art
-                  d'Ottawa, DAÏMÔN, AXENÉO7, le magazine HB et des artistes de toute la région. Il se spécialise dans les publications et
-                  l'élaboration d'identités graphiques. Son travail se caractérise par une approche rationnelle et sensible, ainsi qu'un processus
-                  favorisant la recherche et l'expérimentation. Depuis 2015, il enseigne la typographie à l'Université du Québec en Outaouais.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://simonguibord.com/"
+                      >Simon Guibord</a
+                    ></span
+                  >
+                  est un concepteur graphique qui travaille dans les milieux culturels, universitaires et commerciaux. Il a collaboré avec la Galerie
+                  SAW, Artengine, la Galerie d'art d'Ottawa, DAÏMÔN, AXENÉO7, le magazine HB et des artistes de toute la région. Il se spécialise dans
+                  les publications et l'élaboration d'identités graphiques. Son travail se caractérise par une approche rationnelle et sensible, ainsi
+                  qu'un processus favorisant la recherche et l'expérimentation. Depuis 2015, il enseigne la typographie à l'Université du Québec en
+                  Outaouais.
                 </p>
               </article>
             </details>
@@ -966,15 +1147,20 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://rachelgray.art/">Rachel Gray</a></span> est une artiste interdisciplinaire
-                  canadienne basée dans le territoire algonquin (Ottawa). Sa dyslexie dans un monde peu adapté l'a amenée à explorer l'art comme un
-                  moyen de créer un langage personnalisé. Grâce au dessin, au spectacle, à l'installation et à la narration, elle tente de parler dans
-                  ces lieux que le langage laisse vides. Son travail a été exposé au niveau national et international. Rachel est également auteure,
-                  animatrice et illustratrice. Son roman graphique <span class="italic">Jess</span> a été adapté en une œuvre musicale sur une
-                  commande de Pacific Opera Victoria. Rachel est profondément liée à la communauté artistique des personnes handicapées; elle défend
-                  les pratiques artistiques accessibles, organise des expositions et travaille avec des organisations et des institutions
-                  universitaires pour exploiter l'art et la narration. Elle est membre fondatrice de Ghost Rooster, un collectif d'artistes
-                  handicapés, et ne cesse de chercher des occasions de collaborer et de rejoindre la communauté à travers l'art.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://rachelgray.art/"
+                      >Rachel Gray</a
+                    ></span
+                  >
+                  est une artiste interdisciplinaire canadienne basée dans le territoire algonquin (Ottawa). Sa dyslexie dans un monde peu adapté l'a
+                  amenée à explorer l'art comme un moyen de créer un langage personnalisé. Grâce au dessin, au spectacle, à l'installation et à la
+                  narration, elle tente de parler dans ces lieux que le langage laisse vides. Son travail a été exposé au niveau national et
+                  international. Rachel est également auteure, animatrice et illustratrice. Son roman graphique <span class="italic">Jess</span> a été
+                  adapté en une œuvre musicale sur une commande de Pacific Opera Victoria. Rachel est profondément liée à la communauté artistique des
+                  personnes handicapées; elle défend les pratiques artistiques accessibles, organise des expositions et travaille avec des
+                  organisations et des institutions universitaires pour exploiter l'art et la narration. Elle est membre fondatrice de Ghost Rooster,
+                  un collectif d'artistes handicapés, et ne cesse de chercher des occasions de collaborer et de rejoindre la communauté à travers
+                  l'art.
                 </p>
               </article>
             </details>
@@ -985,35 +1171,78 @@
               </summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://marieflanagan.com/">Marie LeBlanc Flanagan</a></span> is an artist working in
-                  the playful spaces between people, related to connection and community. Marie builds experimental video games, playful
-                  installations, and cooperative experiences and has an enduring fondness for the possibilities of trash. Marie founded
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://wyrdartsinitiatives.org/">Wyrd Arts Initiatives</a> , a nationwide nonprofit dedicated to
-                  encouraging, documenting, and connecting creative expression across Canada;
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://droneday.org/">Drone Day,</a> an annual international celebration of drone music communities;
-                  co-founded <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://imaginaryresidency.com/">Imaginary Residency</a> , an artist-run online residency,
-                  co-founded <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://torontogamesweek.com/">Toronto Games Week</a> and co-organizes
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://gaiasymposium.net/">GAIA</a> , a global biennial gathering of playful curators. Marie is on the
-                  board of <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.interartsmatrix.ca/">Inter Arts Matrix</a> , the
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://easternbloc.ca/fr">Eastern Bloc</a> artistic programming committee, and has served as a
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://polarismusicprize.ca/">Polaris Prize</a> Juror. Marie's consulting work with artists and arts
-                  organizations include <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://wizardzines.com/">Wizard Zines</a> ,
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://2021.amaze-berlin.de/">A MAZE. Berlin</a> International Games and Playful Media Festival,
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://processingfoundation.org/">The Processing Foundation</a> ,
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.schoolofma.org/">The School of Machines, Making, and Make-Believe</a> ,
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.ada-x.org/">Ada x</a> ,
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.dailytouslesjours.com/en">Daily Tous Les Jours</a> , and
-                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://gameartsinternational.network/">Game Arts International Network</a> .
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://marieflanagan.com/"
+                      >Marie LeBlanc Flanagan</a
+                    ></span
+                  >
+                  is an artist working in the playful spaces between people, related to connection and community. Marie builds experimental video
+                  games, playful installations, and cooperative experiences and has an enduring fondness for the possibilities of trash. Marie founded
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://wyrdartsinitiatives.org/"
+                    >Wyrd Arts Initiatives</a
+                  >
+                  , a nationwide nonprofit dedicated to encouraging, documenting, and connecting creative expression across Canada;
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://droneday.org/">Drone Day,</a> an
+                  annual international celebration of drone music communities; co-founded
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://imaginaryresidency.com/"
+                    >Imaginary Residency</a
+                  >
+                  , an artist-run online residency, co-founded
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://torontogamesweek.com/"
+                    >Toronto Games Week</a
+                  >
+                  and co-organizes
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="http://gaiasymposium.net/">GAIA</a> , a
+                  global biennial gathering of playful curators. Marie is on the board of
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.interartsmatrix.ca/"
+                    >Inter Arts Matrix</a
+                  >
+                  , the
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://easternbloc.ca/fr">Eastern Bloc</a>
+                  artistic programming committee, and has served as a
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://polarismusicprize.ca/"
+                    >Polaris Prize</a
+                  >
+                  Juror. Marie's consulting work with artists and arts organizations include
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://wizardzines.com/">Wizard Zines</a> ,
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://2021.amaze-berlin.de/"
+                    >A MAZE. Berlin</a
+                  >
+                  International Games and Playful Media Festival,
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://processingfoundation.org/"
+                    >The Processing Foundation</a
+                  >
+                  ,
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.schoolofma.org/"
+                    >The School of Machines, Making, and Make-Believe</a
+                  >
+                  , <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.ada-x.org/">Ada x</a> ,
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.dailytouslesjours.com/en"
+                    >Daily Tous Les Jours</a
+                  >
+                  , and
+                  <a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://gameartsinternational.network/"
+                    >Game Arts International Network</a
+                  >
+                  .
                 </p>
               </article>
             </details>
             <div class="svg-contributors svg-contributors2"></div>
             <details>
-              <summary tabindex="0"><span class="summary-content">ALLISON O'CONNOR</span> <span class="role">City of Ottawa public art liaison</span></summary>
+              <summary tabindex="0">
+                <span class="summary-content">ALLISON O'CONNOR</span> <span class="role">City of Ottawa public art liaison</span>
+              </summary>
               <article>
                 <p>
                   <span class="bold"
-                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca">Allison O'Connor</a></span
+                    ><a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Link opens in a new tab"
+                      href="https://www.linkedin.com/in/allioconnor/?originalSubdomain=ca"
+                      >Allison O'Connor</a
+                    ></span
                   >
                   is a Public Art Officer with the City of Ottawa's Public Art Program. She coordinates and commissions temporary and permanent
                   artworks, as well as a variety of diverse cultural initiatives across the city. Allison is also an internationally touring
@@ -1029,13 +1258,18 @@
               <summary tabindex="0"><span class="summary-content">LAURA TALER</span> <span class="role">concept & realization</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://laurataler.ca/">Laura Taler</a></span> is a Romanian-born, award-winning artist,
-                  filmmaker, choreographer, and performer with a 30-year career in collaborative art practices. Her experience with public art ranges
-                  from large-scale performance works, to projections and screen-based works, to permanent installations. She expertly integrates
-                  mediums, pushes boundaries, and uses technology simply and innovatively. Since the beginning of her career Laura has worked
-                  collaboratively as the director of a team of artists and technicians. Through her company Grimm Pictures, founded in 1994, she has
-                  produced work for a variety of small and large organizations. Laura's strength as an artist lies in her ability to provide a clear
-                  vision to the team of experts that she gathers around each project and to guide that vision with precision and flexibility.
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://laurataler.ca/"
+                      >Laura Taler</a
+                    ></span
+                  >
+                  is a Romanian-born, award-winning artist, filmmaker, choreographer, and performer with a 30-year career in collaborative art
+                  practices. Her experience with public art ranges from large-scale performance works, to projections and screen-based works, to
+                  permanent installations. She expertly integrates mediums, pushes boundaries, and uses technology simply and innovatively. Since the
+                  beginning of her career Laura has worked collaboratively as the director of a team of artists and technicians. Through her company
+                  Grimm Pictures, founded in 1994, she has produced work for a variety of small and large organizations. Laura's strength as an artist
+                  lies in her ability to provide a clear vision to the team of experts that she gathers around each project and to guide that vision
+                  with precision and flexibility.
                 </p>
               </article>
             </details>
@@ -1044,12 +1278,16 @@
               <summary tabindex="0"><span class="summary-content">JOCELYN TODD</span> <span class="role">production manager</span></summary>
               <article>
                 <p>
-                  <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.remembernowmove.art/">Jocelyn Todd</a></span> is a dancer, choreographer,
-                  producer and multi-disciplinary artist currently based in so-called Ottawa. Jocelyn works with the body and its interaction with the
-                  present moment, environment, political landscape, sound, space, concept and other bodies. After graduating from The School of Dance
-                  with a Diploma in Contemporary Dance Studies, Jocelyn split her time between Canada and England. In London, she delved into
-                  self-curated and intensive periods of dance study, and presented her work in the Suffolk High Tide Festival and at London's Robin
-                  Howard Theatre. She has also presented her choreographic works in Ottawa. Most recently (2020-2023):
+                  <span class="bold"
+                    ><a target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab" href="https://www.remembernowmove.art/"
+                      >Jocelyn Todd</a
+                    ></span
+                  >
+                  is a dancer, choreographer, producer and multi-disciplinary artist currently based in so-called Ottawa. Jocelyn works with the body
+                  and its interaction with the present moment, environment, political landscape, sound, space, concept and other bodies. After
+                  graduating from The School of Dance with a Diploma in Contemporary Dance Studies, Jocelyn split her time between Canada and England.
+                  In London, she delved into self-curated and intensive periods of dance study, and presented her work in the Suffolk High Tide
+                  Festival and at London's Robin Howard Theatre. She has also presented her choreographic works in Ottawa. Most recently (2020-2023):
                   <span class="italic">shell</span>, <span class="italic">the A-team</span> and <span class="italic">Time + Light</span>. Jocelyn's
                   film <span class="italic">Gold</span> was presented as part of Dance On Screen at the Mayfair Theatre in Fall 2021. She is deeply
                   thankful for the support of Ottawa Dance Directive and the communities that continue to nurture her, in Ottawa and London.
@@ -1066,9 +1304,14 @@
             <div class="pageInnerContent">
               <div>
                 <p id="thanksSignageFabrication">
-                  Thank you to <a href="https://dymech.ca/" target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab">Dymech</a> and
-                  <a href="https://beaconlite.ca/" target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab">Beacon Lite</a> for fabricating the signage, and to
-                  <a href="https://www.affinityproductions.tv/" target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab">Affinity Production Group</a> for production support.
+                  Thank you to
+                  <a href="https://dymech.ca/" target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab">Dymech</a> and
+                  <a href="https://beaconlite.ca/" target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab">Beacon Lite</a> for
+                  fabricating the signage, and to
+                  <a href="https://www.affinityproductions.tv/" target="_blank" rel="noopener noreferrer" aria-label="Link opens in a new tab"
+                    >Affinity Production Group</a
+                  >
+                  for production support.
                 </p>
                 <p id="thanksKomiku" class="txtBoxDiv txtBoxDivPad">
                   Thank you to Komiku for "The place that never get old", retrieved from
@@ -1124,6 +1367,7 @@
     <script type="module" src="generalRules.js"></script>
     <script type="module" src="outroAudio.js"></script>
     <script type="module" src="playlistBuilder.js"></script>
+    <script type="module" src="focus.js"></script>
     <script type="module" src="ruleStrings.js"></script>
     <script type="module" src="settingsmenu.js"></script>
     <script type="module" src="shuffle.js"></script>

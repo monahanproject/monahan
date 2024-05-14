@@ -2,12 +2,16 @@ import { getState, setState, getLangState, setLangState, updateAriaStatusMessage
 
 let isInverted = getState(); // This will initialize isInverted based on localStorage
 
-
 let settingsBtn = document.getElementById("accessiblityNav");
 let monochromeBtn = document.getElementById("monochromeBtn");
 let increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
 let decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
 let resetBtn = document.getElementById("resetBtn");
+
+function toggleAriaPressed(element) {
+  let isPressed = element.getAttribute("aria-pressed") === "true";
+  element.setAttribute("aria-pressed", !isPressed);
+}
 
 function replaceSvgContent() {
   const isDesktop = window.matchMedia("(min-width: 900px)").matches; // Check if it's desktop
@@ -37,6 +41,7 @@ function replaceSvgContent() {
   }
 }
 
+
 let invertColoursBtn = document.getElementById("invertColoursBtn"); // Get the invert colors button
 const imageSourceMap = {
   // "images/svg/accessIconInvert.svg": "images/svg/accessIcon.svg",
@@ -54,7 +59,6 @@ const imageSourceMap = {
   "images/svg/stopButton.svg": "images/svg/stopButtonInvert.svg",
   "images/svg/playButton.svg": "images/svg/playButtonInvert.svg",
   "images/svg/pauseButton.svg": "images/svg/pauseButtonInvert.svg", // Ensure this is included for correct toggling
-
 };
 
 function toggleImageSources() {
@@ -93,7 +97,7 @@ function toggleSvgBackgrounds() {
     document.querySelectorAll(`.${original}, .${invert}`).forEach((element) => {
       element.classList.toggle(invert, isInverted); // Add if isInverted, remove if not
       if (!isInverted) {
-            console.log(element);
+        console.log(element);
 
         element.classList.remove(invert); // Ensure inverted class is removed if not inverted
       }
@@ -115,6 +119,12 @@ function toggleSvgBackgrounds() {
     }
   });
 }
+
+
+
+
+
+
 
 function swapColors() {
   isInverted = !isInverted; // Toggle the inversion state
@@ -140,6 +150,7 @@ invertColoursBtn.addEventListener("click", swapColors);
 
 function toggleMonochrome() {
   document.body.classList.toggle("monochrome");
+  toggleAriaPressed(monochromeBtn);
 }
 
 // Example: Increasing the root font size by 0.1rem each time
@@ -160,11 +171,18 @@ function changeTextSize(increase) {
 
 settingsBtn.addEventListener("click", function () {
   document.getElementById("slidein").classList.toggle("show");
+  toggleAriaPressed(settingsBtn); // Toggle aria-pressed
 });
 
 monochromeBtn.addEventListener("click", toggleMonochrome);
-increaseTextSizeBtn.addEventListener("click", () => changeTextSize(true));
-decreaseTextSizeBtn.addEventListener("click", () => changeTextSize(false));
+increaseTextSizeBtn.addEventListener("click", () => {
+  changeTextSize(true);
+  toggleAriaPressed(increaseTextSizeBtn); // Toggle aria-pressed
+});
+decreaseTextSizeBtn.addEventListener("click", () => {
+  changeTextSize(false);
+  toggleAriaPressed(decreaseTextSizeBtn); // Toggle aria-pressed
+});
 resetBtn.addEventListener("click", resetSettings);
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -224,11 +242,11 @@ function resetSettings() {
   document.documentElement.style.setProperty("--base-font-size", defaultFontSize);
   localStorage.removeItem("userFontSize"); // Clear stored font size
 
-    // Remove the invert-colors class from the transcript container
-    const transcriptContainer = document.getElementById("transcriptContainer");
-    if (transcriptContainer.classList.contains("invert-colors")) {
-      transcriptContainer.classList.remove("invert-colors");
-    }
+  // Remove the invert-colors class from the transcript container
+  const transcriptContainer = document.getElementById("transcriptContainer");
+  if (transcriptContainer.classList.contains("invert-colors")) {
+    transcriptContainer.classList.remove("invert-colors");
+  }
 
   // Reset color theme variables
   const root = document.documentElement;
@@ -246,12 +264,19 @@ function resetSettings() {
     toggleSvgBackgrounds(); // Ensure SVG backgrounds are reset
   }
 
+  // Reset aria-pressed attributes
+  invertColoursBtn.setAttribute('aria-pressed', 'false');
+  monochromeBtn.setAttribute('aria-pressed', 'false');
+  increaseTextSizeBtn.setAttribute('aria-pressed', 'false');
+  decreaseTextSizeBtn.setAttribute('aria-pressed', 'false');
+  settingsBtn.setAttribute('aria-pressed', 'false');
+
   let defaultRootFontSize = "1rem"; // Default root font size
   document.documentElement.style.setProperty("--base-font-size-rem", defaultRootFontSize);
   document.documentElement.style.fontSize = defaultRootFontSize;
   replaceSvgContent();
-
 }
+
 
 document.addEventListener("keydown", function (event) {
   if (event.key === "d" || event.key === "D") {
