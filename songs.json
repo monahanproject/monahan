@@ -708,6 +708,7 @@
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "short",
@@ -937,8 +938,8 @@
         ],
         "backgroundMusic": "",
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_ALBERT.mp3",
-        "engTrans": "^Albert^^: %\n@The Song%\n %\nYesterday%\nI saw a songbird%\nOn a branch%\nOf a budding maple tree%\nHe was singing an ancient song%\nTo the delight%\nOf spring and me%\n %\nToday%\nThe tree is gone%\nBut the bird yet sings%\nThat ancient song%@@",
-        "frTrans": "^Albert^^ :%\n@La chanson%%\n %\nHier%\nJ\u2019ai vu un oiseau chanteur%\nPerch\u00e9 sur une branche%\nD\u2019un \u00e9rable en bourgeons%\nIl chantait une chanson ancienne%\nAu grand plaisir%\nDu printemps et de moi%\n %\nAujourd\u2019hui%\nL\u2019arbre n\u2019est plus%\nMais l\u2019oiseau chante encore%\nCette chanson ancienne%@@",
+        "engTrans": "^Albert^^: % @The Song% % The elders sang % And we wept % Tears touched the place% Where helpers slept% Together in ceremony% Together in harmony% The elders sang% And we wept%@@",
+        "frTrans": "^Albert^^: % @Le chant% % Les aînés ont chanté % Et nous avons pleuré % Les larmes se sont posées% là où celles et ceux qui aidaient étaient couchés% Ensemble dans une cérémonie% Ensemble en harmonie% Les aînés ont chanté% Et nous avons pleuré%@@",
         "authorCredit": "Albert Dumont",
         "creditDur": 1.632
     },
@@ -997,6 +998,7 @@
         "author": "ALBERT",
         "form": "poetry",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -1308,6 +1310,7 @@
         "author": "ELLEN",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -1450,6 +1453,7 @@
         "author": "JAYNE",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -1500,6 +1504,7 @@
         "author": "KIKO",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "long",
@@ -3148,7 +3153,7 @@
         ],
         "backgroundMusic": "",
         "credit": "./sounds/INTRO_OUTRO_NAMES/NAMES_FIDES.mp3",
-        "engTrans": "\u200a\u200a^Fides^^: When we hear the word yawn, it's almost like the body goes -- Great idea! Why didn't I think of that? And it's 'cause our brain's been so busy doing other things that we haven't. And we've learned that yawns are impolite. In primate culture only when the big baboon yawns do we get to yawn. Well, we need more of our big baboons, yawning. Or maybe we just need a more egalitarian culture and we could all yawn together. %%\nIt's like the ultimate self-help booklet but it's inside the body, or a self-cleaning oven or something that just knows how to take care of business. And when I yawn as I teach a class, I'm in such an easy, open state. So the yawn is a balancer, an opener, an expressor, all the different sounds that can come from a yawn, you know, ohhhhhggghhh, those squishy sounds. That's like a little massage right there for my vocal chords. And they let me know that those impolite sounds are of use, that it's not like language gets to dominate my vocal chords. But the yawn gives a sense of the importance and the role of the nonverbals.%\n%\n^Laura^^: What are the nonverbals? %\n%\n\u200a\u200a^Fides^^:You start down with a grunt, and then the groan, and then the moan, and then the sigh, and then you could have a sob and a laugh, and a shriek and a scream, way at the top. Right? [Fides has been increasing her pitch as she moves from a low grunt, groan, middle moan, soft sigh, upper pitch sob, laugh, high shriek, super-high scream at her top pitch.]%\n%\n\u200a\u200a^Fides^^: Was that okay for the mic? %\n%\n^Laura^^: Oh, awesome.  [Laura laughs at Fides\u2019 virtuosic example of healthy vocal gymnastics.]%\n%\n\u200a\u200a^Fides^^: There's so many more. Right? But those are the sounds that we might not share, sometimes we think they're only on the traumatic side. But you can have a squeal of delight. A shriek of delight. %\n%\nOften we forget that we're resonant beings. I think language has, in a way, stolen some of the vibration from us because that vibration in my body, so that's the part of me that knows, ohhhhhh, a little bit of a groan or, uhhhhh, a little bit of moan, or ahhhhhhh, a little bit of a sigh.%\n%\nThose sounds, those nonverbals, that's the vibration of the human body expressing sensation, feeling, without yet turning that into constructs or interpretations of sensation. So I'm not saying, oh, that means I feel bad. Oh, that means I feel pleasure. Though it might mean those things. So I guess for me, sound is such a basic way of communicating what's going on.\n",
+        "engTrans": "\u200a\u200a^Fides^^: When we hear the word yawn, it's almost like the body goes -- Great idea! Why didn't I think of that? And it's 'cause our brain's been so busy doing other things that we haven't. And we've learned that yawns are impolite. In primate culture only when the big baboon yawns do we get to yawn. Well, we need more of our big baboons, yawning. Or maybe we just need a more egalitarian culture and we could all yawn together. %%\nIt's like the ultimate self-help booklet but it's inside the body, or a self-cleaning oven or something that just knows how to take care of business. And when I yawn as I teach a class, I'm in such an easy, open state. So the yawn is a balancer, an opener, an expressor, all the different sounds that can come from a yawn, you know, ohhhhhggghhh, those squishy sounds. That's like a little massage right there for my vocal chords. And they let me know that those impolite sounds are of use, that it's not like language gets to dominate my vocal chords. But the yawn gives a sense of the importance and the role of the nonverbals.%\n%\n^Laura^^: What are the nonverbals? %\n%\n\u200a\u200a^Fides^^: You start down with a grunt, and then the groan, and then the moan, and then the sigh, and then you could have a sob and a laugh, and a shriek and a scream, way at the top. Right? [Fides has been increasing her pitch as she moves from a low grunt, groan, middle moan, soft sigh, upper pitch sob, laugh, high shriek, super-high scream at her top pitch.]%\n%\n\u200a\u200a^Fides^^: Was that okay for the mic? %\n%\n^Laura^^: Oh, awesome.  [Laura laughs at Fides\u2019 virtuosic example of healthy vocal gymnastics.]%\n%\n\u200a\u200a^Fides^^: There's so many more. Right? But those are the sounds that we might not share, sometimes we think they're only on the traumatic side. But you can have a squeal of delight. A shriek of delight. %\n%\nOften we forget that we're resonant beings. I think language has, in a way, stolen some of the vibration from us because that vibration in my body, so that's the part of me that knows, ohhhhhh, a little bit of a groan or, uhhhhh, a little bit of moan, or ahhhhhhh, a little bit of a sigh.%\n%\nThose sounds, those nonverbals, that's the vibration of the human body expressing sensation, feeling, without yet turning that into constructs or interpretations of sensation. So I'm not saying, oh, that means I feel bad. Oh, that means I feel pleasure. Though it might mean those things. So I guess for me, sound is such a basic way of communicating what's going on.\n",
         "frTrans": "\u200a^Fides^^ : Quand on entend le mot b\u00e2iller, c\u2019est un peu comme si le corps se mettait \u00e0 dire : \u00ab Bonne id\u00e9e! Pourquoi n\u2019y ai-je pas pens\u00e9 avant? \u00bb C\u2019est parce que notre cerveau \u00e9tait tellement occup\u00e9 \u00e0 faire d\u2019autres choses que nous n\u2019y avons pas pens\u00e9. Et puis, nous avons appris que les b\u00e2illements sont impolis. Dans la culture des primates, il est permis de b\u00e2iller seulement lorsque le grand babouin b\u00e2ille. Eh bien, nous avons besoin de plus de grands babouins qui b\u00e2illent. Ou peut-\u00eatre avons-nous simplement besoin d\u2019une culture plus \u00e9galitaire o\u00f9 nous pourrions tous b\u00e2iller ensemble.%\n %\nC\u2019est comme l\u2019ultime brochure d\u2019auto-assistance, qui serait rang\u00e9e \u00e0 l\u2019int\u00e9rieur du corps, ou un four autonettoyant ou quelque chose qui sait comment s\u2019occuper de ses affaires. Et lorsque je b\u00e2ille en donnant un cours, je suis dans un \u00e9tat de naturel et d\u2019ouverture. Le b\u00e2illement est donc un d\u00e9clencheur d\u2019\u00e9quilibre, d\u2019ouverture, d\u2019expression; tous les diff\u00e9rents sons qui peuvent provenir d\u2019un b\u00e2illement, tu sais, ohhhhhggghhh, ces sons moelleux. C\u2019est comme un petit massage pour mes cordes vocales. Elles me font savoir que ces sons impolis sont utiles, que ce n\u2019est pas comme si le langage devait les dominer. Mais le b\u00e2illement donne une id\u00e9e de l\u2019importance et du r\u00f4le des signes non verbaux.%\n %\n^Laura^^ : Que sont les signes non verbaux?%\n %\n\u200a\u200a^Fides^^ : On commence par un ronflement sourd, puis on passe \u00e0 un grognement, puis un g\u00e9missement, puis un soupir, \u00e7a peut ensuite \u00eatre un sanglot et un rire, un cri et un hurlement, vers le plus aigu. Tu vois? [Fides hausse la tonalit\u00e9 en passant d\u2019un ronflement sourd \u00e0 un grognement, \u00e0 un g\u00e9missement moyen, \u00e0 un soupir doux, \u00e0 un sanglot aigu, \u00e0 un rire, \u00e0 un cri aigu, \u00e0 un hurlement super aigu au plus haut de son registre.]%\n %\n\u200a^Fides^^ : C\u2019\u00e9tait bon pour le micro?%\n %\n^Laura^^ : Oh, g\u00e9nial. [Laura rit devant l\u2019exemple virtuose de gymnastique vocale de Fides.]%\n %\n\u200a\u200a^Fides^^ : Il y en a tellement d\u2019autres, n\u2019est-ce pas? Mais ce sont des sons que nous ne partageons peut-\u00eatre pas, parce que nous pensons qu\u2019ils rel\u00e8vent du c\u00f4t\u00e9 traumatique. Mais on peut aussi avoir un cri de joie. Un hurlement de joie.%\n %\nNous oublions souvent que nous sommes des \u00eatres de r\u00e9sonance. Je pense que le langage nous a, d\u2019une certaine mani\u00e8re, vol\u00e9 une partie de la vibration parce que cette vibration dans mon corps, c\u2019est la partie de moi qui sait, ohhhhh, un petit grognement ou, uhhhhh, un petit g\u00e9missement, ou ahhhhhh, un petit soupir.%\n %\nCes sons, ces signes non verbaux, c\u2019est la vibration du corps humain qui exprime la sensation, le sentiment, sans pour autant en faire des constructions ou des interpr\u00e9tations. Je ne dis donc pas, oh, cela signifie que je me sens mal. Oh, cela signifie que je me sens bien. Bien que \u00e7a puisse signifier tout \u00e7a. Pour moi, le son est un moyen fondamental de communiquer ce qui se passe.",
         "authorCredit": "Fides Krucker",
         "creditDur": 1.584
@@ -3403,6 +3408,7 @@
         "author": "ELLEN",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -3448,6 +3454,7 @@
         "author": "ELLEN",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -3539,6 +3546,7 @@
         "author": "AMY",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -3562,6 +3570,7 @@
         "author": "JAYNE",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle"
         ],
         "length": "medium",
@@ -3586,6 +3595,7 @@
         "author": "JAYNERACHEL",
         "form": "interview",
         "placement": [
+            "beginning",
             "middle",
             "end"
         ],
@@ -3611,7 +3621,9 @@
         "author": "JAYNE",
         "form": "interview",
         "placement": [
-            "middle"
+            "middle",
+            "end"
+
         ],
         "length": "medium",
         "language": "verbal",
