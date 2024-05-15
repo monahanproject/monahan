@@ -8,7 +8,6 @@ let settingsBtn, monochromeBtn, increaseTextSizeBtn, decreaseTextSizeBtn, resetB
 let isMonochrome = false;
 
 function init() {
-  console.log("yoooo");
   cacheDOMElements();
   bindEvents();
   replaceSvgContent();
@@ -46,13 +45,12 @@ function initializeUserSettings() {
 }
 
 // Utility Functions
-function toggleAriaPressed(element) {
+export function toggleAriaPressed(element) {
   const isPressed = element.getAttribute("aria-pressed") === "true";
   element.setAttribute("aria-pressed", !isPressed);
 }
 
 function replaceSvgContent() {
-  console.log("it's happening");
   const isDesktop = window.matchMedia("(min-width: 900px)").matches;
   const logoPath = isDesktop ?
     (isInverted ? "images/svg/monohanLogoDesktopInvert2.svg" : "images/svg/monohanLogoDesktop2.svg") :

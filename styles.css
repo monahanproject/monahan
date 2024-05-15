@@ -273,12 +273,6 @@ button {
   -khtml-user-select: none;
 }
 
-#langToggle {
-  /* text-decoration: none; */
-  /* text-transform: uppercase; */
-  /* cursor: pointer; */
-}
-
 /************************/
 /******** PAGE **********/
 /************************/
@@ -310,17 +304,6 @@ button {
   align-items: center;
 }
 
-#contributorsPage,
-#productionTeamPage,
-#whereToFindUsPage,
-#howItWorksPage {
-  /* padding: 3rem; */
-}
-
-/* #aboutPage .pageContentTxt > :first-child {
-  margin-top: 2rem;
-} */
-
 .pageContent,
 .pageContentTxt,
 #howToListenPage,
@@ -338,17 +321,8 @@ button {
 
 #landingPage {
   min-height: 100vh;
-  /* padding: 2rem; */
 }
 
-#aboutPage .sideBySideTxtImage {
-  /* position: relative; */
-}
-
-#curiousEarsPage {
-  /* display: flex; */
-  /* flex-direction: column; */
-}
 
 #playerPage {
   width: 100vw;
@@ -543,10 +517,6 @@ header {
     max-height: fit-content;
     /* padding: 2rem; */
   }
-
-  #thanksPagePageContentTxt {
-    /* padding: 2rem; */
-  }
 }
 
 #thanksPagePageContentTxt .pageContentTxt {
@@ -635,10 +605,6 @@ p {
   font-weight: bold;
 }
 
-.txtBoxDiv {
-  /* padding: 1rem; */
-  /* padding-top: 2rem; */
-}
 
 .txtBoxDivLast {
   /* padding: 1rem; */
@@ -738,16 +704,8 @@ p {
   }
 }
 
-.lettersBox {
-  /* display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
-  max-width: 90vw; */
-}
-
 @media screen and (min-width: 900px) {
-  .lettersBox {
-  }
+
 
   #artPubArt {
     max-width: 8rem;
@@ -982,9 +940,6 @@ h2 {
   margin: 0 0 1.75em 0;
 }
 
-#accessH2 {
-  /* margin-top: -3rem; */
-}
 
 #monH2 {
   font-family: "DM Sans", sans-serif;
@@ -1343,16 +1298,6 @@ li {
   background-color: var(--darkgreen);
 }
 
-#progress-dot {
-  /* position: absolute;
-  top: -3px;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  background-color: var(--darkgreen);
-  border-radius: 50%; */
-}
-
 .time-labels {
   display: flex;
   justify-content: space-between;
@@ -1546,12 +1491,7 @@ input[type="range"] {
   background-size: auto 61px;
   height: 66px;
   width: 100vw;
-  /* padding-bottom: 0.5rem; */
   margin-top: 2rem;
-}
-
-.svg-works-invert {
-  /* background-image: url("images/svg/svg-worksInvert.svg"); */
 }
 
 .svg-map {
@@ -1730,10 +1670,6 @@ input[type="range"] {
   margin-bottom: 2rem;
 }
 
-#transcriptContainer:hover {
-  /* opacity: 0.6; */
-}
-
 #transcriptContainer {
   /* opacity: 0; */
   transform: translateY(20px);
@@ -1861,12 +1797,6 @@ article > p {
     grid-template-columns: 1fr auto 1fr;
   }
 
-  .role {
-    /* grid-row: 1;
-    grid-column: 2;
-    margin-top: 0rem;
-    margin-left: -62.5vw; */
-  }
   summary::after {
     grid-row: 1;
     grid-column: 3;

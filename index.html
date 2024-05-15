@@ -143,8 +143,8 @@
       </section>
       <section id="playerPage" class="page">
         <div id="audio-player-container">
-          <!-- Play/Pause Button -->
-          <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Play Audio" aria-pressed="false">
+          <!-- Play/Pause Button -->        
+          <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Play Audio" aria-pressed="false" tabindex="0">
             <span id="play-button-svg-container">
               <img src="images/svg/playButton.svg" alt="Play button" aria-hidden="true" class="svg-icon" />
             </span>
@@ -212,11 +212,12 @@
                 </svg>
               </button>
             </div>
-          </div>
-
-          <!-- Transcript and Debug Containers -->
+                      <!-- Transcript and Debug Containers -->
           <div id="transButtonContainer"></div>
           <div id="transcriptContainer"></div>
+          </div>
+
+
         </div>
 
         <div id="debugdiv">
@@ -396,6 +397,8 @@
     <script type="module" src="specificRules.js" defer></script>
     <script type="module" src="translate.js" defer></script>
     <script type="module" src="transcript.js" defer></script>
+    <script type="module" src="transcriptMaker.js" defer></script>
+
     <script type="module" src="ariahide.js" defer></script>
   </body>
 </html>

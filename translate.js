@@ -1,8 +1,9 @@
 import { getState, setState, getLangState, setLangState, updateAriaStatusMessage } from "./state.js";
 import { productionPageEN, productionPageFR, contributorsPageEN, contributorsPageFR, strings } from "./translationStrings.js";
+import { toggleAriaPressed } from "./settingsmenu.js";
 
 let lang = localStorage.getItem("lang") || "EN"; // Retrieve initial language setting
-console.log(lang);
+
 
 function toggleLanguageAndStorePref() {
   console.log("toggled lang");
