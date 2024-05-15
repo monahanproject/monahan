@@ -1,421 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="styles.css" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css2?family=PT+Mono&amp;display=swap" rel="stylesheet" />
-    <title>Monahan</title>
-    <meta name="author" content="Marie Claire LeBlanc Flanagan" />
-    <meta name="description" content="A sound walk for curious ears" />
-    <meta property="og:title" content="Monahan" />
-    <meta property="og:description" content="Wander and listen" />
-    <meta property="og:image" content="images/svg/MonohanLogoMobile.svg" />
-    <meta property="og:url" content="https://monahanwalks.ca/index.html" />
-    <meta property="og:type" content="game" />
-    <meta name="twitter:title" content="Monahan" />
-    <meta name="twitter:description" content="Wander and listen" />
-    <meta name="twitter:image" content="https://monahanwalks.ca/images/mon1.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/monahan/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/monahan/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/monahan/favicon-16x16.png" />
-    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="styles.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet" />
+  <title>Monahan</title>
+  <meta name="author" content="Marie Claire LeBlanc Flanagan" />
+  <meta name="description" content="A sound walk for curious ears" />
+  <meta property="og:title" content="Monahan" />
+  <meta property="og:description" content="Wander and listen" />
+  <meta property="og:image" content="images/svg/MonohanLogoMobile.svg" />
+  <meta property="og:url" content="https://monahanwalks.ca/index.html" />
+  <meta property="og:type" content="game" />
+  <meta name="twitter:title" content="Monahan" />
+  <meta name="twitter:description" content="Wander and listen" />
+  <meta name="twitter:image" content="https://monahanwalks.ca/images/mon1.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/monahan/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/monahan/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/monahan/favicon-16x16.png" />
+  <script>
+    window.addEventListener("load", () => {
+      document.body.classList.remove("preload");
+    });
+  </script>
+</head>
+<body class="preload">
+  <div aria-live="polite" aria-atomic="true" id="statusMessage" style="position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden;"></div>
 
-    <script>
-      window.addEventListener("load", (event) => {
-        document.body.classList.remove("preload");
-      });
-    </script>
-  </head>
-  <body class="preload">
-    <div
-      aria-live="polite"
-      aria-atomic="true"
-      id="statusMessage"
-      style="position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden"></div>
+  <nav id="skiplinks">
+    <a href="#landingPage" class="skip-link">Skip to Main Content</a>
+    <a href="#curiousEarsPage" class="skip-link">Skip to Curious Ears</a>
+    <a href="#aboutPage" class="skip-link">Skip to About</a>
+    <a href="#howToListenPage" class="skip-link">Skip to How to Listen</a>
+    <a href="#howItWorksPage" class="skip-link">Skip to How It Works</a>
+    <a href="#contributorsPage" class="skip-link">Skip to Contributors</a>
+    <a href="#productionTeamPage" class="skip-link">Skip to Production Team</a>
+    <a href="#thanksPage" class="skip-link">Skip to Thanks and Acknowledgements</a>
+  </nav>
 
-    <div id="skiplinks">
-      <a href="#landingPage" class="skip-link">Skip to Main Content</a>
-      <a href="#curiousEarsPage" class="skip-link">Skip to Curious Ears</a>
-      <a href="#aboutPage" class="skip-link">Skip to About</a>
-      <a href="#howToListenPage" class="skip-link">Skip to How to Listen</a>
-      <a href="#howItWorksPage" class="skip-link">Skip to How It Works</a>
-      <a href="#contributorsPage" class="skip-link">Skip to Contributors</a>
-      <a href="#productionTeamPage" class="skip-link">Skip to Production Team</a>
-      <a href="#thanksPage" class="skip-link">Skip to Thanks and Acknowledgements</a>
-    </div>
+  <main id="playerPageMain">
+    <section id="landingPage" class="page" role="main">
+      <header>
+        <h1 class="visually-hidden">Monahan</h1>
+        <nav>
+          <div id="toggleLanguage" class="navIcons btn noselect" tabindex="0" aria-label="Toggle Language">
+            <img src="images/svg/FR.svg" alt="language toggle icon" id="langToggle" role="button" aria-pressed="false" />
+          </div>
+          <div id="accessiblityNav" class="navIcons btn noselect wrapperBtn wrapperBtnClosed" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Accessibility Settings">
+            <img src="images/svg/accessIconInvert.svg" alt="accessibility settings icon" id="accessIcon" />
+          </div>
+        </nav>
+        <div id="slidein" class="slide-in from-left" aria-hidden="true">
+          <ul id="settingsDropdown" class="slide-in-content" role="menu">
+            <li class="dropdownContainer invertColors" role="menuitem">
+              <span id="invertColorsTxt">Invert Colours</span>
+              <button id="invertColoursBtn" aria-pressed="false" aria-label="Invert Colors">
+                <img src="images/svg/invertColors.svg" alt="Invert Colors settings icon" style="width: 24px; height: 24px" />
+              </button>
+            </li>
+            <li class="dropdownContainer monochromee" role="menuitem">
+              <span id="monochromeTxt">Monochrome</span>
+              <button id="monochromeBtn" aria-pressed="false" aria-label="Monochrome">
+                <img src="images/svg/monochrome1.svg" alt="Monochrome" style="width: 24px; height: 24px" />
+              </button>
+            </li>
+            <li class="dropdownContainer textSize" role="menuitem">
+              <span id="textSizeTxt">Text Size</span>
+              <button id="decreaseTextSizeBtn" aria-pressed="false" aria-label="Decrease text size">-</button>
+              <button id="increaseTextSizeBtn" aria-pressed="false" aria-label="Increase text size">+</button>
+            </li>
+            <li class="dropdownContainer" role="menuitem">
+              <button id="resetBtn" aria-label="Reset">Reset</button>
+            </li>
+          </ul>
+        </div>
+        <div id="wrapperToggleDiv" class="settingsMenu"></div>
+      </header>
 
-    <div id="aria-status" role="status" aria-live="polite" aria-hidden="true" style="position: absolute; left: -9999px"></div>
+      <div id="centerLandingPageContent">
+        <div id="landingPageContainer">
+          <p class="txtBoxDiv land" id="engLand">
+            MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.
+          </p>
+          <div id="titleText">
+            <h2 class="visually-hidden">Monahan: Art, Public Art</h2>
+          </div>
+          <p class="txtBoxDiv land" id="frLand">
+            MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des millénaires.
+          </p>
+        </div>
+      </div>
 
-    <main id="playerPageMain">
-      <section id="landingPage" class="page">
-        <header>
-          <h1 class="visually-hidden">Monahan</h1>
-          <!-- Hidden but accessible main title for screen readers -->
-
-          <nav>
-            <div id="toggleLanguage" class="navIcons btn noselect" tabindex="0">
-              <img src="images/svg/FR.svg" alt="language toggle icon" id="langToggle" tabindex="0" role="button" aria-pressed="false" />
+      <div class="arrow1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="70" viewbox="0 0 60 70" fill="none" alt="arrow indicating you should scroll down" id="arrow" role="none" class="decorativeImage">
+          <path d="M29.8613 64.2524L29.8613 2.28662" stroke="var(--darkgreen)" stroke-width="3.51378" stroke-miterlimit="10" stroke-linecap="round"></path>
+          <path d="M29.8613 68.1411L57.8415 40.2856" stroke="var(--darkgreen)" stroke-width="3.51378" stroke-miterlimit="10" stroke-linecap="round"></path>
+          <path d="M1.96045 40.2856L29.8611 68.1411" stroke="var(--darkgreen)" stroke-width="3.51378" stroke-miterlimit="10" stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </section>
+    <section id="curiousEarsPage" class="page">
+      <div class="pageContent">
+        <img src="images/svg/firn.svg" alt="decorative fern made of small dashes" class="decorativeImage" id="fern" />
+        <h2 id="curiousEarsTxt">A Sound Piece<br />for Curious Ears</h2>
+      </div>
+    </section>
+    <section id="playerPage" class="page">
+      <div id="audio-player-container">
+        <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Play/Pause Audio" aria-pressed="false">
+          <span id="play-button-svg-container">
+            <img src="images/svg/playButton.svg" alt="Play button" aria-hidden="true" class="svg-icon" />
+          </span>
+          <span id="play-button-text-container">BEGIN</span>
+        </button>
+        <div id="ffrw-button-container">
+          <button type="button" id="skipBackwardButton" class="skip-button" aria-label="Skip backwards 15 seconds">
+            <span id="skip-backward-button-svg-container">
+              <img src="images/svg/15.svg" alt="15 seconds" aria-hidden="true" class="svg-icon" />
+            </span>
+          </button>
+          <button type="button" id="skipForwardButton" class="skip-button" aria-label="Skip forward 30 seconds">
+            <span id="skip-forward-button-svg-container">
+              <img src="images/svg/30.svg" alt="30 seconds" aria-hidden="true" class="svg-icon" />
+            </span>
+          </button>
+        </div>
+        <div id="progress-container" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" aria-label="Playback progress">
+          <div id="progress-bar" style="width: 6.61621%"></div>
+          <div id="progress-dot" tabindex="0"></div>
+        </div>
+        <div class="time-labels">
+          <span id="time-played" class="time-label" aria-live="polite"></span>
+          <span id="time-remaining" class="time-label" aria-live="polite"></span>
+        </div>
+        <audio id="music_player" aria-label="Audio player"></audio>
+        <div id="volume-container" aria-label="Volume control">
+          <button id="lower-vol" class="volume-icon" aria-label="Lower volume" aria-pressed="false">
+            <svg width="13" height="24" viewbox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)"></path>
+            </svg>
+          </button>
+          <div class="volume-bar-and-slider">
+            <div id="volume-bar-background">
+              <div id="volume-bar-filler"></div>
+              <div id="volume-bar-thinner"></div>
             </div>
-
-            <div
-              id="accessiblityNav"
-              class="navIcons btn noselect wrapperBtn wrapperBtnClosed"
-              role="button"
-              tabindex="0"
-              aria-haspopup="true"
-              aria-expanded="false">
-              <img src="images/svg/accessIconInvert.svg" alt="accessibility settings icon" id="accessIcon" tabindex="0" />
+            <input type="range" id="volume-slider" max="100" min="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" role="slider" aria-label="Volume slider" />
+          </div>
+          <button id="raise-vol" aria-label="Raise volume" class="volume-icon" aria-pressed="false">
+            <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.73965 0L5.84544 5.81224H0.0332031V17.4367H5.84544L9.73965 23.249H11.6577V0H9.73965ZM14.5638 2.90612V5.81224C15.0578 5.81224 15.5519 5.87036 16.0169 5.98661C18.5161 6.62596 20.376 8.89273 20.376 11.6245C20.376 14.3562 18.5452 16.623 16.0169 17.2624C15.5519 17.3786 15.0578 17.4367 14.5638 17.4367V20.3428C15.2903 20.3428 15.9587 20.2266 16.6562 20.0813H16.7434C20.5214 19.1223 23.2822 15.6931 23.2822 11.6245C23.2822 7.55591 20.5214 4.12669 16.7434 3.16767C16.075 2.9933 15.3194 2.90612 14.5638 2.90612ZM14.5638 8.71836V14.5306C14.8254 14.5306 15.0869 14.5015 15.2903 14.4434C16.54 14.1237 17.4699 12.9613 17.4699 11.6245C17.4699 10.2877 16.569 9.12522 15.2903 8.80555C15.0578 8.74742 14.7963 8.71836 14.5638 8.71836Z" fill="var(--darkgreen)"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="transButtonContainer"></div>
+        <div id="transcriptContainer"></div>
+      </div>
+      <div id="debugdiv">
+        <div id="debug">
+          <p><span class="debugHead">Track name:</span><span id="currTrackName"></span></p>
+          <p><span class="debugHead">Url:</span><span id="currURL"></span></p>
+          <p><span class="debugHead">Track duration (seconds):</span><span id="currDurr"></span></p>
+          <p><span class="debugHead">Playlist duration (minutes):</span><span id="totalDurr"></span></p>
+          <p><span class="debugHead">Current Index:</span> <span id="indexNo"></span></p>
+          <p><span class="debugHead">Tags for current track:</span><span id="currTags"></span></p>
+          <p><span class="debugHead">Credits:</span></p>
+          <p id="currCredit"></p>
+          <p><br /></p>
+          <p><span class="debugHead">Credits (to be played at the end):</span></p>
+          <p id="creditStackHTML"></p>
+          <p><br /></p>
+          <p id="shuffle"><span class="debugHead">Full TrackList:</span><span id="fullList"></span></p>
+          <br />
+          <p><span class="debugHead">Log:</span></p>
+          <p><br /></p>
+          <p><span id="displayConsoleLog"></span></p>
+        </div>
+      </div>
+    </section>
+    <section id="aboutPage" class="page">
+      <div class="sideBySideTxtImage">
+        <div class="pageContentTxt">
+          <div class="pageInnerContent">
+            <div class="headerDiv">
+              <h2 id="aboutH2"></h2>
+              <h3 id="monH2"></h3>
             </div>
-          </nav>
-
-          <div id="slidein" class="slide-in from-left" aria-hidden="true">
-            <ul id="settingsDropdown" class="slide-in-content" role="menu">
-              <li class="dropdownContainer invertColors" role="menuitem">
-                <span id="invertColorsTxt">Invert Colours</span>
-                <button id="invertColoursBtn" aria-pressed="false">
-                  <img src="images/svg/invertColors.svg" alt="Invert Colors settings icon" style="width: 24px; height: 24px" />
-                </button>
-              </li>
-              <li class="dropdownContainer monochromee" role="menuitem">
-                <span id="monochromeTxt">Monochrome</span>
-                <button id="monochromeBtn" aria-pressed="false">
-                  <img src="images/svg/monochrome1.svg" alt="Monochrome" style="width: 24px; height: 24px" />
-                </button>
-              </li>
-              <li class="dropdownContainer textSize" role="menuitem">
-                <span id="textSizeTxt">Text Size</span>
-                <button id="decreaseTextSizeBtn" aria-pressed="false" aria-label="Decrease text size">-</button>
-                <button id="increaseTextSizeBtn" aria-pressed="false" aria-label="Increase text size">+</button>
-              </li>
-              <li class="dropdownContainer" role="menuitem">
-                <button id="resetBtn">Reset</button>
-              </li>
+            <div class="txtBoxDiv">
+              <p class="txtBoxDiv" id="soundForCurious"></p>
+              <p class="txtBoxDiv" id="experienceAnew"></p>
+              <p class="txtBoxDiv txtBoxDivLast" id="delveInto"></p>
+            </div>
+          </div>
+        </div>
+        <div class="svg-about"></div>
+      </div>
+    </section>
+    <section id="howToListenPage" class="page">
+      <div class="sideBySideTxtImage reverse">
+        <div class="pageContentTxt">
+          <div class="pageInnerContent">
+            <div class="headerDiv">
+              <h2 id="howToListenH2"></h2>
+            </div>
+            <ul class="access">
+              <li id="scanQR"></li>
+              <li id="arriveWebsite"></li>
+              <li id="putHeadphones"></li>
+              <li id="clickBegin"></li>
+              <li id="listenSoundPiece"></li>
+            </ul>
+            <p id="listenAnywhere" class="txtBoxDiv txtBoxDivLast"></p>
+          </div>
+        </div>
+        <div class="svg-upPlant"></div>
+      </div>
+    </section>
+    <section id="howItWorksPage" class="page">
+      <div class="sideBySideTxtImage">
+        <div class="pageContentTxt">
+          <div class="pageInnerContent">
+            <div class="headerDiv">
+              <h2 id="howitWorksH2">HOW IT WORKS</h2>
+            </div>
+            <p class="txtBoxDiv" id="eachTimeYouClick"></p>
+            <p class="txtBoxDiv txtBoxDivPad txtBoxDivLast" id="ByBringingTogether"></p>
+          </div>
+        </div>
+        <div class="svg-works"></div>
+      </div>
+    </section>
+    <section id="whereToFindUsPage" class="page">
+      <div class="sideBySideTxtImage reverse">
+        <div class="pageContentTxt">
+          <div class="pageInnerContent">
+            <div class="headerDiv">
+              <h2 id="whereToFindUsH2"></h2>
+            </div>
+            <p id="visit" class="txtBoxDiv"></p>
+            <br />
+            <div class="headerDiv">
+              <h2 id="accessH2"></h2>
+            </div>
+            <ul class="access">
+              <li id="pavedPaths"></li>
+              <li id="smartphoneQRAccess"></li>
+              <li id="qrCodeLocations"></li>
+              <li id="benchQRCodes"></li>
+              <li id="noWashrooms"></li>
             </ul>
           </div>
-          <div id="wrapperToggleDiv" class="settingsMenu"></div>
-        </header>
-
-        <div id="centerLandingPageContent">
-          <div id="landingPageContainer">
-            <h3 class="txtBoxDiv land" id="engLand">
-              MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.
-            </h3>
-            <div id="titleText">
-              <h2 class="visually-hidden">Monahan: Art, Public Art</h2>
-            </div>
-            <h3 class="txtBoxDiv land" id="frLand">
-              MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des
-              millénaires.
-            </h3>
-          </div>
         </div>
-
-        <div class="arrow1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="60"
-            height="70"
-            viewbox="0 0 60 70"
-            fill="none"
-            alt="arrow indicating you should scroll down"
-            id="arrow"
-            role="none"
-            class="decorativeImage">
-            <path
-              d="M29.8613 64.2524L29.8613 2.28662"
-              stroke="var(--darkgreen)"
-              stroke-width="3.51378"
-              stroke-miterlimit="10"
-              stroke-linecap="round"></path>
-            <path
-              d="M29.8613 68.1411L57.8415 40.2856"
-              stroke="var(--darkgreen)"
-              stroke-width="3.51378"
-              stroke-miterlimit="10"
-              stroke-linecap="round"></path>
-            <path
-              d="M1.96045 40.2856L29.8611 68.1411"
-              stroke="var(--darkgreen)"
-              stroke-width="3.51378"
-              stroke-miterlimit="10"
-              stroke-linecap="round"></path>
-          </svg>
+        <div class="svg-map">
+          <span id="PondAltImg" role="img" aria-label="Outline of Monahan Pond / Contour de l'étang de Monahan"></span>
         </div>
-      </section>
-      <section id="curiousEarsPage" class="page">
-        <div class="pageContent">
-          <img src="images/svg/firn.svg" alt="decorative fern made of small dashes" class="decorativeImage" id="fern" />
-          <h2 id="curiousEarsTxt">
-            A Sound Piece<br />
-            for Curious Ears
-          </h2>
-        </div>
-      </section>
-      <section id="playerPage" class="page">
-        <div id="audio-player-container">
-          <button
-            type="button"
-            id="play-button"
-            class="play-icon"
-            aria-controls="music_player"
-            aria-label="Button to play and pause audio"
-            aria-pressed="false">
-            <span id="play-button-svg-container">
-              <img src="images/svg/playButton.svg" alt="a simple triangular button" aria-hidden="true" class="svg-icon" />
-            </span>
-            <span id="play-button-text-container">BEGIN</span>
-          </button>
-          <div id="ffrw-button-container">
-            <button type="button" id="skipBackwardButton" class="skip-button" aria-label="Skip backwards 15 seconds">
-              <span id="skip-backward-button-svg-container">
-                <img src="images/svg/15.svg" alt="15 seconds" aria-hidden="true" class="svg-icon" />
-              </span>
-            </button>
-            <button type="button" id="skipForwardButton" class="skip-button" aria-label="Skip forward 30 seconds">
-              <span id="skip-forward-button-svg-container">
-                <img src="images/svg/30.svg" alt="30 seconds" aria-hidden="true" class="svg-icon" />
-              </span>
-            </button>
-          </div>
-
-          <div id="progress-container" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" aria-label="Playback progress">
-            <div id="progress-bar" style="width: 6.61621%"></div>
-            <div id="progress-dot" tabindex="0"></div>
-          </div>
-          <div class="time-labels">
-            <span id="time-played" class="time-label" aria-live="polite"></span>
-            <span id="time-remaining" class="time-label" aria-live="polite"></span>
-          </div>
-          <audio id="music_player" aria-label="Audio player"></audio>
-
-          <div id="volume-container" aria-label="Volume control">
-            <button id="lower-vol" class="volume-icon" aria-label="Lower volume" aria-pressed="false">
-              <svg width="13" height="24" viewbox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.4428 0L6.54857 5.81224H0.736328V17.4367H6.54857L10.4428 23.249H12.3608V0H10.4428Z" fill="var(--darkgreen)"></path>
-              </svg>
-            </button>
-            <div class="volume-bar-and-slider">
-              <div id="volume-bar-background">
-                <div id="volume-bar-filler"></div>
-                <div id="volume-bar-thinner"></div>
-                <!-- New thinner filler -->
-              </div>
-              <input
-                type="range"
-                id="volume-slider"
-                max="100"
-                min="0"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow="50"
-                role="slider"
-                aria-label="Volume slider" />
-            </div>
-            <button id="raise-vol" aria-label="Raise volume" class="volume-icon" aria-pressed="false">
-              <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M9.73965 0L5.84544 5.81224H0.0332031V17.4367H5.84544L9.73965 23.249H11.6577V0H9.73965ZM14.5638 2.90612V5.81224C15.0578 5.81224 15.5519 5.87036 16.0169 5.98661C18.5161 6.62596 20.376 8.89273 20.376 11.6245C20.376 14.3562 18.5452 16.623 16.0169 17.2624C15.5519 17.3786 15.0578 17.4367 14.5638 17.4367V20.3428C15.2903 20.3428 15.9587 20.2266 16.6562 20.0813H16.7434C20.5214 19.1223 23.2822 15.6931 23.2822 11.6245C23.2822 7.55591 20.5214 4.12669 16.7434 3.16767C16.075 2.9933 15.3194 2.90612 14.5638 2.90612ZM14.5638 8.71836V14.5306C14.8254 14.5306 15.0869 14.5015 15.2903 14.4434C16.54 14.1237 17.4699 12.9613 17.4699 11.6245C17.4699 10.2877 16.569 9.12522 15.2903 8.80555C15.0578 8.74742 14.7963 8.71836 14.5638 8.71836Z"
-                  fill="var(--darkgreen)"></path>
-              </svg>
-            </button>
-          </div>
-
-          <div id="transButtonContainer"></div>
-          <div id="transcriptContainer"></div>
-        </div>
-
-        <div id="debugdiv">
-          <div id="debug">
-            <p><span class="debugHead">Track name:</span><span id="currTrackName"></span></p>
-            <p><span class="debugHead">Url:</span><span id="currURL"></span></p>
-            <p><span class="debugHead">Track duration (seconds):</span><span id="currDurr"></span></p>
-            <p><span class="debugHead">Playlist duration (minutes):</span><span id="totalDurr"></span></p>
-            <p><span class="debugHead">Current Index:</span> <span id="indexNo"></span></p>
-            <p><span class="debugHead">Tags for current track:</span><span id="currTags"></span></p>
-            <p><span class="debugHead">Credits:</span></p>
-            <p id="currCredit"></p>
-            <p><br /></p>
-            <p><span class="debugHead">Credits (to be played at the end):</span></p>
-            <p id="creditStackHTML"></p>
-            <p><br /></p>
-            <p id="shuffle"><span class="debugHead">Full TrackList:</span><span id="fullList"></span></p>
-            <br />
-            <p><span class="debugHead">Log:</span></p>
-            <p><br /></p>
-            <p><span id="displayConsoleLog"></span></p>
-          </div>
-        </div>
-      </section>
-      <section id="aboutPage" class="page">
-        <div class="sideBySideTxtImage">
-          <div class="pageContentTxt">
-            <div class="pageInnerContent">
-              <div class="headerDiv">
-                <h2 id="aboutH2"></h2>
-                <h3 id="monH2"></h3>
-              </div>
-              <div class="txtBoxDiv">
-                <p class="txtBoxDiv" id="soundForCurious">
-                
-                </p>
-                <p class="txtBoxDiv" id="experienceAnew">
-                </p>
-                <p class="txtBoxDiv txtBoxDivLast" id="delveInto">
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="svg-about"></div>
-        </div>
-      </section>
-      <section id="howToListenPage" class="page">
-        <div class="sideBySideTxtImage reverse">
-          <div class="pageContentTxt">
-            <div class="pageInnerContent">
-              <div class="headerDiv">
-                <h2 id="howToListenH2"></h2>
-              </div>
-              <ul class="access">
-                <li id="scanQR"></li>
-                <li id="arriveWebsite"></li>
-                <li id="putHeadphones"></li>
-                <li id="clickBegin"></li>
-                <li id="listenSoundPiece"></li>
-              </ul>
-              <p id="listenAnywhere" class="txtBoxDiv txtBoxDivLast">
-              </p>
-            </div>
-          </div>
-          <div class="svg-upPlant"></div>
-        </div>
-      </section>
-      <section id="howItWorksPage" class="page">
-        <div class="sideBySideTxtImage">
-          <div class="pageContentTxt">
-            <div class="pageInnerContent">
-              <div class="headerDiv">
-                <h2 id="howitWorksH2">HOW IT WORKS</h2>
-              </div>
-              <p class="txtBoxDiv" id="eachTimeYouClick">
-            
-              </p>
-              <!-- <img src="images/svg/separator.svg" alt="" class="decorativeImage" id="spacer" /> -->
-              <p class="txtBoxDiv txtBoxDivPad txtBoxDivLast" id="ByBringingTogether">
-                
-              </p>
-            </div>
-          </div>
-          <div class="svg-works"></div>
-        </div>
-      </section>
-      <section id="whereToFindUsPage" class="page">
-        <div class="sideBySideTxtImage reverse">
-          <div class="pageContentTxt">
-            <div class="pageInnerContent">
-              <div class="headerDiv">
-                <h2 id="whereToFindUsH2"></h2>
-              </div>
-              <p id="visit" class="txtBoxDiv">
-              </p>
-              <br />
-              <div class="headerDiv">
-                <h2 id="accessH2"></h2>
-              </div>
-              <ul class="access">
-                <li id="pavedPaths"></li>
-                <li id="smartphoneQRAccess"></li>
-                <li id="qrCodeLocations"></li>
-                <li id="benchQRCodes"></li>
-                <li id="noWashrooms"></li>
-              </ul>
-            </div>
-          </div>
-          <div class="svg-map">
-            <span id="PondAltImg" role="img" aria-label="Outline of Monahan Pond / Contour de l'étang de Monahan"></span>
-          </div>
-        </div>
-      </section>
-      <section id="contributorsPage" class="page">
+      </div>
+    </section>
+    <section id="contributorsPage" class="page">
+      <div class="pageContentTxt">
+        <div class="pageInnerContent" id="contributorsTeamPageInner"></div>
+      </div>
+    </section>
+    <section id="productionTeamPage" class="page">
+      <div class="pageContentTxt">
+        <div class="pageInnerContent" id="productionTeamPageInner"></div>
+      </div>
+    </section>
+    <section id="thanksPage" class="page">
+      <div class="svg-sideways"></div>
+      <div id="thanksPagePageContentTxt">
         <div class="pageContentTxt">
-          <div class="pageInnerContent" id="contributorsTeamPageInner">         
+          <div class="pageInnerContent">
+            <div>
+              <p id="thanksSignageFabrication"></p>
+              <p id="thanksKomiku" class="txtBoxDiv txtBoxDivPad"></p>
+              <p id="hugeThanks" class="txtBoxDiv txtBoxDivPad"></p>
+            </div>
+            <ul id="thanksList">
+              <li>STEPHANIE NADEAU</li>
+              <li>STEPHEN LEGARI</li>
+              <li>JASON SONIER</li>
+              <li>CHRIS NEWTON</li>
+              <li>RON GALLANT</li>
+              <li>PATRICK LACASSE</li>
+              <li>SHERRY MCPHAIL</li>
+              <li>SARAH CHÊNEVERT-BEAUDOIN</li>
+              <li>MITCHELL FRANK</li>
+              <li>SAUL FRANK TALER</li>
+            </ul>
           </div>
         </div>
-      </section>
-      <section id="productionTeamPage" class="page">
         <div class="pageContentTxt">
-          <div class="pageInnerContent" id="productionTeamPageInner">
-           </div>
-        </div>
-      </section>
-      <section id="thanksPage" class="page">
-        <div class="svg-sideways"></div>
-        <div class="" id="thanksPagePageContentTxt">
-          <div class="pageContentTxt">
-            <div class="pageInnerContent">
-              <div>
-                <p id="thanksSignageFabrication">
-                 
-                </p>
-                <p id="thanksKomiku" class="txtBoxDiv txtBoxDivPad">
-                </p>
-                <p id="hugeThanks" class="txtBoxDiv txtBoxDivPad"></p>
-              </div>
-              <ul id="thanksList">
-                <li>STEPHANIE NADEAU</li>
-                <li>STEPHEN LEGARI</li>
-                <li>JASON SONIER</li>
-                <li>CHRIS NEWTON</li>
-                <li>RON GALLANT</li>
-                <li>PATRICK LACASSE</li>
-                <li>SHERRY MCPHAIL</li>
-                <li>SARAH CHÊNEVERT-BEAUDOIN</li>
-                <li>MITCHELL FRANK</li>
-                <li>SAUL FRANK TALER</li>
-              </ul>
-            </div>
-          </div>
-          <div class="pageContentTxt">
-            <div class="pageInnerContent">
-              <p class="  " id="cred"></p>
-              <p class="txtBoxDiv txtBoxDivPad" id="contact"> </p>
-              <p class="txtBoxDiv txtBoxDivPad" id="copyright"></p>
-              <p class="txtBoxDiv txtBoxDivPad" id="cityArtCollection"></p>
-            </div>
+          <div class="pageInnerContent">
+            <p id="cred"></p>
+            <p class="txtBoxDiv txtBoxDivPad" id="contact"></p>
+            <p class="txtBoxDiv txtBoxDivPad" id="copyright"></p>
+            <p class="txtBoxDiv txtBoxDivPad" id="cityArtCollection"></p>
           </div>
         </div>
-        <div class="pageInnerContent" id="logoFinalThanksDiv">
-          <div class="txtBoxDiv">
-            <p id="finalThanks"></p>
-          </div>
-          <div id="logoBox">
-            <img src="images/svg/cityOfOttawaLogo.svg" alt="The City of Ottawa Logo" class="decorativeImage logo" />
-            <img src="images/svg/PublicArtLogo.svg" alt="The City of Ottawa Public Art Logo" class="decorativeImage logo" />
-          </div>
+      </div>
+      <div class="pageInnerContent" id="logoFinalThanksDiv">
+        <div class="txtBoxDiv">
+          <p id="finalThanks"></p>
         </div>
-      </section>
-    </main>
-    <footer>
-      <div id="scriptOutputContainer"></div>
-    </footer>
-    <script type="module" src="play.js"></script>
-    <script type="module" src="audioplayer.js"></script>
-    <script type="module" src="checkTracks.js"></script>
-    <script type="module" src="checkRules.js"></script>
-    <script type="module" src="credits.js"></script>
-    <script type="module" src="debug.js"></script>
-    <script type="module" src="ensureRules.js"></script>
-    <script type="module" src="generalRules.js"></script>
-    <script type="module" src="outroAudio.js"></script>
-    <script type="module" src="playlistBuilder.js"></script>
-    <script type="module" src="focus.js"></script>
-    <script type="module" src="ruleStrings.js"></script>
-    <script type="module" src="settingsmenu.js"></script>
-    <script type="module" src="shuffle.js"></script>
-    <script type="module" src="specificRules.js"></script>
-    <script type="module" src="translate.js"></script>
-    <script type="module" src="transcript.js"></script>
-    <script type="module" src="ariahide.js"></script>
-  </body>
+        <div id="logoBox">
+          <img src="images/svg/cityOfOttawaLogo.svg" alt="The City of Ottawa Logo" class="decorativeImage logo" />
+          <img src="images/svg/PublicArtLogo.svg" alt="The City of Ottawa Public Art Logo" class="decorativeImage logo" />
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div id="scriptOutputContainer"></div>
+  </footer>
+  <script type="module" src="play.js" defer></script>
+  <script type="module" src="audioplayer.js" defer></script>
+  <script type="module" src="checkTracks.js" defer></script>
+  <script type="module" src="checkRules.js" defer></script>
+  <script type="module" src="credits.js" defer></script>
+  <script type="module" src="debug.js" defer></script>
+  <script type="module" src="ensureRules.js" defer></script>
+  <script type="module" src="generalRules.js" defer></script>
+  <script type="module" src="outroAudio.js" defer></script>
+  <script type="module" src="playlistBuilder.js" defer></script>
+  <script type="module" src="focus.js" defer></script>
+  <script type="module" src="ruleStrings.js" defer></script>
+  <script type="module" src="settingsmenu.js" defer></script>
+  <script type="module" src="shuffle.js" defer></script>
+  <script type="module" src="specificRules.js" defer></script>
+  <script type="module" src="translate.js" defer></script>
+  <script type="module" src="transcript.js" defer></script>
+  <script type="module" src="ariahide.js" defer></script>
+</body>
 </html>
