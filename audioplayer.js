@@ -64,6 +64,8 @@ export class SimpleAudioPlayer {
     this.globalAudioElement.onended = () => this.handleEnded();
   }
 
+  
+
   toggleAriaPressed(element) {
     let isPressed = element.getAttribute('aria-pressed') === 'true';
     element.setAttribute('aria-pressed', !isPressed);
@@ -678,6 +680,7 @@ export class SimpleAudioPlayer {
           await this.playTrack(this.currentIndex);
           this.firstPlayDone = true; // Prevents re-initialization in future plays.
           this.createTranscriptContainer();
+          document.getElementById("hidePlayerControls").classList.remove("hidden");
         } else {
           // Resume playback.
           console.log("Resuming playback.");

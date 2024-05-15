@@ -8,6 +8,7 @@ let settingsBtn, monochromeBtn, increaseTextSizeBtn, decreaseTextSizeBtn, resetB
 let isMonochrome = false;
 
 function init() {
+  console.log("yoooo");
   cacheDOMElements();
   bindEvents();
   replaceSvgContent();
@@ -15,7 +16,7 @@ function init() {
 }
 
 function cacheDOMElements() {
-  settingsBtn = document.getElementById("accessiblityNav");
+  settingsBtn = document.getElementById("accessIcon");
   monochromeBtn = document.getElementById("monochromeBtn");
   increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
   decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
@@ -54,6 +55,7 @@ function toggleAriaPressed(element) {
 }
 
 function replaceSvgContent() {
+  console.log("it's happening");
   const isDesktop = window.matchMedia("(min-width: 900px)").matches;
   const logoPath = isDesktop ?
     (isInverted ? "images/svg/monohanLogoDesktopInvert2.svg" : "images/svg/monohanLogoDesktop2.svg") :
@@ -67,7 +69,7 @@ function replaceSvgContent() {
     imageElement.src = logoPath;
     imageElement.className = "lettersBox";
     imageElement.id = "monSvg";
-    imageElement.alt = "Monahan: Art, Public Art";
+    // imageElement.alt = "Monahan: Art, Public Art";
     svgContainer.appendChild(imageElement);
   }
 }
