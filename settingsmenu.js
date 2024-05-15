@@ -38,9 +38,6 @@ function bindEvents() {
   menuItems.forEach(item => item.addEventListener('keydown', handleMenuItemKeydown));
 }
 
-
-
-
 function initializeUserSettings() {
   const userFontSize = localStorage.getItem("userFontSize");
   if (userFontSize) {
@@ -69,19 +66,15 @@ function replaceSvgContent() {
     imageElement.src = logoPath;
     imageElement.className = "lettersBox";
     imageElement.id = "monSvg";
-    // imageElement.alt = "Monahan: Art, Public Art";
     svgContainer.appendChild(imageElement);
   }
 }
 
 const imageSourceMap = {
-  // "images/svg/accessIconInvert.svg": "images/svg/accessIcon.svg",
   "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
   "images/svg/monochrome1.svg": "images/svg/monochromeInvert.svg",
   "images/svg/firn.svg": "images/svg/firnInvert.svg",
   "images/svg/svg-upPlant.svg": "images/svg/svg-upPlantInvert.svg",
-  // "images/svg/map-fill.svg": "images/svg/map-fillInvert.svg",
-
   "images/svg/separator.svg": "images/svg/separatorInvert.svg",
   "images/svg/30.svg": "images/svg/30Invert.svg",
   "images/svg/15.svg": "images/svg/15Invert.svg",
@@ -89,8 +82,7 @@ const imageSourceMap = {
   "images/svg/PublicArtLogo.svg": "images/svg/PublicArtLogoInvert.svg",
   "images/svg/stopButton.svg": "images/svg/stopButtonInvert.svg",
   "images/svg/playButton.svg": "images/svg/playButtonInvert.svg",
-  "images/svg/pauseButton.svg": "images/svg/pauseButtonInvert.svg", // Ensure this is included for correct toggling
-
+  "images/svg/pauseButton.svg": "images/svg/pauseButtonInvert.svg",
 };
 
 function toggleImageSources() {
@@ -110,7 +102,6 @@ function toggleSvgBackgrounds() {
     { original: "svg-works", invert: "svg-works-invert" },
     { original: "svg-sideways", invert: "svg-sideways-invert" },
   ];
-
 
   svgClasses.forEach(({ original, invert }) => {
     document.querySelectorAll(`.${original}, .${invert}`).forEach((element) => {
@@ -136,6 +127,7 @@ function swapColors() {
   replaceSvgContent();
   toggleImageSources();
   toggleSvgBackgrounds();
+  toggleAriaPressed(invertColoursBtn);
 }
 
 function updateCSSVariables() {
@@ -146,6 +138,7 @@ function updateCSSVariables() {
   root.style.setProperty("--white", isInverted ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)");
   root.style.setProperty("--grey", isInverted ? "rgb(122, 122, 122)" : "rgb(35, 78, 68)");
 }
+
 function toggleMonochrome(event) {
   event.preventDefault();
   event.stopPropagation();
@@ -171,13 +164,33 @@ function toggleMenu() {
   settingsBtn.setAttribute("aria-expanded", !isExpanded);
   menu.classList.toggle("show");
   
+  const menuVisibility = isExpanded ? "hidden" : "visible";
   menu.setAttribute("aria-hidden", isExpanded);
+  
+  updateAriaStatusMessage(`Menu is now ${menuVisibility}`);
+  
   if (!isExpanded) {
     menu.querySelector('[role="menuitem"]').focus();
   } else {
     settingsBtn.focus();
   }
+  toggleAriaPressed(settingsBtn);
 }
+
+function closeMenu() {
+  const menu = document.getElementById("slidein");
+  menu.classList.remove("show");
+  menu.setAttribute("aria-hidden", "true");
+  settingsBtn.setAttribute("aria-expanded", "false");
+  settingsBtn.focus();
+  updateAriaStatusMessage("Menu is now hidden");
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closeMenu();
+  }
+});
 
 function handleMenuButtonKeydown(event) {
   const menu = document.getElementById("slidein");
@@ -220,27 +233,27 @@ function handleMenuItemKeydown(event) {
 
 function closeMenuOnClickOutside(event) {
   if (!document.getElementById("slidein").contains(event.target) && !settingsBtn.contains(event.target)) {
-    document.getElementById("slidein").classList.remove("show");
-    settingsBtn.setAttribute("aria-expanded", "false");
-    document.getElementById("slidein").setAttribute("aria-hidden", "true");
+    closeMenu();
   }
 }
 
 function handleGlobalKeydown(event) {
-  const menu = document.getElementById("slidein");
   if (event.key === "Escape") {
-    menu.classList.remove("show");
-    settingsBtn.setAttribute('aria-expanded', 'false');
-    menu.setAttribute('aria-hidden', 'true');
-    settingsBtn.focus();
+    closeMenu();
   }
 }
 
 function resetSettings() {
+
+  // Turn off monochrome mode
+  isMonochrome = false;
+  document.body.style.filter = "none";
+    
   document.body.classList.remove("monochrome");
   const root = document.documentElement;
-  const defaultFontSize = "6.9vw";
-  root.style.setProperty("--base-font-size", defaultFontSize);
+  const defaultFontSize = "1rem";
+  root.style.setProperty("--base-font-size-rem", defaultFontSize);
+  root.style.fontSize = defaultFontSize;
   localStorage.removeItem("userFontSize");
 
   const transcriptContainer = document.getElementById("transcriptContainer");
@@ -264,9 +277,5 @@ function resetSettings() {
   increaseTextSizeBtn.setAttribute('aria-pressed', 'false');
   decreaseTextSizeBtn.setAttribute('aria-pressed', 'false');
   settingsBtn.setAttribute('aria-pressed', 'false');
-
-  const defaultRootFontSize = "1rem";
-  root.style.setProperty("--base-font-size-rem", defaultRootFontSize);
-  root.style.fontSize = defaultRootFontSize;
   replaceSvgContent();
 }

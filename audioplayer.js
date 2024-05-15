@@ -114,6 +114,9 @@ export class SimpleAudioPlayer {
         timePlayedElement.innerText = `${playedTime.minutes}:${playedTime.seconds}`;
         timeRemainingElement.innerText = `-${remainingTime.minutes}:${remainingTime.seconds}`;
 
+        timePlayedElement.setAttribute('aria-hidden', 'true');
+        timeRemainingElement.setAttribute('aria-hidden', 'true');
+  
         // console.log(`Progress Bar Updated: ${progressBar.style.width}`);
       } catch (error) {
         console.error("An error occurred in updateProgressUI:", error);
@@ -377,6 +380,8 @@ export class SimpleAudioPlayer {
         this.handleSkipForward();
       });
     }
+    this.setupVolumeControlButtons();
+
   }
 
   /////////////////////////////////////////////////////
@@ -432,24 +437,26 @@ export class SimpleAudioPlayer {
   setupVolumeControlButtons() {
     const lowerVolumeBtn = document.getElementById("lower-vol");
     const raiseVolumeBtn = document.getElementById("raise-vol");
-    const volumeSlider = document.getElementById("volume-slider"); // Get the volume slider
-
+  
     if (lowerVolumeBtn) {
       lowerVolumeBtn.addEventListener("click", () => {
         this.globalAudioElement.volume = 0;
         volumeSlider.value = "0"; // Update the slider position
         this.updateVolumeIndicator("0"); // Update the UI to reflect the volume change
+        this.toggleAriaPressed(lowerVolumeBtn); // Update aria-pressed
       });
     }
-
+  
     if (raiseVolumeBtn) {
       raiseVolumeBtn.addEventListener("click", () => {
         this.globalAudioElement.volume = 1;
         volumeSlider.value = "100"; // Update the slider position
         this.updateVolumeIndicator("100"); // Update the UI to reflect the volume change
+        this.toggleAriaPressed(raiseVolumeBtn); // Update aria-pressed
       });
     }
   }
+  
 
   /////////////////////////////////////////////////////
   /////////         HANDLE PAUSE / PLAY     ///////////

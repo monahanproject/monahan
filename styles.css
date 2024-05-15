@@ -1104,7 +1104,10 @@ li {
   transition: transform 0.3s ease-in-out;
   transform-origin: center;
   transition: opacity 0.3s ease-in-out;
+  filter: grayscale(100%);
+
 }
+
 
 #skipBackwardButton {
   margin-right: calc(1.8 * 15vw);
@@ -1819,6 +1822,8 @@ summary::after {
   grid-column: 2;
   opacity: 1; /* Ensure it's fully visible by default */
   transition: opacity 0.6s ease; /* Smooth transition for opacity */
+  /* aria-hidden: "true"; */
+
 }
 
 summary:hover::after {
@@ -2239,4 +2244,6 @@ article > p {
   outline: 2px dashed var(--darkgreen);
   outline-offset: 2px;
 }
+
+
 

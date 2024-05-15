@@ -9,6 +9,7 @@ function toggleLanguageAndStorePref() {
   lang = getLangState() === "EN" ? "FR" : "EN"; // Toggle the language
   setLangState(lang); // Update language in localStorage
   updateTexts(); // Update the UI to reflect the new language
+  toggleAriaPressed(document.getElementById("toggleLanguage"));
 }
 
 function updateTexts() {
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function updateLanguageLabel() {
-  const langToggleButton = document.getElementById("toggleLanguage");
+  const langToggleButton = document.getElementById("langToggle");
 
   if (langToggleButton) {
     const newSrc = lang === "EN" ? "images/svg/FR.svg" : "images/svg/EN.svg";
