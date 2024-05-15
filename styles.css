@@ -240,9 +240,6 @@ a:hover {
   text-transform: uppercase;
 }
 
-#transcriptButton:hover {
-  opacity: 70%;
-}
 
 #tratButton:hover {
   background: var(--darkgreen);
@@ -1998,6 +1995,10 @@ article > p {
   display: flex;
 }
 
+#shrinkOrGrowTxt {
+  display: flex;
+}
+
 #increaseTextSizeBtn,
 #decreaseTextSizeBtn {
   font-size: 2rem;
@@ -2179,30 +2180,29 @@ article > p {
 #accessIcon,
 #langToggle,
 #invertColoursBtn,
+#invertColoursBtn,
 #monochromeBtn,
 #decreaseTextSizeBtn,
 #increaseTextSizeBtn,
 .volume-icon,
-#transcriptButton {
+#transcriptButton,
+#skip-forward-button-svg-container,
+#skip-backward-button-svg-container
+  {
   transition: transform 0.3s ease-in-out, fill 0.3s ease-in-out;
   transform-origin: center;
 }
 
 #accessIcon:hover,
-#accessIcon:focus,
 #langToggle:hover,
-#langToggle:focus,
 #invertColoursBtn:hover,
-#invertColoursBtn:focus,
 #monochromeBtn:hover,
-#monochromeBtn:focus,
-#decreaseTextSizeBtn:focus,
 #increaseTextSizeBtn:hover,
-#decreaseTextSizeBtn:focus,
-#increaseTextSizeBtn:hover,
-volume-icon:focus,
 .volume-icon:hover,
-#transcriptButton:hover {
+#transcriptButton:hover,
+#skip-forward-button-svg-container:hover,
+#skip-backward-button-svg-container:hover
+ {
   transform: scale(1.1); /* Gently increase size */
   fill: #28a745; /* Change color to a subtle green, or any color that suits your theme */
 }
@@ -2235,26 +2235,8 @@ volume-icon:focus,
 }
 
 
-
-
-/* Improved focus styles */
 :focus {
   outline: 2px dashed var(--darkgreen);
   outline-offset: 2px;
 }
 
-/* General Button Focus and Hover Styles */
-button,
-[role="button"],
-[tabindex] {
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease;
-}
-
-button:hover,
-button:focus,
-[role="button"]:hover,
-[role="button"]:focus,
-[tabindex]:hover,
-[tabindex]:focus {
-  transform: scale(1.05);
-}
