@@ -272,7 +272,9 @@ function adjustFontSize(elementId) {
   }
 }
 
+
 const productionPageEN = `
+
 <div class="headerDiv">
   <h2 id="productionTeamH2">PRODUCTION TEAM</h2>
 </div>
