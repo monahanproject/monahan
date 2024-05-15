@@ -582,7 +582,7 @@ export class SimpleAudioPlayer {
   handleSkipForward() {
     console.log("Attempting to skip forward. Remaining time:", this.remainingTime);
     if (!this.isSkipForwardAllowed()) {
-      this.skipForwardButton.style.opacity = ".1";
+      this.skipForwardButton.style.opacity = ".4";
       return;
     }
     this.updateUIForSkip("forward");
@@ -594,7 +594,7 @@ export class SimpleAudioPlayer {
   handleSkipBackward() {
     console.log("Attempting to skip backward. Current time:", this.globalAudioElement.currentTime);
     if (!this.isSkipBackwardAllowed()) {
-      this.skipBackwardButton.style.opacity = ".1";
+      this.skipBackwardButton.style.opacity = ".4";
       return;
     }
     this.updateUIForSkip("backward");
