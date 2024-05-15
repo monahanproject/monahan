@@ -533,6 +533,12 @@ export class SimpleAudioPlayer {
     const timePlayedElement = document.getElementById("time-played");
     const timeRemainingElement = document.getElementById("time-remaining");
 
+
+    // hide these from aria because aria is reporting these values twice
+    timePlayedElement.setAttribute('aria-hidden', 'true');
+    timeRemainingElement.setAttribute('aria-hidden', 'true');
+
+
     if (progressBar && progressDot && timePlayedElement && timeRemainingElement) {
       progressBar.style.width = "0%";
       progressDot.style.left = "0%";

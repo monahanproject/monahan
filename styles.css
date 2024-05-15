@@ -220,17 +220,6 @@ a:hover {
   --base-font-size: 6.9vw;
 }
 
-.btn,
-#langToggle {
-  /* background-color: var(--lightgreen); */
-  /* color: var(--darkgreen);
-  outline: none;
-  border: none;
-  border-radius: 6px;
-  padding: 10px;
-  font-family: var(--font-family-dm); */
-}
-
 #transcriptButton {
   padding: 15px;
   width: 81vw;
@@ -268,7 +257,7 @@ a:hover {
   font-size: 1.25rem; /* Adjusted to maintain consistency at larger screens */
   text-decoration: none;
   text-transform: uppercase;
-  cursor: pointer; */
+  cursor: pointer;
 }
 
 /************************/
@@ -602,11 +591,13 @@ p {
 }
 
 .land {
+
   font-family: "Zilla Slab";
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 300;
   line-height: 2rem;
+
 }
 
 .italic {
@@ -1175,30 +1166,6 @@ li {
 }
 
 
-#skiplinks a {
-  position: absolute;
-  left: -9999px; /* Move off-screen */
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0); /* Further ensure content isn't visible */
-}
-
-#skiplinks a:focus {
-  position: static;
-  left: auto;
-  width: auto;
-  height: auto;
-  clip: auto;
-  z-index: 1000; /* Ensure it is above other content */
-  background: #FFF; /* Background color for visibility */
-  padding: 10px; /* Add some padding */
-  text-align: center; /* Center the text */
-  border: 1px solid #000; /* Add border for visibility */
-}
-
-
-
 .disabled-button {
   opacity: 0.1; 
   color: #ccc;   
@@ -1208,15 +1175,15 @@ li {
 
 @keyframes svgDisappear {
   0%, 100% {
-    opacity: 0.1;  // Start and end at low opacity
+    opacity: 0.1; 
   }
   90% {
-    opacity: 1;  // Peak at full opacity
+    opacity: 1;  
   }
 }
 
 .svg-disappear {
-  animation: svgDisappear 1s ease-out forwards;  // Duration set to 2 seconds
+  animation: svgDisappear 1s ease-out forwards;  
 }
 
 
@@ -1490,19 +1457,14 @@ input[type="range"] {
   background: var(--darkgreen);
   cursor: pointer;
 }
-
 .volume-icon {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.volume-icon svg {
-  display: block;
+  display: flex;
+  outline: none; /* Removes the outline */
+  border: none; /* Removes any border */
+  box-shadow: none; /* Removes any box-shadow */
+  background: transparent; /* Makes background transparent */
+  padding: 0; /* Removes any padding */
+  margin: 0; /* Removes any margin */
 }
 
 
@@ -1816,7 +1778,7 @@ details > summary {
   font-family: "DM Sans", sans-serif;
   font-size: 1.25rem;
   font-weight: 500;
-  line-height: 1.6875rem;
+     line-height: 1.6875rem;
   letter-spacing: 0.0625rem;
   font-feature-settings: "ss02" on, "ss03" on;
   border-radius: 5px;
@@ -1832,7 +1794,7 @@ details > summary {
 
 
 summary::after {
-  content: "+";
+  content: "+" / "";
   font-size: 2.2rem;
   display: inline-block;
   width: 20px;
@@ -2223,30 +2185,4 @@ article > p {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-}
-
-/* ~~~~~~~~~~~~~~~~~~ */
-/* focus elements  */
-/* ~~~~~~~~~~~~~~~~~~ */
-
-/* Apply a common focus style to all interactive elements */
-button:focus, 
-a:focus, 
-input:focus, 
-select:focus, 
-textarea:focus {
-  outline: 3px solid #00f; /* Change color and width to suit your design */
-  outline-offset: 2px; /* Adjust as needed */
-}
-
-/* Specific styles for the skip links */
-.skip-link:focus {
-  outline: 3px solid #00f; /* Same color as other elements for consistency */
-  outline-offset: 2px; /* Adjust as needed */
-}
-
-/* Optional: Add a class for more specific styling */
-.focus-visible {
-  outline: 3px solid #00f; /* Adjust the color as needed */
-  outline-offset: 2px; /* Adjust as needed */
 }

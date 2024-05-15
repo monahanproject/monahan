@@ -1,6 +1,16 @@
 export function updateAriaStatusMessage(message) {
-  console.log("aria log + ", message);
-  document.getElementById('statusMessage').textContent = message;
+  const ariaStatus = document.getElementById("aria-status");
+  
+  if (ariaStatus) {
+    // Check if the message is redundant and should be hidden
+    if (message.includes("redundant message part")) {
+      ariaStatus.setAttribute("aria-hidden", "true");
+    } else {
+      ariaStatus.removeAttribute("aria-hidden");
+    }
+
+    ariaStatus.textContent = message;
+  }
 }
 
 
@@ -21,8 +31,6 @@ export const setState = (isInverted) => {
   state.isInverted = isInverted; // Update the state object with the new value.
 };
 
-
-// state.js
 
 // Initialize the language state based on localStorage or default to "EN"
 export let lang = localStorage.getItem("lang") || "EN";

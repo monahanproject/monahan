@@ -45,7 +45,8 @@
       <a href="#productionTeamPage" class="skip-link">Skip to Production Team</a>
       <a href="#thanksPage" class="skip-link">Skip to Thanks and Acknowledgements</a>
     </div>
-    
+
+    <div id="aria-status" role="status" aria-live="polite" aria-hidden="true" style="position: absolute; left: -9999px"></div>
 
     <main id="playerPageMain">
       <section id="landingPage" class="page">
@@ -58,13 +59,19 @@
               <img src="images/svg/FR.svg" alt="language toggle icon" id="langToggle" tabindex="0" role="button" aria-pressed="false" />
             </div>
 
-            <div id="accessiblityNav" class="navIcons btn noselect wrapperBtn wrapperBtnClosed" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="settingsDropdown" aria-label="Open accessibility settings menu">
-              <img src="images/svg/accessIconInvert.svg" alt="accessibility settings icon" id="accessIcon" />
+            <div
+              id="accessiblityNav"
+              class="navIcons btn noselect wrapperBtn wrapperBtnClosed"
+              role="button"
+              tabindex="0"
+              aria-haspopup="true"
+              aria-expanded="false">
+              <img src="images/svg/accessIconInvert.svg" alt="accessibility settings icon" id="accessIcon" tabindex="0" />
             </div>
-                   
           </nav>
-          <div id="slidein" class="slide-in from-left" role="menu" aria-hidden="true">
-            <ul id="settingsDropdown" class="slide-in-content">
+
+          <div id="slidein" class="slide-in from-left" aria-hidden="true">
+            <ul id="settingsDropdown" class="slide-in-content" role="menu">
               <li class="dropdownContainer invertColors" role="menuitem">
                 <span id="invertColorsTxt">Invert Colours</span>
                 <button id="invertColoursBtn" aria-pressed="false">
@@ -89,6 +96,7 @@
           </div>
           <div id="wrapperToggleDiv" class="settingsMenu"></div>
         </header>
+
         <div id="centerLandingPageContent">
           <div id="landingPageContainer">
             <h3 class="txtBoxDiv land" id="engLand">
@@ -147,7 +155,13 @@
       </section>
       <section id="playerPage" class="page">
         <div id="audio-player-container">
-          <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Button to play and pause audio" aria-pressed="false">
+          <button
+            type="button"
+            id="play-button"
+            class="play-icon"
+            aria-controls="music_player"
+            aria-label="Button to play and pause audio"
+            aria-pressed="false">
             <span id="play-button-svg-container">
               <img src="images/svg/playButton.svg" alt="a simple triangular button" aria-hidden="true" class="svg-icon" />
             </span>
@@ -165,7 +179,7 @@
               </span>
             </button>
           </div>
-      
+
           <div id="progress-container" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" aria-label="Playback progress">
             <div id="progress-bar" style="width: 6.61621%"></div>
             <div id="progress-dot" tabindex="0"></div>
@@ -175,7 +189,7 @@
             <span id="time-remaining" class="time-label" aria-live="polite"></span>
           </div>
           <audio id="music_player" aria-label="Audio player"></audio>
-      
+
           <div id="volume-container" aria-label="Volume control">
             <button id="lower-vol" class="volume-icon" aria-label="Lower volume" aria-pressed="false">
               <svg width="13" height="24" viewbox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -207,7 +221,7 @@
               </svg>
             </button>
           </div>
-      
+
           <div id="transButtonContainer"></div>
           <div id="transcriptContainer"></div>
         </div>
@@ -1041,11 +1055,11 @@
               </summary>
               <article>
                 <p class="summary-indent">
-                  <span class="bold"
+                  <span class="bold" 
                     ><a
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="Link opens in a new tab"
+                      aria-label="Read more about Maryem Hassan Tollar on Wikipedia. Link opens in a new tab" 
                       href="https://en.wikipedia.org/wiki/Maryem_Tollar"
                       >Maryem Hassan Tollar</a
                     ></span
@@ -1374,5 +1388,6 @@
     <script type="module" src="specificRules.js"></script>
     <script type="module" src="translate.js"></script>
     <script type="module" src="transcript.js"></script>
+    <script type="module" src="ariahide.js"></script>
   </body>
 </html>
