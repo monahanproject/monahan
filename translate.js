@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function updateLanguageLabel() {
-  const langToggleButton = document.getElementById("langToggle");
+  const langToggleButton = document.getElementById("toggleLanguage");
 
   if (langToggleButton) {
     const newSrc = lang === "EN" ? "images/svg/FR.svg" : "images/svg/EN.svg";

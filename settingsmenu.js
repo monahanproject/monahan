@@ -16,7 +16,7 @@ function init() {
 }
 
 function cacheDOMElements() {
-  settingsBtn = document.getElementById("accessIcon");
+  settingsBtn = document.getElementById("accessibilityNav");
   monochromeBtn = document.getElementById("monochromeBtn");
   increaseTextSizeBtn = document.getElementById("increaseTextSizeBtn");
   decreaseTextSizeBtn = document.getElementById("decreaseTextSizeBtn");
