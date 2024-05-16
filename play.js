@@ -77,7 +77,7 @@ function prepareCuratedTracklist(songs) {
   const allSongs = [...songs];
   const shuffledSongs = shuffleTracklist(allSongs);
   curatedTracklist = followTracklistRules(shuffledSongs);
-  isValidTracklist(shuffledSongs)
+  // isValidTracklist(shuffledSongs)
   // console.log("tooooooo");
   checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
