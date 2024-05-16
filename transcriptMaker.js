@@ -1,6 +1,4 @@
-// transcriptModule.js
-
-import { getLangState, updateAriaStatusMessage } from "./state.js";
+import { getLangState } from "./state.js";
 
 export class Transcript {
   constructor(audioPlayer) {

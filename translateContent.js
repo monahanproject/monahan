@@ -1,4 +1,4 @@
-import { getState, setState, getLangState, setLangState, updateAriaStatusMessage } from "./state.js";
+import { getLangState, setLangState } from "./state.js";
 import { productionPageEN, productionPageFR, contributorsPageEN, contributorsPageFR, strings } from "./translationStrings.js";
 import { toggleAriaPressed } from "./settingsmenu.js";
 

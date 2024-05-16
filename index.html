@@ -30,13 +30,12 @@
     <div
       aria-live="polite"
       aria-atomic="true"
-      id="statusMessage"
-      style="position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden"></div>
+      id="statusMessage"></div>
 
     <main id="playerPageMain">
       <section id="landingPage" class="page" role="main">
         <header>
-          <h1 class="visually-hidden">Monahan: Art, Public Art</h1>
+          <h1 id="pageTitle" class="visually-hidden">Monahan: Art, Public Art</h1>
           <nav>
             <p id="skiplinks">
               <a href="#landingPage" class="skip-link">Skip to Main Content</a>
@@ -162,12 +161,12 @@
           <div id="hidePlayerControls" class="center hidden">
             <!-- Skip Buttons -->
             <div id="ffrw-button-container">
-              <button type="button" id="skipBackwardButton" class="skip-button" aria-label="Skip backwards 15 seconds">
+              <button type="button" id="skipBackwardButton" class="skip-button" aria-label="Skip backwards 15 seconds" tabindex="0">
                 <span id="skip-backward-button-svg-container">
                   <img src="images/svg/15.svg" alt="15 seconds" aria-hidden="true" class="svg-icon" />
                 </span>
               </button>
-              <button type="button" id="skipForwardButton" class="skip-button" aria-label="Skip forward 30 seconds">
+              <button type="button" id="skipForwardButton" class="skip-button" aria-label="Skip forward 30 seconds" tabindex="0">
                 <span id="skip-forward-button-svg-container">
                   <img src="images/svg/30.svg" alt="30 seconds" aria-hidden="true" class="svg-icon" />
                 </span>

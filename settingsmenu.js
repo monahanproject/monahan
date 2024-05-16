@@ -1,4 +1,4 @@
-import { getState, setState, getLangState, setLangState, updateAriaStatusMessage } from "./state.js";
+import { getState, setState, updateAriaStatusMessage } from "./state.js";
 
 // Initialization
 document.addEventListener("DOMContentLoaded", init);
@@ -43,7 +43,7 @@ function bindEvents() {
   window.addEventListener("keydown", handleGlobalKeydown);
   settingsBtn.addEventListener("keydown", handleMenuButtonKeydown);
   const menuItems = document.querySelectorAll("#slidein [role='menuitem']");
-  menuItems.forEach(item => item.addEventListener('keydown', handleMenuItemKeydown));
+  menuItems.forEach((item) => item.addEventListener("keydown", handleMenuItemKeydown));
 }
 
 /**
@@ -70,9 +70,13 @@ export function toggleAriaPressed(element) {
  */
 function replaceSvgContent() {
   const isDesktop = window.matchMedia("(min-width: 900px)").matches;
-  const logoPath = isDesktop ?
-    (isInverted ? "images/svg/monohanLogoDesktopInvert2.svg" : "images/svg/monohanLogoDesktop2.svg") :
-    (isInverted ? "images/svg/monohanLogoMobileInvert3.svg" : "images/svg/monohanLogoMobile2.svg");
+  const logoPath = isDesktop
+    ? isInverted
+      ? "images/svg/monohanLogoDesktopInvert2.svg"
+      : "images/svg/monohanLogoDesktop2.svg"
+    : isInverted
+    ? "images/svg/monohanLogoMobileInvert3.svg"
+    : "images/svg/monohanLogoMobile2.svg";
   const svgContainer = document.getElementById("titleText");
   let imageElement = svgContainer.querySelector("img#monSvg");
   if (imageElement instanceof HTMLImageElement) {
@@ -108,7 +112,7 @@ function toggleImageSources() {
   const images = document.querySelectorAll("img");
   images.forEach((img) => {
     const src = img.getAttribute("src");
-    const newSrc = isInverted ? (imageSourceMap[src] || src) : (Object.keys(imageSourceMap).find(key => imageSourceMap[key] === src) || src);
+    const newSrc = isInverted ? imageSourceMap[src] || src : Object.keys(imageSourceMap).find((key) => imageSourceMap[key] === src) || src;
     img.setAttribute("src", newSrc);
   });
 }
@@ -227,11 +231,19 @@ function closeMenu() {
   updateAriaStatusMessage("Menu is now hidden");
 }
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
     closeMenu();
   }
+  if (event.key === "Tab") {
+    document.body.classList.add("show-focus-outlines");
+  }
 });
+
+document.addEventListener("click", function () {
+  document.body.classList.remove("show-focus-outlines");
+});
+
 
 /**
  * Handles keydown events for the menu button.
@@ -241,16 +253,16 @@ function handleMenuButtonKeydown(event) {
   const menu = document.getElementById("slidein");
   const menuItems = menu.querySelectorAll('[role="menuitem"]');
   switch (event.key) {
-    case 'ArrowDown':
-    case 'ArrowUp':
+    case "ArrowDown":
+    case "ArrowUp":
       event.preventDefault();
-      settingsBtn.setAttribute('aria-expanded', 'true');
-      menu.setAttribute('aria-hidden', 'false');
-      (event.key === 'ArrowDown' ? menuItems[0] : menuItems[menuItems.length - 1]).focus();
+      settingsBtn.setAttribute("aria-expanded", "true");
+      menu.setAttribute("aria-hidden", "false");
+      (event.key === "ArrowDown" ? menuItems[0] : menuItems[menuItems.length - 1]).focus();
       break;
-    case 'Escape':
-      settingsBtn.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
+    case "Escape":
+      settingsBtn.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-hidden", "true");
       settingsBtn.focus();
       break;
   }
@@ -264,17 +276,17 @@ function handleMenuItemKeydown(event) {
   const menu = document.getElementById("slidein");
   const menuItems = menu.querySelectorAll('[role="menuitem"]');
   switch (event.key) {
-    case 'ArrowDown':
+    case "ArrowDown":
       event.preventDefault();
       (this.nextElementSibling || menuItems[0]).focus();
       break;
-    case 'ArrowUp':
+    case "ArrowUp":
       event.preventDefault();
       (this.previousElementSibling || menuItems[menuItems.length - 1]).focus();
       break;
-    case 'Escape':
-      settingsBtn.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
+    case "Escape":
+      settingsBtn.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-hidden", "true");
       settingsBtn.focus();
       break;
   }
@@ -331,10 +343,10 @@ function resetSettings() {
     toggleSvgBackgrounds();
   }
 
-  invertColoursBtn.setAttribute('aria-pressed', 'false');
-  monochromeBtn.setAttribute('aria-pressed', 'false');
-  increaseTextSizeBtn.setAttribute('aria-pressed', 'false');
-  decreaseTextSizeBtn.setAttribute('aria-pressed', 'false');
-  settingsBtn.setAttribute('aria-pressed', 'false');
+  invertColoursBtn.setAttribute("aria-pressed", "false");
+  monochromeBtn.setAttribute("aria-pressed", "false");
+  increaseTextSizeBtn.setAttribute("aria-pressed", "false");
+  decreaseTextSizeBtn.setAttribute("aria-pressed", "false");
+  settingsBtn.setAttribute("aria-pressed", "false");
   replaceSvgContent();
 }

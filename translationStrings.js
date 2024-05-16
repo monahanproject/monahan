@@ -917,11 +917,8 @@ export const contributorsPageFR = `
 
 export const strings = [
     { id: "langToggle", en: "FR", fr: "EN" },
-    // { id: "engLand", en: "MONAHAN is situated on the traditional unceded territory of the Anishinabe Algonquin Nation, custodians of these lands for millennia.", fr: "MONAHAN est situé sur le territoire traditionnel non cédé de la Nation Anishinabe Algonquine, gardienne de ces terres depuis des millénaires." },
-    //  { id: "artPubArt", en: "ART PUBLIC ART", fr: "ART PUBLIC ART" },
     { id: "curiousEarsTxt", en: "A Sound Piece</br> for Curious Ears", fr: "Une pièce sonore </br> pour oreilles curieuses " },
     { id: "aboutH2", en: "ABOUT", fr: "À PROPOS DE" },
-    // { id: "PondAltImg", en: "outline of Monahan Pond", fr: "Schéma de l'étang de Monahan" },
     { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
     {
       id: "eachTimeYouClick",
@@ -944,7 +941,6 @@ export const strings = [
       fr: "Plongez-vous dans une ambiance sonore qui explore le mouvement, la migration, les récits qui soulagent, les êtres non humains, les plantes qui guérissent, la voix, la traduction et le lieu.",
     },
   
-    // { id: "productionTeamH2", en: "PRODUCTION TEAM", fr: "L'ÉQUIPE DE PRODUCTION" },
     { id: "monH2", en: "MONAHAN", fr: "MONAHAN" },
   
     {

@@ -1,4 +1,5 @@
 // Import necessary modules and rules
+import { shuffleArrayOfRules } from "./shuffleTracklist.js";
 import { r10, r11, r12, r13, r14, r15, r16, r17 } from "./generalRules.js";
 import { r21, r22, r23, r24 } from "./ensureRules.js";
 import { r61, r62, r63, r64, r65, r66, r67, r68, r69, r70 } from "./specificRules.js";
@@ -25,9 +26,8 @@ import {
   r67rule,
   r68rule,
   r69rule,
-  r70rule
+  r70rule,
 } from "./ruleStrings.js";
-import { shuffleTracklist, shuffleArrayOfRules } from "./shuffleTracklist.js";
 
 // Maximum playlist duration and tracklist duration variables
 let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
@@ -40,19 +40,17 @@ let geeseTrackCounter = 0;
 
 /**
  * Updates the geese track counter and rearranges the tracklist if necessary.
- * @param {object} track - The current track object.
- * @param {array} tracklist - The current tracklist array.
  * @returns {array} - The rearranged tracklist.
  */
 function updateGeeseTrackCounterAndRearrange(track, tracklist) {
   if (track.tags && track.tags.includes("geese")) {
     geeseTrackCounter++;
     if (geeseTrackCounter === 1) {
-      const geeseTracks = tracklist.filter(t => t.tags && t.tags.includes("geese"));
-      const nonGeeseTracks = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
+      const geeseTracks = tracklist.filter((t) => t.tags && t.tags.includes("geese"));
+      const nonGeeseTracks = tracklist.filter((t) => !t.tags || !t.tags.includes("geese"));
       return insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, 3);
     } else if (geeseTrackCounter > 1) {
-      return tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
+      return tracklist.filter((t) => !t.tags || !t.tags.includes("geese"));
     }
   }
   return tracklist;
@@ -60,9 +58,6 @@ function updateGeeseTrackCounterAndRearrange(track, tracklist) {
 
 /**
  * Inserts geese tracks after a specified index in the non-geese tracks array.
- * @param {array} geeseTracks - Array of geese tracks.
- * @param {array} nonGeeseTracks - Array of non-geese tracks.
- * @param {number} index - Index after which geese tracks should be inserted.
  * @returns {array} - The rearranged tracklist.
  */
 function insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, index) {
@@ -80,7 +75,6 @@ function insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, index) {
 
 /**
  * Updates the duration of the curated tracklist.
- * @param {array} curatedTracklist - The curated tracklist array.
  * @returns {number} - The total duration of the curated tracklist.
  */
 export function updatePlaylistDuration(curatedTracklist) {
@@ -90,8 +84,6 @@ export function updatePlaylistDuration(curatedTracklist) {
 
 /**
  * Checks if a new track can be added without exceeding the maximum playlist duration.
- * @param {number} newTrackDuration - The duration of the new track.
- * @param {number} myCurrentTracklistDuration - The current total duration of the tracklist.
  * @returns {boolean} - Whether the track can be added.
  */
 function canAddTrackWithoutBreakingMaxPlaylistDur(newTrackDuration, myCurrentTracklistDuration) {
@@ -100,8 +92,6 @@ function canAddTrackWithoutBreakingMaxPlaylistDur(newTrackDuration, myCurrentTra
 
 /**
  * Checks if the last track can be added without exceeding the maximum playlist duration.
- * @param {number} newTrackDuration - The duration of the new track.
- * @param {number} myCurrentTracklistDuration - The current total duration of the tracklist.
  * @returns {boolean} - Whether the last track can be added.
  */
 function canAddLastTrack(newTrackDuration, myCurrentTracklistDuration) {
@@ -110,9 +100,6 @@ function canAddLastTrack(newTrackDuration, myCurrentTracklistDuration) {
 
 /**
  * Adds the next valid track to the curated tracklist and updates its duration.
- * @param {object} track - The track object to add.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {array} tracks - The original tracklist array.
  */
 function addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracks) {
   curatedTracklist.push(track);
@@ -125,8 +112,6 @@ function addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, track
 
 /**
  * Adds the duration of a track to the total time in seconds.
- * @param {number} totalTimeInSecs - The current total time in seconds.
- * @param {object} track - The track object.
  * @returns {number} - The updated total time in seconds.
  */
 function addTrackDurationToTotal(totalTimeInSecs, track) {
@@ -151,8 +136,6 @@ function initializeGeneralRules() {
 
 /**
  * Initializes the ensure rules by shuffling them and marking them as unenforced.
- * @param {array} rules - The array of ensure rules.
- * @param {array} fixedRules - The array of fixed rules that should not be shuffled.
  * @returns {object} - An object containing the shuffled ensure rules and their enforcement status.
  */
 function initializeEnsureRules(rules, fixedRules = []) {
@@ -169,11 +152,6 @@ function initializeEnsureRules(rules, fixedRules = []) {
 
 /**
  * Logs the application of a rule.
- * @param {number} ruleNumber - The rule number.
- * @param {string} trackName - The name of the track.
- * @param {string} logMessage - The log message.
- * @param {boolean} isApplied - Whether the rule was applied.
- * @param {string} ruleType - The type of the rule.
  */
 export function logRuleApplication(ruleNumber, trackName, logMessage, isApplied, ruleType) {
   const ruleStatus = isApplied ? "passed" : "failed";
@@ -183,9 +161,6 @@ export function logRuleApplication(ruleNumber, trackName, logMessage, isApplied,
 
 /**
  * Updates the previous tracks with the current track.
- * @param {object} track - The current track.
- * @param {object} prevTrack1 - The previous track 1.
- * @param {object} prevTrack2 - The previous track 2.
  * @returns {array} - An array containing the updated previous tracks.
  */
 function updatePrevTracks(track, prevTrack1, prevTrack2) {
@@ -203,12 +178,6 @@ function updatePrevTracks(track, prevTrack1, prevTrack2) {
 
 /**
  * Ensures that all general rules are met for the given track.
- * @param {array} generalRuleFunctions - The array of general rule functions.
- * @param {object} track - The track object.
- * @param {object} prevTrack1 - The previous track 1.
- * @param {object} prevTrack2 - The previous track 2.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {number} currIndex - The current index in the tracklist.
  * @returns {boolean} - Whether all general rules are met.
  */
 function ensureGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
@@ -225,12 +194,6 @@ function ensureGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2,
 
 /**
  * Checks if the track is valid for general rules.
- * @param {object} track - The track object.
- * @param {object} prevTrack1 - The previous track 1.
- * @param {object} prevTrack2 - The previous track 2.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {number} index - The current index in the tracklist.
- * @param {array} generalRuleFunctions - The array of general rule functions.
  * @returns {boolean} - Whether the track is valid for general rules.
  */
 function isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, index, generalRuleFunctions) {
@@ -239,12 +202,6 @@ function isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTrack
 
 /**
  * Applies a specific rule to a track.
- * @param {function} ruleFunction - The specific rule function.
- * @param {object} track - The track object.
- * @param {object} prevTrack1 - The previous track 1.
- * @param {object} prevTrack2 - The previous track 2.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {number} trackIndex - The current index in the tracklist.
  * @returns {boolean} - Whether the rule was successfully applied.
  */
 function applySpecificRule(ruleFunction, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -253,12 +210,6 @@ function applySpecificRule(ruleFunction, track, prevTrack1, prevTrack2, curatedT
 
 /**
  * Applies general rules to a track.
- * @param {array} generalRuleFunctions - The array of general rule functions.
- * @param {object} track - The track object.
- * @param {object} prevTrack1 - The previous track 1.
- * @param {object} prevTrack2 - The previous track 2.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {number} trackIndex - The current index in the tracklist.
  * @returns {boolean} - Whether all general rules were successfully applied.
  */
 function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
@@ -267,11 +218,6 @@ function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, 
 
 /**
  * Ensures that the track meets all the ensure rules.
- * @param {object} track - The track object.
- * @param {number} currIndex - The current index in the tracklist.
- * @param {array} ensureRules - The array of ensure rules.
- * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
- * @param {array} curatedTracklist - The curated tracklist array.
  * @returns {boolean} - Whether the track meets all the ensure rules.
  */
 function ensureTrack(track, currIndex, ensureRules, ensureRulesEnforced, curatedTracklist) {
@@ -290,7 +236,6 @@ function ensureTrack(track, currIndex, ensureRules, ensureRulesEnforced, curated
 
 /**
  * Checks if all ensure rules are enforced.
- * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
  * @returns {boolean} - Whether all ensure rules are enforced.
  */
 function checkAllEnsureRulesEnforced(ensureRulesEnforced) {
@@ -309,7 +254,6 @@ function isEnsureRuleEnforced(ensureRulesEnforced, ruleNumber) {
 
 /**
  * Marks a specific ensure rule as enforced.
- * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
  * @param {number} ruleNumber - The rule number.
  */
 function markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber) {
@@ -318,9 +262,6 @@ function markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber) {
 
 /**
  * Filters the potential last tracks from the tracklist.
- * @param {array} tracklist - The tracklist array.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {array} generalRuleFunctions - The array of general rule functions.
  * @returns {array} - The array of potential last tracks.
  */
 function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) {
@@ -344,8 +285,6 @@ function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) 
 
 /**
  * Checks if a track is already in the curated tracklist.
- * @param {object} track - The track object.
- * @param {array} curatedTracklist - The curated tracklist array.
  * @returns {boolean} - Whether the track is already in the curated tracklist.
  */
 function trackAlreadyInList(track, curatedTracklist) {
@@ -354,9 +293,6 @@ function trackAlreadyInList(track, curatedTracklist) {
 
 /**
  * Attempts to add the last track to the curated tracklist.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {array} potentialLastTracks - The array of potential last tracks.
- * @param {array} generalRuleFunctions - The array of general rule functions.
  * @returns {array} - The possibly modified curated tracklist.
  */
 function attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRuleFunctions) {
@@ -390,12 +326,10 @@ function attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRul
 
 /**
  * Executes Phase 1: Applying specific rules and general rules.
- * @param {array} tracklist - The tracklist array.
- * @param {array} curatedTracklist - The curated tracklist array.
  * @param {array} generalRuleFunctions - The array of general rule functions.
  */
 function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
-  const specificRuleFunctions = [r61, r62, r63, r64, r65, r66, r67, r68];
+  const specificRuleFunctions = [r61, r62, r63, r64, r65, r66, r67, r68, r69, r70];
   let ruleFailureCounts = specificRuleFunctions.map(() => 0);
   let prevTrack1 = null;
   let prevTrack2 = null;
@@ -432,17 +366,15 @@ function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
     if (!ruleMet) {
       const mostFrequentRuleIndex = ruleFailureCounts.indexOf(Math.max(...ruleFailureCounts));
       const mostFrequentRuleDescription = eval(`r${61 + mostFrequentRuleIndex}rule`);
-      console.log(`No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`);
+      console.log(
+        `No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`
+      );
     }
   }
 }
 
 /**
  * Executes Phase 2: Ensuring rules and final check rules.
- * @param {array} tracklist - The tracklist array.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {array} generalRuleFunctions - The array of general rule functions.
- * @param {array} shuffledEnsureRules - The array of shuffled ensure rules.
  * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
  */
 function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced) {
@@ -488,9 +420,6 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
 
 /**
  * Executes Phase 3: Applying main general rules loop.
- * @param {array} tracklist - The tracklist array.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {array} generalRuleFunctions - The array of general rule functions.
  */
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions) {
   let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
@@ -516,7 +445,6 @@ function executePhase3(tracklist, curatedTracklist, generalRuleFunctions) {
 
 /**
  * Converts seconds to a string representation of minutes and seconds.
- * @param {number} seconds - The total seconds.
  * @returns {string} - The formatted string of minutes and seconds.
  */
 export function secondsToMinutesAndSeconds(seconds) {
@@ -527,7 +455,6 @@ export function secondsToMinutesAndSeconds(seconds) {
 
 /**
  * Follows the tracklist rules to curate a playlist.
- * @param {array} tracklist - The tracklist array.
  * @returns {array} - The curated tracklist.
  */
 export function followTracklistRules(tracklist) {

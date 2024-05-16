@@ -2062,3 +2062,12 @@ body:not(.show-focus-outlines) button:focus,
 body:not(.show-focus-outlines) [tabindex]:focus {
   outline: none;
 }
+
+#statusMessage {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+}

@@ -7,7 +7,6 @@ let creditsLog = []; // Array to store credits log
 
 /**
  * Adds a credit to the credits log.
- * @param {string} songCredit - The credit string for a song.
  */
 function addToCreditsLog(songCredit) {
   const strippedCredit = songCredit.substring(songCredit.lastIndexOf("_") + 1);
@@ -16,7 +15,6 @@ function addToCreditsLog(songCredit) {
 
 /**
  * Creates a credit object from a song and adds it to the credit songs array.
- * @param {object} song - The song object containing credit information.
  */
 function createCreditObjectAndAddToArray(song) {
   const creditObj = {
@@ -32,9 +30,6 @@ function createCreditObjectAndAddToArray(song) {
 
 /**
  * Checks if a track with specific attributes exists in the curated tracklist.
- * @param {array} curatedTracklist - The curated tracklist array.
- * @param {string} attribute - The attribute to check in the tracks.
- * @param {string|array} value - The value to check for the attribute.
  * @returns {object|null} - The matching track object or null if not found.
  */
 function trackExistsWithAttributes(curatedTracklist, attribute, value) {
@@ -54,7 +49,6 @@ function trackExistsWithAttributes(curatedTracklist, attribute, value) {
 
 /**
  * Plays a credit song using the global audio element.
- * @param {object} creditSong - The credit song object.
  */
 function playCreditSong(creditSong) {
   if (!globalAudioElement) {
@@ -70,7 +64,6 @@ function playCreditSong(creditSong) {
 
 /**
  * Gathers the credit songs from the curated tracklist.
- * @param {array} curatedTracklist - The curated tracklist array.
  * @returns {array} - The array of credit songs.
  */
 export function gatherTheCreditSongs(curatedTracklist) {
