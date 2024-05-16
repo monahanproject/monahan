@@ -25,6 +25,10 @@ import {
 } from "./ruleStrings.js";
 
 export function checkPlaylistRules(playlist) {
+  if (!Array.isArray(playlist) || playlist.length === 0) {
+    throw new Error("Playlist is empty or not an array.");
+  }
+
   let prevTrack = null;
   const authorCounts = {};
   let hasAlbert = false;

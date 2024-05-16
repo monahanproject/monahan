@@ -217,6 +217,7 @@ a:hover {
   --font-family-dm: "DM Sans", sans-serif;
   --font-family-mono: "DM Mono", sans-serif;
   --lightgreen: #bfffc2;
+  --focusgreen: #8dd26a;
   --darkgreen: #234e44;
   --grey: rgb(122, 122, 122);
   --black: rgb(0, 0, 0);
@@ -1138,6 +1139,8 @@ li {
   z-index: 1000; /* Ensure it is above other content */
   padding: 10px; /* Add some padding */
   border: 1px solid #8c7d7d; /* Add border for visibility */
+  outline: 1px dashed var(--focusgreen);
+
 }
 
 
@@ -2171,7 +2174,7 @@ article > p {
 
 
 :focus {
-  outline: 2px dashed var(--darkgreen);
+  outline: 2px dashed var(--focusgreen);
   outline-offset: 2px;
 }
 

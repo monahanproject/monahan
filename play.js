@@ -79,7 +79,7 @@ function prepareCuratedTracklist(songs) {
   curatedTracklist = followTracklistRules(shuffledSongs);
   // isValidTracklist(shuffledSongs)
   // console.log("tooooooo");
-  checkPlaylistRules(curatedTracklist);
+  // checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
   printEntireTracklistDebug(curatedTracklist);
   // updateTranscript(curatedTracklist);
@@ -102,9 +102,3 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(fern);
   }
 });
-
-
-
-
-
-

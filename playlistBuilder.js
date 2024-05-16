@@ -86,7 +86,7 @@ function insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, index) {
 //  ///////////////////////////////////////////////////
 
 export function updatePlaylistDuration(curatedTracklist) {
-  myTracklistDuration = curatedTracklist.reduce((total, track) => total + (track.duration || 0), 0);
+  myTracklistDuration = curatedTracklist.reduce((total, track) => total + (track.duration || 0), 0); // Providing 0 as the initial value
   return myTracklistDuration;
 }
 
