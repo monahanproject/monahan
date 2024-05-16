@@ -31,7 +31,7 @@ import {
 } from "./ruleStrings.js";
 
 // import { r25 } from "./geeseRule.js";
-import { shuffleTracklist, shuffleArrayOfRules } from "./shuffle.js";
+import { shuffleTracklist, shuffleArrayOfRules } from "./shuffleTracklist.js";
 
 // let MAX_PLAYLIST_DURATION_SECONDS = 700; //(19m)
 
@@ -462,8 +462,6 @@ export function followTracklistRules(tracklist) {
 
   const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24]);
   modifiedMaxPlaylistDurationSecs = MAX_PLAYLIST_DURATION_SECONDS - (CREDITSANDOUTROESTDUR + lastTrackEstDur);
-  // console.log(`modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`);
-
   let potentialLastTracks = preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions);
   executePhase1(tracklist, curatedTracklist, generalRuleFunctions);
   executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced);

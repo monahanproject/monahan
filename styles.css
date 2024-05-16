@@ -2,18 +2,18 @@
   font-family: "Zilla Slab";
   font-style: normal;
   font-weight: 300;
-  src: local("Zilla Slab Light"), local("ZillaSlab-Light"), url("/monahan/fonts/ZillaSlab-Light.woff2") format("woff2"),
-    /* WOFF2 for modern browsers */ url("/monahan/fonts/ZillaSlab-Light.woff") format("woff"),
-    /* WOFF for older browsers */ url("/monahan/fonts/ZillaSlab-Light.ttf") format("truetype"); /* Truetype as fallback */
+  src: local("Zilla Slab Light"), local("ZillaSlab-Light"), url("ZillaSlab-Light.woff2") format("woff2"),
+    /* WOFF2 for modern browsers */ url("ZillaSlab-Light.woff") format("woff"),
+    /* WOFF for older browsers */ url("ZillaSlab-Light.ttf") format("truetype"); /* Truetype as fallback */
 }
 
 @font-face {
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400 700;
-  src: local("DM Sans"), local("DMSans"), url("/monahan/fonts/DMSans-VariableFont_opsz,wght.woff2") format("woff2"),
-    /* WOFF2 for modern browsers */ url("/monahan/fonts/DMSans-VariableFont_opsz,wght.woff") format("woff"),
-    /* WOFF for older browsers */ url("/monahan/fonts/DMSans-VariableFont_opsz,wght.ttf") format("truetype"); /* Truetype as fallback */
+  src: local("DM Sans"), local("DMSans"), url("DMSans-VariableFont_opsz,wght.woff2") format("woff2"),
+    /* WOFF2 for modern browsers */ url("DMSans-VariableFont_opsz,wght.woff") format("woff"),
+    /* WOFF for older browsers */ url("DMSans-VariableFont_opsz,wght.ttf") format("truetype"); /* Truetype as fallback */
 }
 
 :root {

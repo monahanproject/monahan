@@ -1,12 +1,15 @@
-import { SimpleAudioPlayer } from "./audioplayer.js";
-import { gatherTheCreditSongs } from "./credits.js";
+import { SimpleAudioPlayer } from "./buildAudioplayer.js";
+import { gatherTheCreditSongs } from "./gatherCredits.js";
 import { checkPlaylistRules } from "./checkRules.js";
 // import { updateTranscript } from "./transcript.js";
-import { shuffleTracklist } from "./shuffle.js";
+import { shuffleTracklist } from "./shuffleTracklist.js";
 
 import { printEntireTracklistDebug } from "./debug.js";
 import { followTracklistRules } from "./playlistBuilder.js";
 import { outroAudioSounds, finalOutroAudioSounds } from "./outroAudio.js";
+import { isValidTracklist } from "./checkEachTrackForValidity.js";
+
+
 
 export let curatedTracklist;
 
@@ -74,6 +77,7 @@ function prepareCuratedTracklist(songs) {
   const allSongs = [...songs];
   const shuffledSongs = shuffleTracklist(allSongs);
   curatedTracklist = followTracklistRules(shuffledSongs);
+  isValidTracklist(shuffledSongs)
   // console.log("tooooooo");
   checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
