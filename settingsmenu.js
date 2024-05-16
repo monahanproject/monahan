@@ -57,7 +57,7 @@ function replaceSvgContent() {
     (isInverted ? "images/svg/monohanLogoMobileInvert3.svg" : "images/svg/monohanLogoMobile2.svg");
   const svgContainer = document.getElementById("titleText");
   let imageElement = svgContainer.querySelector("img#monSvg");
-  if (imageElement) {
+  if (imageElement instanceof HTMLImageElement) {
     imageElement.src = logoPath;
   } else {
     imageElement = document.createElement("img");

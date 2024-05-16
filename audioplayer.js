@@ -232,7 +232,7 @@ handleVolumeChange(event) {
       lowerVolumeBtn.addEventListener("click", () => {
         this.globalAudioElement.volume = 0;
         const volumeSlider = document.getElementById("volume-slider");
-        if (volumeSlider) {
+        if (volumeSlider && volumeSlider instanceof HTMLInputElement) {
           volumeSlider.value = "0"; // Update the slider position
         }
         this.updateVolumeIndicator(0); // Update the UI to reflect the volume change
@@ -244,9 +244,10 @@ handleVolumeChange(event) {
       raiseVolumeBtn.addEventListener("click", () => {
         this.globalAudioElement.volume = 1;
         const volumeSlider = document.getElementById("volume-slider");
-        if (volumeSlider) {
+        if (volumeSlider && volumeSlider instanceof HTMLInputElement) {
           volumeSlider.value = "100"; // Update the slider position
         }
+        
         this.updateVolumeIndicator(100); // Update the UI to reflect the volume change
         this.toggleAriaPressed(raiseVolumeBtn); // Update aria-pressed
       });
@@ -263,7 +264,7 @@ handleVolumeChange(event) {
     this.isPlaying = true;
     this.toggleButtonVisuals(true);
     this.toggleAriaPressed(document.getElementById("play-button"));
-
+    this.playButton.focus();
   }
 
   handlePause() {
@@ -272,7 +273,7 @@ handleVolumeChange(event) {
     this.isPlaying = false;
     this.toggleButtonVisuals(false);
     this.toggleAriaPressed(document.getElementById("play-button"));
-
+    this.playButton.focus();
   }
 
   /////////////////////////////////////////////////////
@@ -511,6 +512,7 @@ handleVolumeChange(event) {
         .then(() => {
           // On success, set isPlaying flag to true.
           this.isPlaying = true;
+          this.playButton.focus();
 
           // Preload the next track if there is one.
           if (index + 1 < this.tracklist.length) {
@@ -556,8 +558,6 @@ handleVolumeChange(event) {
         }
       };
     });
-    document.getElementById("play-button").focus();
-
   }
 
   /////////////////////////////////////////////////////

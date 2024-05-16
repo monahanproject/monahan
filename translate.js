@@ -34,8 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function updateLanguageLabel() {
   const langToggleButton = document.getElementById("langToggle");
-
-  if (langToggleButton) {
+  if (langToggleButton instanceof HTMLImageElement) {
     const newSrc = lang === "EN" ? "images/svg/FR.svg" : "images/svg/EN.svg";
     langToggleButton.src = `${newSrc}?${new Date().getTime()}`; // Prevent caching
   } else {

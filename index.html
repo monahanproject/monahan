@@ -38,6 +38,16 @@
         <header>
           <h1 class="visually-hidden">Monahan: Art, Public Art</h1>
           <nav>
+            <p id="skiplinks">
+              <a href="#landingPage" class="skip-link">Skip to Main Content</a>
+              <a href="#curiousEarsPage" class="skip-link">Skip to Curious Ears</a>
+              <a href="#aboutPage" class="skip-link">Skip to About</a>
+              <a href="#howToListenPage" class="skip-link">Skip to How to Listen</a>
+              <a href="#howItWorksPage" class="skip-link">Skip to How It Works</a>
+              <a href="#contributorsPage" class="skip-link">Skip to Contributors</a>
+              <a href="#productionTeamPage" class="skip-link">Skip to Production Team</a>
+              <a href="#thanksPage" class="skip-link">Skip to Thanks</a>
+            </p>
             <button id="toggleLanguage" class="navIcons btn noselect" aria-label="Toggle Language" aria-pressed="false">
               <img src="images/svg/FR.svg" alt="" id="langToggle" />
             </button>
@@ -50,21 +60,12 @@
               <img src="images/svg/accessIconInvert.svg" alt="" id="accessIcon" />
             </button>
 
-            <p id="skiplinks">
-              <a href="#landingPage" class="skip-link">Skip to Main Content</a>
-              <a href="#curiousEarsPage" class="skip-link">Skip to Curious Ears</a>
-              <a href="#aboutPage" class="skip-link">Skip to About</a>
-              <a href="#howToListenPage" class="skip-link">Skip to How to Listen</a>
-              <a href="#howItWorksPage" class="skip-link">Skip to How It Works</a>
-              <a href="#contributorsPage" class="skip-link">Skip to Contributors</a>
-              <a href="#productionTeamPage" class="skip-link">Skip to Production Team</a>
-              <a href="#thanksPage" class="skip-link">Skip to Thanks</a>
-            </p>
+            
           </nav>
           <div id="slidein" class="slide-in from-left" aria-hidden="true">
             <ul id="settingsDropdown" class="slide-in-content" role="menu">
               <li class="dropdownContainer invertColors" role="menuitem">
-                <span id="invertColorsTxt">Invert Colours</span>
+                <span id="invertColorsTxt"></span>
                 <button id="invertColoursBtn" aria-pressed="false" aria-label="Invert Colors">
                   <img src="images/svg/invertColors.svg" alt="Invert Colors settings icon" style="width: 24px; height: 24px" />
                 </button>
@@ -76,7 +77,7 @@
                 </button>
               </li>
               <li class="dropdownContainer textSize" role="menuitem">
-                <span id="textSizeTxt">Text Size</span>
+                <span id="textSizeTxt"></span>
                 <span id="shrinkOrGrowTxt">
                   <button id="decreaseTextSizeBtn" aria-pressed="false" aria-label="Decrease text size">-</button>
                   <button id="increaseTextSizeBtn" aria-pressed="false" aria-label="Increase text size">+</button>
@@ -138,13 +139,20 @@
       <section id="curiousEarsPage" class="page">
         <div class="pageContent">
           <img src="images/svg/firn.svg" alt="decorative fern made of small dashes" class="decorativeImage" id="fern" />
-          <h2 id="curiousEarsTxt">A Sound Piece<br />for Curious Ears</h2>
+          <h2 id="curiousEarsTxt"></h2>
         </div>
       </section>
       <section id="playerPage" class="page">
         <div id="audio-player-container">
-          <!-- Play/Pause Button -->        
-          <button type="button" id="play-button" class="play-icon" aria-controls="music_player" aria-label="Play Audio" aria-pressed="false" tabindex="0">
+          <!-- Play/Pause Button -->
+          <button
+            type="button"
+            id="play-button"
+            class="play-icon"
+            aria-controls="music_player"
+            aria-label="Play Audio"
+            aria-pressed="false"
+            tabindex="0">
             <span id="play-button-svg-container">
               <img src="images/svg/playButton.svg" alt="Play button" aria-hidden="true" class="svg-icon" />
             </span>
@@ -212,12 +220,10 @@
                 </svg>
               </button>
             </div>
-                      <!-- Transcript and Debug Containers -->
-          <div id="transButtonContainer"></div>
-          <div id="transcriptContainer"></div>
+            <!-- Transcript and Debug Containers -->
+            <div id="transButtonContainer"></div>
+            <div id="transcriptContainer"></div>
           </div>
-
-
         </div>
 
         <div id="debugdiv">
@@ -286,7 +292,7 @@
           <div class="pageContentTxt">
             <div class="pageInnerContent">
               <div class="headerDiv">
-                <h2 id="howitWorksH2">HOW IT WORKS</h2>
+                <h2 id="howitWorksH2"></h2>
               </div>
               <p class="txtBoxDiv" id="eachTimeYouClick"></p>
               <p class="txtBoxDiv txtBoxDivPad txtBoxDivLast" id="ByBringingTogether"></p>
@@ -388,7 +394,6 @@
     <script type="module" src="generalRules.js" defer></script>
     <script type="module" src="outroAudio.js" defer></script>
     <script type="module" src="creditsTxt.js" defer></script>
-
     <script type="module" src="playlistBuilder.js" defer></script>
     <script type="module" src="focus.js" defer></script>
     <script type="module" src="ruleStrings.js" defer></script>
