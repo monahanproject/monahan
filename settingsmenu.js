@@ -200,6 +200,9 @@ function changeTextSize(increase) {
 /**
  * Toggles the accessibility menu.
  */
+/**
+ * Toggles the accessibility menu.
+ */
 function toggleMenu() {
   const menu = document.getElementById("slidein");
   const isExpanded = settingsBtn.getAttribute("aria-expanded") === "true";
@@ -214,10 +217,19 @@ function toggleMenu() {
   if (!isExpanded) {
     menu.querySelector('[role="menuitem"]').focus();
   } else {
-    settingsBtn.focus();
+    // Only set focus back to settingsBtn if the menu was closed intentionally by interacting with it
+    if (document.activeElement.closest('#slidein')) {
+      settingsBtn.focus();
+    }
   }
   toggleAriaPressed(settingsBtn);
 }
+
+function isClickOutsideMenu(event) {
+  const menu = document.getElementById("slidein");
+  return !menu.contains(event.target);
+}
+
 
 /**
  * Closes the accessibility menu.
