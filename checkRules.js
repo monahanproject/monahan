@@ -32,9 +32,11 @@ export function checkPlaylistRules(playlist) {
   let hasInterview = false;
   let hasMusic = false;
   let geeseTracksCount = 0;
+  const ruleViolationCounts = {};
 
   function logViolation(ruleNumber, track, message) {
     console.log(`❌❌❌ R${ruleNumber} violated at Track ${track.index + 1} (${track.name}): ${message}`);
+    ruleViolationCounts[ruleNumber] = (ruleViolationCounts[ruleNumber] || 0) + 1;
   }
 
   function checkRule(ruleNumber, condition, track, message) {
@@ -134,4 +136,8 @@ export function checkPlaylistRules(playlist) {
   checkRule("c23", hasInterview, { name: "N/A", index: "N/A" }, r23rule);
   checkRule("c24", hasMusic, { name: "N/A", index: "N/A" }, r24rule);
   checkRule("c25", geeseTracksCount !== 1, { name: "N/A", index: "N/A" }, r25rule);
+
+  // Log the most frequently broken rule
+  const mostFrequentRule = Object.keys(ruleViolationCounts).reduce((a, b) => (ruleViolationCounts[a] > ruleViolationCounts[b] ? a : b));
+  console.log(`❌ Most frequently broken rule: R${mostFrequentRule}`);
 }
