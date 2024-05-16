@@ -1662,6 +1662,7 @@ img {
   margin: 20px 5px;
   min-height: 0;
   overflow: auto;
+  text-align: left;
 }
 
 #transButtonContainer {
