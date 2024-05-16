@@ -1,5 +1,4 @@
-// import { trackExistsWithAttributes, addAudioFromUrl } from './play.js';
-
+// Import necessary modules and rules
 import { r10, r11, r12, r13, r14, r15, r16, r17 } from "./generalRules.js";
 import { r21, r22, r23, r24 } from "./ensureRules.js";
 import { r61, r62, r63, r64, r65, r66, r67, r68, r69, r70 } from "./specificRules.js";
@@ -12,7 +11,6 @@ import {
   r15rule,
   r16rule,
   r17rule,
-
   r21rule,
   r22rule,
   r23rule,
@@ -29,44 +27,44 @@ import {
   r69rule,
   r70rule
 } from "./ruleStrings.js";
-
-// import { r25 } from "./geeseRule.js";
 import { shuffleTracklist, shuffleArrayOfRules } from "./shuffleTracklist.js";
 
-// let MAX_PLAYLIST_DURATION_SECONDS = 700; //(19m)
-
- let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
+// Maximum playlist duration and tracklist duration variables
+let MAX_PLAYLIST_DURATION_SECONDS = 1140; //(19m)
 let myTracklistDuration = 0;
 let CREDITSANDOUTROESTDUR = 44;
 let lastTrackEstDur = 150;
 let modifiedMaxPlaylistDurationSecs;
 
-
 let geeseTrackCounter = 0;
 
+/**
+ * Updates the geese track counter and rearranges the tracklist if necessary.
+ * @param {object} track - The current track object.
+ * @param {array} tracklist - The current tracklist array.
+ * @returns {array} - The rearranged tracklist.
+ */
 function updateGeeseTrackCounterAndRearrange(track, tracklist) {
-  if (track.tags && track.tags.includes("geese") && geeseTrackCounter === 0) {
+  if (track.tags && track.tags.includes("geese")) {
     geeseTrackCounter++;
-    // console.log(`🦢 Goose! geeseTrackCounter updated: ${geeseTrackCounter}`);
-    const geeseTracks = tracklist.filter(t => t.tags && t.tags.includes("geese"));
-    const nonGeeseTracks = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
-    const rearrangedTracklist = insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, 3);
-    // console.log(`🔄 geese closer to the front!: ${geeseTracks.map(t => t.name).join(", ")}`);
-    return rearrangedTracklist;
-  } else if (track.tags && track.tags.includes("geese") && geeseTrackCounter >= 1) {
-    geeseTrackCounter++;
-    // console.log(`🦢 That's enough geese! geeseTrackCounter updated: ${geeseTrackCounter}`);
-    const rearrangedTracklist = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
-    return rearrangedTracklist;
-  } else if (track.tags && track.tags.includes("geese") && geeseTrackCounter > 2) {
-    // console.log(`🦢 Too many geese, shouldn't be here! geeseTrackCounter updated: ${geeseTrackCounter}`);
-    return tracklist;
-  } else {
-    // console.log("no goose");
-    return tracklist;
+    if (geeseTrackCounter === 1) {
+      const geeseTracks = tracklist.filter(t => t.tags && t.tags.includes("geese"));
+      const nonGeeseTracks = tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
+      return insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, 3);
+    } else if (geeseTrackCounter > 1) {
+      return tracklist.filter(t => !t.tags || !t.tags.includes("geese"));
+    }
   }
+  return tracklist;
 }
 
+/**
+ * Inserts geese tracks after a specified index in the non-geese tracks array.
+ * @param {array} geeseTracks - Array of geese tracks.
+ * @param {array} nonGeeseTracks - Array of non-geese tracks.
+ * @param {number} index - Index after which geese tracks should be inserted.
+ * @returns {array} - The rearranged tracklist.
+ */
 function insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, index) {
   const rearrangedTracklist = [];
   let nonGeeseCount = 0;
@@ -80,33 +78,42 @@ function insertGeeseTracksAfterIndex(geeseTracks, nonGeeseTracks, index) {
   return rearrangedTracklist;
 }
 
-
-//  ///////////////////////////////////////////////////
-//         ~~~ Playlist Duration ~~~
-//  ///////////////////////////////////////////////////
-
+/**
+ * Updates the duration of the curated tracklist.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @returns {number} - The total duration of the curated tracklist.
+ */
 export function updatePlaylistDuration(curatedTracklist) {
-  myTracklistDuration = curatedTracklist.reduce((total, track) => total + (track.duration || 0), 0); // Providing 0 as the initial value
+  myTracklistDuration = curatedTracklist.reduce((total, track) => total + (track.duration || 0), 0);
   return myTracklistDuration;
 }
 
+/**
+ * Checks if a new track can be added without exceeding the maximum playlist duration.
+ * @param {number} newTrackDuration - The duration of the new track.
+ * @param {number} myCurrentTracklistDuration - The current total duration of the tracklist.
+ * @returns {boolean} - Whether the track can be added.
+ */
 function canAddTrackWithoutBreakingMaxPlaylistDur(newTrackDuration, myCurrentTracklistDuration) {
-  const result = myCurrentTracklistDuration + (newTrackDuration || 0) <= modifiedMaxPlaylistDurationSecs;
-  // console.log(
-  //   `Add track? ${result} | myCurTracklistDur: ${myCurrentTracklistDuration} + newTrackDuration: ${newTrackDuration} <= modifiedMaxPlaylistDurationSecs: ${modifiedMaxPlaylistDurationSecs}`
-  // );
-  return result;
+  return myCurrentTracklistDuration + (newTrackDuration || 0) <= modifiedMaxPlaylistDurationSecs;
 }
 
+/**
+ * Checks if the last track can be added without exceeding the maximum playlist duration.
+ * @param {number} newTrackDuration - The duration of the new track.
+ * @param {number} myCurrentTracklistDuration - The current total duration of the tracklist.
+ * @returns {boolean} - Whether the last track can be added.
+ */
 function canAddLastTrack(newTrackDuration, myCurrentTracklistDuration) {
-  // Directly compare against modifiedMaxPlaylistDurationSecs without subtracting lastTrackEstDur
-  const result = myCurrentTracklistDuration + newTrackDuration <= MAX_PLAYLIST_DURATION_SECONDS;
-  // console.log(
-  //   `Checking if last track can be added: ${result} | Current Duration: ${myCurrentTracklistDuration}, Track Duration: ${myCurrentTracklistDuration}, Credits/Outro: ${CREDITSANDOUTROESTDUR}, Max: ${modifiedMaxPlaylistDurationSecs}`
-  // );
-  return result;
+  return myCurrentTracklistDuration + newTrackDuration <= MAX_PLAYLIST_DURATION_SECONDS;
 }
 
+/**
+ * Adds the next valid track to the curated tracklist and updates its duration.
+ * @param {object} track - The track object to add.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {array} tracks - The original tracklist array.
+ */
 function addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracks) {
   curatedTracklist.push(track);
   myTracklistDuration = updatePlaylistDuration(curatedTracklist);
@@ -116,26 +123,39 @@ function addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, track
   }
 }
 
+/**
+ * Adds the duration of a track to the total time in seconds.
+ * @param {number} totalTimeInSecs - The current total time in seconds.
+ * @param {object} track - The track object.
+ * @returns {number} - The updated total time in seconds.
+ */
 function addTrackDurationToTotal(totalTimeInSecs, track) {
   return totalTimeInSecs + (track.duration || 0);
 }
-// updateMyTracklistDuration
-// calculateOrUpdatecuratedTracklistDuration
 
-//  ///////////////////////////////////////////////////
-//         ~~~ Initialization Functions ~~~
-//  ///////////////////////////////////////////////////
-
-function initializecuratedTracklist() {
+/**
+ * Initializes an empty curated tracklist.
+ * @returns {array} - An empty array.
+ */
+function initializeCuratedTracklist() {
   return [];
 }
 
+/**
+ * Initializes the general rules.
+ * @returns {array} - An array of general rule functions.
+ */
 function initializeGeneralRules() {
   return [r10, r11, r12, r13, r14, r15, r16, r17];
 }
 
+/**
+ * Initializes the ensure rules by shuffling them and marking them as unenforced.
+ * @param {array} rules - The array of ensure rules.
+ * @param {array} fixedRules - The array of fixed rules that should not be shuffled.
+ * @returns {object} - An object containing the shuffled ensure rules and their enforcement status.
+ */
 function initializeEnsureRules(rules, fixedRules = []) {
-  // Separate the rules that should not be shuffled
   const rulesToShuffle = rules.filter((rule) => !fixedRules.includes(rule));
   const shuffledEnsureRules = shuffleArrayOfRules(rulesToShuffle).concat(fixedRules);
 
@@ -147,22 +167,27 @@ function initializeEnsureRules(rules, fixedRules = []) {
   return { shuffledEnsureRules, ensureRulesEnforced };
 }
 
-//  ///////////////////////////////////////////////////
-//         ~~~ Log Rules ~~~
-//  ///////////////////////////////////////////////////
-
+/**
+ * Logs the application of a rule.
+ * @param {number} ruleNumber - The rule number.
+ * @param {string} trackName - The name of the track.
+ * @param {string} logMessage - The log message.
+ * @param {boolean} isApplied - Whether the rule was applied.
+ * @param {string} ruleType - The type of the rule.
+ */
 export function logRuleApplication(ruleNumber, trackName, logMessage, isApplied, ruleType) {
-  const ruleStatus = isApplied ? "passed" : "failed"; // Use "failed" for consistency
-  const statusIcon = isApplied ? "🌱" : "🫧"; // Add status icon based on isApplied
-  // Rxxx duration is 113 failed undefined undefined
-  // console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage} `); //findme
+  const ruleStatus = isApplied ? "passed" : "failed";
+  const statusIcon = isApplied ? "🌱" : "🫧";
+  console.log(`${statusIcon} R${ruleNumber} ${ruleStatus} ${trackName} ${logMessage}`);
 }
 
-//  ///////////////////////////////////////////////////
-//         ~~~ Update prev tracks ~~~
-//  ///////////////////////////////////////////////////
-
-// Helper function to manage prevTrack1 and prevTrack2
+/**
+ * Updates the previous tracks with the current track.
+ * @param {object} track - The current track.
+ * @param {object} prevTrack1 - The previous track 1.
+ * @param {object} prevTrack2 - The previous track 2.
+ * @returns {array} - An array containing the updated previous tracks.
+ */
 function updatePrevTracks(track, prevTrack1, prevTrack2) {
   if (prevTrack1 === null) {
     prevTrack1 = track;
@@ -176,68 +201,128 @@ function updatePrevTracks(track, prevTrack1, prevTrack2) {
   return [prevTrack1, prevTrack2];
 }
 
-//  ///////////////////////////////////////////////////
-//     ~~~ helper functions for checking rules ~~~
-//  ///////////////////////////////////////////////////
-
+/**
+ * Ensures that all general rules are met for the given track.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ * @param {object} track - The track object.
+ * @param {object} prevTrack1 - The previous track 1.
+ * @param {object} prevTrack2 - The previous track 2.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {number} currIndex - The current index in the tracklist.
+ * @returns {boolean} - Whether all general rules are met.
+ */
 function ensureGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, currIndex) {
   for (const generalRule of generalRuleFunctions) {
-    // Handle null values for prevTrack1 and prevTrack2
-    let safePrevTrack1 = prevTrack1 || {}; // Use an empty object if prevTrack1 is null
-    let safePrevTrack2 = prevTrack2 || {}; // Use an empty object if prevTrack2 is null
+    let safePrevTrack1 = prevTrack1 || {};
+    let safePrevTrack2 = prevTrack2 || {};
 
-    // Now pass the safePrevTrack1 and safePrevTrack2 to the rule function
     if (!generalRule(track, safePrevTrack1, safePrevTrack2, curatedTracklist, currIndex)) {
-      // console.log(`🫧 General rule failed for ${track.name} by rule ${generalRule.name}`);
-      return false; // General rule failed
+      return false;
     }
   }
-  return true; // All general rules passed
+  return true;
 }
 
+/**
+ * Checks if the track is valid for general rules.
+ * @param {object} track - The track object.
+ * @param {object} prevTrack1 - The previous track 1.
+ * @param {object} prevTrack2 - The previous track 2.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {number} index - The current index in the tracklist.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ * @returns {boolean} - Whether the track is valid for general rules.
+ */
 function isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, index, generalRuleFunctions) {
   return generalRuleFunctions.every((rule) => rule(track, prevTrack1, prevTrack2, curatedTracklist, index));
 }
 
+/**
+ * Applies a specific rule to a track.
+ * @param {function} ruleFunction - The specific rule function.
+ * @param {object} track - The track object.
+ * @param {object} prevTrack1 - The previous track 1.
+ * @param {object} prevTrack2 - The previous track 2.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {number} trackIndex - The current index in the tracklist.
+ * @returns {boolean} - Whether the rule was successfully applied.
+ */
 function applySpecificRule(ruleFunction, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return ruleFunction(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex);
 }
 
+/**
+ * Applies general rules to a track.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ * @param {object} track - The track object.
+ * @param {object} prevTrack1 - The previous track 1.
+ * @param {object} prevTrack2 - The previous track 2.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {number} trackIndex - The current index in the tracklist.
+ * @returns {boolean} - Whether all general rules were successfully applied.
+ */
 function applyGeneralRules(generalRuleFunctions, track, prevTrack1, prevTrack2, curatedTracklist, trackIndex) {
   return isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions);
 }
 
+/**
+ * Ensures that the track meets all the ensure rules.
+ * @param {object} track - The track object.
+ * @param {number} currIndex - The current index in the tracklist.
+ * @param {array} ensureRules - The array of ensure rules.
+ * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @returns {boolean} - Whether the track meets all the ensure rules.
+ */
 function ensureTrack(track, currIndex, ensureRules, ensureRulesEnforced, curatedTracklist) {
   for (const rule of ensureRules) {
     const ruleNumber = parseInt(rule.name.match(/\d+/)[0]);
 
     if (!isEnsureRuleEnforced(ensureRulesEnforced, ruleNumber)) {
       if (!rule(track, null, null, curatedTracklist, currIndex)) {
-        return false; // Ensure rule failed, exit the loop
+        return false; // Ensure rule failed
       }
-      // Mark the rule as enforced once it passes
       markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
     }
   }
-  return true; // All ensure rules passed
+  return true;
 }
 
+/**
+ * Checks if all ensure rules are enforced.
+ * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
+ * @returns {boolean} - Whether all ensure rules are enforced.
+ */
 function checkAllEnsureRulesEnforced(ensureRulesEnforced) {
   return Object.values(ensureRulesEnforced).every((flag) => flag === true);
 }
 
+/**
+ * Checks if a specific ensure rule is enforced.
+ * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
+ * @param {number} ruleNumber - The rule number.
+ * @returns {boolean} - Whether the specific ensure rule is enforced.
+ */
 function isEnsureRuleEnforced(ensureRulesEnforced, ruleNumber) {
   return ensureRulesEnforced[`r${ruleNumber}`];
 }
 
+/**
+ * Marks a specific ensure rule as enforced.
+ * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
+ * @param {number} ruleNumber - The rule number.
+ */
 function markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber) {
   ensureRulesEnforced[`r${ruleNumber}`] = true;
 }
 
-//  ///////////////////////////////////////////////////
-//     ~~~ helper functions for last track ~~~
-//  ///////////////////////////////////////////////////
-
+/**
+ * Filters the potential last tracks from the tracklist.
+ * @param {array} tracklist - The tracklist array.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ * @returns {array} - The array of potential last tracks.
+ */
 function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) {
   let potentialLastTracks = [];
   let indexesToRemove = [];
@@ -245,27 +330,35 @@ function preFilterLastTracks(tracklist, curatedTracklist, generalRuleFunctions) 
   for (let i = 0; i < tracklist.length; i++) {
     let track = tracklist[i];
     if (track.placement.includes("end")) {
-      // Assuming your commented-out code and any conditions go here
       potentialLastTracks.push(track);
-      indexesToRemove.push(i); // Store the index for later removal
+      indexesToRemove.push(i);
     }
   }
 
-  // Remove the tracks in reverse order to not mess up the indexes of yet-to-be-removed tracks
   for (let i = indexesToRemove.length - 1; i >= 0; i--) {
     tracklist.splice(indexesToRemove[i], 1);
   }
 
-  // console.log(`last tracks are ${potentialLastTracks.map(track => track.name).join(', ')}`);
-  // console.log(`last tracks are ${potentialLastTracks.map(track => track.duration).join(', ')}`);
-
   return potentialLastTracks;
 }
 
+/**
+ * Checks if a track is already in the curated tracklist.
+ * @param {object} track - The track object.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @returns {boolean} - Whether the track is already in the curated tracklist.
+ */
 function trackAlreadyInList(track, curatedTracklist) {
   return curatedTracklist.some((curatedTrack) => curatedTrack.name === track.name);
 }
 
+/**
+ * Attempts to add the last track to the curated tracklist.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {array} potentialLastTracks - The array of potential last tracks.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ * @returns {array} - The possibly modified curated tracklist.
+ */
 function attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRuleFunctions) {
   let lastTrackAdded = false;
 
@@ -283,85 +376,76 @@ function attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRul
       )
     ) {
       addNextValidTrackAndUpdateMyTracklistDur(lastTrack, curatedTracklist, potentialLastTracks);
-      // console.log(`Successfully added last track: ${lastTrack.name}`);
       lastTrackAdded = true;
-      break; // Exit the loop as we have successfully added a last track
+      break; // Exit the loop once a last track is successfully added
     }
   }
 
   if (!lastTrackAdded) {
     console.log("Unable to add a suitable last track within the duration limit.");
-    console.log(
-      `nable to add a suitable last track within the duration limit. Updated playlist duration: ${myTracklistDuration} && modifiedMaxPlaylistDurationSecs is ${modifiedMaxPlaylistDurationSecs}`
-    );
   }
 
-  // Return the possibly modified curatedTracklist
   return curatedTracklist;
 }
 
-// ~~~ Phase Functions ~~~
+/**
+ * Executes Phase 1: Applying specific rules and general rules.
+ * @param {array} tracklist - The tracklist array.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ */
 function executePhase1(tracklist, curatedTracklist, generalRuleFunctions) {
-  // console.log("🚀🚀🚀🚀🚀🚀🚀 Starting Phase 1: Apply specific rules and general rules");
-
   const specificRuleFunctions = [r61, r62, r63, r64, r65, r66, r67, r68];
-  let ruleFailureCounts = specificRuleFunctions.map(() => 0); // Initialize failure counts for each rule
+  let ruleFailureCounts = specificRuleFunctions.map(() => 0);
   let prevTrack1 = null;
   let prevTrack2 = null;
   let trackIndex = 0;
 
   for (let i = 0; i < specificRuleFunctions.length; i++) {
     let ruleMet = false;
-    let tracksTried = 0; // Initialize counter for the number of tracks tried
-
-    let specificRuleDescription = eval(`r${61 + i}rule`); // Dynamic evaluation of rule descriptions
-    // console.log(`Attempting to apply specific rule ${i + 61}: ${specificRuleDescription}`);
+    let tracksTried = 0;
+    let specificRuleDescription = eval(`r${61 + i}rule`);
 
     while (!ruleMet && tracksTried < tracklist.length) {
       if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
-        // console.log("we're basically out of time");
+        break;
       }
 
       let track = tracklist[tracksTried];
-      // console.log(`Evaluating track ${track.name} for rule ${i + 61}`);
 
       if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration)) {
         if (applySpecificRule(specificRuleFunctions[i], track, prevTrack1, prevTrack2, curatedTracklist, trackIndex + 1)) {
           if (i < 2 || isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
             addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
-            // tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
-            // console.log(`✅ Added ${track.name} to the curated tracklist using specific rule ${i + 61}.`);
             trackIndex++;
             ruleMet = true;
-            break; // Break out of the loop once a track has been successfully added
-          } else {
-            // console.log(`🫧 General Rules Failed for ${track.name}.`);
+            break;
           }
         } else {
-          // console.log(`🫧 Specific Rule Failed for ${track.name}: ${specificRuleDescription}.`);
-          ruleFailureCounts[i]++; // Increment failure count for the specific rule
+          ruleFailureCounts[i]++;
         }
-      } else {
-        // console.log(`Skipping ${track.name} as it would exceed the playlist duration.`);
       }
-      tracksTried++; // Increment tracksTried in all cases to ensure loop progression
+      tracksTried++;
     }
 
     if (!ruleMet) {
       const mostFrequentRuleIndex = ruleFailureCounts.indexOf(Math.max(...ruleFailureCounts));
       const mostFrequentRuleDescription = eval(`r${61 + mostFrequentRuleIndex}rule`);
-      console.log(
-        `❌ No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`
-      );
-      console.log(`Total tracks tried for rule ${i + 61}: ${tracksTried}`);
+      console.log(`No suitable track found for specific rule: ${specificRuleDescription}. Most frequently broken rule: ${mostFrequentRuleDescription}`);
     }
   }
 }
 
+/**
+ * Executes Phase 2: Ensuring rules and final check rules.
+ * @param {array} tracklist - The tracklist array.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ * @param {array} shuffledEnsureRules - The array of shuffled ensure rules.
+ * @param {object} ensureRulesEnforced - The object containing the enforcement status of ensure rules.
+ */
 function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffledEnsureRules, ensureRulesEnforced) {
-  // console.log("🚀 Starting Phase 2: Ensure rules and final check rules");
-
   let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
@@ -370,12 +454,9 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     let ruleNumber = rule.name.replace("r", "");
     let ruleDescVarName = `r${ruleNumber}rule`;
     let ruleDescription = eval(ruleDescVarName);
-    // console.log(`Checking for rule enforcement: ${ruleDescription}`);
 
-    // First, check if the rule is already met by the existing tracks in the curatedTracklist
     for (let track of curatedTracklist) {
       if (rule(track, null, null, curatedTracklist, curatedTracklist.indexOf(track))) {
-        // console.log(`✅ Rule ${ruleDescription} is already met by ${track.name} in the curatedTracklist.`);
         markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
         ruleMet = true;
         break;
@@ -383,81 +464,74 @@ function executePhase2(tracklist, curatedTracklist, generalRuleFunctions, shuffl
     }
 
     if (!ruleMet) {
-      if (Math.abs(myTracklistDuration - modifiedMaxPlaylistDurationSecs) < 20) {
-        console.log("we ran out of time before following all the ensure rules");
-      }
-
-      // console.log(`Rule ${ruleDescription} not yet met. Searching through tracklist.`);
       for (let track of tracklist) {
         if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration) && !trackAlreadyInList(track, curatedTracklist)) {
           if (
             rule(track, null, null, curatedTracklist, curatedTracklist.length) &&
             isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, curatedTracklist.length, generalRuleFunctions)
           ) {
-            // console.log(`✅ Good news! Adding ${track.name} to meet the rule: ${ruleDescription}`);
-
-            // console.log(`Adding ${track.name} to meet the rule: ${ruleDescription}`);
             addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
-            // tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
             [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
             ruleMet = true;
             markEnsureRuleEnforced(ensureRulesEnforced, ruleNumber);
-            break; // Found a track that satisfies the rule, break out of the loop
+            break;
           }
         }
       }
     }
 
     if (!ruleMet) {
-      console.log(`❌ Unable to find a track to satisfy the rule: ${ruleDescription}. Consider adjusting your rules or tracklist.`);
+      console.log(`Unable to find a track to satisfy the rule: ${ruleDescription}. Consider adjusting your rules or tracklist.`);
     }
   }
 }
 
+/**
+ * Executes Phase 3: Applying main general rules loop.
+ * @param {array} tracklist - The tracklist array.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {array} generalRuleFunctions - The array of general rule functions.
+ */
 function executePhase3(tracklist, curatedTracklist, generalRuleFunctions) {
-  // console.log("🚀 Starting Phase 3: Main general rules loop");
-
-  // Get the last two tracks added to the curated list for rule comparisons
   let prevTrack1 = curatedTracklist.length > 0 ? curatedTracklist[curatedTracklist.length - 1] : null;
   let prevTrack2 = curatedTracklist.length > 1 ? curatedTracklist[curatedTracklist.length - 2] : null;
 
-  // Track index for logging purposes
   let trackIndex = curatedTracklist.length;
 
   for (const track of tracklist) {
-    // Ensure the track isn't already in the curated list
     if (!trackAlreadyInList(track, curatedTracklist)) {
-      // Check if adding this track would stay within the max playlist duration
       if (canAddTrackWithoutBreakingMaxPlaylistDur(track.duration, myTracklistDuration)) {
-        // Verify the track satisfies general rules
         if (isTrackValidForGeneralRules(track, prevTrack1, prevTrack2, curatedTracklist, trackIndex, generalRuleFunctions)) {
-          // console.log(`Adding ${track.name} to curatedTracklist. Meets general rules.`);
           addNextValidTrackAndUpdateMyTracklistDur(track, curatedTracklist, tracklist);
           tracklist = updateGeeseTrackCounterAndRearrange(track, tracklist);
           [prevTrack1, prevTrack2] = updatePrevTracks(track, prevTrack1, prevTrack2);
           trackIndex++;
-        } else {
-          // console.log(`General Rules Failed for ${track.name}. Not added to curatedTracklist.`);
         }
       } else {
-        // console.log(`Adding ${track.name} would exceed max playlist duration. Stopping Phase 3.`);
-        break; // Exiting the loop if adding any more tracks would exceed the maximum playlist duration
+        break;
       }
     }
   }
-
-  // console.log(`Phase 3 completed. Curated tracklist now has ${curatedTracklist.length} tracks. Total duration: ${myTracklistDuration} seconds.`);
 }
 
+/**
+ * Converts seconds to a string representation of minutes and seconds.
+ * @param {number} seconds - The total seconds.
+ * @returns {string} - The formatted string of minutes and seconds.
+ */
 export function secondsToMinutesAndSeconds(seconds) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins} mins and ${secs} secs`;
 }
 
+/**
+ * Follows the tracklist rules to curate a playlist.
+ * @param {array} tracklist - The tracklist array.
+ * @returns {array} - The curated tracklist.
+ */
 export function followTracklistRules(tracklist) {
-  // console.log("🚀 Starting to follow tracklist rules");
-  let curatedTracklist = initializecuratedTracklist();
+  let curatedTracklist = initializeCuratedTracklist();
   const generalRuleFunctions = initializeGeneralRules();
 
   const { shuffledEnsureRules, ensureRulesEnforced } = initializeEnsureRules([r21, r22, r23, r24]);
@@ -469,18 +543,9 @@ export function followTracklistRules(tracklist) {
   let curatedTracklistTotalTimeInSec = updatePlaylistDuration(curatedTracklist);
 
   if (curatedTracklistTotalTimeInSec > modifiedMaxPlaylistDurationSecs) {
-    console.log("⏰ OH NO Ran out of duration time before completing the tracklist curation!");
-  } else {
-    // console.log("✅ Finished curating the tracklist");
+    console.log("Ran out of duration time before completing the tracklist curation!");
   }
 
   let finalizedTracklist = attemptToAddLastTrack(curatedTracklist, potentialLastTracks, generalRuleFunctions);
-  // console.log(
-  //   `ttt added final track! myTracklistDuration: ${myTracklistDuration} & modMaxPlaylistDurSecs: ${secondsToMinutesAndSeconds(
-  //     modifiedMaxPlaylistDurationSecs
-  //   )}`
-  // );
-  // console.log(`Updated playlist duration: ${myTracklistDuration} && modifiedMaxPlaylistDurationSecs is ${MAX_PLAYLIST_DURATION_SECONDS}`);
-
   return finalizedTracklist;
 }

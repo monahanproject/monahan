@@ -1,35 +1,46 @@
-
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  XXXXXXXXXXX CREDITS STUFF XXXXXXXXXXXXX
 //  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-let arrayOfCreditSongs = [];
-let creditsLog = [];
+let arrayOfCreditSongs = []; // Array to store credit song objects
+let creditsLog = []; // Array to store credits log
 
+/**
+ * Adds a credit to the credits log.
+ * @param {string} songCredit - The credit string for a song.
+ */
 function addToCreditsLog(songCredit) {
   const strippedCredit = songCredit.substring(songCredit.lastIndexOf("_") + 1);
   creditsLog.push(`${strippedCredit}<br>`);
 }
 
+/**
+ * Creates a credit object from a song and adds it to the credit songs array.
+ * @param {object} song - The song object containing credit information.
+ */
 function createCreditObjectAndAddToArray(song) {
   const creditObj = {
     name: song.name,
-    url: song.credit, // flip on purpose
+    url: song.credit, // Flip on purpose to use the credit URL
     duration: song.creditDur,
     author: song.author,
     engTrans: song.authorCredit,
     frTrans: song.authorCredit,
   };
-  // Directly push the credit object without creating an audio element
   arrayOfCreditSongs.push(creditObj);
 }
 
+/**
+ * Checks if a track with specific attributes exists in the curated tracklist.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @param {string} attribute - The attribute to check in the tracks.
+ * @param {string|array} value - The value to check for the attribute.
+ * @returns {object|null} - The matching track object or null if not found.
+ */
 function trackExistsWithAttributes(curatedTracklist, attribute, value) {
   for (const track of curatedTracklist) {
     if (typeof track === "object" && track.hasOwnProperty(attribute)) {
-      // Check if track[attribute] is an array
       if (Array.isArray(track[attribute])) {
-        // Check if any element in track[attribute] matches any element in value
         if (track[attribute].some((item) => value.includes(item))) {
           return track; // Return the first matching track
         }
@@ -41,6 +52,10 @@ function trackExistsWithAttributes(curatedTracklist, attribute, value) {
   return null; // Return null if no matching track is found
 }
 
+/**
+ * Plays a credit song using the global audio element.
+ * @param {object} creditSong - The credit song object.
+ */
 function playCreditSong(creditSong) {
   if (!globalAudioElement) {
     console.log("Global audio element is not initialized.");
@@ -53,26 +68,23 @@ function playCreditSong(creditSong) {
   });
 }
 
+/**
+ * Gathers the credit songs from the curated tracklist.
+ * @param {array} curatedTracklist - The curated tracklist array.
+ * @returns {array} - The array of credit songs.
+ */
 export function gatherTheCreditSongs(curatedTracklist) {
   for (let index = 0; index < curatedTracklist.length; index++) {
     const song = curatedTracklist[index];
 
-    const songTitles = arrayOfCreditSongs.map((song) => song.credit).join(", ");
-
-    if (song.credit == "") {
-      // No credit information, do nothing
-    } else {
+    if (song.credit !== "") {
       const matchingCreditSong = trackExistsWithAttributes(arrayOfCreditSongs, "url", song.credit);
 
-      if (matchingCreditSong) {
-        // Matching credit song found, do nothing
-      } else {
+      if (!matchingCreditSong) {
         addToCreditsLog(song.credit);
         createCreditObjectAndAddToArray(song);
-        // Credit being added
       }
     }
-
   }
   return arrayOfCreditSongs;
 }

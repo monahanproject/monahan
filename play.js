@@ -1,34 +1,26 @@
 import { SimpleAudioPlayer } from "./buildAudioplayer.js";
 import { gatherTheCreditSongs } from "./gatherCredits.js";
 import { checkPlaylistRules } from "./checkRules.js";
-// import { updateTranscript } from "./transcript.js";
 import { shuffleTracklist } from "./shuffleTracklist.js";
-
 import { printEntireTracklistDebug } from "./debug.js";
 import { followTracklistRules } from "./playlistBuilder.js";
 import { outroAudioSounds, finalOutroAudioSounds } from "./outroAudio.js";
 import { isValidTracklist } from "./checkEachTrackForValidity.js";
 
-
-
+// Global variables to hold the curated tracklist and its total time
 export let curatedTracklist;
+export let curatedTracklistTotalTimeInSecs = 0;
 
-export let curatedTracklistTotalTimeInSecs;
-curatedTracklistTotalTimeInSecs = 0;
-
+// Function to initialize the application
 export async function initializeApp() {
-  await loadSongs();
+  await loadSongs(); // Load songs and prepare the tracklist
   // Any additional setup...
 }
 
-// async function initializeApp() {
-//   await loadSongs(); // This ensures songs are loaded before moving on
-//   // Any other initialization code that depends on curatedTracklist being populated
-// }
-
+// Initialize the application and handle errors
 initializeApp().catch(console.error);
 
-
+// Function to add outro and credit songs to the tracklist
 function addOutrosAndCreditsToTracklist(curatedTracklist) {
   curatedTracklist.push(...outroAudioSounds.map(prepareSongForPlayback));
   curatedTracklist.push(...gatherTheCreditSongs(curatedTracklist));
@@ -36,26 +28,15 @@ function addOutrosAndCreditsToTracklist(curatedTracklist) {
   return curatedTracklist;
 }
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXXXX CREATE EACH SONG! XXXXXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-/* Possibly does nothing!.*/
-
+// Function to prepare a song for playback (placeholder)
 export const prepareSongForPlayback = (song) => {
   return song;
 };
 
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//  XXXXX GET THE SONGS & TURN THEM INTO SONG OBJECTS! XXXXXX
-//  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-/* Define an array SONGS containing multiple song objects, each song object is 
-  processed using the prepareSongForPlayback function. */
-
+// Global variable to hold the list of songs
 let songs;
 
-
+// Function to load songs from a JSON file
 async function loadSongs() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -63,42 +44,27 @@ async function loadSongs() {
       const data = await response.json();
       songs = data.map(prepareSongForPlayback);
       // console.log("Songs loaded successfully.");
-  
-      // Now call prepareAndQueueTracks here to ensure it happens after songs are loaded
+
+      // Prepare and queue tracks after songs are loaded
       curatedTracklist = prepareCuratedTracklist(songs);
+      resolve();
     } catch (error) {
       console.error("Error loading JSON data:", error);
+      reject(error);
     }
   });
 }
 
-
+// Function to prepare the curated tracklist
 function prepareCuratedTracklist(songs) {
   const allSongs = [...songs];
   const shuffledSongs = shuffleTracklist(allSongs);
   curatedTracklist = followTracklistRules(shuffledSongs);
-  // isValidTracklist(shuffledSongs)
-  // console.log("tooooooo");
+  // isValidTracklist(shuffledSongs);
   // checkPlaylistRules(curatedTracklist);
   curatedTracklist = addOutrosAndCreditsToTracklist(curatedTracklist);
   printEntireTracklistDebug(curatedTracklist);
-  // updateTranscript(curatedTracklist);
+  
+  // Create and play the SimpleAudioPlayer with the curated tracklist
   const makeASimpleAudioPlayerAndPlayIt = new SimpleAudioPlayer(curatedTracklist);
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        document.querySelector('#fern').classList.add('grow');
-      } else {
-        document.querySelector('#fern').classList.remove('grow');
-      }
-    });
-  }, {threshold: 0.5}); // Adjust threshold for when the animation should start
-
-  const fern = document.querySelector('#fern');
-  if (fern) {
-    observer.observe(fern);
-  }
-});

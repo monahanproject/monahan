@@ -7,6 +7,9 @@ let isInverted = getState(); // Initialize isInverted based on localStorage
 let settingsBtn, monochromeBtn, increaseTextSizeBtn, decreaseTextSizeBtn, resetBtn, invertColoursBtn;
 let isMonochrome = false;
 
+/**
+ * Initializes the application.
+ */
 function init() {
   cacheDOMElements();
   bindEvents();
@@ -14,6 +17,9 @@ function init() {
   initializeUserSettings();
 }
 
+/**
+ * Caches the DOM elements for later use.
+ */
 function cacheDOMElements() {
   settingsBtn = document.getElementById("accessibilityNav");
   monochromeBtn = document.getElementById("monochromeBtn");
@@ -23,6 +29,9 @@ function cacheDOMElements() {
   invertColoursBtn = document.getElementById("invertColoursBtn");
 }
 
+/**
+ * Binds event listeners to the DOM elements.
+ */
 function bindEvents() {
   settingsBtn.addEventListener("click", toggleMenu);
   monochromeBtn.addEventListener("click", toggleMonochrome);
@@ -37,6 +46,9 @@ function bindEvents() {
   menuItems.forEach(item => item.addEventListener('keydown', handleMenuItemKeydown));
 }
 
+/**
+ * Initializes user settings based on localStorage.
+ */
 function initializeUserSettings() {
   const userFontSize = localStorage.getItem("userFontSize");
   if (userFontSize) {
@@ -44,12 +56,18 @@ function initializeUserSettings() {
   }
 }
 
-// Utility Functions
+/**
+ * Toggles the aria-pressed attribute of an element.
+ * @param {HTMLElement} element - The element to toggle.
+ */
 export function toggleAriaPressed(element) {
   const isPressed = element.getAttribute("aria-pressed") === "true";
   element.setAttribute("aria-pressed", !isPressed);
 }
 
+/**
+ * Replaces the SVG content based on the screen size and theme state.
+ */
 function replaceSvgContent() {
   const isDesktop = window.matchMedia("(min-width: 900px)").matches;
   const logoPath = isDesktop ?
@@ -83,6 +101,9 @@ const imageSourceMap = {
   "images/svg/pauseButton.svg": "images/svg/pauseButtonInvert.svg",
 };
 
+/**
+ * Toggles the image sources based on the current theme state.
+ */
 function toggleImageSources() {
   const images = document.querySelectorAll("img");
   images.forEach((img) => {
@@ -92,6 +113,9 @@ function toggleImageSources() {
   });
 }
 
+/**
+ * Toggles the SVG backgrounds based on the current theme state.
+ */
 function toggleSvgBackgrounds() {
   const svgClasses = [
     { original: "svg-about", invert: "svg-about-invert" },
@@ -116,6 +140,9 @@ function toggleSvgBackgrounds() {
   });
 }
 
+/**
+ * Swaps the colors between light and dark mode.
+ */
 function swapColors() {
   isInverted = !isInverted;
   setState(isInverted);
@@ -128,6 +155,9 @@ function swapColors() {
   toggleAriaPressed(invertColoursBtn);
 }
 
+/**
+ * Updates the CSS variables based on the current theme state.
+ */
 function updateCSSVariables() {
   const root = document.documentElement;
   root.style.setProperty("--lightgreen", isInverted ? "rgb(35, 78, 68)" : "rgb(191, 255, 194)");
@@ -137,16 +167,23 @@ function updateCSSVariables() {
   root.style.setProperty("--grey", isInverted ? "rgb(122, 122, 122)" : "rgb(35, 78, 68)");
 }
 
+/**
+ * Toggles the monochrome mode.
+ * @param {Event} event - The event object.
+ */
 function toggleMonochrome(event) {
   event.preventDefault();
   event.stopPropagation();
   isMonochrome = !isMonochrome;
 
   document.body.style.filter = isMonochrome ? "grayscale(100%)" : "none";
-  
   toggleAriaPressed(monochromeBtn);
 }
 
+/**
+ * Changes the text size based on the user input.
+ * @param {boolean} increase - Whether to increase the text size.
+ */
 function changeTextSize(increase) {
   const root = document.documentElement;
   let currentSize = parseFloat(getComputedStyle(root).getPropertyValue("--base-font-size-rem")) || 1;
@@ -156,17 +193,20 @@ function changeTextSize(increase) {
   toggleAriaPressed(increase ? increaseTextSizeBtn : decreaseTextSizeBtn);
 }
 
+/**
+ * Toggles the accessibility menu.
+ */
 function toggleMenu() {
   const menu = document.getElementById("slidein");
   const isExpanded = settingsBtn.getAttribute("aria-expanded") === "true";
   settingsBtn.setAttribute("aria-expanded", !isExpanded);
   menu.classList.toggle("show");
-  
+
   const menuVisibility = isExpanded ? "hidden" : "visible";
   menu.setAttribute("aria-hidden", isExpanded);
-  
+
   updateAriaStatusMessage(`Menu is now ${menuVisibility}`);
-  
+
   if (!isExpanded) {
     menu.querySelector('[role="menuitem"]').focus();
   } else {
@@ -175,6 +215,9 @@ function toggleMenu() {
   toggleAriaPressed(settingsBtn);
 }
 
+/**
+ * Closes the accessibility menu.
+ */
 function closeMenu() {
   const menu = document.getElementById("slidein");
   menu.classList.remove("show");
@@ -190,6 +233,10 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+/**
+ * Handles keydown events for the menu button.
+ * @param {KeyboardEvent} event - The event object.
+ */
 function handleMenuButtonKeydown(event) {
   const menu = document.getElementById("slidein");
   const menuItems = menu.querySelectorAll('[role="menuitem"]');
@@ -209,6 +256,10 @@ function handleMenuButtonKeydown(event) {
   }
 }
 
+/**
+ * Handles keydown events for menu items.
+ * @param {KeyboardEvent} event - The event object.
+ */
 function handleMenuItemKeydown(event) {
   const menu = document.getElementById("slidein");
   const menuItems = menu.querySelectorAll('[role="menuitem"]');
@@ -229,24 +280,34 @@ function handleMenuItemKeydown(event) {
   }
 }
 
+/**
+ * Closes the menu when clicking outside of it.
+ * @param {MouseEvent} event - The event object.
+ */
 function closeMenuOnClickOutside(event) {
   if (!document.getElementById("slidein").contains(event.target) && !settingsBtn.contains(event.target)) {
     closeMenu();
   }
 }
 
+/**
+ * Handles global keydown events.
+ * @param {KeyboardEvent} event - The event object.
+ */
 function handleGlobalKeydown(event) {
   if (event.key === "Escape") {
     closeMenu();
   }
 }
 
+/**
+ * Resets the user settings to the default state.
+ */
 function resetSettings() {
-
   // Turn off monochrome mode
   isMonochrome = false;
   document.body.style.filter = "none";
-    
+
   document.body.classList.remove("monochrome");
   const root = document.documentElement;
   const defaultFontSize = "1rem";
