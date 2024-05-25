@@ -77,18 +77,23 @@ function replaceSvgContent() {
     : isInverted
     ? "images/svg/monohanLogoMobileInvert3.svg"
     : "images/svg/monohanLogoMobile2.svg";
+
   const svgContainer = document.getElementById("titleText");
   let imageElement = svgContainer.querySelector("img#monSvg");
-  if (imageElement instanceof HTMLImageElement) {
+
+  if (imageElement) {
     imageElement.src = logoPath;
   } else {
     imageElement = document.createElement("img");
     imageElement.src = logoPath;
     imageElement.className = "lettersBox";
+    imageElement.alt = "Mohanan Art Public Art";
     imageElement.id = "monSvg";
     svgContainer.appendChild(imageElement);
   }
 }
+
+
 
 const imageSourceMap = {
   "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
@@ -197,12 +202,6 @@ function changeTextSize(increase) {
   toggleAriaPressed(increase ? increaseTextSizeBtn : decreaseTextSizeBtn);
 }
 
-/**
- * Toggles the accessibility menu.
- */
-/**
- * Toggles the accessibility menu.
- */
 function toggleMenu() {
   const menu = document.getElementById("slidein");
   const isExpanded = settingsBtn.getAttribute("aria-expanded") === "true";
@@ -215,15 +214,21 @@ function toggleMenu() {
   updateAriaStatusMessage(`Menu is now ${menuVisibility}`);
 
   if (!isExpanded) {
-    menu.querySelector('[role="menuitem"]').focus();
+    const firstMenuItem = menu.querySelector('[role="menuitem"]');
+    if (firstMenuItem instanceof HTMLElement) {
+      firstMenuItem.focus();
+      console.log('Focusing on first menu item');
+    }
   } else {
     // Only set focus back to settingsBtn if the menu was closed intentionally by interacting with it
     if (document.activeElement.closest('#slidein')) {
       settingsBtn.focus();
+      console.log('Focusing back on settingsBtn');
     }
   }
   toggleAriaPressed(settingsBtn);
 }
+
 
 function isClickOutsideMenu(event) {
   const menu = document.getElementById("slidein");
