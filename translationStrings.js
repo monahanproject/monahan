@@ -15,7 +15,7 @@ export const productionPageEN = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">JORDAN BELL</span><span class="role">audio engineer</span>
+    <h3 class="summary-content">JORDAN BELL</span> <span class="role">audio engineer</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Jordan Bell's LinkedIn profile. Link opens in a new tab" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span> is a sound designer, audio engineer, and film mixer from Ottawa. In addition to his training as an audio engineer at Metalworks Studios in Mississauga, Jordan completed a 4-year degree in Sociology at Carleton University. His audio work covers a broad scope, from voice recording, to ADR, to feature film and animation editing and mixing, as well as many corporate clients, all at Affinity Production Group where he has been an engineer for over a decade. When he is not working in the post-production world, Jordan is an active musician. For over 20 years he has worked in the music industry, writing, recording, performing and touring with several different groups.</p>
@@ -42,7 +42,7 @@ export const productionPageEN = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">SIMON GUIBORD</span><span class="role">graphic designer</span>
+    <h3 class="summary-content">SIMON GUIBORD</span> <span class="role">graphic designer</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Simon Guibord's website. Link opens in a new tab" href="https://simonguibord.com/">Simon Guibord</a></span> is a graphic designer who works in cultural, academic and commercial circles. He has collaborated with SAW Gallery, Artengine, Ottawa Art Gallery, DAÏMÔN, AXENÉO7, HB magazine, and with artists across the region. He specializes in publications and the development of graphic identities. His work is characterized by a rational and sensitive approach, and a process that promotes research and experimentation. Since 2015, he has taught typography at the University of Quebec in Outaouais.</p>
@@ -102,7 +102,7 @@ export const productionPageFR = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">JORDAN BELL</span><span class="role">ingénieur du son</span>
+    <h3 class="summary-content">JORDAN BELL</span> <span class="role">ingénieur du son</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Jordan Bell's LinkedIn profile. Link opens in a new tab" href="https://www.linkedin.com/in/jordan-bell-98899811/?originalSubdomain=ca">Jordan Bell</a></span> est un concepteur sonore, un ingénieur du son et un monteur sonore pour films d'Ottawa. En plus de sa formation d'ingénieur du son chez Metalworks Studios à Mississauga, Jordan détient un diplôme après quatre ans d'études en sociologie à l'Université Carleton. Son travail dans le monde de l'audio couvre un large éventail : de l'enregistrement vocal à la postsynchronisation, en passant par le montage et le mixage de longs métrages et de films d'animation. Il travaille avec de nombreuses entreprises, toutes au sein du groupe Affinity Production, où il est ingénieur depuis plus d'une dizaine d'années. Lorsqu'il ne travaille pas dans le monde de la postproduction, Jordan est un musicien prolifique. Depuis plus de 20 ans, il travaille dans l'industrie de la musique; il écrit, enregistre et joue ses chansons et fait des tournées avec une multitude de groupes.</p>
@@ -129,7 +129,7 @@ export const productionPageFR = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">SIMON GUIBORD</span><span class="role">concepteur graphique</span>
+    <h3 class="summary-content">SIMON GUIBORD</span> <span class="role">concepteur graphique</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Simon Guibord's website. Link opens in a new tab" href="https://simonguibord.com/">Simon Guibord</a></span> est un concepteur graphique qui travaille dans les milieux culturels, universitaires et commerciaux. Il a collaboré avec la Galerie SAW, Artengine, la Galerie d'art d'Ottawa, DAÏMÔN, AXENÉO7, le magazine HB et des artistes de toute la région. Il se spécialise dans les publications et l'élaboration d'identités graphiques. Son travail se caractérise par une approche rationnelle et sensible, ainsi qu'un processus favorisant la recherche et l'expérimentation. Depuis 2015, il enseigne la typographie à l'Université du Québec en Outaouais.</p>
@@ -165,7 +165,7 @@ export const productionPageFR = `
 <div class="svg-contributors svg-contributors2"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">JOCELYN TODD</span><span class="role">directrice de la production</span>
+    <h3 class="summary-content">JOCELYN TODD</span> <span class="role">directrice de la production</span>
   </summary>
   <article>
     <p><span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Jocelyn Todd's website. Link opens in a new tab" href="https://www.remembernowmove.art/">Jocelyn Todd</a></span> est une danseuse, chorégraphe, productrice et artiste multidisciplinaire qui vit actuellement à Ottawa. Jocelyn travaille avec le corps et ses interactions avec le moment présent, l'environnement, le paysage politique, le son, l'espace, le concept et les autres corps. Après avoir obtenu un diplôme d'études en danse contemporaine à The School of Dance, Jocelyn a passé son temps à faire la navette entre le Canada et l'Angleterre. À Londres, elle s'est plongée intensément dans des séances d'étude de danse qu'elle organisait elle-même et a présenté son travail au Festival Suffolk High Tide et au Robin Howard Theatre de Londres. Elle a également présenté ses chorégraphies à Ottawa. Ses œuvres récentes (2020-2023) sont <span class="italic">shell</span>, <span class="italic">the A-team</span> et <span class="italic">Time + Light</span>. Son film <span class="italic">Gold</span> a été présenté dans le cadre de Dance On Screen au Mayfair Theatre à l'automne 2021. Elle est profondément reconnaissante du soutien du Centre de danse contemporaine et des communautés qui continuent de l'encourager à Ottawa et à London.</p>
@@ -200,7 +200,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">DIANA BERESFORD-KROEGER</span><span class="role"></span>
+    <h3 class="summary-content">DIANA BERESFORD-KROEGER</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -220,7 +220,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">PIERRE-LUC CLÉMENT</span><span class="role"></span>
+    <h3 class="summary-content">PIERRE-LUC CLÉMENT</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -239,7 +239,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">ALBERT DUMONT</span><span class="role"></span>
+    <h3 class="summary-content">ALBERT DUMONT</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -258,7 +258,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">LANG ELLIOTT</span><span class="role"></span>
+    <h3 class="summary-content">LANG ELLIOTT</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -278,7 +278,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">SAM ESSER</span><span class="role"></span>
+    <h3 class="summary-content">SAM ESSER</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -296,7 +296,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">CHARLOTTE FRANK</span><span class="role"></span>
+    <h3 class="summary-content">CHARLOTTE FRANK</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -312,7 +312,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">KIM KILPATRICK</span><span class="role"></span>
+    <h3 class="summary-content">KIM KILPATRICK</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -330,7 +330,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">FIDES KRUCKER</span><span class="role"></span>
+    <h3 class="summary-content">FIDES KRUCKER</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -350,7 +350,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">AMY MACPHERSON</span><span class="role"></span>
+    <h3 class="summary-content">AMY MACPHERSON</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -367,7 +367,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">KIKO PACE</span><span class="role"></span>
+    <h3 class="summary-content">KIKO PACE</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -383,7 +383,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">DEMETRIOS PETSALAKIS</span><span class="role"></span>
+    <h3 class="summary-content">DEMETRIOS PETSALAKIS</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -402,7 +402,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">NAMITHA RATHINAPPILLAI</span><span class="role"></span>
+    <h3 class="summary-content">NAMITHA RATHINAPPILLAI</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -418,7 +418,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">PATRICIA REYNOLDS</span><span class="role"></span>
+    <h3 class="summary-content">PATRICIA REYNOLDS</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -435,7 +435,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">JESSE STEWART</span><span class="role"></span>
+    <h3 class="summary-content">JESSE STEWART</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -454,7 +454,7 @@ export const contributorsPageEN = `
 <div class="svg-contributors"></div>
 <details>
   <summary tabindex="0">
-    <h3 class="summary-content">LOUELLA TOBIAS</span><span class="role"></span>
+    <h3 class="summary-content">LOUELLA TOBIAS</span> <span class="role"></span>
   </summary>
   <article>
     <p>
@@ -470,7 +470,7 @@ export const contributorsPageEN = `
 
 <div class="svg-contributors"></div>
 <details>
-  <summary tabindex="0"><h3 class="summary-content">ELLEN WATERMAN</span><span class="role"></span></summary>
+  <summary tabindex="0"><h3 class="summary-content">ELLEN WATERMAN</span> <span class="role"></span></summary>
   <article>
     <p>
       <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Ellen Waterman's website. Link opens in a new tab" href="http://www.ellenwaterman.ca/">Ellen Waterman</a></span> is Professor in the School for Studies in Art and Culture and holds the Helmut Kallmann Chair for Music in Canada at Carleton University. She is both a music scholar and a flutist specializing in creative improvisation. Her work on acoustic ecology includes the books <span class="italic">Sonic Geography Imagined and Remembered</span>, and <span class="italic">The Art of Immersive Soundscapes</span>. With Gillian Siddall, she is co-editor of <span class="italic">Negotiated Moments: Improvisation, Sound, and Subjectivity</span>, and she was a founding co-editor of the journal <span class="italic"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Critical Studies in Improvisation journal. Link opens in a new tab" href="http://www.criticalimprov.com/">Critical Studies in Improvisation/Études critiques en improvisation</a></span>. In 2021 she founded the <a target="_blank" rel="noopener noreferrer" aria-label="Visit the Research Centre for Music, Sound, and Society in Canada. Link opens in a new tab" href="http://www.carleton.ca/mssc">Research Centre for Music, Sound, and Society in Canada</a>, dedicated to exploring the complex and diverse roles that music and sonic arts play in shaping Canadian society.
@@ -479,7 +479,7 @@ export const contributorsPageEN = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary tabindex="0"><h3 class="summary-content">WRAY WELSH</span><span class="role"></span></summary>
+  <summary tabindex="0"><h3 class="summary-content">WRAY WELSH</span> <span class="role"></span></summary>
   <article>
     <p>
       <span class="bold">Wray Welsh</span> is a dedicated and experienced Zone Supervisor for West Parks in Ottawa. Going straight from the school yard to the city yard in 1983, Wray has spent the past 40 plus years maintaining facilities and the beautiful outdoor spaces of the City of Ottawa. Wray oversees all the park infrastructure ensuring their cleanliness, safety, and overall functionality. Whether it's managing day-to-day park operations, motivating a team of staff, implementing conservation initiatives, or fostering community engagement, Wray's dedication and expertise make him an exceptional Zone Supervisor. His tireless efforts contribute to the well-being of both the parks and the communities they serve, ensuring that everyone can enjoy nature's beauty and tranquillity. In his free time, Wray enjoys boating along serene waterways, embarking on thrilling motorcycle adventures, and exploring the wonders of the underwater world through scuba diving.
@@ -488,7 +488,7 @@ export const contributorsPageEN = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary tabindex="0"><h3 class="summary-content">JAYNE YACK</span><span class="role"></span></summary>
+  <summary tabindex="0"><h3 class="summary-content">JAYNE YACK</span> <span class="role"></span></summary>
   <article>
     <p>
       Professor of biology <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Jayne Yack's lab website. Link opens in a new tab" href="https://www.yacklab.org/">Jayne Yack</a></span> is fascinated with the unique sensory 'worlds' of animals, and in particular, how insects use sounds and vibrations beyond the sensory capabilities of humans to survive. Jayne completed her PhD at the University of Toronto and a postdoctoral fellow at Cornell University. She currently runs an active research lab at Carleton University in Ottawa, where she and her students use specialized instruments to make neat discoveries, such as how butterflies use ears on their wings to detect predators, and how caterpillars communicate using leaf vibrations to form social groups, or to perform 'rap battles' to win territories.
@@ -506,7 +506,7 @@ export const contributorsPageEN = `
 </details>
 <div class="svg-contributors svg-contributors-indent"></div>
 <details>
-  <summary tabindex="0"><h4 class="summary-content summary-indent">MARC A. REINHARDT</span><span class="role"></h4></summary>
+  <summary tabindex="0"><h4 class="summary-content summary-indent">MARC A. REINHARDT</span> <span class="role"></h4></summary>
   <article>
     <p class="summary-indent">
       <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Marc A. Reinhardt's website. Link opens in a new tab" href="https://marcareinhardt.com/">Marc A. Reinhardt</a></span> is a comparatist working at the intersection of sound, text, performance and installation. His practice develops compositional processes that investigate issues of transduction, historicity and collective agency. He is interested in how we inhabit the contradictions, in language and beyond, that emerge from these investigations. His work has been presented in Canada, Europe and South America.
@@ -569,7 +569,7 @@ export const contributorsPageEN = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary tabindex="0"><h3 class="summary-content">TURKWAZ</span><span class="role">featuring</span></summary>
+  <summary tabindex="0"><h3 class="summary-content">TURKWAZ</span> <span class="role">featuring</span></summary>
   <article>
     <p>
       <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Turkwaz's website. Link opens in a new tab" href="https://turkwaz.ca/">Turkwaz</a></span> is Jayne Brown, Sophia Grigoriadis, Brenna MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to the Toronto world music scene and beyond. Their work together focuses on interpretations of songs primarily from Greek, Turkish, Arabic and Balkan traditions with forays into other genres when the inspiration moves them. Qanun, tambura, ukulele and various forms of hand percussion provide gentle accompaniment to their arrangements, allowing their voices to remain front and centre. They love singing in pure traditional styles but are also equally comfortable adding harmonies where no harmonies existed before. They are all highly adaptable musicians and enjoy collaborating across genres. Their debut album "Nazar" garnered both Juno and CFMA nominations on its release.
@@ -919,7 +919,7 @@ export const strings = [
     { id: "langToggle", en: "FR", fr: "EN" },
     { id: "curiousEarsTxt", en: "A Sound Piece</br> for Curious Ears", fr: "Une pièce sonore </br> pour oreilles curieuses " },
     { id: "aboutH2", en: "ABOUT", fr: "À PROPOS DE" },
-    { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour les oreilles curieuses." },
+    { id: "soundForCurious", en: "A sound piece for curious ears.", fr: "Une pièce sonore pour oreilles curieuses." },
     {
       id: "eachTimeYouClick",
       en: "Each time you click BEGIN, you’ll hear a unique sound piece, collaged by our algorithm from 173 sound chapters. All these chapters are created by a group of <a href='#contributorsH2'>contributors</a>. You’ll hear everything from songs and poems to nature sounds, interviews and stories.",
@@ -1000,8 +1000,8 @@ export const strings = [
     },
     {
       id: "thanksKomiku",
-      en: 'Thank you to Komiku for "The place that never gets old", retrieved from <a href="https://citizen-dj.labs.loc.gov/" target="_blank" rel="noopener noreferrer" aria-label="Visit Citizen DJ website at the Library of Congress. Link opens in a new tab">Citizen DJ</a>, Free Music Archive at the Library of Congress, Web Archives Division.',
-      fr: 'Merci à Komiku pour "The place that never gets old", extrait de <a href="https://citizen-dj.labs.loc.gov/" target="_blank" rel="noopener noreferrer" aria-label="Visitez le site Web Citizen DJ de la Bibliothèque du Congrès. Le lien s\'ouvre dans un nouvel onglet">Citizen DJ</a>, site Web archivé Free Music Archive de la Bibliothèque du Congrès, Division des archives Web.',
+      en: 'Thank you to Komiku for "The place that never get old", retrieved from <a href="https://citizen-dj.labs.loc.gov/" target="_blank" rel="noopener noreferrer" aria-label="Visit Citizen DJ website at the Library of Congress. Link opens in a new tab">Citizen DJ</a>, Free Music Archive at the Library of Congress, Web Archives Division.',
+      fr: 'Merci à Komiku pour "The place that never get old", extrait de <a href="https://citizen-dj.labs.loc.gov/" target="_blank" rel="noopener noreferrer" aria-label="Visitez le site Web Citizen DJ de la Bibliothèque du Congrès. Le lien s\'ouvre dans un nouvel onglet">Citizen DJ</a>, site Web archivé Free Music Archive de la Bibliothèque du Congrès, Division des archives Web.',
     },
     
     {
