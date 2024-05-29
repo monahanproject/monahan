@@ -71,7 +71,9 @@ export function toggleAriaPressed(element) {
   element.setAttribute("aria-pressed", !isPressed);
 }
 
-
+// document.addEventListener('focusin', (event) => {
+//   console.log('Focused element:', event.target);
+// });
 
 function handleResize() {
   var whereToFindUsPage = document.getElementById("whereToFindUsPageContent");
