@@ -569,7 +569,7 @@ export const contributorsPageEN = `
 </details>
 <div class="svg-contributors"></div>
 <details>
-  <summary tabindex="0"><h3 class="summary-content">TURKWAZ</span> <span class="role">featuring</span></summary>
+  <summary tabindex="0"><h3 class="summary-content">TURKWAZ</h3><span class="role">featuring</span></summary>
   <article>
     <p>
       <span class="bold"><a target="_blank" rel="noopener noreferrer" aria-label="Visit Turkwaz's website. Link opens in a new tab" href="https://turkwaz.ca/">Turkwaz</a></span> is Jayne Brown, Sophia Grigoriadis, Brenna MacCrimmon, and Maryem Tollar; four vocalists who individually have contributed widely to the Toronto world music scene and beyond. Their work together focuses on interpretations of songs primarily from Greek, Turkish, Arabic and Balkan traditions with forays into other genres when the inspiration moves them. Qanun, tambura, ukulele and various forms of hand percussion provide gentle accompaniment to their arrangements, allowing their voices to remain front and centre. They love singing in pure traditional styles but are also equally comfortable adding harmonies where no harmonies existed before. They are all highly adaptable musicians and enjoy collaborating across genres. Their debut album "Nazar" garnered both Juno and CFMA nominations on its release.
@@ -941,7 +941,7 @@ export const strings = [
       fr: "Plongez-vous dans une ambiance sonore qui explore le mouvement, la migration, les récits qui soulagent, les êtres non humains, les plantes qui guérissent, la voix, la traduction et le lieu.",
     },
   
-    { id: "monH2", en: "MONAHAN", fr: "MONAHAN" },
+    { id: "monSpan", en: "MONAHAN", fr: "MONAHAN" },
   
     {
       id: "pavedPaths",
@@ -1018,6 +1018,6 @@ export const strings = [
     },
     
     { id: "contact", en: "Contact: publicartprogram@ottawa.ca", fr: "Pour toutes questions : programmedartpublic@ottawa.ca" },
-    { id: "copyright", en: "©2023 All Rights Reserved", fr: "©2023 Tous droits réservés" },
+    { id: "copyright", en: "©2024 All Rights Reserved", fr: "©2024 Tous droits réservés" },
     { id: "cityArtCollection", en: "City of Ottawa Art Collection", fr: "Collection d'art de la ville d'Ottawa" },
   ];

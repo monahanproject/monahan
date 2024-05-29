@@ -87,8 +87,9 @@ function replaceSvgContent() {
     imageElement = document.createElement("img");
     imageElement.src = logoPath;
     imageElement.className = "lettersBox";
-    imageElement.alt = "Mohanan Art Public Art";
+    imageElement.alt = "";
     imageElement.id = "monSvg";
+    imageElement.setAttribute("aria-hidden", "true");
     svgContainer.appendChild(imageElement);
   }
 }

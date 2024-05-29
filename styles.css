@@ -3,21 +3,18 @@
 /********************/
 
 @font-face {
-  font-family: 'Zilla Slab';
+  font-family: "Zilla Slab";
   font-style: normal;
   font-weight: 300;
-  src: local('Zilla Slab Light'), local('ZillaSlab-Light'),
-       url('/monahan/fonts/ZillaSlab-Light.ttf') format('truetype');
+  src: local("Zilla Slab Light"), local("ZillaSlab-Light"), url("/monahan/fonts/ZillaSlab-Light.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'DM Sans';
+  font-family: "DM Sans";
   font-style: normal;
-  font-weight: 400 700; 
-  src: local('DM Sans'), local('DMSans'),
-       url('/monahan/fonts/DMSans-VariableFont_opsz,wght.ttf') format('truetype'); 
+  font-weight: 400 700;
+  src: local("DM Sans"), local("DMSans"), url("/monahan/fonts/DMSans-VariableFont_opsz,wght.ttf") format("truetype");
 }
-
 
 /********************/
 /**** VARIABLES *****/
@@ -36,7 +33,6 @@
   --base-font-size: 6.9vw;
   font-size: 16px; /* Default font size */
 }
-
 
 *,
 *::before,
@@ -217,7 +213,6 @@ main {
 /******** LINKS ********/
 /***********************/
 
-
 a:hover {
   opacity: 60%;
   /* color: var(--accentTwo); */
@@ -265,7 +260,6 @@ button {
   }
 }
 
-
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -301,7 +295,6 @@ button {
   transform: scale(1.1);
   fill: #28a745;
 }
-
 
 /************************/
 /******** PAGE **********/
@@ -649,11 +642,21 @@ h2 {
   margin: 0 0 1.75em 0;
 }
 
-#monH2 {
+#monSpan {
   font-family: "DM Sans", sans-serif;
   font-size: 2.3rem;
   margin: 6px 0 0.75em 0;
   letter-spacing: 0.075rem;
+  display: block;
+}
+
+#aboutH2Box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 200;
+  margin: 0;
 }
 
 #aboutH2 {
@@ -672,12 +675,14 @@ h2 {
     font-weight: 550;
   }
 
-  #aboutH2 {
-    font-size: 2rem;
-    font-weight: 200;
+
+  #aboutH2Box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  #monH2 {
+  #monSpan {
     font-size: 3rem;
     margin: 0;
   }
@@ -696,7 +701,6 @@ h2 {
     margin-bottom: 2.2rem;
   }
 }
-
 
 /**************************/
 /******* LIST STUFF *******/
@@ -739,7 +743,6 @@ li {
 .access {
   margin: 0 0 0 1rem;
 }
-
 
 /****************************/
 /******* MUSIC PLAYER *******/
@@ -793,7 +796,8 @@ li {
 }
 
 @keyframes svgGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: none;
     color: white;
     stroke-width: 0px;
@@ -810,8 +814,6 @@ li {
   animation: svgGlow 0.5s ease-out forwards;
 }
 
-
-
 .disabled-button {
   opacity: 0.1;
   color: #ccc;
@@ -820,7 +822,8 @@ li {
 }
 
 @keyframes svgDisappear {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.1;
   }
   90% {
@@ -884,7 +887,7 @@ li {
 #play-button-svg-container {
   display: block;
   width: 75vw;
-  padding-top: calc((319 / 279) * 75vw); 
+  padding-top: calc((319 / 279) * 75vw);
   position: relative;
   box-sizing: border-box;
 }
@@ -959,7 +962,7 @@ li {
 #progress-bar {
   position: absolute;
   width: 0;
-  height: 5px; 
+  height: 5px;
   top: 50%;
   transform: translateY(-50%);
   background-color: var(--darkgreen);
@@ -1052,7 +1055,7 @@ input[type="range"] {
 #volume-slider {
   -webkit-appearance: none;
   appearance: none;
-  max-width: 100%; 
+  max-width: 100%;
   width: 100%;
   height: 8px;
   background: transparent;
@@ -1081,11 +1084,11 @@ input[type="range"] {
 
 .volume-icon {
   display: flex;
-  outline: none; 
-  border: none; 
-  box-shadow: none; 
-  background: transparent; 
-  padding: 0; 
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
   margin: 0;
 }
 
@@ -1105,26 +1108,6 @@ input[type="range"] {
     margin: 0 10px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*************************/
 /******** DEBUG **********/
@@ -1187,8 +1170,6 @@ input[type="range"] {
 }
 
 @media screen and (min-width: 900px) {
-
-
   #artPubArt {
     max-width: 8rem;
     text-align: left !important;
@@ -1347,7 +1328,6 @@ input[type="range"] {
 img {
   max-width: 100%;
 }
-
 
 .decorativeImage {
   padding-bottom: 2rem;
@@ -1782,7 +1762,6 @@ article > p {
   }
 }
 
-
 /***********************/
 /***** ACCESS MENU *****/
 /***********************/
@@ -1988,7 +1967,11 @@ article > p {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
   }
   40% {
@@ -2034,7 +2017,7 @@ article > p {
   outline-offset: 2px;
 }
 
-body:not(.show-focus-outlines) button:focus, 
+body:not(.show-focus-outlines) button:focus,
 body:not(.show-focus-outlines) [tabindex]:focus {
   outline: none;
 }
