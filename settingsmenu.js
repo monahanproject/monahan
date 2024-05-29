@@ -8,6 +8,8 @@ let settingsBtn, monochromeBtn, increaseTextSizeBtn, decreaseTextSizeBtn, resetB
 let isMonochrome = false;
 let currentFocusableElement; // Add this variable to keep track of the current focusable element
 
+
+
 /**
  * Initializes the application.
  */
@@ -17,6 +19,8 @@ function init() {
   replaceSvgContent();
   initializeUserSettings();
   closeMenu(); // Ensure the menu is closed by default
+  handleResize();
+  replaceSvgContent();
 }
 
 /**
@@ -67,11 +71,57 @@ export function toggleAriaPressed(element) {
   element.setAttribute("aria-pressed", !isPressed);
 }
 
-/**
- * Replaces the SVG content based on the screen size and theme state.
- */
+
+
+function handleResize() {
+  var whereToFindUsPage = document.getElementById("whereToFindUsPageContent");
+  var svgMap = document.getElementById("svg-map");
+  var pageContentTxt = document.getElementById("whereToFindUsTxt");
+  var landingPageContainer = document.getElementById("landingPageContainer");
+  var engLand = document.getElementById("engLand");
+  var frLand = document.getElementById("frLand");
+  var pageTitle = document.getElementById("pageTitle");
+  var titleText = document.getElementById("titleText");
+
+  if (window.innerWidth >= 768) {
+    // Reorder elements for desktop in whereToFindUsPage
+    if (whereToFindUsPage && svgMap && pageContentTxt) {
+      whereToFindUsPage.removeChild(svgMap);
+      whereToFindUsPage.insertBefore(svgMap, pageContentTxt);
+    }
+
+    // Reorder elements for desktop in landingPageContainer
+    if (landingPageContainer && engLand && frLand && pageTitle && titleText) {
+      landingPageContainer.removeChild(engLand);
+      landingPageContainer.removeChild(frLand);
+      landingPageContainer.appendChild(pageTitle);
+      landingPageContainer.appendChild(titleText);
+      landingPageContainer.appendChild(engLand);
+      landingPageContainer.appendChild(frLand);
+    }
+  } else {
+    // Reorder elements for mobile in whereToFindUsPage
+    if (whereToFindUsPage && svgMap && pageContentTxt) {
+      whereToFindUsPage.removeChild(svgMap);
+      whereToFindUsPage.appendChild(svgMap);
+    }
+
+    // Reorder elements for mobile in landingPageContainer
+    if (landingPageContainer && engLand && frLand && pageTitle && titleText) {
+      landingPageContainer.removeChild(pageTitle);
+      landingPageContainer.removeChild(titleText);
+      landingPageContainer.appendChild(engLand);
+      landingPageContainer.appendChild(pageTitle);
+      landingPageContainer.appendChild(titleText);
+      landingPageContainer.appendChild(frLand);
+    }
+  }
+}
+
+
 function replaceSvgContent() {
   const isDesktop = window.matchMedia("(min-width: 900px)").matches;
+  const isInverted = false; // Define your condition for inversion
   const logoPath = isDesktop
     ? isInverted
       ? "images/svg/monohanLogoDesktopInvert2.svg"

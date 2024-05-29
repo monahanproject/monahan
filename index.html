@@ -126,7 +126,7 @@
       <section id="curiousEarsPage" class="page">
         <div class="pageContent">
           <img src="images/svg/firn.svg" alt="" class="decorativeImage" id="fern" />
-          <h2 id="curiousEarsTxt"></h2>
+          <h2 id="curiousEarsTxt" aria-label="A Sound Piece for Curious Ears"></h2>
         </div>
       </section>
       <section id="playerPage" class="page">
@@ -137,7 +137,7 @@
             id="play-button"
             class="play-icon"
             aria-controls="music_player"
-            aria-label="Play Audio"
+            aria-label="Begin/Play Audio"
             aria-pressed="false"
             tabindex="0">
             <span id="play-button-svg-container">
@@ -241,7 +241,7 @@
           <div class="pageContentTxt">
             <div class="pageInnerContent">
               <div class="headerDiv">
-                <h2 id="aboutH2Box"><span id="aboutH2">ABOUT</span> <span id="monSpan">MONAHAN</span></h2>
+                <h2 id="aboutH2Box" aria-label="About Monahan"><span id="aboutH2">ABOUT</span> <span id="monSpan">MONAHAN</span></h2>
             </div>
               <div class="txtBoxDiv">
                 <p class="txtBoxDiv" id="soundForCurious"></p>
@@ -288,8 +288,8 @@
         </div>
       </section>
       <section id="whereToFindUsPage" class="page">
-        <div class="sideBySideTxtImage reverse">
-          <div class="pageContentTxt">
+        <div class="sideBySideTxtImage" id="whereToFindUsPageContent">
+          <div class="pageContentTxt" id="whereToFindUsTxt">
             <div class="pageInnerContent">
               <div class="headerDiv">
                 <h2 id="whereToFindUsH2"></h2>
@@ -308,7 +308,7 @@
               </ul>
             </div>
           </div>
-          <div class="svg-map">
+          <div class="svg-map" id="svg-map">
             <span id="PondAltImg" role="img" aria-label="Outline of Monahan Pond / Contour de l'étang de Monahan"></span>
           </div>
         </div>
