@@ -2017,6 +2017,11 @@ article > p {
   outline-offset: 2px;
 }
 
+:active {
+  outline: 2px dashed var(--lightgreen);
+  outline-offset: 2px;
+}
+
 body:not(.show-focus-outlines) button:focus,
 body:not(.show-focus-outlines) [tabindex]:focus {
   outline: none;
@@ -2030,3 +2035,5 @@ body:not(.show-focus-outlines) [tabindex]:focus {
   clip: rect(1px, 1px, 1px, 1px);
   overflow: hidden;
 }
+
+

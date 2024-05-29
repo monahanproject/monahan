@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", init);
 let isInverted = getState(); // Initialize isInverted based on localStorage
 let settingsBtn, monochromeBtn, increaseTextSizeBtn, decreaseTextSizeBtn, resetBtn, invertColoursBtn;
 let isMonochrome = false;
+let currentFocusableElement; // Add this variable to keep track of the current focusable element
 
 /**
  * Initializes the application.
@@ -15,6 +16,7 @@ function init() {
   bindEvents();
   replaceSvgContent();
   initializeUserSettings();
+  closeMenu(); // Ensure the menu is closed by default
 }
 
 /**
@@ -93,8 +95,6 @@ function replaceSvgContent() {
     svgContainer.appendChild(imageElement);
   }
 }
-
-
 
 const imageSourceMap = {
   "images/svg/invertColors.svg": "images/svg/invertColorsInvert.svg",
@@ -217,25 +217,22 @@ function toggleMenu() {
   if (!isExpanded) {
     const firstMenuItem = menu.querySelector('[role="menuitem"]');
     if (firstMenuItem instanceof HTMLElement) {
+      currentFocusableElement = firstMenuItem; // Track the first menu item
       firstMenuItem.focus();
-      console.log('Focusing on first menu item');
     }
   } else {
     // Only set focus back to settingsBtn if the menu was closed intentionally by interacting with it
     if (document.activeElement.closest('#slidein')) {
       settingsBtn.focus();
-      console.log('Focusing back on settingsBtn');
     }
   }
   toggleAriaPressed(settingsBtn);
 }
 
-
 function isClickOutsideMenu(event) {
   const menu = document.getElementById("slidein");
   return !menu.contains(event.target);
 }
-
 
 /**
  * Closes the accessibility menu.
@@ -245,7 +242,6 @@ function closeMenu() {
   menu.classList.remove("show");
   menu.setAttribute("aria-hidden", "true");
   settingsBtn.setAttribute("aria-expanded", "false");
-  settingsBtn.focus();
   updateAriaStatusMessage("Menu is now hidden");
 }
 
@@ -261,7 +257,6 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("click", function () {
   document.body.classList.remove("show-focus-outlines");
 });
-
 
 /**
  * Handles keydown events for the menu button.
@@ -302,9 +297,16 @@ function handleMenuItemKeydown(event) {
       event.preventDefault();
       (this.previousElementSibling || menuItems[menuItems.length - 1]).focus();
       break;
+    case "Tab":
+      // Handle tabbing out of the menu
+      if (!this.nextElementSibling && !event.shiftKey) {
+        closeMenu();
+      } else if (!this.previousElementSibling && event.shiftKey) {
+        closeMenu();
+      }
+      break;
     case "Escape":
-      settingsBtn.setAttribute("aria-expanded", "false");
-      menu.setAttribute("aria-hidden", "true");
+      closeMenu();
       settingsBtn.focus();
       break;
   }
