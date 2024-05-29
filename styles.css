@@ -1793,7 +1793,7 @@ article > p {
 #settingsDropdown {
   z-index: 1;
   border-radius: 10px;
-  transition: all 3s ease-out;
+  transition: all .01s ease-out;
   opacity: 1;
   z-index: 1010;
 }
